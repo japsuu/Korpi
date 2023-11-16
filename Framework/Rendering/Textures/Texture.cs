@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 
-namespace BlockEngine.Framework.Textures;
+namespace BlockEngine.Framework.Rendering.Textures;
 
 public class Texture
 {

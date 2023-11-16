@@ -1,14 +1,15 @@
-﻿using ImGuiNET;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using BlockEngine.Utils;
+using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Diagnostics;
 using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
 using Vector4 = System.Numerics.Vector4;
 
-namespace BlockEngine.Utils;
+namespace BlockEngine.Framework.Rendering.ImGuiWindows;
 
 public class ImGuiController : IDisposable
 {
@@ -55,9 +56,9 @@ public class ImGuiController : IDisposable
 
         _compatibilityProfile = (GL.GetInteger((GetPName)All.ContextProfileMask) & (int)All.ContextCompatibilityProfileBit) != 0;
 
-        IntPtr context = ImGui.CreateContext();
-        ImGui.SetCurrentContext(context);
-        ImGuiIOPtr io = ImGui.GetIO();
+        IntPtr context = ImGuiNET.ImGui.CreateContext();
+        ImGuiNET.ImGui.SetCurrentContext(context);
+        ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
         io.Fonts.AddFontDefault();
 
         io.BackendFlags |= ImGuiBackendFlags.RendererHasVtxOffset;
@@ -67,7 +68,7 @@ public class ImGuiController : IDisposable
 
         SetPerFrameImGuiData(1f / 60f);
 
-        ImGui.NewFrame();
+        ImGuiNET.ImGui.NewFrame();
         _frameBegun = true;
     }
 
@@ -161,7 +162,7 @@ void main()
     /// </summary>
     public void RecreateFontDeviceTexture()
     {
-        ImGuiIOPtr io = ImGui.GetIO();
+        ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
         io.Fonts.GetTexDataAsRGBA32(out IntPtr pixels, out int width, out int height, out int _);
 
         int mips = (int)Math.Floor(Math.Log(Math.Max(width, height), 2));
@@ -204,8 +205,8 @@ void main()
         if (_frameBegun)
         {
             _frameBegun = false;
-            ImGui.Render();
-            RenderImDrawData(ImGui.GetDrawData());
+            ImGuiNET.ImGui.Render();
+            RenderImDrawData(ImGuiNET.ImGui.GetDrawData());
         }
     }
 
@@ -216,14 +217,14 @@ void main()
     {
         if (_frameBegun)
         {
-            ImGui.Render();
+            ImGuiNET.ImGui.Render();
         }
 
         SetPerFrameImGuiData(deltaSeconds);
         UpdateImGuiInput(wnd, mousePos);
 
         _frameBegun = true;
-        ImGui.NewFrame();
+        ImGuiNET.ImGui.NewFrame();
     }
 
     /// <summary>
@@ -232,7 +233,7 @@ void main()
     /// </summary>
     private void SetPerFrameImGuiData(float deltaSeconds)
     {
-        ImGuiIOPtr io = ImGui.GetIO();
+        ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
         io.DisplaySize = new System.Numerics.Vector2(
             _windowWidth / _scaleFactor.X,
             _windowHeight / _scaleFactor.Y);
@@ -249,7 +250,7 @@ void main()
     // NOTE: Modified to take in an override mouse position
     private void UpdateImGuiInput(GameWindow wnd, Vector2 mousePos)
     {
-        ImGuiIOPtr io = ImGui.GetIO();
+        ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
 
         MouseState mouseState = wnd.MouseState;
         KeyboardState keyboardState = wnd.KeyboardState;
@@ -289,7 +290,7 @@ void main()
 
     internal void MouseScroll(Vector2 offset)
     {
-        ImGuiIOPtr io = ImGui.GetIO();
+        ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
             
         io.MouseWheel = offset.Y;
         io.MouseWheelH = offset.X;
@@ -297,7 +298,7 @@ void main()
 
     private static void SetKeyMappings()
     {
-        ImGuiIOPtr io = ImGui.GetIO();
+        ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
         io.KeyMap[(int)ImGuiKey.Tab] = (int)Keys.Tab;
         io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)Keys.Left;
         io.KeyMap[(int)ImGuiKey.RightArrow] = (int)Keys.Right;
@@ -401,7 +402,7 @@ void main()
         }
 
         // Setup orthographic projection matrix into our constant buffer
-        ImGuiIOPtr io = ImGui.GetIO();
+        ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
         Matrix4 mvp = Matrix4.CreateOrthographicOffCenter(
             0.0f,
             io.DisplaySize.X,

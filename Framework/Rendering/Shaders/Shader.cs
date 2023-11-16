@@ -2,7 +2,7 @@
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Shaders;
+namespace BlockEngine.Framework.Rendering.Shaders;
 
 public class Shader : IDisposable
 {

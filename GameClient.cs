@@ -1,7 +1,9 @@
 ﻿using BlockEngine.Framework;
 using BlockEngine.Framework.Configuration;
-using BlockEngine.Framework.Shaders;
-using BlockEngine.Framework.Textures;
+using BlockEngine.Framework.Rendering;
+using BlockEngine.Framework.Rendering.ImGuiWindows;
+using BlockEngine.Framework.Rendering.Shaders;
+using BlockEngine.Framework.Rendering.Textures;
 using BlockEngine.Utils;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
@@ -14,6 +16,9 @@ namespace BlockEngine;
 
 public class GameClient : GameWindow
 {
+    public static event Action? ClientLoad;
+    public static event Action? ClientUnload;
+    
     private ImGuiController _imGuiController = null!;
     private Shader _blockShader = null!;
     private Shader _skyboxShader = null!;
@@ -21,6 +26,7 @@ public class GameClient : GameWindow
 
 
     private readonly float[] _skyboxVertices = {
+        // Z- face
         -1.0f,  1.0f, -1.0f,
         -1.0f, -1.0f, -1.0f,
         1.0f, -1.0f, -1.0f,
@@ -28,6 +34,7 @@ public class GameClient : GameWindow
         1.0f,  1.0f, -1.0f,
         -1.0f,  1.0f, -1.0f,
 
+        // X- face
         -1.0f, -1.0f,  1.0f,
         -1.0f, -1.0f, -1.0f,
         -1.0f,  1.0f, -1.0f,
@@ -35,6 +42,7 @@ public class GameClient : GameWindow
         -1.0f,  1.0f,  1.0f,
         -1.0f, -1.0f,  1.0f,
 
+        // X+ face
         1.0f, -1.0f, -1.0f,
         1.0f, -1.0f,  1.0f,
         1.0f,  1.0f,  1.0f,
@@ -42,6 +50,7 @@ public class GameClient : GameWindow
         1.0f,  1.0f, -1.0f,
         1.0f, -1.0f, -1.0f,
 
+        // Z+ face
         -1.0f, -1.0f,  1.0f,
         -1.0f,  1.0f,  1.0f,
         1.0f,  1.0f,  1.0f,
@@ -49,6 +58,7 @@ public class GameClient : GameWindow
         1.0f, -1.0f,  1.0f,
         -1.0f, -1.0f,  1.0f,
 
+        // Y+ face
         -1.0f,  1.0f, -1.0f,
         1.0f,  1.0f, -1.0f,
         1.0f,  1.0f,  1.0f,
@@ -56,6 +66,7 @@ public class GameClient : GameWindow
         -1.0f,  1.0f,  1.0f,
         -1.0f,  1.0f, -1.0f,
 
+        // Y- face
         -1.0f, -1.0f, -1.0f,
         -1.0f, -1.0f,  1.0f,
         1.0f, -1.0f, -1.0f,
@@ -63,13 +74,19 @@ public class GameClient : GameWindow
         -1.0f, -1.0f,  1.0f,
         1.0f, -1.0f,  1.0f
     };
-
-
+    
     private readonly float[] _testCubeVertices = {
-        0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // top right
-        0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f   // top left
+        0.5f,   0.5f,   0.0f,
+        1.0f,   0.0f,   0.0f,  // top right
+        
+        0.5f,   -0.5f,  0.0f,
+        0.0f,   1.0f,   0.0f,  // bottom right
+        
+        -0.5f,  -0.5f,  0.0f,
+        0.0f,   0.0f,   1.0f,  // bottom left
+        
+        -0.5f,  0.5f,   0.0f,
+        1.0f,   1.0f,   0.0f   // top left
     };
     
     private readonly uint[] _testCubeIndices = {
@@ -95,20 +112,35 @@ public class GameClient : GameWindow
     public GameClient() : base(new GameWindowSettings 
         {
             UpdateFrequency = Constants.UPDATE_LOOP_FREQUENCY
-        },
-            new NativeWindowSettings
+        }, 
+        new NativeWindowSettings
         {
             Size = (Settings.Client.WindowSettings.WindowWidth, Settings.Client.WindowSettings.WindowHeight),
             Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}"
-        })
+        }) { }
+
+
+    public void SwitchCursorState()
     {
-        Logger.Log($"Starting v{Constants.ENGINE_VERSION}...");
+        if (CursorState == CursorState.Grabbed)
+        {
+            _camera.IsMouseFirstMove = true;
+            CursorState = CursorState.Normal;
+            _camera.IsInputEnabled = false;
+        }
+        else if (CursorState == CursorState.Normal)
+        {
+            _camera.IsMouseFirstMove = true;
+            CursorState = CursorState.Grabbed;
+            _camera.IsInputEnabled = true;
+        }
     }
     
     
     protected override void OnLoad()
     {
         base.OnLoad();
+        Logger.Log($"Starting v{Constants.ENGINE_VERSION}...");
         
         _world = new World("World1");
         
@@ -164,12 +196,12 @@ public class GameClient : GameWindow
         // Load the skybox texture.
         _skyboxTexture = Skybox.LoadFromFile(new[]
         {
-            IoUtils.GetSkyboxTexturePath("front.jpg"),
-            IoUtils.GetSkyboxTexturePath("back.jpg"),
-            IoUtils.GetSkyboxTexturePath("top.jpg"),
-            IoUtils.GetSkyboxTexturePath("bottom.jpg"),
-            IoUtils.GetSkyboxTexturePath("right.jpg"),
-            IoUtils.GetSkyboxTexturePath("left.jpg")
+            IoUtils.GetSkyboxTexturePath("x_neg.png"),
+            IoUtils.GetSkyboxTexturePath("x_pos.png"),
+            IoUtils.GetSkyboxTexturePath("y_neg.png"),
+            IoUtils.GetSkyboxTexturePath("y_pos.png"),
+            IoUtils.GetSkyboxTexturePath("z_pos.png"),
+            IoUtils.GetSkyboxTexturePath("z_neg.png"),
         });
         
         // Load the block shader.
@@ -186,7 +218,10 @@ public class GameClient : GameWindow
         _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
         CursorState = CursorState.Grabbed;
         
+        MemoryProfilerWindow memoryProfilerWindow = new();
+        
         Logger.Log("Started.");
+        ClientLoad?.Invoke();
     }
 
 
@@ -196,6 +231,7 @@ public class GameClient : GameWindow
         
         _blockShader.Dispose();
         _skyboxShader.Dispose();
+        ClientUnload?.Invoke();
     }
 
 
@@ -207,35 +243,20 @@ public class GameClient : GameWindow
         
         Input.Update(KeyboardState, MouseState);
 
+        // Emulate the cursor being fixed to center of the screen, as OpenTK doesn't fix the cursor position when it's grabbed.
         Vector2 mousePos = Input.MouseState.Position;
         if (CursorState == CursorState.Grabbed)
-        {
             mousePos = new Vector2(Size.X / 2f, Size.Y / 2f);
-            // MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
-        }
+        // MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
 
         _imGuiController.Update(this, (float)args.Time, mousePos);
         
-        if (!IsFocused)
-            return;
+        ImGuiWindowManager.UpdateAllWindows();
 
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
-        {
-            if (CursorState == CursorState.Grabbed)
-            {
-                _camera.IsMouseFirstMove = true;
-                CursorState = CursorState.Normal;
-                _camera.IsInputEnabled = false;
-            }
-            else if (CursorState == CursorState.Normal)
-            {
-                _camera.IsMouseFirstMove = true;
-                CursorState = CursorState.Grabbed;
-                _camera.IsInputEnabled = true;
-            }
-        }
-        
-        _world.Tick(args.Time);
+            SwitchCursorState();
+
+        _world.Tick(_camera.Transform.Position, args.Time);
     }
 
     
@@ -257,9 +278,22 @@ public class GameClient : GameWindow
         // You can think like this: first apply the modelToWorld (aka model) matrix, then apply the worldToView (aka view) matrix, 
         // and finally apply the viewToProjectedSpace (aka projection) matrix.
         // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
-        Matrix4 modelMatrix = Matrix4.Identity;
         Matrix4 cameraViewMatrix = _camera.GetViewMatrix();
         Matrix4 cameraProjectionMatrix = _camera.GetProjectionMatrix();
+        
+        DrawWorld(cameraViewMatrix, cameraProjectionMatrix);
+        
+        DrawSkybox(cameraViewMatrix, cameraProjectionMatrix, false);
+        
+        DrawImGui();
+
+        SwapBuffers();
+    }
+
+
+    private void DrawWorld(Matrix4 cameraViewMatrix, Matrix4 cameraProjectionMatrix)
+    {
+        Matrix4 modelMatrix = Matrix4.Identity;
         _blockShader.SetMatrix4("model", modelMatrix);
         _blockShader.SetMatrix4("view", cameraViewMatrix);
         _blockShader.SetMatrix4("projection", cameraProjectionMatrix);
@@ -269,32 +303,45 @@ public class GameClient : GameWindow
         // Draw.
         GL.DrawElements(PrimitiveType.Triangles, _testCubeIndices.Length, DrawElementsType.UnsignedInt, 0);
         GL.BindVertexArray(0);
-        
+    }
+
+
+    private void DrawSkybox(Matrix4 cameraViewMatrix, Matrix4 cameraProjectionMatrix, bool rotateOverTime)
+    {
         // Draw skybox.
         GL.DepthFunc(DepthFunction.Lequal);  // Change depth function so depth test passes when values are equal to depth buffer's content
         
         _skyboxShader.Use();
         
         cameraViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
-        _skyboxShader.SetMatrix4("view", cameraViewMatrix);
+        if (rotateOverTime)
+        {
+            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
+            _skyboxShader.SetMatrix4("view", modelMatrix * cameraViewMatrix);
+        }
+        else
+        {
+            _skyboxShader.SetMatrix4("view", cameraViewMatrix);
+        }
         _skyboxShader.SetMatrix4("projection", cameraProjectionMatrix);
         // Skybox cube...
-        GL.BindVertexArray(_skyboxVAO);
         _skyboxTexture.Use(TextureUnit.Texture0);
+        GL.BindVertexArray(_skyboxVAO);
         GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
         GL.BindVertexArray(0);
         
         GL.DepthFunc(DepthFunction.Less); // set depth function back to default
-        
-        // Render ImGui.
-        ImGui.ShowDemoWindow();
+    }
+
+
+    private void DrawImGui()
+    {
+        ImGui.ShowMetricsWindow();
         _imGuiController.Render();
         ImGuiController.CheckGlError("End of frame");
-
-        SwapBuffers();
     }
-    
-    
+
+
     protected override void OnResize(ResizeEventArgs e)
     {
         base.OnResize(e);

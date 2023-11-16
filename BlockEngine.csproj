@@ -22,4 +22,8 @@
 	
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Framework\VoxelShapes\" />
+  </ItemGroup>
+
 </Project>

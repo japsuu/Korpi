@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 
-namespace BlockEngine.Framework.Textures;
+namespace BlockEngine.Framework.Rendering.Textures;
 
 public class Skybox
 {
@@ -28,15 +28,15 @@ public class Skybox
         GL.ActiveTexture(TextureUnit.Texture0);
         GL.BindTexture(TextureTarget.TextureCubeMap, handle);
 
-        // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
-        // so we tell StbImageSharp to flip the image when loading.
-        StbImage.stbi_set_flip_vertically_on_load(0);
 
         for (int i = 0; i < facesPaths.Length; i++)
         {
             string facePath = facesPaths[i];
             using (Stream stream = File.OpenRead(facePath))
             {
+                // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
+                // so we tell StbImageSharp to flip the image when loading.
+                StbImage.stbi_set_flip_vertically_on_load(1);
                 ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlue);
 
                 // Now that our pixels are prepared, it's time to generate a texture. We do this with GL.TexImage2D.

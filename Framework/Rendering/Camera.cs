@@ -1,16 +1,24 @@
 ﻿using BlockEngine.Framework.ECS.Entities;
+using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Framework;
+namespace BlockEngine.Framework.Rendering;
 
 public class Camera : TransformEntity
 {
-    private float _cameraFlySpeed = 1.5f;
+    public static Camera Singleton { get; private set; } = null!;
+
     private const float SENSITIVITY = 0.2f;
     
+    private CameraWindow _cameraWindow;
+    
+    private float _cameraFlySpeed = 1.5f;
+    
     private Vector3 _front = -Vector3.UnitZ;
+    private Vector3 _up = Vector3.UnitY;
+    private Vector3 _right = Vector3.UnitX;
     
     // Rotation around the X axis (radians)
     private float _pitch;
@@ -32,8 +40,18 @@ public class Camera : TransformEntity
 
     // Those vectors are directions pointing outwards from the camera to define how it rotated.
     public Vector3 Front => _front;
-    public Vector3 Up { get; private set; } = Vector3.UnitY;
-    public Vector3 Right { get; private set; } = Vector3.UnitX;
+
+    public Vector3 Up
+    {
+        get => _up;
+        private set => _up = value;
+    }
+
+    public Vector3 Right
+    {
+        get => _right;
+        private set => _right = value;
+    }
 
     public float Pitch
     {
@@ -75,6 +93,12 @@ public class Camera : TransformEntity
     public Camera(Vector3 position, float aspectRatio) : base(position)
     {
         AspectRatio = aspectRatio;
+        _cameraWindow = new CameraWindow(this);
+
+        if (Singleton != null)
+            throw new Exception("Only one camera can exist at a time.");
+
+        Singleton = this;
     }
 
 
@@ -82,6 +106,10 @@ public class Camera : TransformEntity
     {
         if (!IsInputEnabled)
             return;
+        
+        // TODO: Project the Front/Right vectors onto the XZ plane while keeping their magnitude and use those for movement.
+        // TODO: Use world up/down instead of camera up/down for vertical movement.
+        // TODO: Possibly use the Transform.forward property.
         
         if (Input.KeyboardState.IsKeyDown(Keys.W))
         {
@@ -92,18 +120,22 @@ public class Camera : TransformEntity
         {
             Transform.Position -= Front * _cameraFlySpeed * (float)time; // Backwards
         }
+        
         if (Input.KeyboardState.IsKeyDown(Keys.A))
         {
             Transform.Position -= Right * _cameraFlySpeed * (float)time; // Left
         }
+        
         if (Input.KeyboardState.IsKeyDown(Keys.D))
         {
             Transform.Position += Right * _cameraFlySpeed * (float)time; // Right
         }
+        
         if (Input.KeyboardState.IsKeyDown(Keys.Space))
         {
             Transform.Position += Up * _cameraFlySpeed * (float)time; // Up
         }
+        
         if (Input.KeyboardState.IsKeyDown(Keys.LeftShift))
         {
             Transform.Position -= Up * _cameraFlySpeed * (float)time; // Down
@@ -127,13 +159,53 @@ public class Camera : TransformEntity
 
             if (Input.KeyboardState.IsKeyDown(Keys.LeftControl))
             {
-                _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 0.5f;
-                _cameraFlySpeed = MathHelper.Clamp(_cameraFlySpeed, 0.1f, 10f);
+                // Apply fov
+                Fov -= Input.MouseState.ScrollDelta.Y;
             }
             else
             {
-                // Apply fov
-                Fov -= Input.MouseState.ScrollDelta.Y;
+                switch (_cameraFlySpeed)
+                {
+                    // Changing the fly speed should be accurate at the lower end, but fast when at the upper end.
+                    case <= 1f:
+                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 0.05f;
+                        break;
+                    case <= 5f:
+                    {
+                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 0.5f;
+
+                        if (_cameraFlySpeed < 1f)
+                        {
+                            _cameraFlySpeed = 0.95f;
+                        }
+
+                        break;
+                    }
+                    case <= 10f:
+                    {
+                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 1f;
+
+                        if (_cameraFlySpeed < 5f)
+                        {
+                            _cameraFlySpeed = 4.5f;
+                        }
+
+                        break;
+                    }
+                    default:
+                    {
+                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 5f;
+                    
+                        if (_cameraFlySpeed < 10f)
+                        {
+                            _cameraFlySpeed = 9f;
+                        }
+
+                        break;
+                    }
+                }
+
+                _cameraFlySpeed = MathHelper.Clamp(_cameraFlySpeed, 0.05f, 50f);
             }
         }
     }
@@ -142,13 +214,13 @@ public class Camera : TransformEntity
     // Get the view matrix using the amazing LookAt function.
     public Matrix4 GetViewMatrix()
     {
-        return Matrix4.LookAt(Transform.Position, Transform.Position + _front, Up);
+        return Matrix4.LookAt(Transform.Position, Transform.Position + _front, _up);
     }
 
     
     public Matrix4 GetProjectionMatrix()
     {
-        return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
+        return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000f);
     }
 
     
@@ -165,7 +237,23 @@ public class Camera : TransformEntity
 
         // Calculate both the right and the up vector using cross product.
         // We are calculating the right from the "global" up.
-        Right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
-        Up = Vector3.Normalize(Vector3.Cross(Right, _front));
+        _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
+        _up = Vector3.Normalize(Vector3.Cross(_right, _front));
+    }
+
+
+    public string GetFlySpeedFormatted()
+    {
+        if (_cameraFlySpeed <= 1f)
+        {
+            return $"{_cameraFlySpeed:F2}";
+        }
+
+        if (_cameraFlySpeed <= 5f)
+        {
+            return $"{_cameraFlySpeed:F1}";
+        }
+        
+        return $"{_cameraFlySpeed:F0}";
     }
 }
