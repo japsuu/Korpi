@@ -26,6 +26,9 @@ public static class Constants
     public const int CHUNK_SIZE_CUBED = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
     public const int CHUNK_SIZE_LOG2 = 5;
     public const int CHUNK_SIZE_LOG2_DOUBLED = 10;
+    
+    public const int CHUNK_SIZE_WITH_NEIGHBOUR_BORDER = CHUNK_SIZE + 2;
+    public const int CHUNK_SIZE_WITH_NEIGHBOUR_BORDER_CUBED = CHUNK_SIZE_WITH_NEIGHBOUR_BORDER * CHUNK_SIZE_WITH_NEIGHBOUR_BORDER * CHUNK_SIZE_WITH_NEIGHBOUR_BORDER;
         
     public const int CHUNK_COLUMN_HEIGHT = 16;
     public const int CHUNK_COLUMN_LOAD_RADIUS = 14;

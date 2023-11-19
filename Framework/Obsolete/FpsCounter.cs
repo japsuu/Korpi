@@ -1,5 +1,6 @@
-﻿namespace BlockEngine.Utils;
+﻿namespace BlockEngine.Framework.Obsolete;
 
+[Obsolete("Use the ImGui perf window instead")]
 public class FpsCounter
 {
     private const double UPDATE_INTERVAL = 0.2;

@@ -7,6 +7,13 @@ public static class ImGuiWindowManager
     private static readonly List<ImGuiWindow> RegisteredWindows = new();
     
     private static bool shouldRenderWindows = true;
+    
+    
+    public static void CreateDefaultWindows()
+    {
+        RenderingWindow unused1 = new();
+        MemoryProfilerWindow unused2 = new();
+    }
 
 
     public static void RegisterWindow(ImGuiWindow window)

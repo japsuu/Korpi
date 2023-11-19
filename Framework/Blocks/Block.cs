@@ -37,8 +37,23 @@ public class Block : IHasId
 
 public enum Orientation
 {
-    XPositive = 0,
-    XNegative = 1,
-    ZPositive = 2,
-    ZNegative = 3,
+    /// <summary>
+    /// X+ axis.
+    /// </summary>
+    North = 0,
+    
+    /// <summary>
+    /// X- axis.
+    /// </summary>
+    South = 1,
+    
+    /// <summary>
+    /// Z+ axis.
+    /// </summary>
+    East = 2,
+    
+    /// <summary>
+    /// Z- axis.
+    /// </summary>
+    West = 3,
 }

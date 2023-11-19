@@ -1,16 +1,21 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Framework.Meshing;
+using BlockEngine.Utils;
+using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Chunks;
 
 public class ChunkColumn
 {
-    private readonly World _world;
     private readonly Chunk?[] _chunks;
+
+    public readonly Vector2i Position;
+    
+    public bool IsMeshDirty;
         
         
-    public ChunkColumn(World world)
+    public ChunkColumn(Vector2i position)
     {
-        _world = world;
+        Position = position;
         _chunks = new Chunk[Constants.CHUNK_COLUMN_HEIGHT];
     }
         
@@ -24,12 +29,22 @@ public class ChunkColumn
         return _chunks[arrayIndex];
     }
         
+    
+    public Chunk? GetChunk(int i)
+    {
+        return _chunks[i];
+    }
+        
         
     public void Tick(double deltaTime)
     {
+        IsMeshDirty = false;
         foreach (Chunk? chunk in _chunks)
         {
             chunk?.Tick(deltaTime);
+            
+            if (chunk?.IsMeshDirty == true)
+                IsMeshDirty = true;
         }
     }
 

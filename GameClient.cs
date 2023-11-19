@@ -103,7 +103,6 @@ public class GameClient : GameWindow
     private int _skyboxVAO;
     private int _skyboxVBO;
     
-    private double _timeSinceStartup;
     private const float TEST_CUBE_ROTATION_SPEED = 30;
 
     private Camera _camera = null!;
@@ -218,8 +217,8 @@ public class GameClient : GameWindow
         _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
         CursorState = CursorState.Grabbed;
         
-        MemoryProfilerWindow memoryProfilerWindow = new();
-        
+        ImGuiWindowManager.CreateDefaultWindows();
+
         Logger.Log("Started.");
         ClientLoad?.Invoke();
     }
@@ -239,7 +238,7 @@ public class GameClient : GameWindow
     {
         base.OnUpdateFrame(args);
         
-        _timeSinceStartup += args.Time;
+        Time.Update(args.Time);
         
         Input.Update(KeyboardState, MouseState);
 
@@ -316,7 +315,7 @@ public class GameClient : GameWindow
         cameraViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
         if (rotateOverTime)
         {
-            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
+            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * Time.TotalTime));
             _skyboxShader.SetMatrix4("view", modelMatrix * cameraViewMatrix);
         }
         else
