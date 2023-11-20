@@ -37,6 +37,24 @@
             Console.ForegroundColor = originalColor;
         }
 
+        
+        public static void Debug(string message)
+        {
+            ConsoleColor originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            WriteLine($"DEBUG: {message}");
+            Console.ForegroundColor = originalColor;
+        }
+
+        
+        public static void Debug(object message)
+        {
+            ConsoleColor originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            WriteLine($"DEBUG: {message}");
+            Console.ForegroundColor = originalColor;
+        }
+
 
         private static void WriteLine(string message)
         {

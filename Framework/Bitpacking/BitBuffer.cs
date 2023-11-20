@@ -46,7 +46,11 @@ public unsafe class BitBuffer
     {
         if (bitLength <= 0 || bitIndex < 0 || bitIndex + bitLength > SizeInBits)
         {
-            throw new ArgumentOutOfRangeException();
+            if (bitIndex + bitLength > SizeInBits)
+                throw new ArgumentOutOfRangeException(nameof(bitLength), 
+                    $"Tried to read bits {bitIndex} to {bitIndex + bitLength}, while the buffer is only {SizeInBits} bits long");
+            
+            throw new ArgumentOutOfRangeException(nameof(bitIndex), "Tried to read bits with an invalid index");
         }
 
         int byteIndex = bitIndex / 8;

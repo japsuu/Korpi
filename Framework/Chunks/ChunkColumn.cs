@@ -1,4 +1,5 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Chunks;
@@ -24,6 +25,8 @@ public class ChunkColumn
     
     public Chunk? GetChunkAtHeight(int y)
     {
+        if (y < 0 || y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
+            return null;
         int arrayIndex = y / Constants.CHUNK_SIZE;
         return _chunks[arrayIndex];
     }
@@ -50,6 +53,14 @@ public class ChunkColumn
 
     public void Load()
     {
+        // Generate test data
+        for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
+        {
+            Chunk chunk = new Chunk();
+            chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.Stone.GetDefaultState());
+            chunk.SetBlockState(new Vector3i(Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1), BlockRegistry.Stone.GetDefaultState());
+            _chunks[i] = chunk;
+        }
     }
         
         

@@ -1,3 +1,5 @@
+using BlockEngine.Framework.Meshing;
+
 namespace BlockEngine.Framework.Blocks;
 
 /// <summary>
@@ -25,7 +27,7 @@ public struct BlockState
     /// 6 most significant bits are flags for each neighbor, in the order of: +x, -x, +y, -y, +z, -z.
     /// 2 least significant bits are rotation data.
     /// </summary>
-    public byte MeshCache { get; private set; }
+    public byte NeighbourMask { get; private set; }
 
 
     public BlockState(Block block)
@@ -33,7 +35,7 @@ public struct BlockState
         Block = block;
         Visibility = block.Visibility;
         Data = 0b00000000;
-        MeshCache = 0b00000000;
+        NeighbourMask = 0b00000000;
     }
     
     
@@ -43,36 +45,39 @@ public struct BlockState
     }
     
     
-    public void UpdateNeighborBits(Orientation orientation, bool isNeighbor)
+    /// <summary>
+    /// Sets the bit for the given neighbor in the internal bitmask.
+    /// </summary>
+    /// <param name="normal">Direction of the neighbour</param>
+    /// <param name="hasNeighbor">If neighbour exists</param>
+    public void UpdateNeighborMask(BlockFaceNormal normal, bool hasNeighbor)
     {
-        byte mask = (byte) (1 << (int) orientation);
-        if (isNeighbor)
-        {
-            MeshCache |= mask;
-        }
+        // Update the correct bit in the mask. Remember that the 2 least significant bits are rotation data.
+        byte mask = (byte) (1 << (int) normal);
+        if (hasNeighbor)
+            NeighbourMask |= mask;
         else
-        {
-            MeshCache &= (byte) ~mask;
-        }
+            NeighbourMask &= (byte)~mask;
     }
     
     
     public void UpdateRotationBits(Orientation orientation)
     {
-        MeshCache &= 0b11111100;
-        MeshCache |= (byte) (orientation + 1);
+        NeighbourMask &= 0b11111100;
+        NeighbourMask |= (byte) (orientation + 1);
     }
     
     
-    public bool HasNeighbor(Orientation orientation)
+    public bool HasNeighbor(BlockFaceNormal orientation)
     {
+        // Return the correct bit in the mask. Remember that the 2 least significant bits are rotation data.
         byte mask = (byte) (1 << (int) orientation);
-        return (MeshCache & mask) != 0;
+        return (NeighbourMask & mask) != 0;
     }
     
     
     public Orientation GetRotation()
     {
-        return (Orientation) (MeshCache & 0b00000011);
+        return (Orientation) (NeighbourMask & 0b00000011);
     }
 }

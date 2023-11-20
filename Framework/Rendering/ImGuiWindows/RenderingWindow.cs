@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using BlockEngine.Framework.Meshing;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
 
@@ -20,10 +21,10 @@ public class RenderingWindow : ImGuiWindow
         }
         
         
-        public static void StopMeshing()
+        public static void StopMeshing(int chunksMeshed)
         {
             MeshingTimer.Stop();
-            MeshingTime = MeshingTimer.ElapsedMilliseconds;
+            MeshingTime = MeshingTimer.ElapsedMilliseconds / (float)chunksMeshed;
         }
     }
     
@@ -44,6 +45,7 @@ public class RenderingWindow : ImGuiWindow
             GL.PolygonMode(MaterialFace.FrontAndBack, _isWireframeEnabled ? PolygonMode.Line : PolygonMode.Fill);
         }
         
+        ImGui.Text($"Cached chunk meshes = {ChunkMeshStorage.GeneratedMeshCount}");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");
         ImGui.Text($"Meshing time = {RenderingStats.MeshingTime:F1}ms");
     }

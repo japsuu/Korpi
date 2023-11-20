@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Utils;
 
 namespace BlockEngine.Framework.Bitpacking;
 
@@ -55,6 +56,8 @@ public class BlockPalette
 
     public void SetBlock(int index, BlockState block)
     {
+        if (index < 0 || index >= _size)
+            throw new ArgumentOutOfRangeException(nameof(index), "Tried to set blocks outside of a palette");
         int currentPaletteIndex = _data.Get(index * _indicesLength, _indicesLength);
         PaletteEntry current = _palette[currentPaletteIndex];
     

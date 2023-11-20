@@ -9,7 +9,7 @@ namespace BlockEngine.Framework.Meshing;
 
 public class ChunkMesher
 {
-    private const int MAX_CHUNKS_MESHED_PER_FRAME = 1;
+    private const int MAX_CHUNKS_MESHED_PER_FRAME = 16;
 
     private readonly ChunkManager _chunkManager;
     
@@ -25,6 +25,17 @@ public class ChunkMesher
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
     private readonly MeshingDataCache _meshingDataCache = new(Constants.CHUNK_SIZE);
+    private readonly MeshingBuffer _meshingBuffer = new(Constants.CHUNK_SIZE, true);
+    
+    private static readonly Vector3i[] NeighbourOffsets =
+    {
+        new(1, 0, 0),
+        new(-1, 0, 0),
+        new(0, 1, 0),
+        new(0, -1, 0),
+        new(0, 0, 1),
+        new(0, 0, -1),
+    };
 
 
     public ChunkMesher(ChunkManager chunkManager)
@@ -50,7 +61,7 @@ public class ChunkMesher
             chunksMeshed++;
         }
         
-        RenderingWindow.RenderingStats.StopMeshing();
+        RenderingWindow.RenderingStats.StopMeshing(chunksMeshed);
     }
 
 
@@ -58,25 +69,87 @@ public class ChunkMesher
     {
         if (_queuedChunks.Contains(chunkOriginPos))
             return;
+
+        if (ChunkMeshStorage.ContainsMesh(chunkOriginPos))
+        {
+            Logger.LogWarning($"Tried to mesh chunk at {chunkOriginPos} that is already meshed!");
+        }
         
         float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
         _chunkMeshingQueue.Enqueue(chunkOriginPos, distanceToCamera);
         _queuedChunks.Add(chunkOriginPos);
     }
+    
+    
+    public void DeleteChunkMesh(Vector3i chunkOriginPos)
+    {
+        ChunkMeshStorage.RemoveMesh(chunkOriginPos);
+    }
 
 
     private ChunkMesh GenerateMesh(Vector3i chunkOriginPos)
     {
-        if (!_chunkManager.FillMeshingArray(chunkOriginPos, _meshingDataCache))
+        if (!_chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache, out Chunk? chunk))
         {
             // Not actually an issue, but leave this here for now...
             Logger.LogWarning($"Tried to mesh non-loaded chunk at {chunkOriginPos}!");
         }
         
-        // Mesh the chunk based on the data cache.
-        return null;
+        _meshingBuffer.Clear();
+        
+        // Mesh the chunk based on the data cache, using _meshingBuffer.AddFace(blockPos, faceNormal, textureIndex, lighting) to add faces to the buffer.
+        // Exploit the meshing cache's spatial locality by iterating over the blocks in the order they are stored in the cache.
+        for (int z = 1; z <= Constants.CHUNK_SIZE; z++)     // Start at 1 on all axis to skip the border.
+        {
+            for (int y = 1; y <= Constants.CHUNK_SIZE; y++)
+            {
+                for (int x = 1; x <= Constants.CHUNK_SIZE; x++)
+                {
+                    Vector3i blockPos = new(x, y, z);
+                    BlockState blockState = _meshingDataCache.GetData(x, y, z);
+                    
+                    // If the block is invisible, skip it
+                    if (blockState.Visibility == BlockVisibility.Empty)
+                        continue;
+                    
+                    // Iterate over all 6 faces of the block
+                    for (int face = 0; face < 6; face++)
+                    {
+                        // If the face is not visible, skip it
+                        // if (!blockState.Block.IsFaceVisible(blockState, (BlockFaceNormal)face))
+                        //     continue;
+                        
+                        // If the face is not opaque, skip it
+                        // if (!blockState.Block.IsFaceOpaque(blockState, (BlockFaceNormal)face))
+                        //     continue;
+
+                        Vector3i neighbourOffset = NeighbourOffsets[face];
+                        BlockState neighbour = _meshingDataCache.GetData(x + neighbourOffset.X, y + neighbourOffset.Y, z + neighbourOffset.Z);
+
+                        // If the neighbour is empty or transparent, we need to mesh this face.
+                        // If the neighbour is opaque, skip this face
+                        if (neighbour.Block.Visibility == BlockVisibility.Opaque)
+                            continue;
+
+                        // Get the texture index of the block face
+                        ushort textureIndex = GetBlockTextureIndex(blockState.Block, (BlockFaceNormal)face);
+                        
+                        // Get the lighting of the block face
+                        const int lighting = 0;
+                        
+                        // Add the face to the meshing buffer
+                        _meshingBuffer.AddFace(blockPos, (BlockFaceNormal)face, textureIndex, lighting);
+                    }
+                }
+            }
+        }
+        
+        chunk!.IsMeshDirty = false;
+        chunk.IsMeshed = true;
+
+        return _meshingBuffer.CreateMesh(chunkOriginPos);
     }
     
     
-    private static ushort GetBlockTextureIndex(Block block, Orientation normal) => 0;
+    private static ushort GetBlockTextureIndex(Block block, BlockFaceNormal normal) => 0;
 }

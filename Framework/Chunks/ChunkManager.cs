@@ -100,11 +100,12 @@ public class ChunkManager
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
                 Chunk? chunk = column.GetChunk(i);
-                if (chunk?.IsMeshDirty == false)
+                if (chunk == null || !(chunk.IsMeshDirty && chunk.IsMeshed))
                     continue;
 
                 Vector3i chunkPos = new(column.Position.X, i * Constants.CHUNK_SIZE, column.Position.Y);
                 _chunkMesher.EnqueueChunkForMeshing(chunkPos, cameraPos);
+                // Logger.Debug($"Enqueued chunk at {chunkPos} for meshing, as it was dirty.");
             }
         }
         
@@ -118,12 +119,13 @@ public class ChunkManager
     /// </summary>
     /// <param name="chunkOriginPos">Position of the center chunk</param>
     /// <param name="cache">Array to fill with BlockState data</param>
+    /// <param name="centerChunk">The chunk that is in the center of the cache</param>
     /// <returns>If the center chunk has been generated.</returns>
-    public bool FillMeshingArray(Vector3i chunkOriginPos, MeshingDataCache cache)
+    public bool FillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache, out Chunk? centerChunk)
     {
         Array.Fill(cache.Data, BlockRegistry.Air.GetDefaultState());
         
-        Chunk? centerChunk = GetChunkAt(chunkOriginPos);
+        centerChunk = GetChunkAt(chunkOriginPos);
 
         if (centerChunk == null)
             return false;
@@ -159,9 +161,10 @@ public class ChunkManager
             if (chunk == null)
                 continue;
 
-            Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y);
-                _chunkMesher.EnqueueChunkForMeshing(chunkPos, cameraPos);
+            Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y); 
+            _chunkMesher.EnqueueChunkForMeshing(chunkPos, cameraPos);
         }
+        Logger.Debug($"Enqueued column at {column.Position} for full meshing.");
     }
 
 
@@ -187,9 +190,18 @@ public class ChunkManager
     {
         foreach (Vector2i columnPos in _columnsToUnload)
         {
+            ChunkColumn column = _loadedColumns[columnPos];
             _loadedColumns[columnPos].Unload();
             _loadedColumns.Remove(columnPos);
-            // TODO: Remove meshes from ChunkMeshStorage.
+            for (int y = 0; y < Constants.CHUNK_COLUMN_HEIGHT; y++)
+            {
+                Chunk? chunk = column.GetChunk(y);
+                if (chunk == null)
+                    continue;
+
+                Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y);
+                _chunkMesher.DeleteChunkMesh(chunkPos);
+            }
             // TODO: Check if this chunk was queued for meshing, and remove it from the queue.
 
             // Logger.Log($"Unloaded chunk column at {columnPos}.");

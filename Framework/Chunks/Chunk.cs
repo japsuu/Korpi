@@ -8,15 +8,10 @@ namespace BlockEngine.Framework.Chunks;
 
 public class Chunk
 {
-    private readonly BlockPalette _blocks;
+    private readonly BlockPalette _blocks = new BlockPalette(Constants.CHUNK_SIZE_CUBED);
 
     public bool IsMeshDirty;
-
-
-    public Chunk(BlockPalette data)
-    {
-        _blocks = data;
-    }
+    public bool IsMeshed;
 
 
     /// <summary>

@@ -27,6 +27,14 @@ public class MeshingDataCache
     }
     
     
+    /// <summary>
+    /// If accessing multiple blocks, loop in the order of z, y, x.
+    /// This minimizes cache trashing.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <returns></returns>
     public BlockState GetData(int x, int y, int z)
     {
         return Data[GetIndex(x, y, z)];
@@ -35,6 +43,7 @@ public class MeshingDataCache
     
     private int GetIndex(int x, int y, int z)
     {
+        // Calculate the index in a way that minimizes cache trashing.
         return x + Size * (y + Size * z);
     }
 }
