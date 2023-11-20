@@ -2,6 +2,9 @@
 
 namespace BlockEngine.Framework.Meshing;
 
+/// <summary>
+/// Used to store and dynamically fetch chunk meshes.
+/// </summary>
 public static class ChunkMeshStorage
 {
     private static readonly Dictionary<Vector3i, ChunkMesh> _generatedMeshes = new();

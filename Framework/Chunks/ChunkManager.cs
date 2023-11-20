@@ -129,7 +129,7 @@ public class ChunkManager
             return false;
 
         // Copy the block data of the center chunk
-        centerChunk.CacheAsCenter(cache);
+        centerChunk.CacheMeshingData(cache);
 
         // Copy the block data of the chunks surrounding the center chunk, but call GetChunk only once for each neighbouring chunk
         for (int i = 0; i < _precomputedNeighbouringChunkOffsets.Length; i++)
@@ -144,7 +144,7 @@ public class ChunkManager
             NeighbouringChunkPosition position = NeighbouringChunkPositions[i];
 
             // Copy the slice of block data from the neighbour chunk
-            neighbourChunk.CacheAsNeighbour(cache, position);
+            neighbourChunk.CacheMeshingData(cache, position);
         }
         
         return true;

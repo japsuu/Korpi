@@ -80,17 +80,3 @@ public class ChunkMesher
     
     private static ushort GetBlockTextureIndex(Block block, Orientation normal) => 0;
 }
-
-
-/// <summary>
-/// Represents the mesh of a single chunk.
-/// Contains:
-/// - The vertex data.
-/// - The chunk position.
-/// - The VAO.
-/// - The VBO.
-/// </summary>
-public class ChunkMesh
-{
-    
-}

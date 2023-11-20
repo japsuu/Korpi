@@ -34,6 +34,8 @@ public class Chunk
         // In other words, if the width and height of the 3D array are both 2^N, then "W" and "H" would be equal to "N."
         int index = (position.Z << Constants.CHUNK_SIZE_LOG2_DOUBLED) + (position.Y << Constants.CHUNK_SIZE_LOG2) + position.X;
         _blocks.SetBlock(index, block);
+        IsMeshDirty = true;
+        //TODO: If border block, dirty neighbouring chunk(s) too.
     }
 
 
@@ -63,7 +65,7 @@ public class Chunk
     ///       for x in range:
     ///          block = BlockMap[x, y, z]
     /// </summary>
-    public BlockState GetBlockState(int x, int y, int z)
+    private BlockState GetBlockState(int x, int y, int z)
     {
         // Use (z << (W + H)) + (y << W) + x to index into a 3D array stored as a 1D array.
         // So, in this formula, "W" and "H" are the logarithms (base 2) of the dimensions of the array in the x and y directions, respectively.
@@ -78,7 +80,7 @@ public class Chunk
     }
 
 
-    public void CacheAsCenter(MeshingDataCache meshingDataCache)
+    public void CacheMeshingData(MeshingDataCache meshingDataCache)
     {
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         {
@@ -100,10 +102,10 @@ public class Chunk
     /// Alternative method would be to query the World.GetBlockData method for each block in the cache, but this would result in cache misses.
     /// </summary>
     /// <param name="cache">Cache to fill with data</param>
-    /// <param name="position">Position of this chunk relative to the requesting chunk</param>
-    public void CacheAsNeighbour(MeshingDataCache cache, NeighbouringChunkPosition position)
+    /// <param name="myPosition">Position of this chunk relative to the requesting chunk</param>
+    public void CacheMeshingData(MeshingDataCache cache, NeighbouringChunkPosition myPosition)
     {
-        switch (position)
+        switch (myPosition)
         {
             // Corners
             case NeighbouringChunkPosition.CornerNorthEastUp:
@@ -261,7 +263,7 @@ public class Chunk
                 }
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(position), position, null);
+                throw new ArgumentOutOfRangeException(nameof(myPosition), myPosition, null);
         }
     }
 }
