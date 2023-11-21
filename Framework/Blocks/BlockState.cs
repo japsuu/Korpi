@@ -1,4 +1,5 @@
 using BlockEngine.Framework.Meshing;
+using BlockEngine.Utils;
 
 namespace BlockEngine.Framework.Blocks;
 
@@ -34,6 +35,7 @@ public struct BlockState
     {
         Block = block;
         Visibility = block.Visibility;
+        Logger.Debug($"Create new state with visibility {Visibility}", 1000);
         Data = 0b00000000;
         NeighbourMask = 0b00000000;
     }

@@ -20,8 +20,7 @@ public class Shader : IDisposable
 
         if (!TryCompileShader(vertexShader, fragmentShader))
         {
-            Logger.LogError($"Could not compile the shader at vert: '{vertexPath}' and frag: '{fragmentPath}'.");
-            return;
+            throw new Exception($"Could not compile the shader at vert: '{vertexPath}' and frag: '{fragmentPath}'.");
         }
         
         CreateAndLinkProgram(vertexShader, fragmentShader);
@@ -164,6 +163,7 @@ public class Shader : IDisposable
 
     private static bool TryCompileShader(int vertexShader, int fragmentShader)
     {
+        bool wasSuccessful = true;
         GL.CompileShader(vertexShader);
 
         GL.GetShader(vertexShader, ShaderParameter.CompileStatus, out int success);
@@ -171,6 +171,7 @@ public class Shader : IDisposable
         {
             string infoLog = GL.GetShaderInfoLog(vertexShader);
             Logger.LogError($"Could not compile vertex shader: {infoLog}.");
+            wasSuccessful = false;
         }
 
         GL.CompileShader(fragmentShader);
@@ -180,9 +181,10 @@ public class Shader : IDisposable
         {
             string infoLog = GL.GetShaderInfoLog(fragmentShader);
             Logger.LogError($"Could not compile fragment shader: {infoLog}.");
+            wasSuccessful = false;
         }
         
-        return success != 0;
+        return wasSuccessful;
     }
 
 

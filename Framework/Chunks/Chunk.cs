@@ -42,31 +42,15 @@ public class Chunk
     ///       for x in range:
     ///          block = BlockMap[x, y, z]
     /// </summary>
-    public BlockState GetBlockState(Vector3i position)
-    {
-        // Use (z << (W + H)) + (y << W) + x to index into a 3D array stored as a 1D array.
-        // So, in this formula, "W" and "H" are the logarithms (base 2) of the dimensions of the array in the x and y directions, respectively.
-        // In other words, if the width and height of the 3D array are both 2^N, then "W" and "H" would be equal to "N."
-        int index = (position.Z << Constants.CHUNK_SIZE_LOG2_DOUBLED) + (position.Y << Constants.CHUNK_SIZE_LOG2) + position.X;
-        return _blocks.GetBlock(index);
-    }
-
-
-    /// <summary>
-    /// Indexes to the block at the given position.
-    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
-    /// for z in range:
-    ///    for y in range:
-    ///       for x in range:
-    ///          block = BlockMap[x, y, z]
-    /// </summary>
     private BlockState GetBlockState(int x, int y, int z)
     {
+        // return BlockRegistry.Stone.GetDefaultState();   //WARN: Testing only
         // Use (z << (W + H)) + (y << W) + x to index into a 3D array stored as a 1D array.
         // So, in this formula, "W" and "H" are the logarithms (base 2) of the dimensions of the array in the x and y directions, respectively.
         // In other words, if the width and height of the 3D array are both 2^N, then "W" and "H" would be equal to "N."
         int index = (z << Constants.CHUNK_SIZE_LOG2_DOUBLED) + (y << Constants.CHUNK_SIZE_LOG2) + x;
-        return _blocks.GetBlock(index);
+        BlockState? state = _blocks.GetBlock(index);
+        return state ?? BlockRegistry.Air.GetDefaultState();
     }
 
 
@@ -76,15 +60,16 @@ public class Chunk
 
 
     public void CacheMeshingData(MeshingDataCache meshingDataCache)
-    {
+    {   // TODO: Optimize with block copy.
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         {
             for (int y = 0; y < Constants.CHUNK_SIZE; y++)
             {
                 for (int x = 0; x < Constants.CHUNK_SIZE; x++)
                 {
+                    BlockState state = GetBlockState(x, y, z);
                     // Offset by one block in each direction to account for the border
-                    meshingDataCache.SetData(x + 1, y + 1, z + 1, GetBlockState(x, y, z));
+                    meshingDataCache.SetData(x + 1, y + 1, z + 1, state);
                 }
             }
         }

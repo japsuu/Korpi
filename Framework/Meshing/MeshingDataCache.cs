@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Utils;
 
 namespace BlockEngine.Framework.Meshing;
 
@@ -37,10 +38,11 @@ public class MeshingDataCache
     /// <returns></returns>
     public BlockState GetData(int x, int y, int z)
     {
-        return Data[GetIndex(x, y, z)];
+        int index = GetIndex(x, y, z);
+        return Data[index];
     }
-    
-    
+
+
     private int GetIndex(int x, int y, int z)
     {
         // Calculate the index in a way that minimizes cache trashing.

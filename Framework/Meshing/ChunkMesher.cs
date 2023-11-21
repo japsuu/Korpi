@@ -9,7 +9,7 @@ namespace BlockEngine.Framework.Meshing;
 
 public class ChunkMesher
 {
-    private const int MAX_CHUNKS_MESHED_PER_FRAME = 16;
+    private const int MAX_CHUNKS_MESHED_PER_FRAME = 2;
 
     private readonly ChunkManager _chunkManager;
     
@@ -65,6 +65,20 @@ public class ChunkMesher
     }
 
 
+    public void EnqueueChunkForInitialMeshing(Vector3i chunkOriginPos, Vector3 cameraPos)
+    {
+        if (_queuedChunks.Contains(chunkOriginPos))
+            throw new InvalidOperationException($"Tried to mesh chunk at {chunkOriginPos} that is already queued!");
+
+        if (ChunkMeshStorage.ContainsMesh(chunkOriginPos))
+            throw new InvalidOperationException($"Tried to mesh chunk at {chunkOriginPos} that is already meshed!");
+
+        float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
+        _chunkMeshingQueue.Enqueue(chunkOriginPos, distanceToCamera);
+        _queuedChunks.Add(chunkOriginPos);
+    }
+
+
     public void EnqueueChunkForMeshing(Vector3i chunkOriginPos, Vector3 cameraPos)
     {
         if (_queuedChunks.Contains(chunkOriginPos))
@@ -72,7 +86,8 @@ public class ChunkMesher
 
         if (ChunkMeshStorage.ContainsMesh(chunkOriginPos))
         {
-            Logger.LogWarning($"Tried to mesh chunk at {chunkOriginPos} that is already meshed!");
+            Logger.LogWarning($"Trashing the mesh of chunk at {chunkOriginPos}!");
+            DeleteChunkMesh(chunkOriginPos);
         }
         
         float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
@@ -105,7 +120,6 @@ public class ChunkMesher
             {
                 for (int x = 1; x <= Constants.CHUNK_SIZE; x++)
                 {
-                    Vector3i blockPos = new(x, y, z);
                     BlockState blockState = _meshingDataCache.GetData(x, y, z);
                     
                     // If the block is invisible, skip it
@@ -124,10 +138,13 @@ public class ChunkMesher
                         //     continue;
 
                         Vector3i neighbourOffset = NeighbourOffsets[face];
-                        BlockState neighbour = _meshingDataCache.GetData(x + neighbourOffset.X, y + neighbourOffset.Y, z + neighbourOffset.Z);
+                        int neighbourX = x + neighbourOffset.X;
+                        int neighbourY = y + neighbourOffset.Y;
+                        int neighbourZ = z + neighbourOffset.Z;
+                        BlockState neighbour = _meshingDataCache.GetData(neighbourX, neighbourY, neighbourZ);
 
+                        // If the neighbour is opaque, skip this face.
                         // If the neighbour is empty or transparent, we need to mesh this face.
-                        // If the neighbour is opaque, skip this face
                         if (neighbour.Block.Visibility == BlockVisibility.Opaque)
                             continue;
 
@@ -135,10 +152,13 @@ public class ChunkMesher
                         ushort textureIndex = GetBlockTextureIndex(blockState.Block, (BlockFaceNormal)face);
                         
                         // Get the lighting of the block face
-                        const int lighting = 0;
+                        const int lightLevel = Constants.MAX_LIGHT_LEVEL;
+                        const int skyLightLevel = Constants.MAX_LIGHT_LEVEL;
+                        Color9 lightColor = Color9.White;
                         
                         // Add the face to the meshing buffer
-                        _meshingBuffer.AddFace(blockPos, (BlockFaceNormal)face, textureIndex, lighting);
+                        Vector3i blockPos = new(x - 1, y - 1, z - 1);
+                        _meshingBuffer.AddFace(blockPos, (BlockFaceNormal)face, textureIndex, lightColor, lightLevel, skyLightLevel);
                     }
                 }
             }

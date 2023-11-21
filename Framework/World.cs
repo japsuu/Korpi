@@ -27,6 +27,12 @@ public class World
         _chunkManager.Tick(cameraPos, time);
         _entityManager.Update(time);
     }
+    
+    
+    public void DrawChunks(Vector3 cameraPos)
+    {
+        _chunkManager.Draw(cameraPos);
+    }
 
 
     public override string ToString()

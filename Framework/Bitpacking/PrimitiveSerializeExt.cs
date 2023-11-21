@@ -23,9 +23,7 @@
 */
 
 
-using ChunkBenchmark.Utilities;
-
-namespace ChunkBenchmark.Bitpackers
+namespace BlockEngine.Framework.Bitpacking
 {
 	/// <summary>
 	/// Extension methods for writing bits to primitive buffers.

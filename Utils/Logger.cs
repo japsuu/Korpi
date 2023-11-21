@@ -5,6 +5,7 @@
         private const string LOG_PREFIX = $"[{Constants.ENGINE_NAME}]";
         
         public static bool EnableVerboseLogging = false;
+        private static int debugCounter = -1;
         
         
         public static void LogVerbose(string message)
@@ -53,6 +54,20 @@
             Console.ForegroundColor = ConsoleColor.Red;
             WriteLine($"DEBUG: {message}");
             Console.ForegroundColor = originalColor;
+        }
+
+        
+        public static void Debug(object message, int maxCount)
+        {
+            if (debugCounter == -1)
+                debugCounter = maxCount;
+            if (debugCounter <= 0)
+                return;
+            ConsoleColor originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            WriteLine($"DEBUG: {message}");
+            Console.ForegroundColor = originalColor;
+            debugCounter--;
         }
 
 

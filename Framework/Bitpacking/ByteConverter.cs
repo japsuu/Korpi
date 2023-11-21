@@ -26,7 +26,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace ChunkBenchmark.Utilities;
+namespace BlockEngine.Framework.Bitpacking;
 
 [StructLayout(LayoutKind.Explicit)]
 public struct ByteConverter

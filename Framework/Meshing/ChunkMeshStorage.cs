@@ -8,7 +8,7 @@ namespace BlockEngine.Framework.Meshing;
 /// </summary>
 public static class ChunkMeshStorage
 {
-    private static readonly Dictionary<Vector3i, ChunkMesh> _generatedMeshes = new();
+    private static readonly Dictionary<Vector3i, ChunkMesh> GeneratedMeshes = new();
 
 
     public static int GeneratedMeshCount { get; private set; }
@@ -16,27 +16,27 @@ public static class ChunkMeshStorage
     
     public static void AddMesh(Vector3i chunkPos, ChunkMesh mesh)
     {
-        Logger.Debug($"Adding generated mesh for chunk at {chunkPos}");
-        _generatedMeshes.Add(chunkPos, mesh);
+        // Logger.Debug($"Adding generated mesh for chunk at {chunkPos}");
+        GeneratedMeshes.Add(chunkPos, mesh);
         GeneratedMeshCount++;
     }
     
     
     public static void RemoveMesh(Vector3i chunkPos)
     {
-        _generatedMeshes.Remove(chunkPos);
+        GeneratedMeshes.Remove(chunkPos);
         GeneratedMeshCount--;
     }
     
     
-    public static ChunkMesh? GetMesh(Vector3i chunkPos)
+    public static bool TryGetMesh(Vector3i chunkPos, out ChunkMesh? mesh)
     {
-        return _generatedMeshes.TryGetValue(chunkPos, out ChunkMesh? mesh) ? mesh : null;
+        return GeneratedMeshes.TryGetValue(chunkPos, out mesh);
     }
     
     
     public static bool ContainsMesh(Vector3i chunkPos)
     {
-        return _generatedMeshes.ContainsKey(chunkPos);
+        return GeneratedMeshes.ContainsKey(chunkPos);
     }
 }

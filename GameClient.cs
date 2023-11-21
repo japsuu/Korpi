@@ -21,6 +21,7 @@ public class GameClient : GameWindow
     
     private ImGuiController _imGuiController = null!;
     private Shader _blockShader = null!;
+    private Shader _chunkShader = null!;
     private Shader _skyboxShader = null!;
     private Skybox _skyboxTexture = null!;
 
@@ -148,7 +149,7 @@ public class GameClient : GameWindow
     private int _skyboxVAO;
     private int _skyboxVBO;
     
-    private const float TEST_CUBE_ROTATION_SPEED = 30;
+    private const float SKYBOX_ROTATION_SPEED = 30;
 
     private Camera _camera = null!;
     
@@ -162,23 +163,6 @@ public class GameClient : GameWindow
             Size = (Settings.Client.WindowSettings.WindowWidth, Settings.Client.WindowSettings.WindowHeight),
             Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}"
         }) { }
-
-
-    public void SwitchCursorState()
-    {
-        if (CursorState == CursorState.Grabbed)
-        {
-            _camera.IsMouseFirstMove = true;
-            CursorState = CursorState.Normal;
-            _camera.IsInputEnabled = false;
-        }
-        else if (CursorState == CursorState.Normal)
-        {
-            _camera.IsMouseFirstMove = true;
-            CursorState = CursorState.Grabbed;
-            _camera.IsInputEnabled = true;
-        }
-    }
     
     
     protected override void OnLoad()
@@ -248,6 +232,9 @@ public class GameClient : GameWindow
         // Just like the VBO, this is global -> every function that uses a shader will modify this one until a new one is bound instead.
         _blockShader = new Shader(IoUtils.GetShaderPath("shader_blocks.vert"), IoUtils.GetShaderPath("shader_blocks.frag"));
         _blockShader.Use();
+        
+        _chunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk.vert"), IoUtils.GetShaderPath("shader_chunk.frag"));
+        _chunkShader.Use();
         
         // Load the skybox shader.
         _skyboxShader = new Shader(IoUtils.GetShaderPath("shader_skybox.vert"), IoUtils.GetShaderPath("shader_skybox.frag"));
@@ -343,6 +330,14 @@ public class GameClient : GameWindow
         // Draw.
         GL.DrawElements(PrimitiveType.Triangles, _testCubeIndices.Length, DrawElementsType.UnsignedInt, 0);
         GL.BindVertexArray(0);
+        
+        _chunkShader.Use();
+        
+        _chunkShader.SetMatrix4("model", modelMatrix);
+        _chunkShader.SetMatrix4("view", cameraViewMatrix);
+        _chunkShader.SetMatrix4("projection", cameraProjectionMatrix);
+
+        _world.DrawChunks(_camera.Transform.Position);
     }
 
 
@@ -356,7 +351,7 @@ public class GameClient : GameWindow
         cameraViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
         if (rotateOverTime)
         {
-            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * Time.TotalTime));
+            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(SKYBOX_ROTATION_SPEED * Time.TotalTime));
             _skyboxShader.SetMatrix4("view", modelMatrix * cameraViewMatrix);
         }
         else
@@ -409,5 +404,22 @@ public class GameClient : GameWindow
         base.OnMouseWheel(e);
             
         _imGuiController.MouseScroll(e.Offset);
+    }
+
+
+    private void SwitchCursorState()
+    {
+        if (CursorState == CursorState.Grabbed)
+        {
+            _camera.IsMouseFirstMove = true;
+            CursorState = CursorState.Normal;
+            _camera.IsInputEnabled = false;
+        }
+        else if (CursorState == CursorState.Normal)
+        {
+            _camera.IsMouseFirstMove = true;
+            CursorState = CursorState.Grabbed;
+            _camera.IsInputEnabled = true;
+        }
     }
 }

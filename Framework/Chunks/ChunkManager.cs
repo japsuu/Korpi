@@ -44,9 +44,7 @@ public class ChunkManager
         new (0, -1, 0)
     };
     
-    private static readonly NeighbouringChunkPosition[] NeighbouringChunkPositions = Enum.GetValues(typeof(NeighbouringChunkPosition))
-        .Cast<NeighbouringChunkPosition>()
-        .ToArray();
+    private static readonly NeighbouringChunkPosition[] NeighbouringChunkPositions = Enum.GetValues(typeof(NeighbouringChunkPosition)).Cast<NeighbouringChunkPosition>().ToArray();
     
     private readonly Vector3i[] _precomputedNeighbouringChunkOffsets = new Vector3i[26];
     private readonly Dictionary<Vector2i, ChunkColumn> _loadedColumns = new();
@@ -71,17 +69,6 @@ public class ChunkManager
     }
 
 
-    public BlockState GetBlockAt(Vector3i position)
-    {
-        Chunk? chunk = GetChunkAt(position);
-        if (chunk == null)
-            return BlockRegistry.Air.GetDefaultState();
-
-        Vector3i chunkRelativePosition = CoordinateConversions.GetChunkRelativePos(position);
-        return chunk.GetBlockState(chunkRelativePosition);
-    }
-
-
     public void Tick(Vector3 cameraPos, double deltaTime)
     {
         FindColumnsToUnload(cameraPos);
@@ -100,16 +87,43 @@ public class ChunkManager
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
                 Chunk? chunk = column.GetChunk(i);
-                if (chunk == null || !(chunk.IsMeshDirty && chunk.IsMeshed))
+                if (chunk == null)
                     continue;
-
+                
+                if (!chunk.IsMeshed)
+                    continue;
+                
+                if (!chunk.IsMeshDirty)
+                    continue;
+                
                 Vector3i chunkPos = new(column.Position.X, i * Constants.CHUNK_SIZE, column.Position.Y);
+
                 _chunkMesher.EnqueueChunkForMeshing(chunkPos, cameraPos);
                 // Logger.Debug($"Enqueued chunk at {chunkPos} for meshing, as it was dirty.");
             }
         }
         
         _chunkMesher.ProcessMeshingQueue();
+    }
+
+
+    public void Draw(Vector3 cameraPos)
+    {
+        foreach (ChunkColumn column in _loadedColumns.Values)
+        {
+            for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
+            {
+                Chunk? chunk = column.GetChunk(i);
+                if (chunk == null)
+                    continue;
+                
+                if (!chunk.IsMeshed)
+                    continue;
+                
+                Vector3i chunkPos = new(column.Position.X, i * Constants.CHUNK_SIZE, column.Position.Y);
+                DrawChunkAt(chunkPos);
+            }
+        }
     }
 
 
@@ -150,21 +164,6 @@ public class ChunkManager
         }
         
         return true;
-    }
-
-
-    private void EnqueueColumnForFullMeshing(ChunkColumn column, Vector3 cameraPos)
-    {
-        for (int y = 0; y < Constants.CHUNK_COLUMN_HEIGHT; y++)
-        {
-            Chunk? chunk = column.GetChunk(y);
-            if (chunk == null)
-                continue;
-
-            Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y); 
-            _chunkMesher.EnqueueChunkForMeshing(chunkPos, cameraPos);
-        }
-        Logger.Debug($"Enqueued column at {column.Position} for full meshing.");
     }
 
 
@@ -237,7 +236,7 @@ public class ChunkManager
         {
             ChunkColumn column = new(columnPos);
             column.Load();
-            EnqueueColumnForFullMeshing(column, cameraPos);
+            EnqueueColumnForInitialMeshing(column, cameraPos);
             _loadedColumns.Add(columnPos, column);
 
             // Logger.Log($"Loaded chunk column at {columnPos}.");
@@ -245,6 +244,21 @@ public class ChunkManager
 
         if (_columnsToLoad.Count > 0)
             Logger.Log($"Loaded {_columnsToLoad.Count} chunks.");
+    }
+
+
+    private void EnqueueColumnForInitialMeshing(ChunkColumn column, Vector3 cameraPos)
+    {
+        for (int y = 0; y < Constants.CHUNK_COLUMN_HEIGHT; y++)
+        {
+            Chunk? chunk = column.GetChunk(y);
+            if (chunk == null)
+                continue;
+
+            Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y); 
+            _chunkMesher.EnqueueChunkForInitialMeshing(chunkPos, cameraPos);
+        }
+        // Logger.Debug($"Enqueued column at {column.Position} for full meshing.");
     }
 
 
@@ -259,6 +273,13 @@ public class ChunkManager
         }
 
         return column.GetChunkAtHeight(position.Y);
+    }
+
+
+    private void DrawChunkAt(Vector3i position)
+    {
+        if (ChunkMeshStorage.TryGetMesh(position, out ChunkMesh? mesh))
+            mesh!.Draw();
     }
 
 

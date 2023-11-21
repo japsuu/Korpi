@@ -6,13 +6,13 @@ namespace BlockEngine.Framework.Bitpacking;
 public struct PaletteEntry
 {
     public int RefCount;
-    public BlockState Block;     // WARN: Changing the state / data of a block can have unintended consequences! Find out if it's better to store just the block's ID/type instead.
+    public BlockState? BlockState;     // WARN: Changing the state / data of a block can have unintended consequences! Find out if it's better to store just the block's ID/type instead.
 
 
-    public PaletteEntry(int refCount, BlockState block)
+    public PaletteEntry(int refCount, BlockState blockState)
     {
         RefCount = refCount;
-        Block = block;
+        BlockState = blockState;
     }
 }
 
@@ -48,8 +48,14 @@ public class BlockPalette
     public BlockPalette(int size)
     {
         _size = size;
+        // Initialize with some power of 2 value
+        _palette = new PaletteEntry[]
+        {
+            new(size, BlockRegistry.Air.GetDefaultState()),
+            new(0, BlockRegistry.Air.GetDefaultState()),
+        };
         _indicesLength = 1;
-        _palette = new PaletteEntry[2];   // Initialize with some power of 2 value
+        _paletteCount = 1;
         _data = new BitBuffer(size);    // The length is in bits, not bytes!
     }
 
@@ -59,15 +65,14 @@ public class BlockPalette
         if (index < 0 || index >= _size)
             throw new ArgumentOutOfRangeException(nameof(index), "Tried to set blocks outside of a palette");
         int currentPaletteIndex = _data.Get(index * _indicesLength, _indicesLength);
-        PaletteEntry current = _palette[currentPaletteIndex];
     
         // Reduce the refcount of the current block-type, as it will be overwritten.
-        current.RefCount -= 1;
+        _palette[currentPaletteIndex].RefCount -= 1;
     
         // See if we can use an existing palette entry.
         for(int existingPaletteIndex = 0; existingPaletteIndex < _paletteCount; existingPaletteIndex++)
         {
-            if (!_palette[existingPaletteIndex].Block.Equals(block))
+            if (!_palette[existingPaletteIndex].BlockState.Equals(block))
                 continue;
             
             // Use the existing palette entry and increase it's refcount.
@@ -77,11 +82,11 @@ public class BlockPalette
         }
     
         // See if we can overwrite the current palette entry?
-        if(current.RefCount <= 0)
+        if(_palette[currentPaletteIndex].RefCount <= 0)
         {
             // YES, we can!
-            current.Block = block;
-            current.RefCount = 1;
+            _palette[currentPaletteIndex].BlockState = block;
+            _palette[currentPaletteIndex].RefCount = 1;
             return;
         }
     
@@ -91,16 +96,19 @@ public class BlockPalette
         int newPaletteIndex = GetNextPaletteEntry();
     
         _palette[newPaletteIndex].RefCount = 1;
-        _palette[newPaletteIndex].Block = block;
+        _palette[newPaletteIndex].BlockState = block;
         _data.Set(index * _indicesLength, _indicesLength, newPaletteIndex);
         _paletteCount += 1;
     }
     
     
-    public BlockState GetBlock(int index)
+    public BlockState? GetBlock(int index)
     {
         int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
-        return _palette[paletteIndex].Block;
+        PaletteEntry entry = _palette[paletteIndex];
+        if (entry.RefCount <= 0)
+            throw new InvalidOperationException("Tried to get a block from an empty palette entry");
+        return entry.BlockState;
     }
 
 
@@ -109,9 +117,9 @@ public class BlockPalette
         while (true)
         {
             // See if we can use an existing palette entry.
-            for (int existingPaletteIndex = 0; existingPaletteIndex < _paletteCount; existingPaletteIndex++)
+            for (int existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
             {
-                if (_palette[existingPaletteIndex].RefCount <= 0)
+                if (_palette[existingPaletteIndex].RefCount <= 0 || _palette[existingPaletteIndex].BlockState == null)
                     return existingPaletteIndex;
             }
 
