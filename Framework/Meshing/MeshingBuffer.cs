@@ -94,7 +94,7 @@ public class MeshingBuffer
             default:
                 throw new ArgumentOutOfRangeException(nameof(faceNormal), faceNormal, "What face is THAT?!");
         }
-        Logger.Debug($"Add face at {blockPos} with normal {faceNormal}");
+        // Logger.Debug($"Add face at {blockPos} with normal {faceNormal}");
         AddVertex(vertPos1, normal, 0, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos2, normal, 1, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos3, normal, 2, textureIndex, lightColor, lightLevel, skyLightLevel);

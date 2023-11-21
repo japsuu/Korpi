@@ -47,7 +47,7 @@ public class ChunkMesh
         GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
         
         Logger.Debug($"Created chunk mesh with {vertices.Length} vertices and {indices.Length} indices.");
-        for (int i = 0; i < _vertices.Length; i++)
+        /*for (int i = 0; i < _vertices.Length; i++)
         {
             if (i % 2 == 0)
             {
@@ -62,7 +62,7 @@ public class ChunkMesh
         for (int i = 0; i < _indices.Length; i++)
         {
             Logger.Debug($"Index {i} = {_indices[i]}");
-        }
+        }*/
     }
 
 

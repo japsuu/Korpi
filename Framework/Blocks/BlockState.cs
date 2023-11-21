@@ -82,4 +82,39 @@ public struct BlockState
     {
         return (Orientation) (NeighbourMask & 0b00000011);
     }
+
+
+    public bool Equals(BlockState other)
+    {
+        return Block.Equals(other.Block) && Visibility == other.Visibility && Data == other.Data && NeighbourMask == other.NeighbourMask;
+    }
+
+
+    public override bool Equals(object? obj)
+    {
+        return obj is BlockState other && Equals(other);
+    }
+
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Block, (int)Visibility, Data, NeighbourMask);
+    }
+
+
+    private sealed class BlockStateEqualityComparer : IEqualityComparer<BlockState>
+    {
+        public bool Equals(BlockState x, BlockState y)
+        {
+            return x.Block.Equals(y.Block) && x.Visibility == y.Visibility && x.Data == y.Data && x.NeighbourMask == y.NeighbourMask;
+        }
+
+
+        public int GetHashCode(BlockState obj)
+        {
+            return HashCode.Combine(obj.Block, (int)obj.Visibility, obj.Data, obj.NeighbourMask);
+        }
+    }
+
+    public static IEqualityComparer<BlockState> BlockStateComparer { get; } = new BlockStateEqualityComparer();
 }

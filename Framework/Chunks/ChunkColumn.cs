@@ -61,7 +61,7 @@ public class ChunkColumn
         {
             Chunk chunk = new Chunk();
             chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.Stone.GetDefaultState());
-            // chunk.SetBlockState(new Vector3i(Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1), BlockRegistry.Stone.GetDefaultState());
+            chunk.SetBlockState(new Vector3i(Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1), BlockRegistry.Stone.GetDefaultState());
             _chunks[i] = chunk;
         }
     }

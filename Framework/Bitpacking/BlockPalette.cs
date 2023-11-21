@@ -51,12 +51,11 @@ public class BlockPalette
         // Initialize with some power of 2 value
         _palette = new PaletteEntry[]
         {
-            new(size, BlockRegistry.Air.GetDefaultState()),
-            new(0, BlockRegistry.Air.GetDefaultState()),
+            new(size, BlockRegistry.Air.GetDefaultState())
         };
         _indicesLength = 1;
-        _paletteCount = 1;
-        _data = new BitBuffer(size);    // The length is in bits, not bytes!
+        _paletteCount = 0;
+        _data = new BitBuffer(size * _indicesLength);    // The length is in bits, not bytes!
     }
 
 
@@ -64,18 +63,13 @@ public class BlockPalette
     {
         if (index < 0 || index >= _size)
             throw new ArgumentOutOfRangeException(nameof(index), "Tried to set blocks outside of a palette");
-        int currentPaletteIndex = _data.Get(index * _indicesLength, _indicesLength);
+        int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
     
         // Reduce the refcount of the current block-type, as it will be overwritten.
-        _palette[currentPaletteIndex].RefCount -= 1;
-
-        if (currentPaletteIndex != 0 && _palette[currentPaletteIndex].RefCount > 1)
-        {
-            Logger.Debug("What?");
-        }
+        _palette[paletteIndex].RefCount -= 1;
     
         // See if we can use an existing palette entry.
-        for(int existingPaletteIndex = 0; existingPaletteIndex < _paletteCount; existingPaletteIndex++)
+        for(int existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
         {
             if (!_palette[existingPaletteIndex].BlockState.Equals(block))
                 continue;
@@ -87,11 +81,11 @@ public class BlockPalette
         }
     
         // See if we can overwrite the current palette entry?
-        if(_palette[currentPaletteIndex].RefCount <= 0)
+        if(_palette[paletteIndex].RefCount <= 0)
         {
             // YES, we can!
-            _palette[currentPaletteIndex].BlockState = block;
-            _palette[currentPaletteIndex].RefCount = 1;
+            _palette[paletteIndex].BlockState = block;
+            _palette[paletteIndex].RefCount = 1;
             return;
         }
     
@@ -111,8 +105,8 @@ public class BlockPalette
     {
         int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
         PaletteEntry entry = _palette[paletteIndex];
-        if (entry.RefCount <= 0)
-            throw new InvalidOperationException("Tried to get a block from an empty palette entry");
+        //if (entry.RefCount <= 0)
+        //    throw new InvalidOperationException("Tried to get a block from an empty palette entry");
         return entry.BlockState;
     }
 

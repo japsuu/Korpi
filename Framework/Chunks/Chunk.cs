@@ -24,11 +24,14 @@ public class Chunk
     /// </summary>
     public void SetBlockState(Vector3i position, BlockState block)
     {
-        // Use (z << (W + H)) + (y << W) + x to index into a 3D array stored as a 1D array.
-        // So, in this formula, "W" and "H" are the logarithms (base 2) of the dimensions of the array in the x and y directions, respectively.
-        // In other words, if the width and height of the 3D array are both 2^N, then "W" and "H" would be equal to "N."
-        int index = (position.Z << Constants.CHUNK_SIZE_LOG2_DOUBLED) + (position.Y << Constants.CHUNK_SIZE_LOG2) + position.X;
-        _blocks.SetBlock(index, block);
+        if (block.Visibility == BlockVisibility.Opaque)
+        {
+            if (position != new Vector3i(0, 0, 0))
+            {
+                // Logger.Debug("MARIO TIMEWEWEWEWE");
+            }
+        }
+        _blocks.SetBlock(GetIndex(position.X, position.Y, position.Z), block);
         IsMeshDirty = true;
         //TODO: If border block, dirty neighbouring chunk(s) too.
     }
@@ -44,12 +47,22 @@ public class Chunk
     /// </summary>
     private BlockState GetBlockState(int x, int y, int z)
     {
-        // Use (z << (W + H)) + (y << W) + x to index into a 3D array stored as a 1D array.
-        // So, in this formula, "W" and "H" are the logarithms (base 2) of the dimensions of the array in the x and y directions, respectively.
-        // In other words, if the width and height of the 3D array are both 2^N, then "W" and "H" would be equal to "N."
-        int index = (z << Constants.CHUNK_SIZE_LOG2_DOUBLED) + (y << Constants.CHUNK_SIZE_LOG2) + x;
-        BlockState? state = _blocks.GetBlock(index);
+        BlockState? state = _blocks.GetBlock(GetIndex(x, y, z));
+        if (state != null && state.Value.Visibility == BlockVisibility.Opaque)
+        {
+            if (new Vector3i(x, y, z) != new Vector3i(0, 0, 0))
+            {
+                // Logger.Debug("MARIO TIMEWEWEWEWE");
+            }
+        }
         return state ?? BlockRegistry.Air.GetDefaultState();
+    }
+    
+    
+    private int GetIndex(int x, int y, int z)
+    {
+        // Calculate the index in a way that minimizes cache trashing.
+        return x + Constants.CHUNK_SIZE * (y + Constants.CHUNK_SIZE * z);
     }
 
 
