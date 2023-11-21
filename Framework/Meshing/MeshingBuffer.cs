@@ -21,9 +21,9 @@ public class MeshingBuffer
     private readonly uint[] _vertexData;
     private readonly uint[] _indices;
     
-    private int _addedVertexDataCount;
-    private int _addedVerticesCount;
-    private int _addedIndicesCount;
+    private uint _addedVertexDataCount;
+    private uint _addedIndicesCount;
+    private uint _addedFacesCount;
     
     
     public MeshingBuffer(int chunkSize, bool hasInternalFaceCulling)
@@ -61,29 +61,29 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 break;
-            case BlockFaceNormal.XNegative:
-                vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
-                vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
-                vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
-                vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
-                break;
             case BlockFaceNormal.YPositive:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 break;
-            case BlockFaceNormal.YNegative:
-                vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
-                vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
-                vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
-                vertPos4 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
-                break;
             case BlockFaceNormal.ZPositive:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
+                break;
+            case BlockFaceNormal.XNegative:
+                vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
+                vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
+                vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
+                vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
+                break;
+            case BlockFaceNormal.YNegative:
+                vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
+                vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
+                vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
+                vertPos4 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 break;
             case BlockFaceNormal.ZNegative:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
@@ -100,12 +100,13 @@ public class MeshingBuffer
         AddVertex(vertPos3, normal, 2, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos4, normal, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddIndices();
+        _addedFacesCount++;
     }
 
 
     private void AddVertex(Vector3i vertexPos, int normal, int textureUvIndex, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
     {
-        // PositionIndex    =   0-35936 per axis. Calculated with x + Size * (y + Size * z).    = 16 bits.  16 bits.
+        // PositionIndex    =   0-35936. Calculated with x + Size * (y + Size * z).             = 16 bits.  16 bits.
         // TextureIndex     =   0-4095.                                                         = 12 bits.  28 bits.
         // LightColor       =   0-511.                                                          = 9 bits.   37 bits.
         // LightLevel       =   0-31.                                                           = 5 bits.   42 bits.
@@ -114,6 +115,31 @@ public class MeshingBuffer
         // UVIndex          =   0-3. Could be calculated dynamically based on gl_VertexID.      = 2 bits.   52 bits.
         // 12 bits leftover.
         
+        //int positionIndex = vertexPos.X + Constants.CHUNK_VERTEX_MAX_POS * (vertexPos.Y + Constants.CHUNK_VERTEX_MAX_POS * vertexPos.Z);
+        int positionIndex = (vertexPos.X << 10) | (vertexPos.Y << 5) | vertexPos.Z;
+        int lightColorValue = lightColor.Value;
+
+        if (positionIndex < 0 || positionIndex > 35936)
+            throw new ArgumentOutOfRangeException(nameof(positionIndex), positionIndex, "Position index out of range");
+        
+        if (lightColorValue < 0 || lightColorValue > 511)
+            throw new ArgumentOutOfRangeException(nameof(lightColorValue), lightColorValue, "Light color value out of range");
+        
+        if (lightLevel < 0 || lightLevel > 31)
+            throw new ArgumentOutOfRangeException(nameof(lightLevel), lightLevel, "Light level out of range");
+        
+        if (skyLightLevel < 0 || skyLightLevel > 31)
+            throw new ArgumentOutOfRangeException(nameof(skyLightLevel), skyLightLevel, "Skylight level out of range");
+        
+        if (textureIndex < 0 || textureIndex > 4095)
+            throw new ArgumentOutOfRangeException(nameof(textureIndex), textureIndex, "Texture index out of range");
+        
+        if (normal < 0 || normal > 5)
+            throw new ArgumentOutOfRangeException(nameof(normal), normal, "Normal out of range");
+        
+        if (textureUvIndex < 0 || textureUvIndex > 3)
+            throw new ArgumentOutOfRangeException(nameof(textureUvIndex), textureUvIndex, "Texture UV index out of range");
+
         // NOTE: According to the OpenGL spec, vertex data should be 4-byte aligned. This means that since we cannot fit our vertex in 4 bytes, we use the full 8 bytes.
         // Compress all data to two 32-bit uints...
         uint data1 = 0b_00000000_00000000_00000000_00000000;
@@ -121,9 +147,8 @@ public class MeshingBuffer
         int bitIndex1 = 0;
         int bitIndex2 = 0;
         
-        int positionIndex = vertexPos.X + Constants.CHUNK_VERTEX_MAX_POS * (vertexPos.Y + Constants.CHUNK_VERTEX_MAX_POS * vertexPos.Z);
         positionIndex       .InjectUnsigned(ref data1, ref bitIndex1, 16);
-        lightColor.Value    .InjectUnsigned(ref data1, ref bitIndex1, 9);
+        lightColorValue     .InjectUnsigned(ref data1, ref bitIndex1, 9);
         lightLevel          .InjectUnsigned(ref data1, ref bitIndex1, 5);
         textureUvIndex      .InjectUnsigned(ref data1, ref bitIndex1, 2);
         textureIndex        .InjectUnsigned(ref data2, ref bitIndex2, 12);
@@ -132,14 +157,12 @@ public class MeshingBuffer
         _vertexData[_addedVertexDataCount] = data1;
         _vertexData[_addedVertexDataCount + 1] = data2;
         _addedVertexDataCount += 2;
-        _addedVerticesCount++;
     }
     
     
     private void AddIndices()
     {
-        Logger.Debug(nameof(AddIndices));
-        uint offset = 4 * (uint)_addedVerticesCount - 4;
+        uint offset = 4 * _addedFacesCount;
         _indices[_addedIndicesCount] = offset + 0;
         _indices[_addedIndicesCount + 1] = offset + 1;
         _indices[_addedIndicesCount + 2] = offset + 2;
@@ -167,7 +190,7 @@ public class MeshingBuffer
         Array.Clear(_vertexData, 0, _vertexData.Length);
         Array.Clear(_indices, 0, _indices.Length);
         _addedVertexDataCount = 0;
-        _addedVerticesCount = 0;
         _addedIndicesCount = 0;
+        _addedFacesCount = 0;
     }
 }

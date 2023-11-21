@@ -1,4 +1,5 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Framework.Rendering.Shaders;
+using BlockEngine.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -19,6 +20,7 @@ public class ChunkMesh
     private readonly int _meshVBO;
     private readonly int _meshEBO;
     private readonly int _meshVAO;
+    private readonly Matrix4 _modelMatrix;
 
     public readonly Vector3i ChunkPos;
 
@@ -28,6 +30,7 @@ public class ChunkMesh
         ChunkPos = chunkPos;
         _vertices = vertices;
         _indices = indices;
+        _modelMatrix = Matrix4.CreateTranslation(chunkPos);
         
         _meshVBO = GL.GenBuffer();
         _meshVAO = GL.GenVertexArray();
@@ -46,13 +49,27 @@ public class ChunkMesh
         Logger.Debug($"Created chunk mesh with {vertices.Length} vertices and {indices.Length} indices.");
         for (int i = 0; i < _vertices.Length; i++)
         {
-            Logger.Debug($"Vertex {i} = {_vertices[i]}");
+            if (i % 2 == 0)
+            {
+                uint positionIndex = _vertices[i] & 0xFFFF;
+                uint x = (positionIndex >> 10) & 0x1F;
+                uint y = (positionIndex >> 5) & 0x1F;
+                uint z = positionIndex & 0x1F;
+                Logger.Debug($"Vertex {i} = {_vertices[i]}\t({x}, {y}, {z})");
+            }
+        }
+
+        for (int i = 0; i < _indices.Length; i++)
+        {
+            Logger.Debug($"Index {i} = {_indices[i]}");
         }
     }
 
 
-    public void Draw()
+    public void Draw(Shader chunkShader)
     {
+        chunkShader.SetMatrix4("model", _modelMatrix);
+        
         // Bind the VAO.
         GL.BindVertexArray(_meshVAO);
         // Draw.

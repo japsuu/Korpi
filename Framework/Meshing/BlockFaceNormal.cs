@@ -3,9 +3,9 @@
 public enum BlockFaceNormal
 {
     XPositive = 0,
-    XNegative = 1,
-    YPositive = 2,
-    YNegative = 3,
-    ZPositive = 4,
+    YPositive = 1,
+    ZPositive = 2,
+    XNegative = 3,
+    YNegative = 4,
     ZNegative = 5
 }

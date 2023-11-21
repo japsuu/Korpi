@@ -21,9 +21,9 @@ void main()
     int skyLightLevel = (aData.y >> 12) & 0x1F;  // Extract bits 12-16
     int normal = (aData.y >> 17) & 0x7;          // Extract bits 17-19
     
-    int x = positionIndex % 33;
-    int y = (positionIndex / 33) % 33;
-    int z = positionIndex / 1089;
+    int x = (positionIndex >> 10) & 0x1F;
+    int y = (positionIndex >> 5) & 0x1F;
+    int z = positionIndex & 0x1F;
     vec3 position = vec3(x, y, z);
     
     // Define colors for each direction
@@ -38,13 +38,13 @@ void main()
     vec3 normalColor;
     if (normal == 0)
         normalColor = colorXPos;
-    else if (normal == 2)
-        normalColor = colorYPos;
-    else if (normal == 4)
-        normalColor = colorZPos;
     else if (normal == 1)
-        normalColor = colorXNeg;
+        normalColor = colorYPos;
+    else if (normal == 2)
+        normalColor = colorZPos;
     else if (normal == 3)
+        normalColor = colorXNeg;
+    else if (normal == 4)
         normalColor = colorYNeg;
     else if (normal == 5)
         normalColor = colorZNeg;

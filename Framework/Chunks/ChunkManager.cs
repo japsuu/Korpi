@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Meshing;
+using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
@@ -107,7 +108,7 @@ public class ChunkManager
     }
 
 
-    public void Draw(Vector3 cameraPos)
+    public void Draw(Vector3 cameraPos, Shader chunkShader)
     {
         foreach (ChunkColumn column in _loadedColumns.Values)
         {
@@ -121,7 +122,7 @@ public class ChunkManager
                     continue;
                 
                 Vector3i chunkPos = new(column.Position.X, i * Constants.CHUNK_SIZE, column.Position.Y);
-                DrawChunkAt(chunkPos);
+                DrawChunkAt(chunkPos, chunkShader);
             }
         }
     }
@@ -276,10 +277,10 @@ public class ChunkManager
     }
 
 
-    private void DrawChunkAt(Vector3i position)
+    private void DrawChunkAt(Vector3i position, Shader chunkShader)
     {
         if (ChunkMeshStorage.TryGetMesh(position, out ChunkMesh? mesh))
-            mesh!.Draw();
+            mesh!.Draw(chunkShader);
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Utils;
+using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Meshing;
 
@@ -25,6 +26,15 @@ public class MeshingDataCache
     public void SetData(int x, int y, int z, BlockState blockState)
     {
         Data[GetIndex(x, y, z)] = blockState;
+
+        Vector3i pos = new(x, y, z);
+        if (pos != new Vector3i(1, 1, 1) && pos != new Vector3i(BorderBlockIndex, 1, BorderBlockIndex) && pos != new Vector3i(BorderBlockIndex, 1, 1) && pos != new Vector3i(1, 1, BorderBlockIndex))
+        {
+            if (blockState.Visibility != BlockVisibility.Empty)
+            {
+                Logger.Debug("WALUIGI TIME"); 
+            }
+        }
     }
     
     

@@ -68,6 +68,11 @@ public class BlockPalette
     
         // Reduce the refcount of the current block-type, as it will be overwritten.
         _palette[currentPaletteIndex].RefCount -= 1;
+
+        if (currentPaletteIndex != 0 && _palette[currentPaletteIndex].RefCount > 1)
+        {
+            Logger.Debug("What?");
+        }
     
         // See if we can use an existing palette entry.
         for(int existingPaletteIndex = 0; existingPaletteIndex < _paletteCount; existingPaletteIndex++)

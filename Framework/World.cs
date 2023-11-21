@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework.Chunks;
 using BlockEngine.Framework.ECS.Entities;
+using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
@@ -29,9 +30,9 @@ public class World
     }
     
     
-    public void DrawChunks(Vector3 cameraPos)
+    public void DrawChunks(Vector3 cameraPos, Shader chunkShader)
     {
-        _chunkManager.Draw(cameraPos);
+        _chunkManager.Draw(cameraPos, chunkShader);
     }
 
 

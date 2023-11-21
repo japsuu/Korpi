@@ -44,7 +44,6 @@ public class Chunk
     /// </summary>
     private BlockState GetBlockState(int x, int y, int z)
     {
-        // return BlockRegistry.Stone.GetDefaultState();   //WARN: Testing only
         // Use (z << (W + H)) + (y << W) + x to index into a 3D array stored as a 1D array.
         // So, in this formula, "W" and "H" are the logarithms (base 2) of the dimensions of the array in the x and y directions, respectively.
         // In other words, if the width and height of the 3D array are both 2^N, then "W" and "H" would be equal to "N."

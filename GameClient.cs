@@ -320,24 +320,22 @@ public class GameClient : GameWindow
 
     private void DrawWorld(Matrix4 cameraViewMatrix, Matrix4 cameraProjectionMatrix)
     {
-        Matrix4 modelMatrix = Matrix4.Identity;
-        _blockShader.SetMatrix4("model", modelMatrix);
-        _blockShader.SetMatrix4("view", cameraViewMatrix);
-        _blockShader.SetMatrix4("projection", cameraProjectionMatrix);
-        
-        // Bind the VAO.
-        GL.BindVertexArray(_testCubeVAO);
-        // Draw.
-        GL.DrawElements(PrimitiveType.Triangles, _testCubeIndices.Length, DrawElementsType.UnsignedInt, 0);
-        GL.BindVertexArray(0);
+        // _blockShader.SetMatrix4("model", modelMatrix);
+        // _blockShader.SetMatrix4("view", cameraViewMatrix);
+        // _blockShader.SetMatrix4("projection", cameraProjectionMatrix);
+        //
+        // // Bind the VAO.
+        // GL.BindVertexArray(_testCubeVAO);
+        // // Draw.
+        // GL.DrawElements(PrimitiveType.Triangles, _testCubeIndices.Length, DrawElementsType.UnsignedInt, 0);
+        // GL.BindVertexArray(0);
         
         _chunkShader.Use();
         
-        _chunkShader.SetMatrix4("model", modelMatrix);
         _chunkShader.SetMatrix4("view", cameraViewMatrix);
         _chunkShader.SetMatrix4("projection", cameraProjectionMatrix);
 
-        _world.DrawChunks(_camera.Transform.Position);
+        _world.DrawChunks(_camera.Transform.Position, _chunkShader);
     }
 
 
