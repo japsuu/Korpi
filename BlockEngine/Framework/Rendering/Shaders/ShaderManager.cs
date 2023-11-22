@@ -11,6 +11,9 @@ public class ShaderManager : IDisposable
     
     public static Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
     public static Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
+    
+    public static float WindowWidth { get; private set; }
+    public static float WindowHeight { get; private set; }
 
 
     public ShaderManager()
@@ -53,6 +56,36 @@ public class ShaderManager : IDisposable
         
         SkyboxShader.Use();
         SkyboxShader.SetMatrix4("view", skyboxViewMatrix);
+    }
+    
+    
+    public static void UpdateWindowSize(float width, float height)
+    {
+        WindowWidth = width;
+        WindowHeight = height;
+    }
+    
+    
+    /// <returns>If the provided world position is visible on screen.</returns>
+    public static bool WorldPositionToScreenPosition(Vector3 worldPosition, out Vector2 screenPos)
+    {
+        Vector4 clipSpacePosition = new Vector4(worldPosition, 1) * ViewMatrix * ProjectionMatrix;
+        
+        // Without this the coordinates are visible even when looking straight away from them.
+        if (clipSpacePosition.W <= 0)
+        {
+            screenPos = Vector2.NegativeInfinity;
+            return false;
+        }
+        
+        Vector3 normalizedDeviceCoordinates = clipSpacePosition.Xyz / clipSpacePosition.W;
+        Vector2 screenCoordinates = new Vector2(normalizedDeviceCoordinates.X, -normalizedDeviceCoordinates.Y);
+        screenCoordinates += Vector2.One;
+        screenCoordinates /= 2;
+        screenCoordinates.X *= WindowWidth;
+        screenCoordinates.Y *= WindowHeight;
+        screenPos = screenCoordinates;
+        return true;
     }
     
     

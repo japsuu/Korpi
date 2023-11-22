@@ -75,7 +75,7 @@ public class GameClient : GameWindow
         1.0f, -1.0f,  1.0f
     };
     
-    // Contains the 24 vertices (6 faces) of a cube. Extendes from 0,0,0 to 1,1,1.
+    // Contains the 24 vertices (6 faces) of a cube. Extends from 0,0,0 to 1,1,1.
     private readonly float[] _testCubeVertices = {
         // X+ face      Normals
         1, 0, 1,        1, 0, 0,
@@ -235,6 +235,7 @@ public class GameClient : GameWindow
         CursorState = CursorState.Grabbed;
         
         ImGuiWindowManager.CreateDefaultWindows();
+        ShaderManager.UpdateWindowSize(Size.X, Size.Y);
 
         ClientLoad?.Invoke();
         Logger.Log("Started.");
@@ -282,7 +283,7 @@ public class GameClient : GameWindow
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
         
         // Set the polygon mode to wireframe if the debug setting is enabled.
-        GL.PolygonMode(MaterialFace.FrontAndBack, DebugSettings.ShowWireframe ? PolygonMode.Line : PolygonMode.Fill);
+        GL.PolygonMode(MaterialFace.FrontAndBack, DebugSettings.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
         
         // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
@@ -306,9 +307,10 @@ public class GameClient : GameWindow
         ShaderManager.UpdateProjectionMatrix(_camera.GetProjectionMatrix());
         
         DrawWorld();
-        
-        DrawSkybox();
-        
+
+        if (DebugSettings.RenderSkybox)
+            DrawSkybox();
+
         DrawImGui();
 
         SwapBuffers();
@@ -363,6 +365,8 @@ public class GameClient : GameWindow
         base.OnResize(e);
 
         GL.Viewport(0, 0, e.Width, e.Height);
+        
+        ShaderManager.UpdateWindowSize(e.Width, e.Height);
 
         // Tell ImGui of the new window size.
         _imGuiController.WindowResized(ClientSize.X, ClientSize.Y);

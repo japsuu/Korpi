@@ -128,7 +128,7 @@ public class ChunkManager
             }
         }
 
-        if (DebugSettings.ShowChunkBorders)
+        if (DebugSettings.RenderChunkBorders)
         {
             // Get the chunk the player is currently in
             Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(cameraPos);

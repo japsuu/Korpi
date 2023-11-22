@@ -28,6 +28,8 @@ public abstract class ImGuiWindow
         // Only update if the window is visible and the time since the last update exceeds the update rate.
         if (!IsVisible)
             return;
+        
+        PreUpdate();
 
         ImGui.Begin(Title, Flags);
 
@@ -35,6 +37,9 @@ public abstract class ImGuiWindow
         
         ImGui.End();
     }
+    
+    
+    protected virtual void PreUpdate() { }
 
     
     protected abstract void UpdateContent();

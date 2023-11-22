@@ -40,15 +40,17 @@ public class RenderingWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        ImGui.Checkbox("Wireframe rendering", ref DebugSettings.ShowWireframe);
+        ImGui.Checkbox("Wireframe rendering", ref DebugSettings.RenderWireframe);
 
-        if (ImGui.Checkbox("Chunk border rendering", ref DebugSettings.ShowChunkBorders))
+        if (ImGui.Checkbox("Render chunk borders", ref DebugSettings.RenderChunkBorders))
         {
-            if (DebugSettings.ShowChunkBorders)
+            if (DebugSettings.RenderChunkBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();
         }
+        
+        ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
         
         ImGui.Text($"Cached chunk meshes = {ChunkMeshStorage.GeneratedMeshCount}");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");

@@ -13,6 +13,7 @@ public static class ImGuiWindowManager
     {
         RenderingWindow unused1 = new();
         MemoryProfilerWindow unused2 = new();
+        DebugTextWindow unused3 = new();
     }
 
 
