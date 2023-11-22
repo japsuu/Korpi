@@ -64,13 +64,13 @@ public class BlockPalette : IBlockStorage
         int index = GetIndex(x, y, z);
         if (index < 0 || index >= _size)
             throw new ArgumentOutOfRangeException(nameof(index), "Tried to set blocks outside of a palette");
-        int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
+        uint paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
     
         // Reduce the refcount of the current block-type, as it will be overwritten.
         _palette[paletteIndex].RefCount -= 1;
     
         // See if we can use an existing palette entry.
-        for(int existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
+        for(uint existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
         {
             if (!_palette[existingPaletteIndex].BlockState.Equals(block))
                 continue;
@@ -93,7 +93,7 @@ public class BlockPalette : IBlockStorage
         // A new palette entry is needed!
         
         // Get the first free palette entry, possibly growing the palette!
-        int newPaletteIndex = GetNextPaletteEntry();
+        uint newPaletteIndex = GetNextPaletteEntry();
     
         _palette[newPaletteIndex].RefCount = 1;
         _palette[newPaletteIndex].BlockState = block;
@@ -105,7 +105,7 @@ public class BlockPalette : IBlockStorage
     public BlockState GetBlock(int x, int y, int z)
     {
         int index = GetIndex(x, y, z);
-        int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
+        uint paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
         PaletteEntry entry = _palette[paletteIndex];
         if (entry.RefCount <= 0)
             throw new InvalidOperationException("Tried to get a block from an empty palette entry");
@@ -114,12 +114,12 @@ public class BlockPalette : IBlockStorage
     }
 
 
-    private int GetNextPaletteEntry()
+    private uint GetNextPaletteEntry()
     {
         while (true)
         {
             // See if we can use an existing palette entry.
-            for (int existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
+            for (uint existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
             {
                 if (_palette[existingPaletteIndex].RefCount <= 0 || _palette[existingPaletteIndex].BlockState == null)
                     return existingPaletteIndex;
@@ -134,7 +134,7 @@ public class BlockPalette : IBlockStorage
     private void GrowPalette()
     {
         // Decode the indices from the BitBuffer.
-        int[] indices = new int[_size];
+        uint[] indices = new uint[_size];
         for(int i = 0; i < indices.Length; i++)
         {
             indices[i] = _data.Get(i * _indicesLength, _indicesLength);
@@ -186,7 +186,7 @@ public class BlockPalette : IBlockStorage
             return;
 
         // Decode all indices
-        int[] indices = new int[_size];
+        uint[] indices = new uint[_size];
         for (int i = 0; i < indices.Length; i++)
             indices[i] = _data.Get(i * _indicesLength, _indicesLength);
 
@@ -195,7 +195,7 @@ public class BlockPalette : IBlockStorage
         PaletteEntry[] newPalette = new PaletteEntry[(int)Math.Ceiling(Math.Pow(2, _indicesLength))];
 
         // We gotta compress the palette entries!
-        int paletteCounter = 0;
+        uint paletteCounter = 0;
         for (int i = 0; i < _palette.Length; i++, paletteCounter++)
         {
             PaletteEntry entry = newPalette[paletteCounter] = _palette[i];

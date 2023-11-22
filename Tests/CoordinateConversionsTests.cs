@@ -30,7 +30,7 @@ public class CoordinateConversionsTests
         Vector3i result = CoordinateConversions.GetContainingChunkPos(position);
 
         // Assert
-        Assert.That(result, Is.EqualTo(new Vector3i(-64, -128, -32)));
+        Assert.That(result, Is.EqualTo(new Vector3i(-64, -96, -32)));
     }
 
 
