@@ -8,7 +8,7 @@ namespace BlockEngine.Framework.Chunks;
 
 public class Chunk
 {
-    private readonly BlockPalette _blocks = new BlockPalette(Constants.CHUNK_SIZE_CUBED);
+    private readonly IBlockStorage _blockStorage = new BlockPalette(Constants.CHUNK_SIZE_CUBED);
 
     public bool IsMeshDirty;
     public bool IsMeshed;
@@ -31,7 +31,7 @@ public class Chunk
                 // Logger.Debug("MARIO TIMEWEWEWEWE");
             }
         }
-        _blocks.SetBlock(GetIndex(position.X, position.Y, position.Z), block);
+        _blockStorage.SetBlock(GetIndex(position.X, position.Y, position.Z), block);
         IsMeshDirty = true;
         //TODO: If border block, dirty neighbouring chunk(s) too.
     }
@@ -47,15 +47,7 @@ public class Chunk
     /// </summary>
     private BlockState GetBlockState(int x, int y, int z)
     {
-        BlockState? state = _blocks.GetBlock(GetIndex(x, y, z));
-        if (state != null && state.Value.Visibility == BlockVisibility.Opaque)
-        {
-            if (new Vector3i(x, y, z) != new Vector3i(0, 0, 0))
-            {
-                // Logger.Debug("MARIO TIMEWEWEWEWE");
-            }
-        }
-        return state ?? BlockRegistry.Air.GetDefaultState();
+        return _blockStorage.GetBlock(GetIndex(x, y, z));
     }
     
     

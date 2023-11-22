@@ -16,7 +16,7 @@ public struct PaletteEntry
     }
 }
 
-public class BlockPalette
+public class BlockPalette : IBlockStorage
 {
     /// <summary>
     /// How many blocks can this palette hold?
@@ -101,13 +101,14 @@ public class BlockPalette
     }
     
     
-    public BlockState? GetBlock(int index)
+    public BlockState GetBlock(int index)
     {
         int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
         PaletteEntry entry = _palette[paletteIndex];
-        //if (entry.RefCount <= 0)
-        //    throw new InvalidOperationException("Tried to get a block from an empty palette entry");
-        return entry.BlockState;
+        if (entry.RefCount <= 0)
+            throw new InvalidOperationException("Tried to get a block from an empty palette entry");
+        
+        return entry.BlockState ?? BlockRegistry.Air.GetDefaultState();
     }
 
 
