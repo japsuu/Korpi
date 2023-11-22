@@ -24,13 +24,6 @@ public class Chunk
     /// </summary>
     public void SetBlockState(Vector3i position, BlockState block)
     {
-        if (block.Visibility == BlockVisibility.Opaque)
-        {
-            if (position != new Vector3i(0, 0, 0))
-            {
-                // Logger.Debug("MARIO TIMEWEWEWEWE");
-            }
-        }
         _blockStorage.SetBlock(position.X, position.Y, position.Z, block);
         IsMeshDirty = true;
         //TODO: If border block, dirty neighbouring chunk(s) too.
@@ -45,7 +38,7 @@ public class Chunk
     ///       for x in range:
     ///          block = BlockMap[x, y, z]
     /// </summary>
-    private BlockState GetBlockState(int x, int y, int z)
+    public BlockState GetBlockState(int x, int y, int z)
     {
         return _blockStorage.GetBlock(x, y, z);
     }

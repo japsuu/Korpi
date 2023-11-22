@@ -4,14 +4,14 @@ using BlockEngine.Utils;
 namespace BlockEngine.Framework.Blocks;
 
 /// <summary>
-/// BlockState is what is stored in a dynamic block palette.
+/// BlockState is what chunks actually store.
 /// </summary>
 public struct BlockState
 {
     /// <summary>
-    /// Reference to the block this state is for.
+    /// Id of the block this state is for. The four MSB are rotation data.
     /// </summary>
-    public readonly Block Block;
+    public ushort Id { get; private set; }
     
     /// <summary>
     /// How the block will be rendered.
@@ -31,16 +31,12 @@ public struct BlockState
     public byte NeighbourMask { get; private set; }
     
     
-    public bool IsValid => Block != null;
-
-
     public BlockState(Block block)
     {
-        Block = block;
+        Id = block.Id;
         Visibility = block.Visibility;
-        Logger.Debug($"Create new state with visibility {Visibility}", 1000);
-        Data = 0b00000000;
-        NeighbourMask = 0b00000000;
+        Data = 0b_00000000;
+        NeighbourMask = 0b_00000000;
     }
     
     
@@ -55,7 +51,7 @@ public struct BlockState
     /// </summary>
     /// <param name="normal">Direction of the neighbour</param>
     /// <param name="hasNeighbor">If neighbour exists</param>
-    public void UpdateNeighborMask(BlockFaceNormal normal, bool hasNeighbor)
+    public void SetNeighborMask(BlockFaceNormal normal, bool hasNeighbor)
     {
         // Update the correct bit in the mask. Remember that the 2 least significant bits are rotation data.
         byte mask = (byte) (1 << (int) normal);
@@ -63,13 +59,6 @@ public struct BlockState
             NeighbourMask |= mask;
         else
             NeighbourMask &= (byte)~mask;
-    }
-    
-    
-    public void UpdateRotationBits(Orientation orientation)
-    {
-        NeighbourMask &= 0b11111100;
-        NeighbourMask |= (byte) (orientation + 1);
     }
     
     
@@ -81,15 +70,24 @@ public struct BlockState
     }
     
     
+    public void SetRotation(Orientation orientation)
+    {
+        // 2 least significant bits of NeighbourMask are the rotation data.
+        NeighbourMask &= 0b11111100;
+        NeighbourMask |= (byte) (orientation + 1);
+    }
+    
+    
     public Orientation GetRotation()
     {
-        return (Orientation) (NeighbourMask & 0b00000011);
+        // 2 least significant bits of NeighbourMask are the rotation data.
+        return (Orientation) ((NeighbourMask & 0b00000011) - 1);
     }
 
 
     public bool Equals(BlockState other)
     {
-        return Block.Equals(other.Block) && Visibility == other.Visibility && Data == other.Data && NeighbourMask == other.NeighbourMask;
+        return Visibility == other.Visibility && Id == other.Id && Data == other.Data && NeighbourMask == other.NeighbourMask;
     }
 
 
@@ -101,23 +99,17 @@ public struct BlockState
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Block, (int)Visibility, Data, NeighbourMask);
+        return HashCode.Combine((int)Visibility, Id, Data, NeighbourMask);
     }
-
-
-    private sealed class BlockStateEqualityComparer : IEqualityComparer<BlockState>
+    
+    
+    public static bool operator ==(BlockState left, BlockState right)
     {
-        public bool Equals(BlockState x, BlockState y)
-        {
-            return x.Block.Equals(y.Block) && x.Visibility == y.Visibility && x.Data == y.Data && x.NeighbourMask == y.NeighbourMask;
-        }
-
-
-        public int GetHashCode(BlockState obj)
-        {
-            return HashCode.Combine(obj.Block, (int)obj.Visibility, obj.Data, obj.NeighbourMask);
-        }
+        return left.Equals(right);
     }
 
-    public static IEqualityComparer<BlockState> BlockStateComparer { get; } = new BlockStateEqualityComparer();
+    public static bool operator !=(BlockState left, BlockState right)
+    {
+        return !(left == right);
+    }
 }

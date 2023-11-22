@@ -16,8 +16,7 @@ public class FlatBlockStorage : IBlockStorage
 
     public BlockState GetBlock(int x, int y, int z)
     {
-        BlockState state = _blocks[GetIndex(x, y, z)];
-        return state.IsValid ? state : BlockRegistry.Air.GetDefaultState();
+        return _blocks[GetIndex(x, y, z)];
     }
     
     

@@ -145,11 +145,11 @@ public class ChunkMesher
 
                         // If the neighbour is opaque, skip this face.
                         // If the neighbour is empty or transparent, we need to mesh this face.
-                        if (neighbour.Block.Visibility == BlockVisibility.Opaque)
+                        if (neighbour.Visibility == BlockVisibility.Opaque)
                             continue;
 
                         // Get the texture index of the block face
-                        ushort textureIndex = GetBlockTextureIndex(blockState.Block, (BlockFaceNormal)face);
+                        ushort textureIndex = GetBlockTextureIndex(blockState, (BlockFaceNormal)face);
                         
                         // Get the lighting of the block face
                         const int lightLevel = Constants.MAX_LIGHT_LEVEL;
@@ -171,5 +171,8 @@ public class ChunkMesher
     }
     
     
-    private static ushort GetBlockTextureIndex(Block block, BlockFaceNormal normal) => 0;
+    private static ushort GetBlockTextureIndex(BlockState block, BlockFaceNormal normal)
+    {
+        return 0;
+    }
 }

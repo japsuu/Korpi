@@ -3,19 +3,6 @@ using BlockEngine.Utils;
 
 namespace BlockEngine.Framework.Bitpacking;
 
-public struct PaletteEntry
-{
-    public int RefCount;
-    public BlockState? BlockState;     // WARN: Changing the state / data of a block can have unintended consequences! Find out if it's better to store just the block's ID/type instead.
-
-
-    public PaletteEntry(int refCount, BlockState blockState)
-    {
-        RefCount = refCount;
-        BlockState = blockState;
-    }
-}
-
 public class BlockPalette : IBlockStorage
 {
     /// <summary>
@@ -38,12 +25,17 @@ public class BlockPalette : IBlockStorage
     /// The palette of different blocks.
     /// </summary>
     private PaletteEntry[] _palette;
-    
+
+
     /// <summary>
     /// The data buffer.
     /// Holds the indices of the blocks in the palette.
     /// </summary>
     private BitBuffer _data;
+    
+    
+    public int GetPaletteSize() => _palette.Length;
+
 
     public BlockPalette()
     {
@@ -51,7 +43,8 @@ public class BlockPalette : IBlockStorage
         // Initialize with some power of 2 value
         _palette = new PaletteEntry[]
         {
-            new(_size, BlockRegistry.Air.GetDefaultState())
+            new(_size, BlockRegistry.Air.GetDefaultState()),
+            new (0, BlockRegistry.Air.GetDefaultState())
         };
         _indicesLength = 1;
         _paletteCount = 0;
@@ -112,6 +105,12 @@ public class BlockPalette : IBlockStorage
         
         return entry.BlockState ?? BlockRegistry.Air.GetDefaultState();
     }
+    
+    
+    public void TriggerGrowPalette()
+    {
+        GrowPalette();
+    }
 
 
     private uint GetNextPaletteEntry()
@@ -143,7 +142,6 @@ public class BlockPalette : IBlockStorage
         // Create new palette, doubling it in size.
         _indicesLength <<= 1;
         PaletteEntry[] newPalette = new PaletteEntry[(int)Math.Ceiling(Math.Pow(2, _indicesLength))];
-        // TODO: Optimize the resizing by sorting the 'newPalette' based on largest refcount.
         Array.Copy(_palette, newPalette, _paletteCount);
         _palette = newPalette;
     
@@ -167,8 +165,8 @@ public class BlockPalette : IBlockStorage
 
     // Shrink the palette (and thus the BitBuffer) every now and then.
     // You may need to apply heuristics to determine when to do this.
-    // TODO: Test!
-    public void TrimExcess()
+    [Obsolete("May not work as intended")]
+    public void TriggerTrimExcess()
     {
         // Remove old entries...
         for (int i = 0; i < _palette.Length; i++)
@@ -180,7 +178,6 @@ public class BlockPalette : IBlockStorage
         }
 
         // Is the _paletteCount less than or equal to half of its closest power-of-two?
-        
         if (_paletteCount > Math.Pow(2, _paletteCount) / 2)
             // NO: The palette cannot be shrunk!
             return;
