@@ -98,16 +98,18 @@ public class DebugTextWindow : ImGuiWindow
         {
             foreach (KeyValuePair<Vector3, List<DebugText>> pair in frameTexts)
             {
-                float heightOffset = 0;
+                const float heightOffset = 15;
+                int index = 0;
                 foreach (DebugText text in pair.Value)
                 {
                     if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
                     {
+                        System.Numerics.Vector4 color = index % 2 == 0 ? new System.Numerics.Vector4(0.3f, 0.3f, 0.3f, 1) : new System.Numerics.Vector4(0, 0, 0, 1);
                         ImGui.GetWindowDrawList().AddText(
-                            new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset),
-                            ImGui.GetColorU32(new System.Numerics.Vector4(0, 0, 0, 1)),
+                            new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset * index),
+                            ImGui.GetColorU32(color),
                             $"{text.Text}");
-                        heightOffset += 15;
+                        index++;
                     }
                 }
             }
@@ -117,16 +119,18 @@ public class DebugTextWindow : ImGuiWindow
         {
             foreach (KeyValuePair<Vector3, List<DebugText>> pair in staticTexts)
             {
-                float heightOffset = 0;
+                const float heightOffset = 15;
+                int index = 0;
                 foreach (DebugText text in pair.Value)
                 {
                     if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
                     {
+                        System.Numerics.Vector4 color = index % 2 == 0 ? new System.Numerics.Vector4(0.3f, 0.3f, 0.3f, 1) : new System.Numerics.Vector4(0, 0, 0, 1);
                         ImGui.GetWindowDrawList().AddText(
-                            new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset),
-                            ImGui.GetColorU32(new System.Numerics.Vector4(0, 0, 0, 1)),
+                            new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset * index),
+                            ImGui.GetColorU32(color),
                             $"{text.Text}");
-                        heightOffset += 15;
+                        index++;
                     }
                 }
             }

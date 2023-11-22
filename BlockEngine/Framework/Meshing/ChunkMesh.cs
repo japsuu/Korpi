@@ -54,7 +54,7 @@ public class ChunkMesh
             uint x = (positionIndex >> 10) & 0x1F;
             uint y = (positionIndex >> 5) & 0x1F;
             uint z = positionIndex & 0x1F;
-            DebugTextWindow.AddStaticText(new Vector3(x, y, z), $"({i}) => [{x}, {y}, {z}]");
+            DebugTextWindow.AddStaticText(new Vector3(x, y, z), $"({i / 2}) => [{x}, {y}, {z}]");
             // Logger.Debug($"Vertex {i} = {_vertices[i]}\t({x}, {y}, {z})");
         }
 
