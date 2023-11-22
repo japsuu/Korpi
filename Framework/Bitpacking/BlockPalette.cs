@@ -59,8 +59,9 @@ public class BlockPalette : IBlockStorage
     }
 
 
-    public void SetBlock(int index, BlockState block)
+    public void SetBlock(int x, int y, int z, BlockState block)
     {
+        int index = GetIndex(x, y, z);
         if (index < 0 || index >= _size)
             throw new ArgumentOutOfRangeException(nameof(index), "Tried to set blocks outside of a palette");
         int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
@@ -101,8 +102,9 @@ public class BlockPalette : IBlockStorage
     }
     
     
-    public BlockState GetBlock(int index)
+    public BlockState GetBlock(int x, int y, int z)
     {
+        int index = GetIndex(x, y, z);
         int paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
         PaletteEntry entry = _palette[paletteIndex];
         if (entry.RefCount <= 0)
@@ -153,6 +155,13 @@ public class BlockPalette : IBlockStorage
         {
             _data.Set(i * _indicesLength, _indicesLength, indices[i]);
         }
+    }
+    
+    
+    private int GetIndex(int x, int y, int z)
+    {
+        // Calculate the index in a way that minimizes cache trashing.
+        return x + Constants.CHUNK_SIZE * (y + Constants.CHUNK_SIZE * z);
     }
 
 

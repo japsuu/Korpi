@@ -4,7 +4,7 @@ namespace BlockEngine.Framework.Bitpacking;
 
 public interface IBlockStorage
 {
-    public void SetBlock(int index, BlockState block);
+    public void SetBlock(int x, int y, int z, BlockState block);
 
-    public BlockState GetBlock(int index);
+    public BlockState GetBlock(int x, int y, int z);
 }

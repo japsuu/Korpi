@@ -31,7 +31,7 @@ public class Chunk
                 // Logger.Debug("MARIO TIMEWEWEWEWE");
             }
         }
-        _blockStorage.SetBlock(GetIndex(position.X, position.Y, position.Z), block);
+        _blockStorage.SetBlock(position.X, position.Y, position.Z, block);
         IsMeshDirty = true;
         //TODO: If border block, dirty neighbouring chunk(s) too.
     }
@@ -47,14 +47,7 @@ public class Chunk
     /// </summary>
     private BlockState GetBlockState(int x, int y, int z)
     {
-        return _blockStorage.GetBlock(GetIndex(x, y, z));
-    }
-    
-    
-    private int GetIndex(int x, int y, int z)
-    {
-        // Calculate the index in a way that minimizes cache trashing.
-        return x + Constants.CHUNK_SIZE * (y + Constants.CHUNK_SIZE * z);
+        return _blockStorage.GetBlock(x, y, z);
     }
 
 
