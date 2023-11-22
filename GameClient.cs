@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework;
 using BlockEngine.Framework.Configuration;
+using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Rendering;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
@@ -20,10 +21,8 @@ public class GameClient : GameWindow
     public static event Action? ClientUnload;
     
     private ImGuiController _imGuiController = null!;
-    private Shader _blockShader = null!;
-    private Shader _chunkShader = null!;
-    private Shader _skyboxShader = null!;
     private Skybox _skyboxTexture = null!;
+    private ShaderManager _shaderManager = null!;
 
 
     private readonly float[] _skyboxVertices = {
@@ -228,18 +227,8 @@ public class GameClient : GameWindow
             IoUtils.GetSkyboxTexturePath("z_neg.png"),
         });
         
-        // Load the block shader.
-        // Just like the VBO, this is global -> every function that uses a shader will modify this one until a new one is bound instead.
-        _blockShader = new Shader(IoUtils.GetShaderPath("shader_blocks.vert"), IoUtils.GetShaderPath("shader_blocks.frag"));
-        _blockShader.Use();
-        
-        _chunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk.vert"), IoUtils.GetShaderPath("shader_chunk.frag"));
-        _chunkShader.Use();
-        
-        // Load the skybox shader.
-        _skyboxShader = new Shader(IoUtils.GetShaderPath("shader_skybox.vert"), IoUtils.GetShaderPath("shader_skybox.frag"));
-        _skyboxShader.Use();
-        _skyboxShader.SetInt("skybox", 0);
+        // Load shaders.
+        _shaderManager = new ShaderManager();
         
         // Initialize the camera.
         _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
@@ -247,8 +236,8 @@ public class GameClient : GameWindow
         
         ImGuiWindowManager.CreateDefaultWindows();
 
-        Logger.Log("Started.");
         ClientLoad?.Invoke();
+        Logger.Log("Started.");
     }
 
 
@@ -256,8 +245,7 @@ public class GameClient : GameWindow
     {
         base.OnUnload();
         
-        _blockShader.Dispose();
-        _skyboxShader.Dispose();
+        _shaderManager.Dispose();
         ClientUnload?.Invoke();
     }
 
@@ -292,11 +280,20 @@ public class GameClient : GameWindow
         base.OnRenderFrame(args);
         
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
-        _blockShader.Use();
         
-        // Pass all of these matrices to the vertex shader.
+        // Set the polygon mode to wireframe if the debug setting is enabled.
+        GL.PolygonMode(MaterialFace.FrontAndBack, DebugSettings.ShowWireframe ? PolygonMode.Line : PolygonMode.Fill);
+        
+        // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
+        const bool rotateOverTime = false;
+        Matrix4 cameraViewMatrix = _camera.GetViewMatrix();
+        Matrix4 skyboxViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
+        if (rotateOverTime)
+        {
+            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(SKYBOX_ROTATION_SPEED * Time.TotalTime));
+            skyboxViewMatrix = modelMatrix * skyboxViewMatrix;
+        }
 
         // IMPORTANT: OpenTK's matrix types are transposed from what OpenGL would expect - rows and columns are reversed.
         // They are then transposed properly when passed to the shader. 
@@ -305,12 +302,12 @@ public class GameClient : GameWindow
         // You can think like this: first apply the modelToWorld (aka model) matrix, then apply the worldToView (aka view) matrix, 
         // and finally apply the viewToProjectedSpace (aka projection) matrix.
         // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
-        Matrix4 cameraViewMatrix = _camera.GetViewMatrix();
-        Matrix4 cameraProjectionMatrix = _camera.GetProjectionMatrix();
+        ShaderManager.UpdateViewMatrix(cameraViewMatrix, skyboxViewMatrix);
+        ShaderManager.UpdateProjectionMatrix(_camera.GetProjectionMatrix());
         
-        DrawWorld(cameraViewMatrix, cameraProjectionMatrix);
+        DrawWorld();
         
-        DrawSkybox(cameraViewMatrix, cameraProjectionMatrix, false);
+        DrawSkybox();
         
         DrawImGui();
 
@@ -318,7 +315,7 @@ public class GameClient : GameWindow
     }
 
 
-    private void DrawWorld(Matrix4 cameraViewMatrix, Matrix4 cameraProjectionMatrix)
+    private void DrawWorld()
     {
         // _blockShader.SetMatrix4("model", modelMatrix);
         // _blockShader.SetMatrix4("view", cameraViewMatrix);
@@ -330,33 +327,19 @@ public class GameClient : GameWindow
         // GL.DrawElements(PrimitiveType.Triangles, _testCubeIndices.Length, DrawElementsType.UnsignedInt, 0);
         // GL.BindVertexArray(0);
         
-        _chunkShader.Use();
-        
-        _chunkShader.SetMatrix4("view", cameraViewMatrix);
-        _chunkShader.SetMatrix4("projection", cameraProjectionMatrix);
+        ShaderManager.ChunkShader.Use();
 
-        _world.DrawChunks(_camera.Transform.Position, _chunkShader);
+        _world.DrawChunks(_camera.Transform.Position, ShaderManager.ChunkShader);
     }
 
 
-    private void DrawSkybox(Matrix4 cameraViewMatrix, Matrix4 cameraProjectionMatrix, bool rotateOverTime)
+    private void DrawSkybox()
     {
         // Draw skybox.
         GL.DepthFunc(DepthFunction.Lequal);  // Change depth function so depth test passes when values are equal to depth buffer's content
         
-        _skyboxShader.Use();
+        ShaderManager.SkyboxShader.Use();
         
-        cameraViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
-        if (rotateOverTime)
-        {
-            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(SKYBOX_ROTATION_SPEED * Time.TotalTime));
-            _skyboxShader.SetMatrix4("view", modelMatrix * cameraViewMatrix);
-        }
-        else
-        {
-            _skyboxShader.SetMatrix4("view", cameraViewMatrix);
-        }
-        _skyboxShader.SetMatrix4("projection", cameraProjectionMatrix);
         // Skybox cube...
         _skyboxTexture.Use(TextureUnit.Texture0);
         GL.BindVertexArray(_skyboxVAO);

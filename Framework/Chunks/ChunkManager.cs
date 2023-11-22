@@ -1,5 +1,7 @@
 ﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
+using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -124,6 +126,13 @@ public class ChunkManager
                 Vector3i chunkPos = new(column.Position.X, i * Constants.CHUNK_SIZE, column.Position.Y);
                 DrawChunkAt(chunkPos, chunkShader);
             }
+        }
+
+        if (DebugSettings.ShowChunkBorders)
+        {
+            // Get the chunk the player is currently in
+            Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(cameraPos);
+            DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
     }
 

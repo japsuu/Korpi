@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
@@ -29,7 +30,6 @@ public class RenderingWindow : ImGuiWindow
     }
     
     public override string Title => "Rendering Settings";
-    private bool _isWireframeEnabled;
 
 
     public RenderingWindow()
@@ -40,9 +40,14 @@ public class RenderingWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        if (ImGui.Checkbox("Wireframe rendering", ref _isWireframeEnabled))
+        ImGui.Checkbox("Wireframe rendering", ref DebugSettings.ShowWireframe);
+
+        if (ImGui.Checkbox("Chunk border rendering", ref DebugSettings.ShowChunkBorders))
         {
-            GL.PolygonMode(MaterialFace.FrontAndBack, _isWireframeEnabled ? PolygonMode.Line : PolygonMode.Fill);
+            if (DebugSettings.ShowChunkBorders)
+                DebugChunkDrawer.Initialize();
+            else
+                DebugChunkDrawer.Dispose();
         }
         
         ImGui.Text($"Cached chunk meshes = {ChunkMeshStorage.GeneratedMeshCount}");

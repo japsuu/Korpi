@@ -1,4 +1,6 @@
-﻿using ImGuiNET;
+﻿using BlockEngine.Utils;
+using ImGuiNET;
+using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Rendering.ImGuiWindows;
 
@@ -18,10 +20,12 @@ public class CameraWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        ImGui.Text($"Position: {_camera.Transform.Position:F1}");
+        Vector3 camPos = _camera.Transform.Position;
+        ImGui.Text($"Pos: {camPos:F1}");
+        ImGui.Text($"Chunk Pos: {CoordinateConversions.GetContainingChunkPos(camPos):F0}");
         ImGui.Text($"Pitch: {_camera.Pitch:F1}");
         ImGui.Text($"Yaw: {_camera.Yaw:F1}");
         ImGui.Text($"Fov: {_camera.Fov:F1}");
-        ImGui.Text($"Camera fly speed: {_camera.GetFlySpeedFormatted()}");
+        ImGui.Text($"Fly spd: {_camera.GetFlySpeedFormatted()}");
     }
 }
