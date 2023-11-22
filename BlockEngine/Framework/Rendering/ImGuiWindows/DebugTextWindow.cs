@@ -21,8 +21,8 @@ public class DebugTextWindow : ImGuiWindow
     
     public override string Title => "Debug Text";
     
-    private static List<DebugText> frameTexts = null!;
-    private static List<DebugText> staticTexts = null!;
+    private static Dictionary<Vector3, List<DebugText>> frameTexts = null!;
+    private static Dictionary<Vector3, List<DebugText>> staticTexts = null!;
     
     
     public DebugTextWindow()
@@ -45,32 +45,41 @@ public class DebugTextWindow : ImGuiWindow
             ImGuiWindowFlags.NoTitleBar | 
             ImGuiWindowFlags.NoResize | 
             ImGuiWindowFlags.NoCollapse;
-        
-        frameTexts = new List<DebugText>();
-        staticTexts = new List<DebugText>();
+
+        frameTexts = new Dictionary<Vector3, List<DebugText>>();
+        staticTexts = new Dictionary<Vector3, List<DebugText>>();
     }
     
     
     public static void AddFrameText(Vector3 position, string text)
     {
-        frameTexts.Add(new DebugText(position, text));
+        if (!frameTexts.ContainsKey(position))
+            frameTexts.Add(position, new List<DebugText>());
+
+        frameTexts[position].Add(new DebugText(position, text));
     }
     
     
     public static void AddStaticText(Vector3 position, string text)
     {
-        staticTexts.Add(new DebugText(position, text));
+        if (!staticTexts.ContainsKey(position))
+            staticTexts.Add(position, new List<DebugText>());
+
+        staticTexts[position].Add(new DebugText(position, text));
     }
     
     
     public static void RemoveStaticText(string text)
     {
-        for (int i = 0; i < staticTexts.Count; i++)
+        foreach (KeyValuePair<Vector3, List<DebugText>> pair in staticTexts)
         {
-            if (staticTexts[i].Text == text)
+            for (int i = 0; i < pair.Value.Count; i++)
             {
-                staticTexts.RemoveAt(i);
-                return;
+                if (pair.Value[i].Text == text)
+                {
+                    pair.Value.RemoveAt(i);
+                    return;
+                }
             }
         }
     }
@@ -87,28 +96,38 @@ public class DebugTextWindow : ImGuiWindow
     {
         if (frameTexts.Count > 0)
         {
-            foreach (DebugText text in frameTexts)
+            foreach (KeyValuePair<Vector3, List<DebugText>> pair in frameTexts)
             {
-                if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
+                float heightOffset = 0;
+                foreach (DebugText text in pair.Value)
                 {
-                    ImGui.GetWindowDrawList().AddText(
-                        new System.Numerics.Vector2(screenPos.X, screenPos.Y),
-                        ImGui.GetColorU32(new System.Numerics.Vector4(0, 0, 0, 1)),
-                        $"{text.Text}");
+                    if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
+                    {
+                        ImGui.GetWindowDrawList().AddText(
+                            new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset),
+                            ImGui.GetColorU32(new System.Numerics.Vector4(0, 0, 0, 1)),
+                            $"{text.Text}");
+                        heightOffset += 15;
+                    }
                 }
             }
         }
         
         if (staticTexts.Count > 0)
         {
-            foreach (DebugText text in staticTexts)
+            foreach (KeyValuePair<Vector3, List<DebugText>> pair in staticTexts)
             {
-                if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
+                float heightOffset = 0;
+                foreach (DebugText text in pair.Value)
                 {
-                    ImGui.GetWindowDrawList().AddText(
-                        new System.Numerics.Vector2(screenPos.X, screenPos.Y),
-                        ImGui.GetColorU32(new System.Numerics.Vector4(0, 0, 0, 1)),
-                        $"{text.Text}");
+                    if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
+                    {
+                        ImGui.GetWindowDrawList().AddText(
+                            new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset),
+                            ImGui.GetColorU32(new System.Numerics.Vector4(0, 0, 0, 1)),
+                            $"{text.Text}");
+                        heightOffset += 15;
+                    }
                 }
             }
         }
