@@ -29,6 +29,9 @@ public struct BlockState
     /// 2 least significant bits are rotation data.
     /// </summary>
     public byte NeighbourMask { get; private set; }
+    
+    
+    public bool IsValid => Block != null;
 
 
     public BlockState(Block block)

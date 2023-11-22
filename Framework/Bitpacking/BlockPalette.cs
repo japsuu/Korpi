@@ -45,17 +45,17 @@ public class BlockPalette : IBlockStorage
     /// </summary>
     private BitBuffer _data;
 
-    public BlockPalette(int size)
+    public BlockPalette()
     {
-        _size = size;
+        _size = Constants.CHUNK_SIZE_CUBED;
         // Initialize with some power of 2 value
         _palette = new PaletteEntry[]
         {
-            new(size, BlockRegistry.Air.GetDefaultState())
+            new(_size, BlockRegistry.Air.GetDefaultState())
         };
         _indicesLength = 1;
         _paletteCount = 0;
-        _data = new BitBuffer(size * _indicesLength);    // The length is in bits, not bytes!
+        _data = new BitBuffer(_size * _indicesLength);    // The length is in bits, not bytes!
     }
 
 

@@ -8,7 +8,7 @@ namespace BlockEngine.Framework.Chunks;
 
 public class Chunk
 {
-    private readonly IBlockStorage _blockStorage = new BlockPalette(Constants.CHUNK_SIZE_CUBED);
+    private readonly IBlockStorage _blockStorage = new FlatBlockStorage();
 
     public bool IsMeshDirty;
     public bool IsMeshed;
