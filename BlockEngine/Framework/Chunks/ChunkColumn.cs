@@ -60,8 +60,15 @@ public class ChunkColumn
         for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
         {
             Chunk chunk = new Chunk();
-            chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.Stone.GetDefaultState());
-            chunk.SetBlockState(new Vector3i(Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1), BlockRegistry.Stone.GetDefaultState());
+            for (int z = 0; z < Constants.CHUNK_COLUMN_HEIGHT; z++)
+            {
+                for (int x = 0; x < Constants.CHUNK_COLUMN_HEIGHT; x++)
+                {
+                    chunk.SetBlockState(new Vector3i(x, 0, z), BlockRegistry.Stone.GetDefaultState());
+                }
+            }
+            //chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.Stone.GetDefaultState());
+            //chunk.SetBlockState(new Vector3i(Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1), BlockRegistry.Stone.GetDefaultState());
             _chunks[i] = chunk;
         }
     }

@@ -222,7 +222,7 @@ public class ChunkManager
         }
 
         if (_columnsToUnload.Count > 0)
-            Logger.Log($"Unloaded {_columnsToUnload.Count} chunks.");
+            Logger.Log($"Unloaded {_columnsToUnload.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
     }
 
 
@@ -258,7 +258,7 @@ public class ChunkManager
         }
 
         if (_columnsToLoad.Count > 0)
-            Logger.Log($"Loaded {_columnsToLoad.Count} chunks.");
+            Logger.Log($"Loaded {_columnsToLoad.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
     }
 
 
