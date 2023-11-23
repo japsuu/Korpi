@@ -16,7 +16,7 @@ public class World
     public World(string name)
     {
         _name = name;
-        _chunkManager = new ChunkManager(this);
+        _chunkManager = new ChunkManager();
         _entityManager = new EntityManager();
         
         Logger.Log($"Loaded world '{_name}'");

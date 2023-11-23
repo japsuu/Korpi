@@ -54,7 +54,6 @@ public class ChunkManager
     private readonly List<Vector2i> _columnsToLoad = new();
     private readonly List<Vector2i> _columnsToUnload = new();
 
-    private readonly World _world;
     private readonly ChunkMesher _chunkMesher;
 
     // Precomputed spiral of chunk column positions to load.
@@ -63,9 +62,8 @@ public class ChunkManager
     private List<Vector2i> _chunkLoadSpiral = null!;
 
 
-    public ChunkManager(World world)
+    public ChunkManager()
     {
-        _world = world;
         _chunkMesher = new ChunkMesher(this);
         PrecomputeNeighbouringChunkOffsets();
         PrecomputeChunkLoadSpiral();
@@ -278,7 +276,7 @@ public class ChunkManager
 
         if (!_loadedColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
         {
-            // Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
+            Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
             return null;
         }
 
@@ -288,7 +286,7 @@ public class ChunkManager
 
     private void DrawChunkAt(Vector3i position, Shader chunkShader)
     {
-        if (ChunkMeshStorage.TryGetMesh(position, out ChunkMesh? mesh))
+        if (ChunkMeshStorage.TryGetMesh(position, out ChunkMeshRenderer? mesh))
             mesh!.Draw(chunkShader);
     }
 

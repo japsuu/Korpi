@@ -21,11 +21,11 @@ public class MeshingBuffer
     private readonly uint[] _vertexData;
     private readonly uint[] _indices;
     
-    private uint _addedVertexDataCount;
-    private uint _addedIndicesCount;
-    private uint _addedFacesCount;
-    
-    
+    public uint AddedVertexDataCount { get; private set; }
+    public uint AddedIndicesCount { get; private set; }
+    public uint AddedFacesCount { get; private set; }
+
+
     public MeshingBuffer(int chunkSize, bool hasInternalFaceCulling)
     {
         int maxBlocksInChunk = chunkSize * chunkSize * chunkSize;
@@ -100,7 +100,7 @@ public class MeshingBuffer
         AddVertex(vertPos3, normal, 2, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos4, normal, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddIndices();
-        _addedFacesCount++;
+        AddedFacesCount = AddedFacesCount + 1;
     }
 
 
@@ -118,6 +118,8 @@ public class MeshingBuffer
         //int positionIndex = vertexPos.X + Constants.CHUNK_VERTEX_MAX_POS * (vertexPos.Y + Constants.CHUNK_VERTEX_MAX_POS * vertexPos.Z);
         int positionIndex = (vertexPos.X << 10) | (vertexPos.Y << 5) | vertexPos.Z;
         int lightColorValue = lightColor.Value;
+        
+        Logger.Debug($"Request add vert @ {vertexPos} with normal {normal}");
 
         if (positionIndex < 0 || positionIndex > 35936)
             throw new ArgumentOutOfRangeException(nameof(positionIndex), positionIndex, "Position index out of range");
@@ -154,32 +156,32 @@ public class MeshingBuffer
         textureIndex        .InjectUnsigned(ref data2, ref bitIndex2, 12);
         skyLightLevel       .InjectUnsigned(ref data2, ref bitIndex2, 5);
         normal              .InjectUnsigned(ref data2, ref bitIndex2, 3);
-        _vertexData[_addedVertexDataCount] = data1;
-        _vertexData[_addedVertexDataCount + 1] = data2;
-        _addedVertexDataCount += 2;
+        _vertexData[AddedVertexDataCount] = data1;
+        _vertexData[AddedVertexDataCount + 1] = data2;
+        AddedVertexDataCount += 2;
     }
     
     
     private void AddIndices()
     {
-        uint offset = 4 * _addedFacesCount;
-        _indices[_addedIndicesCount] = offset + 0;
-        _indices[_addedIndicesCount + 1] = offset + 1;
-        _indices[_addedIndicesCount + 2] = offset + 2;
-        _indices[_addedIndicesCount + 3] = offset + 0;
-        _indices[_addedIndicesCount + 4] = offset + 2;
-        _indices[_addedIndicesCount + 5] = offset + 3;
-        _addedIndicesCount += 6;
+        uint offset = 4 * AddedFacesCount;
+        _indices[AddedIndicesCount] = offset + 0;
+        _indices[AddedIndicesCount + 1] = offset + 1;
+        _indices[AddedIndicesCount + 2] = offset + 2;
+        _indices[AddedIndicesCount + 3] = offset + 0;
+        _indices[AddedIndicesCount + 4] = offset + 2;
+        _indices[AddedIndicesCount + 5] = offset + 3;
+        AddedIndicesCount += 6;
     }
 
 
     public ChunkMesh CreateMesh(Vector3i chunkPos)
     {
         // Create new arrays with the correct size, to avoid sending unused data to the GPU.
-        uint[] vertices = new uint[_addedVertexDataCount];
-        uint[] indices = new uint[_addedIndicesCount];
-        Array.Copy(_vertexData, vertices, _addedVertexDataCount);
-        Array.Copy(_indices, indices, _addedIndicesCount);
+        uint[] vertices = new uint[AddedVertexDataCount];
+        uint[] indices = new uint[AddedIndicesCount];
+        Array.Copy(_vertexData, vertices, AddedVertexDataCount);
+        Array.Copy(_indices, indices, AddedIndicesCount);
         
         return new ChunkMesh(chunkPos, vertices, indices);
     }
@@ -189,8 +191,8 @@ public class MeshingBuffer
     {
         Array.Clear(_vertexData, 0, _vertexData.Length);
         Array.Clear(_indices, 0, _indices.Length);
-        _addedVertexDataCount = 0;
-        _addedIndicesCount = 0;
-        _addedFacesCount = 0;
+        AddedVertexDataCount = 0;
+        AddedIndicesCount = 0;
+        AddedFacesCount = 0;
     }
 }

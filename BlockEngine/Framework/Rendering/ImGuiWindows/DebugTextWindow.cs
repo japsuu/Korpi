@@ -62,6 +62,9 @@ public class DebugTextWindow : ImGuiWindow
     
     public static void AddStaticText(Vector3 position, string text)
     {
+        if (staticTexts == null)
+            return;
+        
         if (!staticTexts.ContainsKey(position))
             staticTexts.Add(position, new List<DebugText>());
 
