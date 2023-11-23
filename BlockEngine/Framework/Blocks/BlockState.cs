@@ -25,7 +25,7 @@ public struct BlockState
     
     /// <summary>
     /// Cached neighbor info.
-    /// 6 most significant bits are flags for each neighbor, in the order of: +x, -x, +y, -y, +z, -z.
+    /// 6 most significant bits are flags for each neighbor, in the order of: +x, +y, +z, -x, -y, -z.
     /// 2 least significant bits are rotation data.
     /// </summary>
     public byte NeighbourMask { get; private set; }
