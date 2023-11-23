@@ -156,22 +156,7 @@ public class MeshingBuffer
 
     public ChunkRenderer CreateMesh(Vector3i chunkPos)
     {
-        Matrix4 modelMatrix = Matrix4.CreateTranslation(chunkPos);
-        int meshVBO = GL.GenBuffer();
-        int meshVAO = GL.GenVertexArray();
-        int meshEBO = GL.GenBuffer();
-        GL.BindVertexArray(meshVAO);
-
-        GL.BindBuffer(BufferTarget.ArrayBuffer, meshVBO);
-        GL.BufferData(BufferTarget.ArrayBuffer, _vertexData.Length * sizeof(uint), _vertexData, BufferUsageHint.StaticDraw);
-
-        GL.VertexAttribIPointer(0, 2, VertexAttribIntegerType.UnsignedInt, 0, IntPtr.Zero);
-        GL.EnableVertexAttribArray(0);
-
-        GL.BindBuffer(BufferTarget.ElementArrayBuffer, meshEBO);
-        GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
-        
-        return new ChunkRenderer(meshVBO, meshEBO, meshVAO, _indices.Length, modelMatrix);
+        return new ChunkRenderer(_vertexData, _indices, chunkPos);
     }
 
 
