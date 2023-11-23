@@ -53,11 +53,11 @@ public class ChunkColumn
 
     public void Load()
     {
-        if (Position != Vector2i.Zero)
-            return;
+        // if (Position != Vector2i.Zero)
+        //     return;
 
         // Generate test data
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
         {
             Chunk chunk = new Chunk();
             chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.Stone.GetDefaultState());

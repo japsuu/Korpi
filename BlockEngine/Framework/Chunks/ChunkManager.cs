@@ -132,6 +132,13 @@ public class ChunkManager
             Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(cameraPos);
             DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
+
+        if (DebugSettings.RenderChunkColumnBorders)
+        {
+            // Get the chunk the player is currently in
+            Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(cameraPos);
+            DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
+        }
     }
 
 
@@ -276,7 +283,7 @@ public class ChunkManager
 
         if (!_loadedColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
         {
-            Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
+            //Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
             return null;
         }
 
