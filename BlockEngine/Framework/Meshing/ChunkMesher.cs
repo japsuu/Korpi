@@ -9,7 +9,7 @@ namespace BlockEngine.Framework.Meshing;
 
 public class ChunkMesher
 {
-    private const int MAX_CHUNKS_MESHED_PER_FRAME = 2;
+    private const int MAX_CHUNKS_MESHED_PER_FRAME = 8;
 
     private readonly ChunkManager _chunkManager;
     
@@ -48,7 +48,7 @@ public class ChunkMesher
 
     public void ProcessMeshingQueue()
     {
-        RenderingWindow.RenderingStats.ChunksInMeshingQueue = _chunkMeshingQueue.Count;
+        RenderingWindow.RenderingStats.ChunksInMeshingQueue = (ulong)_chunkMeshingQueue.Count;
         RenderingWindow.RenderingStats.StartMeshing();
         
         int chunksMeshed = 0;

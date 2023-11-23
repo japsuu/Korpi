@@ -10,7 +10,7 @@ public class RenderingWindow : ImGuiWindow
 {
     public static class RenderingStats
     {
-        public static int ChunksInMeshingQueue;
+        public static ulong ChunksInMeshingQueue;
         public static float MeshingTime { get; private set; }
         
         private static readonly Stopwatch MeshingTimer = new();
