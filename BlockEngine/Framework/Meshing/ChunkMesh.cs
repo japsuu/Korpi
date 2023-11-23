@@ -29,7 +29,7 @@ public class ChunkMesh
         Vertices = vertices;
         Indices = indices;
         
-        Logger.Debug($"Created chunk mesh with {vertices.Length / 2} vertices and {indices.Length} indices.");
+        /*Logger.Debug($"Created chunk mesh with {vertices.Length / 2} vertices and {indices.Length} indices.");
         for (int i = 0; i < Vertices.Length; i += 2)
         {
             uint positionIndex = Vertices[i] & 0x3FFFF;
@@ -40,6 +40,6 @@ public class ChunkMesh
         }
 
         for (int i = 0; i < Indices.Length; i++)
-            Logger.Debug($"Index {i} = {Indices[i]}");
+            Logger.Debug($"Index {i} = {Indices[i]}");*/
     }
 }

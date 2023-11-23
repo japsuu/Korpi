@@ -30,10 +30,10 @@ public class ChunkMesher
     private static readonly Vector3i[] NeighbourOffsets =
     {
         new(1, 0, 0),
-        new(-1, 0, 0),
         new(0, 1, 0),
-        new(0, -1, 0),
         new(0, 0, 1),
+        new(-1, 0, 0),
+        new(0, -1, 0),
         new(0, 0, -1),
     };
 
@@ -56,7 +56,9 @@ public class ChunkMesher
         {
             Vector3i chunkPos = _chunkMeshingQueue.Dequeue();
             _queuedChunks.Remove(chunkPos);
-            ChunkMesh mesh = GenerateMesh(chunkPos);
+            ChunkMesh? mesh = GenerateMesh(chunkPos);
+            if (mesh == null)
+                continue;
             ChunkMeshStorage.AddMesh(chunkPos, mesh);
             chunksMeshed++;
         }
@@ -102,12 +104,13 @@ public class ChunkMesher
     }
 
 
-    private ChunkMesh GenerateMesh(Vector3i chunkOriginPos)
+    private ChunkMesh? GenerateMesh(Vector3i chunkOriginPos)
     {
         if (!_chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache, out Chunk? chunk))
         {
             // Not actually an issue, but leave this here for now...
             Logger.LogWarning($"Tried to mesh non-loaded chunk at {chunkOriginPos}!");
+            return null;
         }
         
         _meshingBuffer.Clear();

@@ -49,6 +49,14 @@ public class RenderingWindow : ImGuiWindow
             else
                 DebugChunkDrawer.Dispose();
         }
+
+        if (ImGui.Checkbox("Render column borders", ref DebugSettings.RenderChunkColumnBorders))
+        {
+            if (DebugSettings.RenderChunkColumnBorders)
+                DebugChunkDrawer.Initialize();
+            else
+                DebugChunkDrawer.Dispose();
+        }
         
         ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
         

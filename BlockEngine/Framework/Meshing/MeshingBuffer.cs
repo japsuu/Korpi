@@ -1,4 +1,5 @@
-﻿using BlockEngine.Framework.Bitpacking;
+﻿using System.Diagnostics;
+using BlockEngine.Framework.Bitpacking;
 using BlockEngine.Framework.Blocks;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -109,31 +110,15 @@ public class MeshingBuffer
         // 10 bits leftover.
         
         int positionIndex = (vertexPos.X << 12) | (vertexPos.Y << 6) | vertexPos.Z;
-        
         int lightColorValue = lightColor.Value;
         
-        Logger.Debug($"Request add vert @ {vertexPos} -> {positionIndex} with normal {normal}");
-
-        if (positionIndex < 0 || positionIndex > 133152)
-            throw new ArgumentOutOfRangeException(nameof(positionIndex), positionIndex, "Position index out of range");
-        
-        if (lightColorValue < 0 || lightColorValue > 511)
-            throw new ArgumentOutOfRangeException(nameof(lightColorValue), lightColorValue, "Light color value out of range");
-        
-        if (lightLevel < 0 || lightLevel > 31)
-            throw new ArgumentOutOfRangeException(nameof(lightLevel), lightLevel, "Light level out of range");
-        
-        if (skyLightLevel < 0 || skyLightLevel > 31)
-            throw new ArgumentOutOfRangeException(nameof(skyLightLevel), skyLightLevel, "Skylight level out of range");
-        
-        if (textureIndex < 0 || textureIndex > 4095)
-            throw new ArgumentOutOfRangeException(nameof(textureIndex), textureIndex, "Texture index out of range");
-        
-        if (normal < 0 || normal > 5)
-            throw new ArgumentOutOfRangeException(nameof(normal), normal, "Normal out of range");
-        
-        if (textureUvIndex < 0 || textureUvIndex > 3)
-            throw new ArgumentOutOfRangeException(nameof(textureUvIndex), textureUvIndex, "Texture UV index out of range");
+        Debug.Assert(positionIndex >= 0 && positionIndex <= 133152);
+        Debug.Assert(lightColorValue >= 0 && lightColorValue <= 511);
+        Debug.Assert(lightLevel >= 0 && lightLevel <= 31);
+        Debug.Assert(skyLightLevel >= 0 && skyLightLevel <= 31);
+        Debug.Assert(normal >= 0 && normal <= 5);
+        Debug.Assert(textureUvIndex >= 0 && textureUvIndex <= 3);
+        Debug.Assert(textureIndex >= 0 && textureIndex <= 4095);
 
         // NOTE: According to the OpenGL spec, vertex data should be 4-byte aligned. This means that since we cannot fit our vertex in 4 bytes, we use the full 8 bytes.
         // Compress all data to two 32-bit uints...

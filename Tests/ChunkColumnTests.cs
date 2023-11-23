@@ -66,7 +66,7 @@ public class ChunkColumnTests
     {
         Chunk chunk = new();
 
-        chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.Stone.GetDefaultState());
+        chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.TestBlock.GetDefaultState());
 
         Assert.IsTrue(chunk.IsMeshDirty);
     }
@@ -75,7 +75,7 @@ public class ChunkColumnTests
     public void Chunk_GetBlockState_ReturnsCorrectBlockState()
     {
         Chunk chunk = new();
-        BlockState blockState = BlockRegistry.Stone.GetDefaultState();
+        BlockState blockState = BlockRegistry.TestBlock.GetDefaultState();
 
         chunk.SetBlockState(new Vector3i(0, 0, 0), blockState);
 
