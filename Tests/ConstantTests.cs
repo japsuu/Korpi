@@ -109,12 +109,6 @@ public class ConstantsTests
     }
 
     [Test]
-    public void ChunkVertexMaxPos_IsCalculatedCorrectly()
-    {
-        Assert.That(Constants.CHUNK_VERTEX_MAX_POS, Is.EqualTo(Constants.CHUNK_SIZE + 1));
-    }
-
-    [Test]
     public void MaxLightLevel_IsSetCorrectly()
     {
         Assert.That(Constants.MAX_LIGHT_LEVEL, Is.EqualTo(31));

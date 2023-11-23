@@ -12,7 +12,7 @@ public class MeshingBufferTests
     [SetUp]
     public void SetUp()
     {
-        _meshingBuffer = new MeshingBuffer(32, true);
+        _meshingBuffer = new MeshingBuffer();
     }
 
     [Test]

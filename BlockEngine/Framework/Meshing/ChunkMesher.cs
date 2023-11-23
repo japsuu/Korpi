@@ -25,7 +25,7 @@ public class ChunkMesher
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
     private readonly MeshingDataCache _meshingDataCache = new(Constants.CHUNK_SIZE);
-    private readonly MeshingBuffer _meshingBuffer = new(Constants.CHUNK_SIZE, true);
+    private readonly MeshingBuffer _meshingBuffer = new();
     
     private static readonly Vector3i[] NeighbourOffsets =
     {

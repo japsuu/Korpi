@@ -32,12 +32,11 @@ public class ChunkMesh
         Logger.Debug($"Created chunk mesh with {vertices.Length / 2} vertices and {indices.Length} indices.");
         for (int i = 0; i < Vertices.Length; i += 2)
         {
-            uint positionIndex = Vertices[i] & 0xFFFF;
-            uint x = (positionIndex >> 10) & 0x1F;
-            uint y = (positionIndex >> 5) & 0x1F;
-            uint z = positionIndex & 0x1F;
+            uint positionIndex = Vertices[i] & 0x3FFFF;
+            uint x = (positionIndex >> 12) & 0x3F;
+            uint y = (positionIndex >> 6) & 0x3F;
+            uint z = positionIndex & 0x3F;
             DebugTextWindow.AddStaticText(new Vector3(x, y, z), $"({i / 2}) => [{x}, {y}, {z}]");
-            // Logger.Debug($"Vertex {i} = {_vertices[i]}\t({x}, {y}, {z})");
         }
 
         for (int i = 0; i < Indices.Length; i++)

@@ -34,6 +34,5 @@ public static class Constants
     public const int CHUNK_COLUMN_UNLOAD_RADIUS = 16;
     public const int CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED = CHUNK_COLUMN_UNLOAD_RADIUS * CHUNK_COLUMN_UNLOAD_RADIUS;
 
-    public const int CHUNK_VERTEX_MAX_POS = CHUNK_SIZE + 1;
     public const int MAX_LIGHT_LEVEL = 31;
 }

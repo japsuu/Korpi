@@ -4,7 +4,6 @@ layout (location = 0) in ivec2 aData;
 
 out vec3 vertColor;
 
-//TODO: Add the chunk position uniform. Other option is to have each chunk have their own model matrix
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -12,18 +11,18 @@ uniform mat4 projection;
 void main()
 {
     // Extracting values from the packed integers
-    int positionIndex = aData.x & 0xFFFF;        // Extract lower 16 bits
-    int lightColor = (aData.x >> 16) & 0x1FF;    // Extract bits 16-24
-    int lightLevel = (aData.x >> 25) & 0x1F;     // Extract bits 25-29
-    int uvIndex = (aData.x >> 30) & 0x3;         // Extract bits 30-31
+    int positionIndex = aData.x & 0x3FFFF;        // Extract lower 18 bits
+    int lightColor = (aData.x >> 18) & 0x1FF;    // Extract bits 18-26
+    int lightLevel = (aData.x >> 27) & 0x1F;     // Extract bits 27-32
     
     int textureIndex = aData.y & 0xFFF;          // Extract lower 12 bits
     int skyLightLevel = (aData.y >> 12) & 0x1F;  // Extract bits 12-16
     int normal = (aData.y >> 17) & 0x7;          // Extract bits 17-19
+    int uvIndex = (aData.y >> 20) & 0x3;         // Extract bits 20-22
     
-    int x = (positionIndex >> 10) & 0x1F;
-    int y = (positionIndex >> 5) & 0x1F;
-    int z = positionIndex & 0x1F;
+    int x = (positionIndex >> 12) & 0x3F;
+    int y = (positionIndex >> 6) & 0x3F;
+    int z = positionIndex & 0x3F;
     vec3 position = vec3(x, y, z);
     
     // Define colors for each direction

@@ -14,27 +14,21 @@ public class MeshingBuffer
     private const int FACES_PER_BLOCK = 6;
     private const int VERTS_PER_FACE = 4;
     private const int INDICES_PER_FACE = 6;
+    // Since we cull internal faces, the worst case is half of the faces (every other block needs to be meshed).
+    private const int MAX_VISIBLE_FACES = Constants.CHUNK_SIZE_CUBED * FACES_PER_BLOCK / 2;
+    private const int MAX_VERTS_PER_CHUNK = MAX_VISIBLE_FACES * VERTS_PER_FACE;
+    private const int MAX_INDICES_PER_CHUNK = MAX_VISIBLE_FACES * INDICES_PER_FACE;
+    private const int MAX_VERTEX_DATA_PER_CHUNK = MAX_VERTS_PER_CHUNK * ELEMENTS_PER_VERTEX;
     
     /// <summary>
-    /// Array of bytes containing the vertex data. 5 bytes per vertex.
+    /// Array of bytes containing the vertex data. 2 uints (64 bits) per vertex.
     /// </summary>
-    private readonly uint[] _vertexData;
-    private readonly uint[] _indices;
+    private readonly uint[] _vertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK];
+    private readonly uint[] _indices = new uint[MAX_INDICES_PER_CHUNK];
     
     public uint AddedVertexDataCount { get; private set; }
     public uint AddedIndicesCount { get; private set; }
     public uint AddedFacesCount { get; private set; }
-
-
-    public MeshingBuffer(int chunkSize, bool hasInternalFaceCulling)
-    {
-        int maxBlocksInChunk = chunkSize * chunkSize * chunkSize;
-        int maxVisibleFaces = hasInternalFaceCulling ? maxBlocksInChunk * FACES_PER_BLOCK / 2 : maxBlocksInChunk * FACES_PER_BLOCK;
-        int maxVertsInChunk = maxVisibleFaces * VERTS_PER_FACE;
-        int maxIndicesPerChunk = maxVisibleFaces * INDICES_PER_FACE;    // 589824 with internal face culling and 32 chunk size.
-        _vertexData = new uint[maxVertsInChunk * ELEMENTS_PER_VERTEX];
-        _indices = new uint[maxIndicesPerChunk];
-    }
 
 
     /// <summary>
@@ -94,34 +88,33 @@ public class MeshingBuffer
             default:
                 throw new ArgumentOutOfRangeException(nameof(faceNormal), faceNormal, "What face is THAT?!");
         }
-        // Logger.Debug($"Add face at {blockPos} with normal {faceNormal}");
         AddVertex(vertPos1, normal, 0, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos2, normal, 1, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos3, normal, 2, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos4, normal, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddIndices();
-        AddedFacesCount = AddedFacesCount + 1;
+        AddedFacesCount++;
     }
 
 
     private void AddVertex(Vector3i vertexPos, int normal, int textureUvIndex, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
     {
-        // PositionIndex    =   0-35936. Calculated with x + Size * (y + Size * z).             = 16 bits.  16 bits.
-        // TextureIndex     =   0-4095.                                                         = 12 bits.  28 bits.
-        // LightColor       =   0-511.                                                          = 9 bits.   37 bits.
-        // LightLevel       =   0-31.                                                           = 5 bits.   42 bits.
-        // SkyLightLevel    =   0-31.                                                           = 5 bits.   47 bits.
-        // Normal           =   0-5.                                                            = 3 bits.   50 bits.
-        // UVIndex          =   0-3. Could be calculated dynamically based on gl_VertexID.      = 2 bits.   52 bits.
-        // 12 bits leftover.
+        // PositionIndex    =   0-133152. Calculated with x + Size * (y + Size * z).             = 18 bits.  18 bits.
+        // TextureIndex     =   0-4095.                                                         = 12 bits.  30 bits.
+        // LightColor       =   0-511.                                                          = 9 bits.   39 bits.
+        // LightLevel       =   0-31.                                                           = 5 bits.   44 bits.
+        // SkyLightLevel    =   0-31.                                                           = 5 bits.   49 bits.
+        // Normal           =   0-5.                                                            = 3 bits.   52 bits.
+        // UVIndex          =   0-3. Could be calculated dynamically based on gl_VertexID.      = 2 bits.   54 bits.
+        // 10 bits leftover.
         
-        //int positionIndex = vertexPos.X + Constants.CHUNK_VERTEX_MAX_POS * (vertexPos.Y + Constants.CHUNK_VERTEX_MAX_POS * vertexPos.Z);
-        int positionIndex = (vertexPos.X << 10) | (vertexPos.Y << 5) | vertexPos.Z;
+        int positionIndex = (vertexPos.X << 12) | (vertexPos.Y << 6) | vertexPos.Z;
+        
         int lightColorValue = lightColor.Value;
         
-        Logger.Debug($"Request add vert @ {vertexPos} with normal {normal}");
+        Logger.Debug($"Request add vert @ {vertexPos} -> {positionIndex} with normal {normal}");
 
-        if (positionIndex < 0 || positionIndex > 35936)
+        if (positionIndex < 0 || positionIndex > 133152)
             throw new ArgumentOutOfRangeException(nameof(positionIndex), positionIndex, "Position index out of range");
         
         if (lightColorValue < 0 || lightColorValue > 511)
@@ -149,13 +142,13 @@ public class MeshingBuffer
         int bitIndex1 = 0;
         int bitIndex2 = 0;
         
-        positionIndex       .InjectUnsigned(ref data1, ref bitIndex1, 16);
+        positionIndex       .InjectUnsigned(ref data1, ref bitIndex1, 18);
         lightColorValue     .InjectUnsigned(ref data1, ref bitIndex1, 9);
         lightLevel          .InjectUnsigned(ref data1, ref bitIndex1, 5);
-        textureUvIndex      .InjectUnsigned(ref data1, ref bitIndex1, 2);
         textureIndex        .InjectUnsigned(ref data2, ref bitIndex2, 12);
         skyLightLevel       .InjectUnsigned(ref data2, ref bitIndex2, 5);
         normal              .InjectUnsigned(ref data2, ref bitIndex2, 3);
+        textureUvIndex      .InjectUnsigned(ref data2, ref bitIndex2, 2);
         _vertexData[AddedVertexDataCount] = data1;
         _vertexData[AddedVertexDataCount + 1] = data2;
         AddedVertexDataCount += 2;
