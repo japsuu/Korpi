@@ -56,10 +56,10 @@ public class ChunkMesher
         {
             Vector3i chunkPos = _chunkMeshingQueue.Dequeue();
             _queuedChunks.Remove(chunkPos);
-            ChunkMesh? mesh = GenerateMesh(chunkPos);
+            ChunkRenderer? mesh = GenerateMesh(chunkPos);
             if (mesh == null)
                 continue;
-            ChunkMeshStorage.AddMesh(chunkPos, mesh);
+            ChunkRendererStorage.AddRenderer(chunkPos, mesh);
             chunksMeshed++;
         }
         
@@ -72,7 +72,7 @@ public class ChunkMesher
         if (_queuedChunks.Contains(chunkOriginPos))
             throw new InvalidOperationException($"Tried to mesh chunk at {chunkOriginPos} that is already queued!");
 
-        if (ChunkMeshStorage.ContainsMesh(chunkOriginPos))
+        if (ChunkRendererStorage.ContainsRenderer(chunkOriginPos))
             throw new InvalidOperationException($"Tried to mesh chunk at {chunkOriginPos} that is already meshed!");
 
         float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
@@ -86,7 +86,7 @@ public class ChunkMesher
         if (_queuedChunks.Contains(chunkOriginPos))
             return;
 
-        if (ChunkMeshStorage.ContainsMesh(chunkOriginPos))
+        if (ChunkRendererStorage.ContainsRenderer(chunkOriginPos))
         {
             Logger.LogWarning($"Trashing the mesh of chunk at {chunkOriginPos}!");
             DeleteChunkMesh(chunkOriginPos);
@@ -100,11 +100,11 @@ public class ChunkMesher
     
     public void DeleteChunkMesh(Vector3i chunkOriginPos)
     {
-        ChunkMeshStorage.RemoveMesh(chunkOriginPos);
+        ChunkRendererStorage.RemoveRenderer(chunkOriginPos);
     }
 
 
-    private ChunkMesh? GenerateMesh(Vector3i chunkOriginPos)
+    private ChunkRenderer? GenerateMesh(Vector3i chunkOriginPos)
     {
         if (!_chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache, out Chunk? chunk))
         {

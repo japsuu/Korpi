@@ -2,6 +2,7 @@
 using BlockEngine.Framework.Bitpacking;
 using BlockEngine.Framework.Blocks;
 using BlockEngine.Utils;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Meshing;
@@ -153,15 +154,24 @@ public class MeshingBuffer
     }
 
 
-    public ChunkMesh CreateMesh(Vector3i chunkPos)
+    public ChunkRenderer CreateMesh(Vector3i chunkPos)
     {
-        // Create new arrays with the correct size, to avoid sending unused data to the GPU.
-        uint[] vertices = new uint[AddedVertexDataCount];
-        uint[] indices = new uint[AddedIndicesCount];
-        Array.Copy(_vertexData, vertices, AddedVertexDataCount);
-        Array.Copy(_indices, indices, AddedIndicesCount);
+        Matrix4 modelMatrix = Matrix4.CreateTranslation(chunkPos);
+        int meshVBO = GL.GenBuffer();
+        int meshVAO = GL.GenVertexArray();
+        int meshEBO = GL.GenBuffer();
+        GL.BindVertexArray(meshVAO);
+
+        GL.BindBuffer(BufferTarget.ArrayBuffer, meshVBO);
+        GL.BufferData(BufferTarget.ArrayBuffer, _vertexData.Length * sizeof(uint), _vertexData, BufferUsageHint.StaticDraw);
+
+        GL.VertexAttribIPointer(0, 2, VertexAttribIntegerType.UnsignedInt, 0, IntPtr.Zero);
+        GL.EnableVertexAttribArray(0);
+
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, meshEBO);
+        GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
         
-        return new ChunkMesh(chunkPos, vertices, indices);
+        return new ChunkRenderer(meshVBO, meshEBO, meshVAO, _indices.Length, modelMatrix);
     }
 
 

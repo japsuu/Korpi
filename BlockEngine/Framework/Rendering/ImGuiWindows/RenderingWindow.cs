@@ -60,7 +60,7 @@ public class RenderingWindow : ImGuiWindow
         
         ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
         
-        ImGui.Text($"Cached chunk meshes = {ChunkMeshStorage.GeneratedMeshCount}");
+        ImGui.Text($"Cached chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");
         ImGui.Text($"Meshing time = {RenderingStats.MeshingTime:F1}ms");
     }

@@ -291,7 +291,7 @@ public class ChunkManager
 
     private void DrawChunkAt(Vector3i position, Shader chunkShader)
     {
-        if (ChunkMeshStorage.TryGetMesh(position, out ChunkMeshRenderer? mesh))
+        if (ChunkRendererStorage.TryGetRenderer(position, out ChunkRenderer? mesh))
             mesh!.Draw(chunkShader);
     }
 
