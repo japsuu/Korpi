@@ -30,10 +30,10 @@ public class ChunkMesher
     private static readonly Vector3i[] NeighbourOffsets =
     {
         new(1, 0, 0),
-        new(-1, 0, 0),
         new(0, 1, 0),
-        new(0, -1, 0),
         new(0, 0, 1),
+        new(-1, 0, 0),
+        new(0, -1, 0),
         new(0, 0, -1),
     };
 
@@ -149,7 +149,10 @@ public class ChunkMesher
                         // If the neighbour is opaque, skip this face.
                         // If the neighbour is empty or transparent, we need to mesh this face.
                         if (neighbour.Visibility == BlockVisibility.Opaque)
+                        {
+                            Logger.Debug($"Block @ {x}, {y}, {z} face {(BlockFaceNormal)face} is not visible because of neighbour @ {neighbourX}, {neighbourY}, {neighbourZ}");
                             continue;
+                        }
 
                         // Get the texture index of the block face
                         ushort textureIndex = GetBlockTextureIndex(blockState, (BlockFaceNormal)face);

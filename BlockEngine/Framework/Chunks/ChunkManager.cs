@@ -1,7 +1,6 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
-using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -58,15 +57,14 @@ public class ChunkManager
 
     // Precomputed spiral of chunk column positions to load.
     // The spiral is centered around the origin.
-    // TODO: Convert to hashset for faster lookup?
-    private List<Vector2i> _chunkLoadSpiral = null!;
+    private List<Vector2i> _columnLoadSpiral = null!;
 
 
     public ChunkManager()
     {
         _chunkMesher = new ChunkMesher(this);
         PrecomputeNeighbouringChunkOffsets();
-        PrecomputeChunkLoadSpiral();
+        PrecomputeColumnLoadSpiral();
     }
 
 
@@ -234,7 +232,7 @@ public class ChunkManager
         Vector2i originColumnPos = CoordinateConversions.GetContainingColumnPos(cameraPos);
 
         // Load columns in a square around the origin column in a spiral pattern.
-        foreach (Vector2i spiralPos in _chunkLoadSpiral)
+        foreach (Vector2i spiralPos in _columnLoadSpiral)
         {
             Vector2i columnPos = originColumnPos + spiralPos;
             if (_loadedColumns.ContainsKey(columnPos))
@@ -311,10 +309,10 @@ public class ChunkManager
     }
 
 
-    private void PrecomputeChunkLoadSpiral()
+    private void PrecomputeColumnLoadSpiral()
     {
         const int size = Constants.CHUNK_COLUMN_LOAD_RADIUS * 2 + 1;
-        _chunkLoadSpiral = new List<Vector2i>
+        _columnLoadSpiral = new List<Vector2i>
         {
             new Vector2i(0, 0)
         };
@@ -326,10 +324,10 @@ public class ChunkManager
             // Ensure that the position is inside the load radius
             if (!inRange)
                 continue;
-            _chunkLoadSpiral.Add(pos * Constants.CHUNK_SIZE);
+            _columnLoadSpiral.Add(pos * Constants.CHUNK_SIZE);
         }
 
-        Logger.Log($"Precomputed chunk load spiral for render distance {Constants.CHUNK_COLUMN_LOAD_RADIUS}, for {_chunkLoadSpiral.Count} chunks.");
+        Logger.Log($"Precomputed column load spiral for render distance {Constants.CHUNK_COLUMN_LOAD_RADIUS}, for {_columnLoadSpiral.Count} columns.");
     }
 
 
