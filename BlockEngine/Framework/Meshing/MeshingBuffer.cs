@@ -2,6 +2,7 @@
 using BlockEngine.Framework.Bitpacking;
 using BlockEngine.Framework.Blocks;
 using BlockEngine.Utils;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Meshing;
@@ -153,15 +154,9 @@ public class MeshingBuffer
     }
 
 
-    public ChunkMesh CreateMesh(Vector3i chunkPos)
+    public ChunkRenderer CreateMesh(Vector3i chunkPos)
     {
-        // Create new arrays with the correct size, to avoid sending unused data to the GPU.
-        uint[] vertices = new uint[AddedVertexDataCount];
-        uint[] indices = new uint[AddedIndicesCount];
-        Array.Copy(_vertexData, vertices, AddedVertexDataCount);
-        Array.Copy(_indices, indices, AddedIndicesCount);
-        
-        return new ChunkMesh(chunkPos, vertices, indices);
+        return new ChunkRenderer(_vertexData, _indices, chunkPos);
     }
 
 

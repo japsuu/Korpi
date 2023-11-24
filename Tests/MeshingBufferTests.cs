@@ -35,7 +35,7 @@ public class MeshingBufferTests
     {
         _meshingBuffer.Clear();
         _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFaceNormal.XPositive, 1, new Color9(1, 1, 1), 1, 1);
-        ChunkMesh chunkMesh = _meshingBuffer.CreateMesh(new Vector3i(0, 0, 0));
+        ChunkRenderer chunkMesh = _meshingBuffer.CreateMesh(new Vector3i(0, 0, 0));
         Assert.Multiple(() =>
         {
             Assert.That(chunkMesh.VerticesCount, Is.EqualTo(8));

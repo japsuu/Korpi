@@ -10,7 +10,7 @@ public class RenderingWindow : ImGuiWindow
 {
     public static class RenderingStats
     {
-        public static int ChunksInMeshingQueue;
+        public static ulong ChunksInMeshingQueue;
         public static float MeshingTime { get; private set; }
         
         private static readonly Stopwatch MeshingTimer = new();
@@ -60,7 +60,7 @@ public class RenderingWindow : ImGuiWindow
         
         ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
         
-        ImGui.Text($"Cached chunk meshes = {ChunkMeshStorage.GeneratedMeshCount}");
+        ImGui.Text($"Cached chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");
         ImGui.Text($"Meshing time = {RenderingStats.MeshingTime:F1}ms");
     }
