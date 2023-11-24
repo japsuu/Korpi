@@ -15,9 +15,8 @@ public class Block : IHasId
     private readonly BlockState _defaultState;
 
 
-    public Block(ushort id, BlockVisibility visibility)
+    public Block(BlockVisibility visibility)
     {
-        Id = id;
         Visibility = visibility;
         _defaultState = new BlockState(this);
     }

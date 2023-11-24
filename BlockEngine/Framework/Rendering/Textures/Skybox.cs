@@ -8,7 +8,7 @@ public class Skybox
     public readonly int Handle;
 
 
-    public Skybox(int glHandle)
+    private Skybox(int glHandle)
     {
         Handle = glHandle;
     }

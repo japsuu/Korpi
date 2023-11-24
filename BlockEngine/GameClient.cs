@@ -22,6 +22,7 @@ public class GameClient : GameWindow
     
     private ImGuiController _imGuiController = null!;
     private Skybox _skyboxTexture = null!;
+    private Texture _testTexture = null!;
     private ShaderManager _shaderManager = null!;
 
 
@@ -79,21 +80,22 @@ public class GameClient : GameWindow
     
     private int _skyboxVAO;
     private int _skyboxVBO;
-    
-    private const float SKYBOX_ROTATION_SPEED = 30;
 
     private Camera _camera = null!;
-    
-    
-    public GameClient() : base(new GameWindowSettings 
+
+
+    public GameClient() : base(
+        new GameWindowSettings
         {
             UpdateFrequency = Constants.UPDATE_LOOP_FREQUENCY
-        }, 
+        },
         new NativeWindowSettings
         {
             Size = (Settings.Client.WindowSettings.WindowWidth, Settings.Client.WindowSettings.WindowHeight),
-            Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}"
-        }) { }
+            Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}",
+            NumberOfSamples = 8
+        })
+    { }
     
     
     protected override void OnLoad()
@@ -109,6 +111,9 @@ public class GameClient : GameWindow
         // We enable depth testing here. If you try to draw something more complex than one plane without this,
         // you'll notice that polygons further in the background will occasionally be drawn over the top of the ones in the foreground.
         GL.Enable(EnableCap.DepthTest);
+        
+        // Enable multisampling.
+        GL.Enable(EnableCap.Multisample);
         
         # region SKYBOX_VAO
         
@@ -132,6 +137,8 @@ public class GameClient : GameWindow
             IoUtils.GetSkyboxTexturePath("z_pos.png"),
             IoUtils.GetSkyboxTexturePath("z_neg.png"),
         });
+        
+        _testTexture = Texture.LoadFromFile(IoUtils.GetBlockTexturePath("missing.png"));
         
         // Load shaders.
         _shaderManager = new ShaderManager();
@@ -198,7 +205,7 @@ public class GameClient : GameWindow
         Matrix4 skyboxViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
         if (rotateOverTime)
         {
-            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(SKYBOX_ROTATION_SPEED * Time.TotalTime));
+            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * Time.TotalTime)) * Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * Time.TotalTime));
             skyboxViewMatrix = modelMatrix * skyboxViewMatrix;
         }
 
@@ -226,6 +233,7 @@ public class GameClient : GameWindow
     private void DrawWorld()
     {
         ShaderManager.ChunkShader.Use();
+        _testTexture.Use(TextureUnit.Texture0);
 
         // Enable backface culling.
         GL.Enable(EnableCap.CullFace);
