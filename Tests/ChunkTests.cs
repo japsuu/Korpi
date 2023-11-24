@@ -47,8 +47,12 @@ public class ChunkTests
         MeshingDataCache meshingDataCache = new(Constants.CHUNK_SIZE);
 
         // Act
-        chunk.SetBlockState(new Vector3i(0, 0, 0), new BlockState(new Block(1, BlockVisibility.Opaque)));
-        chunk.SetBlockState(new Vector3i(3, 3, 3), new BlockState(new Block(2, BlockVisibility.Opaque)));
+        Block block1 = new Block(BlockVisibility.Opaque);
+        block1.AssignId(0);
+        chunk.SetBlockState(new Vector3i(0, 0, 0), new BlockState(block1));
+        Block block2 = new Block(BlockVisibility.Opaque);
+        block2.AssignId(3);
+        chunk.SetBlockState(new Vector3i(3, 3, 3), new BlockState(block2));
         chunk.CacheMeshingData(meshingDataCache);
 
         // Assert
@@ -68,8 +72,12 @@ public class ChunkTests
         MeshingDataCache meshingDataCache = new(Constants.CHUNK_SIZE);
 
         // Act
-        chunk.SetBlockState(new Vector3i(0, 0, 0), new BlockState(new Block(1, BlockVisibility.Opaque)));
-        chunk.SetBlockState(new Vector3i(16, 0, 16), new BlockState(new Block(2, BlockVisibility.Opaque)));
+        Block block1 = new Block(BlockVisibility.Opaque);
+        block1.AssignId(0);
+        chunk.SetBlockState(new Vector3i(0, 0, 0), new BlockState(block1));
+        Block block2 = new Block(BlockVisibility.Opaque);
+        block2.AssignId(2);
+        chunk.SetBlockState(new Vector3i(16, 0, 16), new BlockState(block2));
         chunk.CacheMeshingData(meshingDataCache, NeighbouringChunkPosition.FaceUp);
 
         // Assert
