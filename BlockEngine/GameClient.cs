@@ -1,6 +1,9 @@
 ﻿using BlockEngine.Framework;
+using BlockEngine.Framework.Blocks.Serialization;
 using BlockEngine.Framework.Configuration;
 using BlockEngine.Framework.Debugging;
+using BlockEngine.Framework.Modding;
+using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
@@ -139,6 +142,10 @@ public class GameClient : GameWindow
         });
         
         _testTexture = Texture.LoadFromFile(IoUtils.GetBlockTexturePath("missing.png"));
+
+        TextureRegistry.StartTextureRegistration();
+        ModLoader.LoadAllMods();
+        TextureRegistry.FinishTextureRegistration();
         
         // Load shaders.
         _shaderManager = new ShaderManager();

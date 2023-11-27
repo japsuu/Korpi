@@ -16,7 +16,7 @@ public struct BlockState
     /// <summary>
     /// How the block will be rendered.
     /// </summary>
-    public readonly BlockVisibility Visibility;
+    public readonly BlockRenderType RenderType;
     
     /// <summary>
     /// Data for the block. This is block-specific.
@@ -34,7 +34,7 @@ public struct BlockState
     public BlockState(Block block)
     {
         Id = block.Id;
-        Visibility = block.Visibility;
+        RenderType = block.RenderType;
         Data = 0b_00000000;
         NeighbourMask = 0b_00000000;
     }
@@ -51,7 +51,7 @@ public struct BlockState
     /// </summary>
     /// <param name="normal">Direction of the neighbour</param>
     /// <param name="hasNeighbor">If neighbour exists</param>
-    public void SetNeighborMask(BlockFaceNormal normal, bool hasNeighbor)
+    public void SetNeighborMask(BlockFace normal, bool hasNeighbor)
     {
         // Update the correct bit in the mask. Remember that the 2 least significant bits are rotation data.
         byte mask = (byte) (1 << (int) normal);
@@ -62,7 +62,7 @@ public struct BlockState
     }
     
     
-    public bool HasNeighbor(BlockFaceNormal orientation)
+    public bool HasNeighbor(BlockFace orientation)
     {
         // Return the correct bit in the mask. Remember that the 2 least significant bits are rotation data.
         byte mask = (byte) (1 << (int) orientation);
@@ -70,24 +70,24 @@ public struct BlockState
     }
     
     
-    public void SetRotation(Orientation orientation)
+    public void SetRotation(BlockOrientation blockOrientation)
     {
         // 2 least significant bits of NeighbourMask are the rotation data.
         NeighbourMask &= 0b11111100;
-        NeighbourMask |= (byte) (orientation + 1);
+        NeighbourMask |= (byte) (blockOrientation + 1);
     }
     
     
-    public Orientation GetRotation()
+    public BlockOrientation GetRotation()
     {
         // 2 least significant bits of NeighbourMask are the rotation data.
-        return (Orientation) ((NeighbourMask & 0b00000011) - 1);
+        return (BlockOrientation) ((NeighbourMask & 0b00000011) - 1);
     }
 
 
     public bool Equals(BlockState other)
     {
-        return Visibility == other.Visibility && Id == other.Id && Data == other.Data && NeighbourMask == other.NeighbourMask;
+        return RenderType == other.RenderType && Id == other.Id && Data == other.Data && NeighbourMask == other.NeighbourMask;
     }
 
 
@@ -99,7 +99,7 @@ public struct BlockState
 
     public override int GetHashCode()
     {
-        return HashCode.Combine((int)Visibility, Id, Data, NeighbourMask);
+        return HashCode.Combine((int)RenderType, Id, Data, NeighbourMask);
     }
     
     

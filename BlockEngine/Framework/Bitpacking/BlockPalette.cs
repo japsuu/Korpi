@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Framework.Registries;
 using BlockEngine.Utils;
 
 namespace BlockEngine.Framework.Bitpacking;

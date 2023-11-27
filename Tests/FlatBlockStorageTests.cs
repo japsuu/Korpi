@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework.Bitpacking;
 using BlockEngine.Framework.Blocks;
+using BlockEngine.Framework.Registries;
 
 namespace Tests;
 

@@ -1,6 +1,7 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
+using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;

@@ -19,7 +19,7 @@ public class MeshingBufferTests
     public void AddFace_IncrementsAddedFacesCount()
     {
         _meshingBuffer.Clear();
-        _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFaceNormal.XPositive, 1, new Color9(1, 1, 1), 1, 1);
+        _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFace.XPositive, 1, new Color9(1, 1, 1), 1, 1);
 
         Assert.That(_meshingBuffer.AddedFacesCount, Is.EqualTo(1));
     }
@@ -27,14 +27,14 @@ public class MeshingBufferTests
     [Test]
     public void AddFace_ThrowsException_WhenTextureIndexOutOfRange()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFaceNormal.XPositive, 5000, new Color9(1, 1, 1), 1, 1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFace.XPositive, 5000, new Color9(1, 1, 1), 1, 1));
     }
 
     [Test]
     public void CreateMesh_ReturnsChunkMesh_WithCorrectVerticesAndIndicesCount()
     {
         _meshingBuffer.Clear();
-        _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFaceNormal.XPositive, 1, new Color9(1, 1, 1), 1, 1);
+        _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFace.XPositive, 1, new Color9(1, 1, 1), 1, 1);
         ChunkRenderer chunkMesh = _meshingBuffer.CreateMesh(new Vector3i(0, 0, 0));
         Assert.Multiple(() =>
         {
@@ -46,7 +46,7 @@ public class MeshingBufferTests
     [Test]
     public void Clear_ResetsAddedFacesCount()
     {
-        _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFaceNormal.XPositive, 1, new Color9(1, 1, 1), 1, 1);
+        _meshingBuffer.AddFace(new Vector3i(1, 1, 1), BlockFace.XPositive, 1, new Color9(1, 1, 1), 1, 1);
         _meshingBuffer.Clear();
 
         Assert.That(_meshingBuffer.AddedFacesCount, Is.EqualTo(0));

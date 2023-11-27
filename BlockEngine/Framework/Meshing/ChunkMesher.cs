@@ -126,7 +126,7 @@ public class ChunkMesher
                     BlockState blockState = _meshingDataCache.GetData(x, y, z);
                     
                     // If the block is invisible, skip it
-                    if (blockState.Visibility == BlockVisibility.Empty)
+                    if (blockState.RenderType == BlockRenderType.None)
                         continue;
                     
                     // Iterate over all 6 faces of the block
@@ -148,11 +148,11 @@ public class ChunkMesher
 
                         // If the neighbour is opaque, skip this face.
                         // If the neighbour is empty or transparent, we need to mesh this face.
-                        if (neighbour.Visibility == BlockVisibility.Opaque)
+                        if (neighbour.RenderType == BlockRenderType.Normal)
                             continue;
 
                         // Get the texture index of the block face
-                        ushort textureIndex = GetBlockTextureIndex(blockState, (BlockFaceNormal)face);
+                        ushort textureIndex = GetBlockTextureIndex(blockState, (BlockFace)face);
                         
                         // Get the lighting of the block face
                         const int lightLevel = Constants.MAX_LIGHT_LEVEL;
@@ -161,7 +161,7 @@ public class ChunkMesher
                         
                         // Add the face to the meshing buffer
                         Vector3i blockPos = new(x - 1, y - 1, z - 1);
-                        _meshingBuffer.AddFace(blockPos, (BlockFaceNormal)face, textureIndex, lightColor, lightLevel, skyLightLevel);
+                        _meshingBuffer.AddFace(blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
                     }
                 }
             }
@@ -174,7 +174,7 @@ public class ChunkMesher
     }
     
     
-    private static ushort GetBlockTextureIndex(BlockState block, BlockFaceNormal normal)
+    private static ushort GetBlockTextureIndex(BlockState block, BlockFace normal)
     {
         return 0;
     }

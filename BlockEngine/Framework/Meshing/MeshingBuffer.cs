@@ -37,58 +37,58 @@ public class MeshingBuffer
     /// Adds a block face to the mesh.
     /// </summary>
     /// <param name="blockPos">Position of the block in the chunk (0-31 on all axis)</param>
-    /// <param name="faceNormal">Which face we are adding</param>
+    /// <param name="face">Which face we are adding</param>
     /// <param name="textureIndex">Index to the texture of this face (0-4095)</param>
     /// <param name="lightColor">Color of the light hitting this face</param>
     /// <param name="lightLevel">Amount of light that hits this face (0-31)</param>
     /// <param name="skyLightLevel">Amount of skylight hitting this face (0-31)</param>
-    public void AddFace(Vector3i blockPos, BlockFaceNormal faceNormal, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
+    public void AddFace(Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
     {
         Vector3i vertPos1;
         Vector3i vertPos2;
         Vector3i vertPos3;
         Vector3i vertPos4;
-        int normal = (int)faceNormal;
-        switch (faceNormal)
+        int normal = (int)face;
+        switch (face)
         {
-            case BlockFaceNormal.XPositive:
+            case BlockFace.XPositive:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 break;
-            case BlockFaceNormal.YPositive:
+            case BlockFace.YPositive:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 break;
-            case BlockFaceNormal.ZPositive:
+            case BlockFace.ZPositive:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 break;
-            case BlockFaceNormal.XNegative:
+            case BlockFace.XNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 break;
-            case BlockFaceNormal.YNegative:
+            case BlockFace.YNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 break;
-            case BlockFaceNormal.ZNegative:
+            case BlockFace.ZNegative:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(faceNormal), faceNormal, "What face is THAT?!");
+                throw new ArgumentOutOfRangeException(nameof(face), face, "What face is THAT?!");
         }
         AddVertex(vertPos1, normal, 0, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddVertex(vertPos2, normal, 1, textureIndex, lightColor, lightLevel, skyLightLevel);

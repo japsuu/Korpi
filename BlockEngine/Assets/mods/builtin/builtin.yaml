@@ -1,0 +1,26 @@
+﻿name: Builtins
+namespace: block_engine
+description: Built-in blocks
+author: Japsu
+blocks:
+- name: TestBlock
+  render_type: Normal
+  face_textures:
+    front:
+      textures:
+      - test_block.png
+    back:
+      textures:
+      - test_block.png
+    left:
+      textures:
+      - test_block.png
+    right:
+      textures:
+      - test_block.png
+    top:
+      textures:
+      - test_block.png
+    bottom:
+      textures:
+      - test_block.png

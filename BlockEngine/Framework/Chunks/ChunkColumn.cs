@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Framework.Registries;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
@@ -74,7 +75,7 @@ public class ChunkColumn
                         if (isChecker)
                             continue;
 
-                        chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.TestBlock.GetDefaultState());
+                        chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(1).GetDefaultState());
                     }
                 }
             }

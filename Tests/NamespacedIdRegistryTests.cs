@@ -12,12 +12,12 @@ public class NamespacedIdRegistryTests
         public void AssignId(ushort id) => Id = id;
     }
     
-    private NamespacedIdRegistry<IHasId> _registry = null!;
+    private BlockRegistry<IHasId> _registry = null!;
 
     [SetUp]
     public void SetUp()
     {
-        _registry = new NamespacedIdRegistry<IHasId>("TestRegistry");
+        _registry = new BlockRegistry<IHasId>("TestRegistry");
     }
 
     [Test]
