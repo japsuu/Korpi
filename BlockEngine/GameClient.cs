@@ -71,7 +71,7 @@ public class GameClient : GameWindow
         // Load shaders.
         _shaderManager = new ShaderManager();
         
-        _skybox = new Skybox();
+        _skybox = new Skybox(false);
         
         // Initialize the camera.
         _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
@@ -130,14 +130,7 @@ public class GameClient : GameWindow
         
         // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
-        const bool rotateOverTime = false;
         Matrix4 cameraViewMatrix = _camera.GetViewMatrix();
-        Matrix4 skyboxViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
-        if (rotateOverTime)     //TODO: Move to Skybox.cs
-        {
-            Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * Time.TotalTime)) * Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * Time.TotalTime));
-            skyboxViewMatrix = modelMatrix * skyboxViewMatrix;
-        }
 
         // IMPORTANT: OpenTK's matrix types are transposed from what OpenGL would expect - rows and columns are reversed.
         // They are then transposed properly when passed to the shader. 
@@ -146,7 +139,7 @@ public class GameClient : GameWindow
         // You can think like this: first apply the modelToWorld (aka model) matrix, then apply the worldToView (aka view) matrix, 
         // and finally apply the viewToProjectedSpace (aka projection) matrix.
         // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
-        ShaderManager.UpdateViewMatrix(cameraViewMatrix, skyboxViewMatrix);
+        ShaderManager.UpdateViewMatrix(cameraViewMatrix);
         ShaderManager.UpdateProjectionMatrix(_camera.GetProjectionMatrix());
         
         DrawWorld();

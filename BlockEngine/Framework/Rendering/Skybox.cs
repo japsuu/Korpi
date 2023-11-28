@@ -2,6 +2,7 @@
 using BlockEngine.Framework.Rendering.Textures;
 using BlockEngine.Utils;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Rendering;
 
@@ -59,10 +60,13 @@ public class Skybox
     
     private readonly CubemapTexture _skyboxTexture;
     private readonly int _skyboxVAO;
+    private readonly bool _enableRotation;
 
 
-    public Skybox()
+    public Skybox(bool enableRotation)
     {
+        _enableRotation = enableRotation;
+        
         // Generate the VAO and VBO.
         _skyboxVAO = GL.GenVertexArray();
         int skyboxVBO = GL.GenBuffer();
@@ -87,6 +91,18 @@ public class Skybox
 
     public void Draw()
     {
+        // Update the skybox view matrix.
+        Matrix4 skyboxViewMatrix = new(new Matrix3(ShaderManager.ViewMatrix)); // Remove translation from the view matrix
+        if (_enableRotation)
+        {
+            Matrix4 modelMatrix = Matrix4.Identity *
+                                  Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * Time.TotalTime)) *
+                                  Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * Time.TotalTime));
+            skyboxViewMatrix = modelMatrix * skyboxViewMatrix;
+        }
+        ShaderManager.UpdateSkyboxViewMatrix(skyboxViewMatrix);
+        
+        // Draw the skybox.
         GL.DepthFunc(DepthFunction.Lequal);  // Change depth function so depth test passes when values are equal to depth buffer's content
         
         ShaderManager.SkyboxShader.Use();
