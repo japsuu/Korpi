@@ -2,6 +2,7 @@
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
 using BlockEngine.Framework.Registries;
+using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -104,6 +105,7 @@ public class ChunkManager
         }
         
         _chunkMesher.ProcessMeshingQueue();
+        RenderingWindow.RenderingStats.LoadedColumnCount = (ulong)_loadedColumns.Count;
     }
 
 
