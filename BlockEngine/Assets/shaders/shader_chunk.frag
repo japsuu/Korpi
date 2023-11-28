@@ -1,11 +1,11 @@
 ﻿#version 330 core
 
 // in vec3 outNormalColor;
-in vec2 uv;
+in vec3 uv;
 
 out vec4 FragColor;
 
-uniform sampler2D texture0;
+uniform sampler2DArray texture0;
 
 void main()
 {

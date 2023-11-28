@@ -17,6 +17,9 @@ public static class BlockRegistry
     private static ushort nextId;
     
     public static readonly Block Air = RegisterNewBuiltinBlock(Constants.BUILT_INS_NAMESPACE, YamlBlockData.Empty("Air"));
+
+
+    public static int GetBlockCount() => Values.Count;
     
     
     public static void RegisterBlocks(YamlMod mod)

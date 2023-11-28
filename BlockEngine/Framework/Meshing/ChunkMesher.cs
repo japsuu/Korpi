@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Chunks;
+using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -141,7 +142,7 @@ public class ChunkMesher
                             continue;
 
                         // Get the texture index of the block face
-                        ushort textureIndex = GetBlockTextureIndex(blockState, (BlockFace)face);
+                        ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);
                         
                         // Get the lighting of the block face
                         const int lightLevel = Constants.MAX_LIGHT_LEVEL;
@@ -161,10 +162,10 @@ public class ChunkMesher
 
         return _meshingBuffer.CreateMesh(chunkOriginPos);
     }
-    
-    
-    private static ushort GetBlockTextureIndex(BlockState block, BlockFace normal)
+
+
+    private static ushort GetBlockFaceTextureIndex(BlockState block, BlockFace normal)
     {
-        return 0;
+        return BlockRegistry.GetBlock(block.Id).GetFaceTextureIndex(block, normal);
     }
 }

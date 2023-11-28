@@ -2,7 +2,7 @@
 
 layout (location = 0) in ivec2 aData;
 
-out vec2 uv;
+out vec3 uv;
 // out vec3 outNormalColor;
 
 uniform mat4 model;
@@ -64,6 +64,6 @@ void main()
     
     outNormalColor = normalColor;*/
     
-    uv = textureCoords[uvIndex];
+    uv = vec3(textureCoords[uvIndex], textureIndex);
     gl_Position = vec4(position, 1.0) * model * view * projection;
 }

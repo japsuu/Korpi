@@ -1,5 +1,7 @@
-﻿using BlockEngine.Framework.Blocks.Serialization;
+﻿using System.Diagnostics;
+using BlockEngine.Framework.Blocks.Serialization;
 using BlockEngine.Framework.Blocks.Textures;
+using BlockEngine.Framework.Meshing;
 using BlockEngine.Framework.Registries;
 
 namespace BlockEngine.Framework.Blocks;
@@ -32,5 +34,12 @@ public class Block
     public BlockState GetDefaultState()
     {
         return _defaultState;
+    }
+
+
+    public ushort GetFaceTextureIndex(BlockState blockState, BlockFace faceNormal)
+    {
+        Debug.Assert(_textures != null, nameof(_textures) + " != null");
+        return _textures.GetTextureIndex(faceNormal);
     }
 }

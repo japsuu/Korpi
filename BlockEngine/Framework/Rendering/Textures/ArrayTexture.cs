@@ -41,12 +41,14 @@ public class ArrayTexture : Texture
         }
 
         // First, we set the min and mag filter. These are used for when the texture is scaled down and up, respectively.
-        GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.NearestMipmapNearest);
+        GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
         GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
         // Now, set the wrapping mode. S is for the X axis, and T is for the Y axis.
         GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
         GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+        
+        GL.TexParameter(TextureTarget.Texture2DArray, TextureParameterName.TextureMaxAnisotropy, Constants.ANISOTROPIC_FILTERING_LEVEL);
 
         // Next, generate mipmaps.
         if (mipLevelCount > 1)
