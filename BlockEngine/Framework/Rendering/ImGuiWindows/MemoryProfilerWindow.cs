@@ -5,22 +5,32 @@ namespace BlockEngine.Framework.Rendering.ImGuiWindows;
 
 public class MemoryProfilerWindow : ImGuiWindow
 {
+    private const int UPDATE_INTERVAL_FRAMES = 60;
     private const long BYTES_TO_MEGABYTES = 1048576L;
     public override string Title => "Memory Profiler";
 
     private readonly Process _proc;
+    private GCMemoryInfo _gcMemoryInfo;
+    private int _framesSinceUpdate;
 
 
     public MemoryProfilerWindow()
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
         _proc = Process.GetCurrentProcess();
+        _gcMemoryInfo = GC.GetGCMemoryInfo(GCKind.Any);
         GameClient.ClientUnload += OnUnload;
     }
 
 
     protected override void UpdateContent()
     {
+        if (_framesSinceUpdate++ >= UPDATE_INTERVAL_FRAMES)
+        {
+            _gcMemoryInfo = GC.GetGCMemoryInfo(GCKind.Any);
+            _framesSinceUpdate = 0;
+        }
+
         // Add hover tooltip
         ImGui.Text($"GC Alloc. Approx.: {GC.GetTotalMemory(false) / BYTES_TO_MEGABYTES} MB");
         if (ImGui.IsItemHovered())
@@ -29,7 +39,7 @@ public class MemoryProfilerWindow : ImGuiWindow
             ImGui.Text("The memory currently thought to be allocated by GC.");
             ImGui.EndTooltip();
         }
-        ImGui.Text($"GC Avail.:         {GC.GetGCMemoryInfo(GCKind.Any).TotalAvailableMemoryBytes / BYTES_TO_MEGABYTES} MB");
+        ImGui.Text($"GC Avail.:         {_gcMemoryInfo.TotalAvailableMemoryBytes / BYTES_TO_MEGABYTES} MB");
         if (ImGui.IsItemHovered())
         {
             ImGui.BeginTooltip();
