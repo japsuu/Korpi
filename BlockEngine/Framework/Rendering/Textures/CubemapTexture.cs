@@ -3,18 +3,18 @@ using StbImageSharp;
 
 namespace BlockEngine.Framework.Rendering.Textures;
 
-public class Skybox
+public class CubemapTexture
 {
     public readonly int Handle;
 
 
-    private Skybox(int glHandle)
+    private CubemapTexture(int glHandle)
     {
         Handle = glHandle;
     }
 
 
-    public static Skybox LoadFromFile(string[] facesPaths)
+    public static CubemapTexture LoadFromFile(string[] facesPaths)
     {
         if (facesPaths.Length != 6)
         {
@@ -77,7 +77,7 @@ public class Skybox
         GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
         GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapR, (int)TextureWrapMode.ClampToEdge);
 
-        return new Skybox(handle);
+        return new CubemapTexture(handle);
     }
 
 

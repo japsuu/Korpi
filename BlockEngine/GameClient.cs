@@ -24,66 +24,10 @@ public class GameClient : GameWindow
     public static event Action? ClientUnload;
     
     private ImGuiController _imGuiController = null!;
-    private Skybox _skyboxTexture = null!;
     private Texture _testTexture = null!;
     private ShaderManager _shaderManager = null!;
-
-
-    private readonly float[] _skyboxVertices = {
-        // Z- face
-        -1.0f,  1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        // X- face
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-        // X+ face
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f,  1.0f,
-        1.0f,  1.0f,  1.0f,
-        1.0f,  1.0f,  1.0f,
-        1.0f,  1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-
-        // Z+ face
-        -1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        1.0f,  1.0f,  1.0f,
-        1.0f,  1.0f,  1.0f,
-        1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-        // Y+ face
-        -1.0f,  1.0f, -1.0f,
-        1.0f,  1.0f, -1.0f,
-        1.0f,  1.0f,  1.0f,
-        1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        // Y- face
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-        1.0f, -1.0f,  1.0f
-    };
-    
+    private Skybox _skybox = null!;
     private World _world = null!;
-    
-    private int _skyboxVAO;
-    private int _skyboxVBO;
-
     private Camera _camera = null!;
 
 
@@ -118,29 +62,6 @@ public class GameClient : GameWindow
         // Enable multisampling.
         GL.Enable(EnableCap.Multisample);
         
-        # region SKYBOX_VAO
-        
-        _skyboxVAO = GL.GenVertexArray();
-        _skyboxVBO = GL.GenBuffer();
-        GL.BindVertexArray(_skyboxVAO);
-        GL.BindBuffer(BufferTarget.ArrayBuffer, _skyboxVBO);
-        GL.BufferData(BufferTarget.ArrayBuffer, _skyboxVertices.Length * sizeof(float), _skyboxVertices, BufferUsageHint.StaticDraw);
-        GL.EnableVertexAttribArray(0);
-        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-        
-        # endregion
-        
-        // Load the skybox texture.
-        _skyboxTexture = Skybox.LoadFromFile(new[]
-        {
-            IoUtils.GetSkyboxTexturePath("x_neg.png"),
-            IoUtils.GetSkyboxTexturePath("x_pos.png"),
-            IoUtils.GetSkyboxTexturePath("y_neg.png"),
-            IoUtils.GetSkyboxTexturePath("y_pos.png"),
-            IoUtils.GetSkyboxTexturePath("z_pos.png"),
-            IoUtils.GetSkyboxTexturePath("z_neg.png"),
-        });
-        
         _testTexture = Texture.LoadFromFile(IoUtils.GetBlockTexturePath("missing.png"));
 
         TextureRegistry.StartTextureRegistration();
@@ -149,6 +70,8 @@ public class GameClient : GameWindow
         
         // Load shaders.
         _shaderManager = new ShaderManager();
+        
+        _skybox = new Skybox();
         
         // Initialize the camera.
         _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
@@ -210,7 +133,7 @@ public class GameClient : GameWindow
         const bool rotateOverTime = false;
         Matrix4 cameraViewMatrix = _camera.GetViewMatrix();
         Matrix4 skyboxViewMatrix = new Matrix4(new Matrix3(cameraViewMatrix)); // Remove translation from the view matrix
-        if (rotateOverTime)
+        if (rotateOverTime)     //TODO: Move to Skybox.cs
         {
             Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * Time.TotalTime)) * Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * Time.TotalTime));
             skyboxViewMatrix = modelMatrix * skyboxViewMatrix;
@@ -229,7 +152,7 @@ public class GameClient : GameWindow
         DrawWorld();
 
         if (DebugSettings.RenderSkybox)
-            DrawSkybox();
+            _skybox.Draw();
 
         DrawImGui();
 
@@ -246,23 +169,6 @@ public class GameClient : GameWindow
         GL.Enable(EnableCap.CullFace);
         _world.DrawChunks(_camera.Transform.Position, ShaderManager.ChunkShader);
         GL.Disable(EnableCap.CullFace);
-    }
-
-
-    private void DrawSkybox()
-    {
-        // Draw skybox.
-        GL.DepthFunc(DepthFunction.Lequal);  // Change depth function so depth test passes when values are equal to depth buffer's content
-        
-        ShaderManager.SkyboxShader.Use();
-        
-        // Skybox cube...
-        _skyboxTexture.Use(TextureUnit.Texture0);
-        GL.BindVertexArray(_skyboxVAO);
-        GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-        GL.BindVertexArray(0);
-        
-        GL.DepthFunc(DepthFunction.Less); // set depth function back to default
     }
 
 
