@@ -1,4 +1,8 @@
-﻿using BlockEngine.Framework.Registries;
+﻿using System.Diagnostics;
+using BlockEngine.Framework.Blocks.Serialization;
+using BlockEngine.Framework.Blocks.Textures;
+using BlockEngine.Framework.Meshing;
+using BlockEngine.Framework.Registries;
 
 namespace BlockEngine.Framework.Blocks;
 
@@ -7,25 +11,23 @@ namespace BlockEngine.Framework.Blocks;
 /// Blocks are stored only once in memory, and are accessed through a reference if needed.
 /// BlockState is what is stored in a dynamic palette.
 /// </summary>
-public class Block : IHasId
+public class Block
 {
-    public ushort Id { get; private set; }
-    public readonly BlockVisibility Visibility;
+    public readonly ushort Id;
+    public readonly string? Name;
+    public readonly BlockRenderType RenderType;
     
+    private readonly BlockFaceTextureCollection? _textures;
     private readonly BlockState _defaultState;
 
 
-    public Block(ushort id, BlockVisibility visibility)
+    public Block(ushort id, string name, BlockRenderType renderType, BlockFaceTextureCollection? textures)
     {
         Id = id;
-        Visibility = visibility;
+        Name = name;
+        RenderType = renderType;
+        _textures = textures;
         _defaultState = new BlockState(this);
-    }
-
-
-    public void AssignId(ushort id)
-    {
-        Id = id;
     }
     
     
@@ -33,27 +35,11 @@ public class Block : IHasId
     {
         return _defaultState;
     }
-}
 
-public enum Orientation
-{
-    /// <summary>
-    /// X+ axis.
-    /// </summary>
-    North = 0,
-    
-    /// <summary>
-    /// X- axis.
-    /// </summary>
-    South = 1,
-    
-    /// <summary>
-    /// Z+ axis.
-    /// </summary>
-    East = 2,
-    
-    /// <summary>
-    /// Z- axis.
-    /// </summary>
-    West = 3,
+
+    public ushort GetFaceTextureIndex(BlockState blockState, BlockFace faceNormal)
+    {
+        Debug.Assert(_textures != null, nameof(_textures) + " != null");
+        return _textures.GetTextureIndex(faceNormal);
+    }
 }

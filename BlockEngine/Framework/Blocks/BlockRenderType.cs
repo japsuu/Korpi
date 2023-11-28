@@ -1,8 +1,8 @@
 namespace BlockEngine.Framework.Blocks;
 
-public enum BlockVisibility
+public enum BlockRenderType
 {
-    Empty,
+    None,
     Transparent,
-    Opaque,
+    Normal,
 }

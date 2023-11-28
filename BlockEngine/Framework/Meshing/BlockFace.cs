@@ -1,6 +1,6 @@
 ﻿namespace BlockEngine.Framework.Meshing;
 
-public enum BlockFaceNormal
+public enum BlockFace
 {
     XPositive = 0,
     YPositive = 1,

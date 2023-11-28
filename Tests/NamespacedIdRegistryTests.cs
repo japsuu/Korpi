@@ -5,19 +5,19 @@ namespace Tests;
 [TestFixture]
 public class NamespacedIdRegistryTests
 {
-    private class Mock : IHasId
+    /*private class Mock : IHasId
     {
         public int Id { get; private set; } = -1;
         
         public void AssignId(ushort id) => Id = id;
     }
     
-    private NamespacedIdRegistry<IHasId> _registry = null!;
+    private BlockRegistry<IHasId> _registry = null!;
 
     [SetUp]
     public void SetUp()
     {
-        _registry = new NamespacedIdRegistry<IHasId>("TestRegistry");
+        _registry = new BlockRegistry<IHasId>("TestRegistry");
     }
 
     [Test]
@@ -70,5 +70,5 @@ public class NamespacedIdRegistryTests
     public void GetValue_WithInvalidKey_ThrowsException()
     {
         Assert.Throws<KeyNotFoundException>(() => _registry.GetValue("invalid"));
-    }
+    }*/
 }

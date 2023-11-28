@@ -7,10 +7,12 @@ public static class Constants
     // Engine
     public const string ENGINE_NAME = "BlockEngine";
     public const string ENGINE_VERSION = "0.0.1";
+    public const string YAML_MOD_FILE_EXTENSION = "yaml";
     
     // IO Paths
-    public const string SHADER_PATH = "Assets/Shaders/";
-    public const string TEXTURE_PATH = "Assets/Textures/";
+    public const string SHADER_PATH = "Assets/shaders/";
+    public const string TEXTURE_PATH = "Assets/textures/";
+    public const string MODS_PATH = "Assets/mods/";
     
     // Game logic
     public const uint UPDATE_LOOP_FREQUENCY = 0;
@@ -35,4 +37,14 @@ public static class Constants
     public const int CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED = CHUNK_COLUMN_UNLOAD_RADIUS * CHUNK_COLUMN_UNLOAD_RADIUS;
 
     public const int MAX_LIGHT_LEVEL = 31;
+    
+    public const int MINUTES_PER_DAY = 20;
+    public const int SECONDS_PER_DAY = MINUTES_PER_DAY * 60;
+    public const int DAYS_IN_MONTH = 30;
+    public const float SKYBOX_ROTATION_SPEED_X = 360f / SECONDS_PER_DAY;
+    public const float SKYBOX_ROTATION_SPEED_Y = 360f / (SECONDS_PER_DAY * DAYS_IN_MONTH);
+    public const string BUILT_INS_NAMESPACE = "block_engine";
+    public const int MAX_SUPPORTED_TEXTURES = 2048;
+    public const int BLOCK_TEXTURE_SIZE = 32;
+    public const float ANISOTROPIC_FILTERING_LEVEL = 16f;
 }

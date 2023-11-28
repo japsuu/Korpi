@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Framework.Registries;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
@@ -6,6 +7,8 @@ namespace BlockEngine.Framework.Chunks;
 
 public class ChunkColumn
 {
+    private static readonly Random Rng = new();
+    
     private readonly Chunk?[] _chunks;
 
     public readonly Vector2i Position;
@@ -74,7 +77,8 @@ public class ChunkColumn
                         if (isChecker)
                             continue;
 
-                        chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.TestBlock.GetDefaultState());
+                        ushort id = (ushort)Rng.Next(0, BlockRegistry.GetBlockCount());
+                        chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(id).GetDefaultState());
                     }
                 }
             }

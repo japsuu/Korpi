@@ -2,30 +2,42 @@
 
 layout (location = 0) in ivec2 aData;
 
-out vec3 vertColor;
+out vec3 uv;
+// out vec3 outNormalColor;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+// Create an array of texture coordinates, that can be indexed with the uvIndex:
+vec2 textureCoords[4] = vec2[](
+    vec2(0.0, 0.0),
+    vec2(1.0, 0.0),
+    vec2(1.0, 1.0),
+    vec2(0.0, 1.0)
+);
+
 void main()
 {
-    // Extracting values from the packed integers
+    // Extracting values from the packed integers.
+    // First int.
     int positionIndex = aData.x & 0x3FFFF;        // Extract lower 18 bits
     int lightColor = (aData.x >> 18) & 0x1FF;    // Extract bits 18-26
     int lightLevel = (aData.x >> 27) & 0x1F;     // Extract bits 27-32
     
+    // Second int.
     int textureIndex = aData.y & 0xFFF;          // Extract lower 12 bits
     int skyLightLevel = (aData.y >> 12) & 0x1F;  // Extract bits 12-16
     int normal = (aData.y >> 17) & 0x7;          // Extract bits 17-19
     int uvIndex = (aData.y >> 20) & 0x3;         // Extract bits 20-22
     
+    // Calculate the position of the vertex.
     int x = (positionIndex >> 12) & 0x3F;
     int y = (positionIndex >> 6) & 0x3F;
     int z = positionIndex & 0x3F;
     vec3 position = vec3(x, y, z);
     
-    // Define colors for each direction
+    /*// Define colors for each direction
     vec3 colorXPos = vec3(1.0, 0.0, 0.0);   // Red
     vec3 colorYPos = vec3(0.0, 1.0, 0.0);   // Green
     vec3 colorZPos = vec3(0.0, 0.0, 1.0);   // Blue
@@ -50,7 +62,8 @@ void main()
     else
         normalColor = vec3(1.0, 1.0, 1.0);
     
-    vertColor = normalColor;
-    //vertColor = vec3(float(positionIndex) / 35936.0, 0.0, 0.0);
+    outNormalColor = normalColor;*/
+    
+    uv = vec3(textureCoords[uvIndex], textureIndex);
     gl_Position = vec4(position, 1.0) * model * view * projection;
 }

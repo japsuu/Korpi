@@ -19,8 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BlockEngine.csproj" />
       <ProjectReference Include="..\BlockEngine\BlockEngine.csproj" />
     </ItemGroup>
-
 </Project>

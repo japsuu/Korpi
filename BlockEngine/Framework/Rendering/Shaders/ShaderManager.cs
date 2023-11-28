@@ -44,7 +44,7 @@ public class ShaderManager : IDisposable
     }
     
     
-    public static void UpdateViewMatrix(Matrix4 viewMatrix, Matrix4 skyboxViewMatrix)
+    public static void UpdateViewMatrix(Matrix4 viewMatrix)
     {
         ViewMatrix = viewMatrix;
         
@@ -53,7 +53,11 @@ public class ShaderManager : IDisposable
         
         ChunkShader.Use();
         ChunkShader.SetMatrix4("view", viewMatrix);
-        
+    }
+    
+    
+    public static void UpdateSkyboxViewMatrix(Matrix4 skyboxViewMatrix)
+    {
         SkyboxShader.Use();
         SkyboxShader.SetMatrix4("view", skyboxViewMatrix);
     }

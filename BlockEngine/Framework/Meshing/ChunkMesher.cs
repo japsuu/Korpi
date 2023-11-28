@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Chunks;
+using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -56,9 +57,9 @@ public class ChunkMesher
         {
             Vector3i chunkPos = _chunkMeshingQueue.Dequeue();
             _queuedChunks.Remove(chunkPos);
-            ChunkRenderer? mesh = GenerateMesh(chunkPos);
-            if (mesh == null)
+            if (!_chunkManager.IsChunkLoaded(chunkPos))
                 continue;
+            ChunkRenderer mesh = GenerateMesh(chunkPos);
             ChunkRendererStorage.AddRenderer(chunkPos, mesh);
             chunksMeshed++;
         }
@@ -89,29 +90,18 @@ public class ChunkMesher
         if (ChunkRendererStorage.ContainsRenderer(chunkOriginPos))
         {
             Logger.LogWarning($"Trashing the mesh of chunk at {chunkOriginPos}!");
-            DeleteChunkMesh(chunkOriginPos);
+            ChunkRendererStorage.RemoveRenderer(chunkOriginPos);
         }
         
         float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
         _chunkMeshingQueue.Enqueue(chunkOriginPos, distanceToCamera);
         _queuedChunks.Add(chunkOriginPos);
     }
-    
-    
-    public void DeleteChunkMesh(Vector3i chunkOriginPos)
-    {
-        ChunkRendererStorage.RemoveRenderer(chunkOriginPos);
-    }
 
 
-    private ChunkRenderer? GenerateMesh(Vector3i chunkOriginPos)
+    private ChunkRenderer GenerateMesh(Vector3i chunkOriginPos)
     {
-        if (!_chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache, out Chunk? chunk))
-        {
-            // Not actually an issue, but leave this here for now...
-            Logger.LogWarning($"Tried to mesh non-loaded chunk at {chunkOriginPos}!");
-            return null;
-        }
+        Chunk chunk = _chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache);
         
         _meshingBuffer.Clear();
         
@@ -126,7 +116,7 @@ public class ChunkMesher
                     BlockState blockState = _meshingDataCache.GetData(x, y, z);
                     
                     // If the block is invisible, skip it
-                    if (blockState.Visibility == BlockVisibility.Empty)
+                    if (blockState.RenderType == BlockRenderType.None)
                         continue;
                     
                     // Iterate over all 6 faces of the block
@@ -148,11 +138,11 @@ public class ChunkMesher
 
                         // If the neighbour is opaque, skip this face.
                         // If the neighbour is empty or transparent, we need to mesh this face.
-                        if (neighbour.Visibility == BlockVisibility.Opaque)
+                        if (neighbour.RenderType == BlockRenderType.Normal)
                             continue;
 
                         // Get the texture index of the block face
-                        ushort textureIndex = GetBlockTextureIndex(blockState, (BlockFaceNormal)face);
+                        ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);
                         
                         // Get the lighting of the block face
                         const int lightLevel = Constants.MAX_LIGHT_LEVEL;
@@ -161,21 +151,21 @@ public class ChunkMesher
                         
                         // Add the face to the meshing buffer
                         Vector3i blockPos = new(x - 1, y - 1, z - 1);
-                        _meshingBuffer.AddFace(blockPos, (BlockFaceNormal)face, textureIndex, lightColor, lightLevel, skyLightLevel);
+                        _meshingBuffer.AddFace(blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
                     }
                 }
             }
         }
         
-        chunk!.IsMeshDirty = false;
+        chunk.IsMeshDirty = false;
         chunk.IsMeshed = true;
 
         return _meshingBuffer.CreateMesh(chunkOriginPos);
     }
-    
-    
-    private static ushort GetBlockTextureIndex(BlockState block, BlockFaceNormal normal)
+
+
+    private static ushort GetBlockFaceTextureIndex(BlockState block, BlockFace normal)
     {
-        return 0;
+        return BlockRegistry.GetBlock(block.Id).GetFaceTextureIndex(block, normal);
     }
 }
