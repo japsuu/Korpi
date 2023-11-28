@@ -1,5 +1,4 @@
 ﻿using BlockEngine.Framework;
-using BlockEngine.Framework.Blocks.Serialization;
 using BlockEngine.Framework.Configuration;
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Modding;
@@ -7,7 +6,6 @@ using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Framework.Rendering.Textures;
 using BlockEngine.Utils;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
@@ -24,7 +22,6 @@ public class GameClient : GameWindow
     public static event Action? ClientUnload;
     
     private ImGuiController _imGuiController = null!;
-    private Texture _testTexture = null!;
     private ShaderManager _shaderManager = null!;
     private Skybox _skybox = null!;
     private World _world = null!;
@@ -62,8 +59,6 @@ public class GameClient : GameWindow
         // Enable multisampling.
         GL.Enable(EnableCap.Multisample);
         
-        _testTexture = Texture.LoadFromFile(IoUtils.GetBlockTexturePath("missing.png"));
-
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
@@ -156,7 +151,6 @@ public class GameClient : GameWindow
     private void DrawWorld()
     {
         ShaderManager.ChunkShader.Use();
-        _testTexture.Use(TextureUnit.Texture0);
 
         // Enable backface culling.
         GL.Enable(EnableCap.CullFace);
