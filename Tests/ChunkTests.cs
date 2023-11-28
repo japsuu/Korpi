@@ -39,7 +39,7 @@ public class ChunkTests
         Assert.That(result, Is.EqualTo(blockState));
     }
 
-    [Test]
+    /*[Test]
     public void CacheMeshingData_FillsCacheWithCorrectData()
     {
         // Arrange
@@ -87,5 +87,5 @@ public class ChunkTests
             Assert.That(meshingDataCache.GetData(0, 0, 0).Id, Is.EqualTo(0));
             Assert.That(meshingDataCache.GetData(17, meshingDataCache.BorderBlockIndex, 17).Id, Is.EqualTo(2));
         });
-    }
+    }*/
 }

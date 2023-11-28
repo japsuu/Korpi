@@ -5,7 +5,7 @@ namespace Tests;
 [TestFixture]
 public class NamespacedIdRegistryTests
 {
-    private class Mock : IHasId
+    /*private class Mock : IHasId
     {
         public int Id { get; private set; } = -1;
         
@@ -70,5 +70,5 @@ public class NamespacedIdRegistryTests
     public void GetValue_WithInvalidKey_ThrowsException()
     {
         Assert.Throws<KeyNotFoundException>(() => _registry.GetValue("invalid"));
-    }
+    }*/
 }

@@ -6,7 +6,6 @@ using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Framework.Rendering.Textures;
 using BlockEngine.Utils;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
@@ -70,7 +69,7 @@ public class GameClient : GameWindow
         _skybox = new Skybox(false);
         
         // Initialize the camera.
-        _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
+        _camera = new Camera(Vector3.Zero, Size.X / (float)Size.Y);
         CursorState = CursorState.Grabbed;
         
         ImGuiWindowManager.CreateDefaultWindows();
