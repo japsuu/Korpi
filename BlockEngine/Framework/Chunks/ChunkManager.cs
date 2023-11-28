@@ -141,6 +141,16 @@ public class ChunkManager
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
     }
+    
+    
+    public bool IsChunkLoaded(Vector3i chunkPos)
+    {
+        Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(chunkPos);
+        if (!_loadedColumns.TryGetValue(columnPos, out ChunkColumn? column))
+            return false;
+        
+        return column.GetChunkAtHeight(chunkPos.Y) != null;
+    }
 
 
     /// <summary>
@@ -149,19 +159,18 @@ public class ChunkManager
     /// </summary>
     /// <param name="chunkOriginPos">Position of the center chunk</param>
     /// <param name="cache">Array to fill with BlockState data</param>
-    /// <param name="centerChunk">The chunk that is in the center of the cache</param>
     /// <returns>If the center chunk has been generated.</returns>
-    public bool FillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache, out Chunk? centerChunk)
+    public Chunk FillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache)
     {
-        Array.Fill(cache.Data, BlockRegistry.Air.GetDefaultState());
-        
-        centerChunk = GetChunkAt(chunkOriginPos);
+        Chunk? loadedChunk = GetChunkAt(chunkOriginPos);
 
-        if (centerChunk == null)
-            return false;
+        if (loadedChunk == null)
+            throw new InvalidOperationException($"Tried to fill meshing cache at {chunkOriginPos}, but the chunk was not loaded!");
+
+        Array.Fill(cache.Data, BlockRegistry.Air.GetDefaultState());
 
         // Copy the block data of the center chunk
-        centerChunk.CacheMeshingData(cache);
+        loadedChunk.CacheMeshingData(cache);
 
         // Copy the block data of the chunks surrounding the center chunk, but call GetChunk only once for each neighbouring chunk
         for (int i = 0; i < _precomputedNeighbouringChunkOffsets.Length; i++)
@@ -179,7 +188,7 @@ public class ChunkManager
             neighbourChunk.CacheMeshingData(cache, position);
         }
         
-        return true;
+        return loadedChunk;
     }
 
 
@@ -215,15 +224,15 @@ public class ChunkManager
                     continue;
 
                 Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y);
-                _chunkMesher.DeleteChunkMesh(chunkPos);
+                ChunkRendererStorage.RemoveRenderer(chunkPos);
             }
             // TODO: Check if this chunk was queued for meshing, and remove it from the queue.
 
             // Logger.Log($"Unloaded chunk column at {columnPos}.");
         }
 
-        if (_columnsToUnload.Count > 0)
-            Logger.Log($"Unloaded {_columnsToUnload.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
+        // if (_columnsToUnload.Count > 0)
+        //     Logger.Log($"Unloaded {_columnsToUnload.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
     }
 
 
@@ -258,8 +267,8 @@ public class ChunkManager
             // Logger.Log($"Loaded chunk column at {columnPos}.");
         }
 
-        if (_columnsToLoad.Count > 0)
-            Logger.Log($"Loaded {_columnsToLoad.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
+        // if (_columnsToLoad.Count > 0)
+        //     Logger.Log($"Loaded {_columnsToLoad.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
     }
 
 

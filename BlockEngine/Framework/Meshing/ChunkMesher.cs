@@ -56,9 +56,9 @@ public class ChunkMesher
         {
             Vector3i chunkPos = _chunkMeshingQueue.Dequeue();
             _queuedChunks.Remove(chunkPos);
-            ChunkRenderer? mesh = GenerateMesh(chunkPos);
-            if (mesh == null)
+            if (!_chunkManager.IsChunkLoaded(chunkPos))
                 continue;
+            ChunkRenderer mesh = GenerateMesh(chunkPos);
             ChunkRendererStorage.AddRenderer(chunkPos, mesh);
             chunksMeshed++;
         }
@@ -89,29 +89,18 @@ public class ChunkMesher
         if (ChunkRendererStorage.ContainsRenderer(chunkOriginPos))
         {
             Logger.LogWarning($"Trashing the mesh of chunk at {chunkOriginPos}!");
-            DeleteChunkMesh(chunkOriginPos);
+            ChunkRendererStorage.RemoveRenderer(chunkOriginPos);
         }
         
         float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
         _chunkMeshingQueue.Enqueue(chunkOriginPos, distanceToCamera);
         _queuedChunks.Add(chunkOriginPos);
     }
-    
-    
-    public void DeleteChunkMesh(Vector3i chunkOriginPos)
-    {
-        ChunkRendererStorage.RemoveRenderer(chunkOriginPos);
-    }
 
 
-    private ChunkRenderer? GenerateMesh(Vector3i chunkOriginPos)
+    private ChunkRenderer GenerateMesh(Vector3i chunkOriginPos)
     {
-        if (!_chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache, out Chunk? chunk))
-        {
-            // Not actually an issue, but leave this here for now...
-            Logger.LogWarning($"Tried to mesh non-loaded chunk at {chunkOriginPos}!");
-            return null;
-        }
+        Chunk chunk = _chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache);
         
         _meshingBuffer.Clear();
         
@@ -167,7 +156,7 @@ public class ChunkMesher
             }
         }
         
-        chunk!.IsMeshDirty = false;
+        chunk.IsMeshDirty = false;
         chunk.IsMeshed = true;
 
         return _meshingBuffer.CreateMesh(chunkOriginPos);
