@@ -18,4 +18,7 @@ public static class IoUtils
     
     
     public static string GetBuiltinModPath() => Path.Combine(GetBuiltinModFolderPath(), $"builtin.{Constants.YAML_MOD_FILE_EXTENSION}");
+    
+    
+    public static string GetMissingTexturePath() => Path.Combine(GetBuiltinModFolderPath(), "missing.png");
 }

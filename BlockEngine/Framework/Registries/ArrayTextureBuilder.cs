@@ -7,22 +7,22 @@ namespace BlockEngine.Framework.Registries;
 
 public class ArrayTextureBuilder
 {
-    private readonly List<string> _addedTexturePaths = new();
-    private readonly Dictionary<string, ushort> _addedTextures = new();
+    private readonly List<string> _texPaths = new();
+    private readonly Dictionary<string, ushort> _texPathToIndex = new();
     private static ushort nextTextureIndex;
 
 
-    private ushort AddTexture(string texturePath)
+    public ushort AddTexture(string texturePath)
     {
         if (nextTextureIndex >= Constants.MAX_SUPPORTED_TEXTURES)
             throw new IdOverflowException("Texture ID overflow. Too many textures registered.");
         
-        if (_addedTextures.TryGetValue(texturePath, out ushort textureIndex))
+        if (_texPathToIndex.TryGetValue(texturePath, out ushort textureIndex))
             return textureIndex;
 
         textureIndex = nextTextureIndex;
-        _addedTextures.Add(texturePath, textureIndex);
-        _addedTexturePaths.Add(texturePath);
+        _texPathToIndex.Add(texturePath, textureIndex);
+        _texPaths.Add(texturePath);
         nextTextureIndex++;
         return textureIndex;
     }
@@ -42,6 +42,6 @@ public class ArrayTextureBuilder
     
     public ArrayTexture Build(string texName)
     {
-        return ArrayTexture.LoadFromFiles(_addedTexturePaths.ToArray(), texName);
+        return ArrayTexture.LoadFromFiles(_texPaths.ToArray(), texName);
     }
 }
