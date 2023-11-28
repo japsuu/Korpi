@@ -6,8 +6,10 @@ using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Rendering;
 
-public class Skybox
+public class Skybox : IDisposable
 {
+    private const TextureUnit SKYBOX_TEXTURE_UNIT = TextureUnit.Texture1;
+    
     private readonly float[] _skyboxVertices = {
         // Z- face
         -1.0f,  1.0f, -1.0f,
@@ -85,7 +87,9 @@ public class Skybox
             IoUtils.GetSkyboxTexturePath("y_pos.png"),
             IoUtils.GetSkyboxTexturePath("z_pos.png"),
             IoUtils.GetSkyboxTexturePath("z_neg.png"),
-        });
+        }, "Skybox");
+        
+        _skyboxTexture.BindStatic(SKYBOX_TEXTURE_UNIT);
     }
 
 
@@ -107,11 +111,30 @@ public class Skybox
         
         ShaderManager.SkyboxShader.Use();
         
-        _skyboxTexture.Use(TextureUnit.Texture0);
         GL.BindVertexArray(_skyboxVAO);
         GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
         GL.BindVertexArray(0);
         
         GL.DepthFunc(DepthFunction.Less); // set depth function back to default
+    }
+
+
+    private void ReleaseUnmanagedResources()
+    {
+        _skyboxTexture.Dispose();
+        GL.DeleteVertexArray(_skyboxVAO);
+    }
+
+
+    public void Dispose()
+    {
+        ReleaseUnmanagedResources();
+        GC.SuppressFinalize(this);
+    }
+
+
+    ~Skybox()
+    {
+        ReleaseUnmanagedResources();
     }
 }

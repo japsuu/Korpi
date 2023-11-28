@@ -6,6 +6,7 @@ using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
+using BlockEngine.Framework.Rendering.Textures;
 using BlockEngine.Utils;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
@@ -85,6 +86,8 @@ public class GameClient : GameWindow
         base.OnUnload();
         
         _shaderManager.Dispose();
+        _skybox.Dispose();
+        TextureRegistry.BlockArrayTexture.Dispose();
         ClientUnload?.Invoke();
     }
 

@@ -40,8 +40,8 @@ public class ArrayTextureBuilder
     }
     
     
-    public ArrayTexture Build()
+    public ArrayTexture Build(string texName)
     {
-        return ArrayTexture.LoadFromFiles(_addedTexturePaths.ToArray());
+        return ArrayTexture.LoadFromFiles(_addedTexturePaths.ToArray(), texName);
     }
 }

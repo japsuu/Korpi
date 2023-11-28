@@ -2,6 +2,7 @@
 using BlockEngine.Framework.Blocks.Serialization;
 using BlockEngine.Framework.Blocks.Textures;
 using BlockEngine.Framework.Rendering.Textures;
+using OpenTK.Graphics.OpenGL4;
 
 namespace BlockEngine.Framework.Registries;
 
@@ -21,7 +22,9 @@ public static class TextureRegistry
     public static void FinishTextureRegistration()
     {
         Debug.Assert(arrayTextureBuilder != null, nameof(arrayTextureBuilder) + " != null");
-        BlockArrayTexture = arrayTextureBuilder.Build();
+        BlockArrayTexture = arrayTextureBuilder.Build("BlockTextures");
+        // Bind the BlockArrayTexture to texture unit 0.
+        BlockArrayTexture.BindStatic(TextureUnit.Texture0);
     }
     
     

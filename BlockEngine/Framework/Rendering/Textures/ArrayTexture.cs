@@ -4,17 +4,17 @@ using StbImageSharp;
 
 namespace BlockEngine.Framework.Rendering.Textures;
 
-public class ArrayTexture
+public class ArrayTexture : Texture
 {
-    public readonly int Handle;
+    public override TextureTarget TextureTarget => TextureTarget.Texture2DArray;
     
-    public ArrayTexture(int glHandle)
+    
+    private ArrayTexture(int glHandle, string name) : base(glHandle, name)
     {
-        Handle = glHandle;
     }
-
-
-    public static ArrayTexture LoadFromFiles(string[] paths, int mipLevelCount = 2)
+    
+    
+    public static ArrayTexture LoadFromFiles(string[] paths, string texName, int mipLevelCount = 2)
     {
         // Generate handle
         int handle = GL.GenTexture();
@@ -33,12 +33,11 @@ public class ArrayTexture
 
         for (int i = 0; i < paths.Length; i++)
         {
-            using (Stream stream = File.OpenRead(paths[i]))
-            {
-                ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+            using Stream stream = File.OpenRead(paths[i]);
+            
+            ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 
-                GL.TexSubImage3D(TextureTarget.Texture2DArray, 0, 0, 0, i, Constants.BLOCK_TEXTURE_SIZE, Constants.BLOCK_TEXTURE_SIZE, 1, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
-            }
+            GL.TexSubImage3D(TextureTarget.Texture2DArray, 0, 0, 0, i, Constants.BLOCK_TEXTURE_SIZE, Constants.BLOCK_TEXTURE_SIZE, 1, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
         }
 
         // First, we set the min and mag filter. These are used for when the texture is scaled down and up, respectively.
@@ -55,19 +54,6 @@ public class ArrayTexture
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
         }
 
-        return new ArrayTexture(handle);
-    }
-    
-    
-    public void Bind(TextureUnit unit)
-    {
-        GL.ActiveTexture(unit);
-        GL.BindTexture(TextureTarget.Texture2DArray, Handle);
-    }
-    
-    
-    public void Dispose()
-    {
-        GL.DeleteTexture(Handle);
+        return new ArrayTexture(handle, texName);
     }
 }
