@@ -27,6 +27,7 @@ public class ChunkMesher
     /// </summary>
     private readonly MeshingDataCache _meshingDataCache = new(Constants.CHUNK_SIZE);
     private readonly MeshingBuffer _meshingBuffer = new();
+    private readonly BlockState[] _blockStateNeighbourhood = new BlockState[27];   // 27 = 3x3x3
     
     private static readonly Vector3i[] NeighbourOffsets =
     {
@@ -118,18 +119,23 @@ public class ChunkMesher
                     // If the block is invisible, skip it
                     if (blockState.RenderType == BlockRenderType.None)
                         continue;
+
+                    // Gather neighbourhood data
+                    for (int neighbourZ = 0; neighbourZ < 3; neighbourZ++)
+                    {
+                        for (int neighbourY = 0; neighbourY < 3; neighbourY++)
+                        {
+                            for (int neighbourX = 0; neighbourX < 3; neighbourX++)
+                            {
+                                BlockState neighbour = _meshingDataCache.GetData(x + neighbourX - 1, y + neighbourY - 1, z + neighbourZ - 1);
+                                _blockStateNeighbourhood[neighbourX + neighbourY * 3 + neighbourZ * 9] = neighbour;
+                            }
+                        }
+                    }
                     
                     // Iterate over all 6 faces of the block
                     for (int face = 0; face < 6; face++)
                     {
-                        // If the face is not visible, skip it
-                        // if (!blockState.Block.IsFaceVisible(blockState, (BlockFaceNormal)face))
-                        //     continue;
-                        
-                        // If the face is not opaque, skip it
-                        // if (!blockState.Block.IsFaceOpaque(blockState, (BlockFaceNormal)face))
-                        //     continue;
-
                         Vector3i neighbourOffset = NeighbourOffsets[face];
                         int neighbourX = x + neighbourOffset.X;
                         int neighbourY = y + neighbourOffset.Y;

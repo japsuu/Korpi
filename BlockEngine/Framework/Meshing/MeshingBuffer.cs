@@ -2,7 +2,6 @@
 using BlockEngine.Framework.Bitpacking;
 using BlockEngine.Framework.Blocks;
 using BlockEngine.Utils;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Framework.Meshing;
@@ -36,18 +35,26 @@ public class MeshingBuffer
     /// <summary>
     /// Adds a block face to the mesh.
     /// </summary>
+    /// <param name="neighbourhood">Array of 27 block states, containing the block neighbourhood.</param>
     /// <param name="blockPos">Position of the block in the chunk (0-31 on all axis)</param>
     /// <param name="face">Which face we are adding</param>
     /// <param name="textureIndex">Index to the texture of this face (0-4095)</param>
     /// <param name="lightColor">Color of the light hitting this face</param>
     /// <param name="lightLevel">Amount of light that hits this face (0-31)</param>
     /// <param name="skyLightLevel">Amount of skylight hitting this face (0-31)</param>
-    public void AddFace(Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
+    public void AddFace(BlockState[] neighbourhood, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
     {
         Vector3i vertPos1;
         Vector3i vertPos2;
         Vector3i vertPos3;
         Vector3i vertPos4;
+        int ao1;
+        int ao2;
+        int ao3;
+        int ao4;
+        int indexLeft;
+        int indexRight;
+        int indexCorner;
         int normal = (int)face;
         switch (face)
         {
@@ -56,50 +63,193 @@ public class MeshingBuffer
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
+                
+                indexLeft = 2 + 0 * 3 + 1 * 9;
+                indexRight = 2 + 1 * 3 + 2 * 9;
+                indexCorner = 2 + 0 * 3 + 2 * 9;
+                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 2 + 1 * 3 + 0 * 9;
+                indexRight = 2 + 0 * 3 + 1 * 9;
+                indexCorner = 2 + 0 * 3 + 0 * 9;
+                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 2 + 2 * 3 + 1 * 9;
+                indexRight = 2 + 1 * 3 + 0 * 9;
+                indexCorner = 2 + 2 * 3 + 0 * 9;
+                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 2 + 1 * 3 + 2 * 9;
+                indexRight = 2 + 2 * 3 + 1 * 9;
+                indexCorner = 2 + 2 * 3 + 2 * 9;
+                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.YPositive:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
+                
+                indexLeft = 2 + 2 * 3 + 1 * 9;
+                indexRight = 1 + 2 * 3 + 2 * 9;
+                indexCorner = 2 + 2 * 3 + 2 * 9;
+                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 1 + 2 * 3 + 0 * 9;
+                indexRight = 2 + 2 * 3 + 1 * 9;
+                indexCorner = 2 + 2 * 3 + 0 * 9;
+                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 0 + 2 * 3 + 1 * 9;
+                indexRight = 1 + 2 * 3 + 0 * 9;
+                indexCorner = 0 + 2 * 3 + 0 * 9;
+                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 1 + 2 * 3 + 2 * 9;
+                indexRight = 0 + 2 * 3 + 1 * 9;
+                indexCorner = 0 + 2 * 3 + 2 * 9;
+                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.ZPositive:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
+                
+                indexLeft = 1 + 0 * 3 + 2 * 9;
+                indexRight = 0 + 1 * 3 + 2 * 9;
+                indexCorner = 0 + 0 * 3 + 2 * 9;
+                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 2 + 1 * 3 + 2 * 9;
+                indexRight = 1 + 0 * 3 + 2 * 9;
+                indexCorner = 2 + 0 * 3 + 2 * 9;
+                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 1 + 2 * 3 + 2 * 9;
+                indexRight = 2 + 1 * 3 + 2 * 9;
+                indexCorner = 2 + 2 * 3 + 2 * 9;
+                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 0 + 1 * 3 + 2 * 9;
+                indexRight = 1 + 2 * 3 + 2 * 9;
+                indexCorner = 0 + 2 * 3 + 2 * 9;
+                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.XNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
+                
+                indexLeft = 0 + 0 * 3 + 1 * 9;
+                indexRight = 0 + 1 * 3 + 0 * 9;
+                indexCorner = 0 + 0 * 3 + 0 * 9;
+                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 0 + 1 * 3 + 2 * 9;
+                indexRight = 0 + 0 * 3 + 1 * 9;
+                indexCorner = 0 + 0 * 3 + 2 * 9;
+                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 0 + 2 * 3 + 1 * 9;
+                indexRight = 0 + 1 * 3 + 2 * 9;
+                indexCorner = 0 + 2 * 3 + 2 * 9;
+                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 0 + 1 * 3 + 0 * 9;
+                indexRight = 0 + 2 * 3 + 1 * 9;
+                indexCorner = 0 + 2 * 3 + 0 * 9;
+                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.YNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
+                
+                indexLeft = 1 + 0 * 3 + 0 * 9;
+                indexRight = 0 + 0 * 3 + 1 * 9;
+                indexCorner = 0 + 0 * 3 + 0 * 9;
+                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 2 + 0 * 3 + 1 * 9;
+                indexRight = 1 + 0 * 3 + 0 * 9;
+                indexCorner = 2 + 0 * 3 + 0 * 9;
+                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 1 + 0 * 3 + 2 * 9;
+                indexRight = 2 + 0 * 3 + 1 * 9;
+                indexCorner = 2 + 0 * 3 + 2 * 9;
+                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 0 + 0 * 3 + 1 * 9;
+                indexRight = 1 + 0 * 3 + 2 * 9;
+                indexCorner = 0 + 0 * 3 + 2 * 9;
+                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.ZNegative:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
+                
+                indexLeft = 1 + 0 * 3 + 0 * 9;
+                indexRight = 2 + 1 * 3 + 0 * 9;
+                indexCorner = 2 + 0 * 3 + 0 * 9;
+                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 0 + 1 * 3 + 0 * 9;
+                indexRight = 1 + 0 * 3 + 0 * 9;
+                indexCorner = 0 + 0 * 3 + 0 * 9;
+                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 1 + 2 * 3 + 0 * 9;
+                indexRight = 0 + 1 * 3 + 0 * 9;
+                indexCorner = 0 + 2 * 3 + 0 * 9;
+                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+                
+                indexLeft = 2 + 1 * 3 + 0 * 9;
+                indexRight = 1 + 2 * 3 + 0 * 9;
+                indexCorner = 2 + 2 * 3 + 0 * 9;
+                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(face), face, "What face is THAT?!");
         }
-        AddVertex(vertPos1, normal, 0, textureIndex, lightColor, lightLevel, skyLightLevel);
-        AddVertex(vertPos2, normal, 1, textureIndex, lightColor, lightLevel, skyLightLevel);
-        AddVertex(vertPos3, normal, 2, textureIndex, lightColor, lightLevel, skyLightLevel);
-        AddVertex(vertPos4, normal, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+        AddVertex(vertPos1, normal, 0, ao1, textureIndex, lightColor, lightLevel, skyLightLevel);
+        AddVertex(vertPos2, normal, 1, ao2, textureIndex, lightColor, lightLevel, skyLightLevel);
+        AddVertex(vertPos3, normal, 2, ao3, textureIndex, lightColor, lightLevel, skyLightLevel);
+        AddVertex(vertPos4, normal, 3, ao4, textureIndex, lightColor, lightLevel, skyLightLevel);
         AddIndices();
         AddedFacesCount++;
     }
+    
+    
+    private static int CalculateAoIndex(BlockState left, BlockState right, BlockState corner)
+    {
+        if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal)
+            return 0;
+        
+        return 3 - (left.RenderType == BlockRenderType.Normal ? 1 : 0) - (right.RenderType == BlockRenderType.Normal ? 1 : 0) - (corner.RenderType == BlockRenderType.Normal ? 1 : 0);
+
+        /*if (left.RenderType == BlockRenderType.None || right.RenderType == BlockRenderType.None || corner.RenderType == BlockRenderType.None)
+            return 0;
+        if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal && corner.RenderType == BlockRenderType.Normal)
+            return 3;
+        if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal)
+            return 2;
+        if (left.RenderType == BlockRenderType.Normal && corner.RenderType == BlockRenderType.Normal)
+            return 2;
+        if (right.RenderType == BlockRenderType.Normal && corner.RenderType == BlockRenderType.Normal)
+            return 2;
+        if (left.RenderType == BlockRenderType.Normal || right.RenderType == BlockRenderType.Normal || corner.RenderType == BlockRenderType.Normal)
+            return 1;
+        return 0;*/
+    }
 
 
-    private void AddVertex(Vector3i vertexPos, int normal, int textureUvIndex, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
+    private void AddVertex(Vector3i vertexPos, int normal, int textureUvIndex, int aoIndex, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
     {
         // PositionIndex    =   0-133152. Calculated with x + Size * (y + Size * z).             = 18 bits.  18 bits.
         // TextureIndex     =   0-4095.                                                         = 12 bits.  30 bits.
@@ -108,18 +258,20 @@ public class MeshingBuffer
         // SkyLightLevel    =   0-31.                                                           = 5 bits.   49 bits.
         // Normal           =   0-5.                                                            = 3 bits.   52 bits.
         // UVIndex          =   0-3. Could be calculated dynamically based on gl_VertexID.      = 2 bits.   54 bits.
-        // 10 bits leftover.
+        // AOIndex          =   0-3.                                                            = 2 bits.   56 bits.
+        // 8 bits leftover.
         
         int positionIndex = (vertexPos.X << 12) | (vertexPos.Y << 6) | vertexPos.Z;
         int lightColorValue = lightColor.Value;
         
-        Debug.Assert(positionIndex >= 0 && positionIndex <= 133152);
-        Debug.Assert(lightColorValue >= 0 && lightColorValue <= 511);
-        Debug.Assert(lightLevel >= 0 && lightLevel <= 31);
-        Debug.Assert(skyLightLevel >= 0 && skyLightLevel <= 31);
-        Debug.Assert(normal >= 0 && normal <= 5);
-        Debug.Assert(textureUvIndex >= 0 && textureUvIndex <= 3);
-        Debug.Assert(textureIndex >= 0 && textureIndex <= 4095);
+        Debug.Assert(positionIndex is >= 0 and <= 133152);
+        Debug.Assert(lightColorValue is >= 0 and <= 511);
+        Debug.Assert(lightLevel is >= 0 and <= 31);
+        Debug.Assert(skyLightLevel is >= 0 and <= 31);
+        Debug.Assert(normal is >= 0 and <= 5);
+        Debug.Assert(textureUvIndex is >= 0 and <= 3);
+        Debug.Assert(aoIndex is >= 0 and <= 3);
+        Debug.Assert(textureIndex is >= 0 and <= 4095);
 
         // NOTE: According to the OpenGL spec, vertex data should be 4-byte aligned. This means that since we cannot fit our vertex in 4 bytes, we use the full 8 bytes.
         // Compress all data to two 32-bit uints...
@@ -135,6 +287,7 @@ public class MeshingBuffer
         skyLightLevel       .InjectUnsigned(ref data2, ref bitIndex2, 5);
         normal              .InjectUnsigned(ref data2, ref bitIndex2, 3);
         textureUvIndex      .InjectUnsigned(ref data2, ref bitIndex2, 2);
+        aoIndex             .InjectUnsigned(ref data2, ref bitIndex2, 2);
         _vertexData[AddedVertexDataCount] = data1;
         _vertexData[AddedVertexDataCount + 1] = data2;
         AddedVertexDataCount += 2;
