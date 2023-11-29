@@ -31,12 +31,12 @@ public class ChunkMesher
     
     private static readonly Vector3i[] NeighbourOffsets =
     {
-        new(1, 0, 0),
-        new(0, 1, 0),
-        new(0, 0, 1),
-        new(-1, 0, 0),
-        new(0, -1, 0),
-        new(0, 0, -1),
+        new(2, 1, 1),
+        new(1, 2, 1),
+        new(1, 1, 2),
+        new(0, 1, 1),
+        new(1, 0, 1),
+        new(1, 1, 0),
     };
 
 
@@ -137,10 +137,7 @@ public class ChunkMesher
                     for (int face = 0; face < 6; face++)
                     {
                         Vector3i neighbourOffset = NeighbourOffsets[face];
-                        int neighbourX = x + neighbourOffset.X;
-                        int neighbourY = y + neighbourOffset.Y;
-                        int neighbourZ = z + neighbourOffset.Z;
-                        BlockState neighbour = _meshingDataCache.GetData(neighbourX, neighbourY, neighbourZ);
+                        BlockState neighbour = _blockStateNeighbourhood[neighbourOffset.X + neighbourOffset.Y * 3 + neighbourOffset.Z * 9];
 
                         // If the neighbour is opaque, skip this face.
                         // If the neighbour is empty or transparent, we need to mesh this face.
@@ -157,7 +154,7 @@ public class ChunkMesher
                         
                         // Add the face to the meshing buffer
                         Vector3i blockPos = new(x - 1, y - 1, z - 1);
-                        _meshingBuffer.AddFace(blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
+                        _meshingBuffer.AddFace(_blockStateNeighbourhood, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
                     }
                 }
             }

@@ -3,7 +3,7 @@
 layout (location = 0) in ivec2 aData;
 
 out vec3 uv;
-// out vec3 outNormalColor;
+out vec3 aoColor;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -15,6 +15,17 @@ vec2 textureCoords[4] = vec2[](
     vec2(1.0, 0.0),
     vec2(1.0, 1.0),
     vec2(0.0, 1.0)
+);
+
+vec3 aoColors[4] = vec3[](
+    vec3(0.5, 0.5, 0.5),
+    vec3(0.7, 0.7, 0.7),
+    vec3(0.9, 0.9, 0.9),
+    vec3(1.0, 1.0, 1.0)
+    // vec3(1.0, 0.0, 0.0),
+    // vec3(0.0, 1.0, 0.0),
+    // vec3(0.0, 0.0, 1.0),
+    // vec3(1.0, 0.0, 1.0)
 );
 
 void main()
@@ -30,6 +41,7 @@ void main()
     int skyLightLevel = (aData.y >> 12) & 0x1F;  // Extract bits 12-16
     int normal = (aData.y >> 17) & 0x7;          // Extract bits 17-19
     int uvIndex = (aData.y >> 20) & 0x3;         // Extract bits 20-22
+    int aoIndex = (aData.y >> 22) & 0x3;         // Extract bits 22-24
     
     // Calculate the position of the vertex.
     int x = (positionIndex >> 12) & 0x3F;
@@ -64,6 +76,7 @@ void main()
     
     outNormalColor = normalColor;*/
     
+    aoColor = aoColors[aoIndex];
     uv = vec3(textureCoords[uvIndex], textureIndex);
     gl_Position = vec4(position, 1.0) * model * view * projection;
 }

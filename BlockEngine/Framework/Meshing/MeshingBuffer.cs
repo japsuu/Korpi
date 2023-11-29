@@ -52,9 +52,6 @@ public class MeshingBuffer
         int ao2;
         int ao3;
         int ao4;
-        int indexLeft;
-        int indexRight;
-        int indexCorner;
         int normal = (int)face;
         switch (face)
         {
@@ -63,156 +60,66 @@ public class MeshingBuffer
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
-                
-                indexLeft = 11;
-                indexRight = 23;
-                indexCorner = 20;
-                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 5;
-                indexRight = 11;
-                indexCorner = 2;
-                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 17;
-                indexRight = 5;
-                indexCorner = 8;
-                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 23;
-                indexRight = 17;
-                indexCorner = 26;
-                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+
+                ao1 = CalculateAoIndex(neighbourhood[11], neighbourhood[23], neighbourhood[20]);
+                ao2 = CalculateAoIndex(neighbourhood[5], neighbourhood[11], neighbourhood[2]);
+                ao3 = CalculateAoIndex(neighbourhood[17], neighbourhood[5], neighbourhood[8]);
+                ao4 = CalculateAoIndex(neighbourhood[23], neighbourhood[17], neighbourhood[26]);
                 break;
             case BlockFace.YPositive:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
-                
-                indexLeft = 17;
-                indexRight = 25;
-                indexCorner = 26;
-                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 7;
-                indexRight = 17;
-                indexCorner = 8;
-                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 15;
-                indexRight = 7;
-                indexCorner = 6;
-                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 25;
-                indexRight = 15;
-                indexCorner = 24;
-                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+
+                ao1 = CalculateAoIndex(neighbourhood[17], neighbourhood[25], neighbourhood[26]);
+                ao2 = CalculateAoIndex(neighbourhood[7], neighbourhood[17], neighbourhood[8]);
+                ao3 = CalculateAoIndex(neighbourhood[15], neighbourhood[7], neighbourhood[6]);
+                ao4 = CalculateAoIndex(neighbourhood[25], neighbourhood[15], neighbourhood[24]);
                 break;
             case BlockFace.ZPositive:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
-                
-                indexLeft = 19;
-                indexRight = 21;
-                indexCorner = 18;
-                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 23;
-                indexRight = 19;
-                indexCorner = 20;
-                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 25;
-                indexRight = 23;
-                indexCorner = 26;
-                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 21;
-                indexRight = 25;
-                indexCorner = 24;
-                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+
+                ao1 = CalculateAoIndex(neighbourhood[19], neighbourhood[21], neighbourhood[18]);
+                ao2 = CalculateAoIndex(neighbourhood[23], neighbourhood[19], neighbourhood[20]);
+                ao3 = CalculateAoIndex(neighbourhood[25], neighbourhood[23], neighbourhood[26]);
+                ao4 = CalculateAoIndex(neighbourhood[21], neighbourhood[25], neighbourhood[24]);
                 break;
             case BlockFace.XNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
-                
-                indexLeft = 9;
-                indexRight = 3;
-                indexCorner = 0;
-                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 21;
-                indexRight = 9;
-                indexCorner = 18;
-                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 15;
-                indexRight = 21;
-                indexCorner = 24;
-                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 3;
-                indexRight = 15;
-                indexCorner = 6;
-                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+
+                ao1 = CalculateAoIndex(neighbourhood[9], neighbourhood[3], neighbourhood[0]);
+                ao2 = CalculateAoIndex(neighbourhood[21], neighbourhood[9], neighbourhood[18]);
+                ao3 = CalculateAoIndex(neighbourhood[15], neighbourhood[21], neighbourhood[24]);
+                ao4 = CalculateAoIndex(neighbourhood[3], neighbourhood[15], neighbourhood[6]);
                 break;
             case BlockFace.YNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
-                
-                indexLeft = 1;
-                indexRight = 9;
-                indexCorner = 0;
-                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 11;
-                indexRight = 1;
-                indexCorner = 2;
-                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 19;
-                indexRight = 11;
-                indexCorner = 20;
-                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 9;
-                indexRight = 19;
-                indexCorner = 18;
-                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+
+                ao1 = CalculateAoIndex(neighbourhood[1], neighbourhood[9], neighbourhood[0]);
+                ao2 = CalculateAoIndex(neighbourhood[11], neighbourhood[1], neighbourhood[2]);
+                ao3 = CalculateAoIndex(neighbourhood[19], neighbourhood[11], neighbourhood[20]);
+                ao4 = CalculateAoIndex(neighbourhood[9], neighbourhood[19], neighbourhood[18]);
                 break;
             case BlockFace.ZNegative:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
                 vertPos2 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
-                
-                indexLeft = 1;
-                indexRight = 5;
-                indexCorner = 2;
-                ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 3;
-                indexRight = 1;
-                indexCorner = 0;
-                ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 7;
-                indexRight = 3;
-                indexCorner = 6;
-                ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
-                
-                indexLeft = 5;
-                indexRight = 7;
-                indexCorner = 8;
-                ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
+
+                ao1 = CalculateAoIndex(neighbourhood[1], neighbourhood[5], neighbourhood[2]);
+                ao2 = CalculateAoIndex(neighbourhood[3], neighbourhood[1], neighbourhood[0]);
+                ao3 = CalculateAoIndex(neighbourhood[7], neighbourhood[3], neighbourhood[6]);
+                ao4 = CalculateAoIndex(neighbourhood[5], neighbourhood[7], neighbourhood[8]);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(face), face, "What face is THAT?!");
