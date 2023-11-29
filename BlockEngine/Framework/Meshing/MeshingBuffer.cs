@@ -64,24 +64,24 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 
-                indexLeft = 2 + 0 * 3 + 1 * 9;
-                indexRight = 2 + 1 * 3 + 2 * 9;
-                indexCorner = 2 + 0 * 3 + 2 * 9;
+                indexLeft = 11;
+                indexRight = 23;
+                indexCorner = 20;
                 ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 2 + 1 * 3 + 0 * 9;
-                indexRight = 2 + 0 * 3 + 1 * 9;
-                indexCorner = 2 + 0 * 3 + 0 * 9;
+                indexLeft = 5;
+                indexRight = 11;
+                indexCorner = 2;
                 ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 2 + 2 * 3 + 1 * 9;
-                indexRight = 2 + 1 * 3 + 0 * 9;
-                indexCorner = 2 + 2 * 3 + 0 * 9;
+                indexLeft = 17;
+                indexRight = 5;
+                indexCorner = 8;
                 ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 2 + 1 * 3 + 2 * 9;
-                indexRight = 2 + 2 * 3 + 1 * 9;
-                indexCorner = 2 + 2 * 3 + 2 * 9;
+                indexLeft = 23;
+                indexRight = 17;
+                indexCorner = 26;
                 ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.YPositive:
@@ -90,24 +90,24 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 
-                indexLeft = 2 + 2 * 3 + 1 * 9;
-                indexRight = 1 + 2 * 3 + 2 * 9;
-                indexCorner = 2 + 2 * 3 + 2 * 9;
+                indexLeft = 17;
+                indexRight = 25;
+                indexCorner = 26;
                 ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 1 + 2 * 3 + 0 * 9;
-                indexRight = 2 + 2 * 3 + 1 * 9;
-                indexCorner = 2 + 2 * 3 + 0 * 9;
+                indexLeft = 7;
+                indexRight = 17;
+                indexCorner = 8;
                 ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 0 + 2 * 3 + 1 * 9;
-                indexRight = 1 + 2 * 3 + 0 * 9;
-                indexCorner = 0 + 2 * 3 + 0 * 9;
+                indexLeft = 15;
+                indexRight = 7;
+                indexCorner = 6;
                 ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 1 + 2 * 3 + 2 * 9;
-                indexRight = 0 + 2 * 3 + 1 * 9;
-                indexCorner = 0 + 2 * 3 + 2 * 9;
+                indexLeft = 25;
+                indexRight = 15;
+                indexCorner = 24;
                 ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.ZPositive:
@@ -116,24 +116,24 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 
-                indexLeft = 1 + 0 * 3 + 2 * 9;
-                indexRight = 0 + 1 * 3 + 2 * 9;
-                indexCorner = 0 + 0 * 3 + 2 * 9;
+                indexLeft = 19;
+                indexRight = 21;
+                indexCorner = 18;
                 ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 2 + 1 * 3 + 2 * 9;
-                indexRight = 1 + 0 * 3 + 2 * 9;
-                indexCorner = 2 + 0 * 3 + 2 * 9;
+                indexLeft = 23;
+                indexRight = 19;
+                indexCorner = 20;
                 ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 1 + 2 * 3 + 2 * 9;
-                indexRight = 2 + 1 * 3 + 2 * 9;
-                indexCorner = 2 + 2 * 3 + 2 * 9;
+                indexLeft = 25;
+                indexRight = 23;
+                indexCorner = 26;
                 ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 0 + 1 * 3 + 2 * 9;
-                indexRight = 1 + 2 * 3 + 2 * 9;
-                indexCorner = 0 + 2 * 3 + 2 * 9;
+                indexLeft = 21;
+                indexRight = 25;
+                indexCorner = 24;
                 ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.XNegative:
@@ -142,24 +142,24 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 
-                indexLeft = 0 + 0 * 3 + 1 * 9;
-                indexRight = 0 + 1 * 3 + 0 * 9;
-                indexCorner = 0 + 0 * 3 + 0 * 9;
+                indexLeft = 9;
+                indexRight = 3;
+                indexCorner = 0;
                 ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 0 + 1 * 3 + 2 * 9;
-                indexRight = 0 + 0 * 3 + 1 * 9;
-                indexCorner = 0 + 0 * 3 + 2 * 9;
+                indexLeft = 21;
+                indexRight = 9;
+                indexCorner = 18;
                 ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 0 + 2 * 3 + 1 * 9;
-                indexRight = 0 + 1 * 3 + 2 * 9;
-                indexCorner = 0 + 2 * 3 + 2 * 9;
+                indexLeft = 15;
+                indexRight = 21;
+                indexCorner = 24;
                 ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 0 + 1 * 3 + 0 * 9;
-                indexRight = 0 + 2 * 3 + 1 * 9;
-                indexCorner = 0 + 2 * 3 + 0 * 9;
+                indexLeft = 3;
+                indexRight = 15;
+                indexCorner = 6;
                 ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.YNegative:
@@ -168,24 +168,24 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
                 
-                indexLeft = 1 + 0 * 3 + 0 * 9;
-                indexRight = 0 + 0 * 3 + 1 * 9;
-                indexCorner = 0 + 0 * 3 + 0 * 9;
+                indexLeft = 1;
+                indexRight = 9;
+                indexCorner = 0;
                 ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 2 + 0 * 3 + 1 * 9;
-                indexRight = 1 + 0 * 3 + 0 * 9;
-                indexCorner = 2 + 0 * 3 + 0 * 9;
+                indexLeft = 11;
+                indexRight = 1;
+                indexCorner = 2;
                 ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 1 + 0 * 3 + 2 * 9;
-                indexRight = 2 + 0 * 3 + 1 * 9;
-                indexCorner = 2 + 0 * 3 + 2 * 9;
+                indexLeft = 19;
+                indexRight = 11;
+                indexCorner = 20;
                 ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 0 + 0 * 3 + 1 * 9;
-                indexRight = 1 + 0 * 3 + 2 * 9;
-                indexCorner = 0 + 0 * 3 + 2 * 9;
+                indexLeft = 9;
+                indexRight = 19;
+                indexCorner = 18;
                 ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             case BlockFace.ZNegative:
@@ -194,24 +194,24 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 
-                indexLeft = 1 + 0 * 3 + 0 * 9;
-                indexRight = 2 + 1 * 3 + 0 * 9;
-                indexCorner = 2 + 0 * 3 + 0 * 9;
+                indexLeft = 1;
+                indexRight = 5;
+                indexCorner = 2;
                 ao1 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 0 + 1 * 3 + 0 * 9;
-                indexRight = 1 + 0 * 3 + 0 * 9;
-                indexCorner = 0 + 0 * 3 + 0 * 9;
+                indexLeft = 3;
+                indexRight = 1;
+                indexCorner = 0;
                 ao2 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 1 + 2 * 3 + 0 * 9;
-                indexRight = 0 + 1 * 3 + 0 * 9;
-                indexCorner = 0 + 2 * 3 + 0 * 9;
+                indexLeft = 7;
+                indexRight = 3;
+                indexCorner = 6;
                 ao3 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 
-                indexLeft = 2 + 1 * 3 + 0 * 9;
-                indexRight = 1 + 2 * 3 + 0 * 9;
-                indexCorner = 2 + 2 * 3 + 0 * 9;
+                indexLeft = 5;
+                indexRight = 7;
+                indexCorner = 8;
                 ao4 = CalculateAoIndex(neighbourhood[indexLeft], neighbourhood[indexRight], neighbourhood[indexCorner]);
                 break;
             default:
