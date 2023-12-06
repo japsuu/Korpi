@@ -8,16 +8,23 @@ namespace BlockEngine.Framework;
 
 public class World
 {
+    public static World CurrentWorld { get; private set; } = null!;
+    
+    public readonly ChunkManager ChunkManager;
+
     private readonly string _name;
-    private readonly ChunkManager _chunkManager;
     private readonly EntityManager _entityManager;
 
 
     public World(string name)
     {
         _name = name;
-        _chunkManager = new ChunkManager();
+        ChunkManager = new ChunkManager();
         _entityManager = new EntityManager();
+        
+        if (CurrentWorld != null)
+            throw new Exception("For now, only one world can be loaded at a time");
+        CurrentWorld = this;
         
         Logger.Log($"Loaded world '{_name}'");
     }
@@ -25,14 +32,14 @@ public class World
     
     public void Tick(Vector3 cameraPos, double time)
     {
-        _chunkManager.Tick(cameraPos, time);
+        ChunkManager.Tick(cameraPos, time);
         _entityManager.Update(time);
     }
     
     
     public void DrawChunks(Vector3 cameraPos, Shader chunkShader)
     {
-        _chunkManager.Draw(cameraPos, chunkShader);
+        ChunkManager.Draw(cameraPos, chunkShader);
     }
 
 

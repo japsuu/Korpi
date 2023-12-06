@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BlockEngine.Framework.Bitpacking;
 using BlockEngine.Framework.Blocks;
+using BlockEngine.Framework.Debugging;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
@@ -135,6 +136,9 @@ public class MeshingBuffer
     
     private static int CalculateAoIndex(BlockState left, BlockState right, BlockState corner)
     {
+        if (!DebugSettings.EnableAmbientOcclusion)
+            return 3;
+        
         if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal)
             return 0;
         

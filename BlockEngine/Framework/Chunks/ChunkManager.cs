@@ -190,6 +190,22 @@ public class ChunkManager
         
         return loadedChunk;
     }
+    
+    
+    public void ReloadAllChunks()
+    {
+        foreach (ChunkColumn column in _loadedColumns.Values)
+        {
+            for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
+            {
+                Chunk? chunk = column.GetChunk(i);
+                if (chunk == null)
+                    continue;
+                
+                chunk.IsMeshDirty = true;
+            }
+        }
+    }
 
 
     private void FindColumnsToUnload(Vector3 cameraPos)

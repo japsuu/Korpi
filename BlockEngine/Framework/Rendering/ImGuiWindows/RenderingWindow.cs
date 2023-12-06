@@ -57,6 +57,11 @@ public class RenderingWindow : ImGuiWindow
                 DebugChunkDrawer.Dispose();
         }
 
+        if (ImGui.Checkbox("Enable Ambient Occlusion", ref DebugSettings.EnableAmbientOcclusion))
+        {
+            World.CurrentWorld.ChunkManager.ReloadAllChunks();
+        }
+
         if (ImGui.Checkbox("Render column borders", ref DebugSettings.RenderChunkColumnBorders))
         {
             if (DebugSettings.RenderChunkColumnBorders)

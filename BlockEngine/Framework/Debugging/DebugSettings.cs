@@ -6,4 +6,5 @@ public static class DebugSettings
     public static bool RenderChunkBorders = false;
     public static bool RenderChunkColumnBorders = false;
     public static bool RenderSkybox = true;
+    public static bool EnableAmbientOcclusion = true;
 }
