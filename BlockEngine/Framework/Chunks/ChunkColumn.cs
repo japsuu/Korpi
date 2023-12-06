@@ -77,7 +77,11 @@ public class ChunkColumn
                         if (isChecker)
                             continue;
 
-                        ushort id = (ushort)Rng.Next(0, BlockRegistry.GetBlockCount());
+                        ushort id = (ushort)Rng.Next(1, BlockRegistry.GetBlockCount());
+                        if (Rng.NextDouble() < 0.8f)
+                        {
+                            id = 0;
+                        }
                         chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(id).GetDefaultState());
                     }
                 }

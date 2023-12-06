@@ -51,8 +51,9 @@ public class World
     public BlockState RaycastWorld(Vector3 start, Vector3 direction, float maxDistance)
     {
         Ray ray = new Ray(start, direction);
-        BlockState raycastResult = ChunkManager.RaycastWorld(ray, maxDistance);
-        return raycastResult;
+        RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
+        DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.2f, Color4.Red);
+        return raycastResult.BlockState;
     }
 
 

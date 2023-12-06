@@ -12,13 +12,13 @@ public class ShaderManager : IDisposable
     public static Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
     public static Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
     
-    public static float WindowWidth { get; private set; }
-    public static float WindowHeight { get; private set; }
+    public static int WindowWidth { get; private set; }
+    public static int WindowHeight { get; private set; }
 
 
     public ShaderManager()
     {
-        DebugShader = new Shader(IoUtils.GetShaderPath("shader_blocks.vert"), IoUtils.GetShaderPath("shader_blocks.frag"));
+        DebugShader = new Shader(IoUtils.GetShaderPath("shader_debug.vert"), IoUtils.GetShaderPath("shader_debug.frag"));
         DebugShader.Use();
         
         ChunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk.vert"), IoUtils.GetShaderPath("shader_chunk.frag"));
@@ -63,7 +63,7 @@ public class ShaderManager : IDisposable
     }
     
     
-    public static void UpdateWindowSize(float width, float height)
+    public static void UpdateWindowSize(int width, int height)
     {
         WindowWidth = width;
         WindowHeight = height;
