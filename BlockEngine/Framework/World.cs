@@ -1,5 +1,9 @@
-﻿using BlockEngine.Framework.Chunks;
+﻿using BlockEngine.Framework.Blocks;
+using BlockEngine.Framework.Chunks;
+using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.ECS.Entities;
+using BlockEngine.Framework.Physics;
+using BlockEngine.Framework.Rendering;
 using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -30,16 +34,25 @@ public class World
     }
     
     
-    public void Tick(Vector3 cameraPos, double time)
+    public void Tick(Camera camera, double time)
     {
-        ChunkManager.Tick(cameraPos, time);
+        ChunkManager.Tick(camera.Transform.Position, time);
         _entityManager.Update(time);
+        CameraStats.RaycastResult = RaycastWorld(camera.Transform.Position, camera.Front, 10);
     }
     
     
     public void DrawChunks(Vector3 cameraPos, Shader chunkShader)
     {
         ChunkManager.Draw(cameraPos, chunkShader);
+    }
+    
+    
+    public BlockState RaycastWorld(Vector3 start, Vector3 direction, float maxDistance)
+    {
+        Ray ray = new Ray(start, direction);
+        BlockState raycastResult = ChunkManager.RaycastWorld(ray, maxDistance);
+        return raycastResult;
     }
 
 

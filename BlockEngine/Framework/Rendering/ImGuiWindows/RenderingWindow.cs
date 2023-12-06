@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
 using BlockEngine.Utils;
@@ -10,28 +9,6 @@ namespace BlockEngine.Framework.Rendering.ImGuiWindows;
 
 public class RenderingWindow : ImGuiWindow
 {
-    public static class RenderingStats
-    {
-        public static ulong LoadedColumnCount;
-        public static ulong ChunksInMeshingQueue;
-        public static float MeshingTime { get; private set; }
-        
-        private static readonly Stopwatch MeshingTimer = new();
-        
-        
-        public static void StartMeshing()
-        {
-            MeshingTimer.Restart();
-        }
-        
-        
-        public static void StopMeshing(int chunksMeshed)
-        {
-            MeshingTimer.Stop();
-            MeshingTime = MeshingTimer.ElapsedMilliseconds / (float)chunksMeshed;
-        }
-    }
-    
     public override string Title => "Rendering Settings";
 
     private readonly NumberFormatInfo _numberFormat;

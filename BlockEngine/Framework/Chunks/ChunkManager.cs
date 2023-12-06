@@ -1,6 +1,7 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
+using BlockEngine.Framework.Physics;
 using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
@@ -105,7 +106,7 @@ public class ChunkManager
         }
         
         _chunkMesher.ProcessMeshingQueue();
-        RenderingWindow.RenderingStats.LoadedColumnCount = (ulong)_loadedColumns.Count;
+        RenderingStats.LoadedColumnCount = (ulong)_loadedColumns.Count;
     }
 
 
@@ -205,6 +206,21 @@ public class ChunkManager
                 chunk.IsMeshDirty = true;
             }
         }
+    }
+    
+    
+    public bool TryGetBlockStateAt(Vector3i position, out BlockState state)
+    {
+        Chunk? chunk = GetChunkAt(position);
+        if (chunk == null)
+        {
+            state = BlockRegistry.Air.GetDefaultState();
+            return false;
+        }
+
+        Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
+        state = chunk.GetBlockState(chunkRelativePos);
+        return true;
     }
 
 
@@ -387,5 +403,23 @@ public class ChunkManager
             if (dj == 0)
                 ++segmentLength;
         }
+    }
+
+
+    public BlockState RaycastWorld(Ray ray, float maxDistance)
+    {
+        Vector3 currentPos = ray.Start;
+
+        // Perform raycast using Bresenham's line algorithm in 3D
+        for (float distanceTraveled = 0f; distanceTraveled < maxDistance; distanceTraveled += ray.Direction.LengthFast)
+        {
+            currentPos += ray.Direction;
+            Vector3i roundedVector = new((int)Math.Floor(currentPos.X), (int)Math.Floor(currentPos.Y), (int)Math.Floor(currentPos.Z));
+            // Check if the current position contains a block
+            if (TryGetBlockStateAt(roundedVector, out BlockState state) && !state.IsAir)
+                return state;
+        }
+
+        return BlockRegistry.Air.GetDefaultState();
     }
 }

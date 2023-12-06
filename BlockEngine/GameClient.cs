@@ -112,7 +112,7 @@ public class GameClient : GameWindow
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
             SwitchCursorState();
 
-        _world.Tick(_camera.Transform.Position, args.Time);
+        _world.Tick(_camera, args.Time);
     }
 
     
