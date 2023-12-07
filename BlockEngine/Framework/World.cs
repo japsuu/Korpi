@@ -52,7 +52,13 @@ public class World
     {
         Ray ray = new Ray(start, direction);
         RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
-        DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.2f, Color4.Red);
+        
+        if (DebugSettings.RenderRaycastHit)
+            DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.2f, Color4.Red);
+        
+        if (DebugSettings.RenderRaycastHitBlock)
+            DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
+        
         return raycastResult.BlockState;
     }
 

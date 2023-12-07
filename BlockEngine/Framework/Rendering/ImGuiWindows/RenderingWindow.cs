@@ -49,6 +49,14 @@ public class RenderingWindow : ImGuiWindow
         
         ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
 
+        ImGui.Separator();
+        
+        ImGui.Checkbox("Render raycast path", ref DebugSettings.RenderRaycastPath);
+        ImGui.Checkbox("Render raycast hit", ref DebugSettings.RenderRaycastHit);
+        ImGui.Checkbox("Render raycast hit block", ref DebugSettings.RenderRaycastHitBlock);
+
+        ImGui.Separator();
+        
         ulong loadedChunks = RenderingStats.LoadedColumnCount * Constants.CHUNK_COLUMN_HEIGHT;
         ImGui.Text($"Loaded Blocks = {(loadedChunks * Constants.CHUNK_SIZE_CUBED).ToString("#,0", _numberFormat)}");
         ImGui.Text($"Loaded Chunks = {loadedChunks.ToString("#,0", _numberFormat)}");

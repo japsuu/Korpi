@@ -418,7 +418,8 @@ public class ChunkManager
 
         while ((currentPos - ray.Start).Length < maxDistance)
         {
-            DebugDrawer.DrawBox(new Vector3(blockPosition.X + 0.5f, blockPosition.Y + 0.5f, blockPosition.Z + 0.5f), Vector3.One, Color4.Red);
+            if (DebugSettings.RenderRaycastPath)
+                DebugDrawer.DrawBox(new Vector3(blockPosition.X + 0.5f, blockPosition.Y + 0.5f, blockPosition.Z + 0.5f), Vector3.One, Color4.Red);
             if (TryGetBlockStateAt(blockPosition, out BlockState state) && !state.IsAir)
             {
                 return new RaycastResult(true, currentPos, blockPosition, state);
