@@ -54,7 +54,7 @@ public class World
         RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
         
         if (DebugSettings.RenderRaycastHit)
-            DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.2f, Color4.Red);
+            DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.5f, Color4.Red);
         
         if (DebugSettings.RenderRaycastHitBlock)
             DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
