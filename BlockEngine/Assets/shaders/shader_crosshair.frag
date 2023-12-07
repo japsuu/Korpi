@@ -4,6 +4,8 @@ uniform sampler2D crosshair;
 
 in vec2 TexCoord;
 
+out vec4 FragColor;
+
 void main() {
-	gl_FragColor = texture(crosshair, TexCoord);
+	FragColor = texture(crosshair, TexCoord);
 }

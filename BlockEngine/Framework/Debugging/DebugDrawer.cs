@@ -7,10 +7,31 @@ namespace BlockEngine.Framework.Debugging;
 
 public abstract class DebugDrawable
 {
-    public Color4 Color;
+    protected abstract bool UseVertexColors { get; }
+    protected abstract Matrix4 ModelMatrix { get; }
+    
+    protected Color4 Color;
+    
     public float LifetimeSeconds;
     
-    public abstract void Draw();
+    
+    public void DrawObject()
+    {
+        ShaderManager.DebugShader.SetMatrix4("model", ModelMatrix);
+        if (UseVertexColors)
+        {
+            ShaderManager.DebugShader.SetVector3("overrideColor", new Vector3(1, 1, 1));
+            Draw();
+        }
+        else
+        {
+            ShaderManager.DebugShader.SetVector3("overrideColor", new Vector3(Color.R, Color.G, Color.B));
+            Draw();
+        }
+    }
+
+
+    protected abstract void Draw();
 }
 
 
@@ -19,6 +40,10 @@ public class DebugLine : DebugDrawable
     private Vector3 Start { get; }
     private Vector3 End { get; }
     private float[] Vertices { get; }
+    
+    protected override bool UseVertexColors => true;
+    protected override Matrix4 ModelMatrix { get; }
+
 
     public DebugLine(Vector3 start, Vector3 end, Color4 color, float lifetimeSeconds)
     {
@@ -26,6 +51,7 @@ public class DebugLine : DebugDrawable
         End = end;
         Color = color;
         LifetimeSeconds = lifetimeSeconds;
+        ModelMatrix = Matrix4.Identity;
 
         Vertices = new[]
         {
@@ -34,11 +60,9 @@ public class DebugLine : DebugDrawable
         };
     }
 
-    public override void Draw()
-    {
-        Matrix4 modelMatrix = Matrix4.Identity;
-        ShaderManager.DebugShader.SetMatrix4("model", modelMatrix);
 
+    protected override void Draw()
+    {
         GL.BindVertexArray(DebugDrawer.VAO);
         GL.BindBuffer(BufferTarget.ArrayBuffer, DebugDrawer.VBO);
         GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.DynamicDraw);
@@ -58,66 +82,60 @@ public class DebugBox : DebugDrawable
 {
     private Vector3 Position { get; }
     private Vector3 Size { get; }
-    private float[] Vertices { get; }
-
-
+    private static readonly float[] Vertices = {
+        // Front face
+        -0.5f, -0.5f, 0.5f, 1, 1, 1,
+        0.5f, -0.5f, 0.5f, 1, 1, 1,
+        0.5f, 0.5f, 0.5f, 1, 1, 1,
+        -0.5f, 0.5f, 0.5f, 1, 1, 1,
+        
+        // Back face
+        -0.5f, -0.5f, -0.5f, 1, 1, 1,
+        0.5f, -0.5f, -0.5f, 1, 1, 1,
+        0.5f, 0.5f, -0.5f, 1, 1, 1,
+        -0.5f, 0.5f, -0.5f, 1, 1, 1,
+        
+        // Left face
+        -0.5f, -0.5f, 0.5f, 1, 1, 1,
+        -0.5f, -0.5f, -0.5f, 1, 1, 1,
+        -0.5f, 0.5f, -0.5f, 1, 1, 1,
+        -0.5f, 0.5f, 0.5f, 1, 1, 1,
+        
+        // Right face
+        0.5f, -0.5f, 0.5f, 1, 1, 1,
+        0.5f, -0.5f, -0.5f, 1, 1, 1,
+        0.5f, 0.5f, -0.5f, 1, 1, 1,
+        0.5f, 0.5f, 0.5f, 1, 1, 1,
+        
+        // Top face
+        -0.5f, 0.5f, 0.5f, 1, 1, 1,
+        0.5f, 0.5f, 0.5f, 1, 1, 1,
+        0.5f, 0.5f, -0.5f, 1, 1, 1,
+        -0.5f, 0.5f, -0.5f, 1, 1, 1,
+        
+        // Bottom face
+        -0.5f, -0.5f, 0.5f, 1, 1, 1,
+        0.5f, -0.5f, 0.5f, 1, 1, 1,
+        0.5f, -0.5f, -0.5f, 1, 1, 1,
+        -0.5f, -0.5f, -0.5f, 1, 1, 1
+    };
+    
+    protected override bool UseVertexColors => false;
+    protected override Matrix4 ModelMatrix { get; }
+    
+    
     public DebugBox(Vector3 position, Vector3 size, Color4 color, float lifetimeSeconds)
     {
         Position = position;
         Size = size;
         Color = color;
         LifetimeSeconds = lifetimeSeconds;
-        
-        float sizeX = Size.X / 2f;
-        float sizeY = Size.Y / 2f;
-        float sizeZ = Size.Z / 2f;
-
-        Vertices = new[]
-        {
-            // Front face
-            Position.X - sizeX, Position.Y - sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y - sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y + sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X - sizeX, Position.Y + sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            
-            // Back face
-            Position.X - sizeX, Position.Y - sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y - sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y + sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X - sizeX, Position.Y + sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            
-            // Left face
-            Position.X - sizeX, Position.Y - sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X - sizeX, Position.Y - sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X - sizeX, Position.Y + sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X - sizeX, Position.Y + sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            
-            // Right face
-            Position.X + sizeX, Position.Y - sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y - sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y + sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y + sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            
-            // Top face
-            Position.X - sizeX, Position.Y + sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y + sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y + sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X - sizeX, Position.Y + sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            
-            // Bottom face
-            Position.X - sizeX, Position.Y - sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y - sizeY, Position.Z + sizeZ, Color.R, Color.G, Color.B,
-            Position.X + sizeX, Position.Y - sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B,
-            Position.X - sizeX, Position.Y - sizeY, Position.Z - sizeZ, Color.R, Color.G, Color.B
-        };
+        ModelMatrix = Matrix4.CreateScale(Size) * Matrix4.CreateTranslation(Position);
     }
 
 
-    public override void Draw()
+    protected override void Draw()
     {
-        Matrix4 modelMatrix = Matrix4.Identity;
-        ShaderManager.DebugShader.SetMatrix4("model", modelMatrix);
-
         GL.BindVertexArray(DebugDrawer.VAO);
         GL.BindBuffer(BufferTarget.ArrayBuffer, DebugDrawer.VBO);
         GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.DynamicDraw);
@@ -142,18 +160,16 @@ public class DebugSphere : DebugDrawable
 {
     private Vector3 Position { get; }
     private float Radius { get; }
-    private float[] Vertices { get; }
+    private static readonly float[] Vertices;
+    
+    protected override bool UseVertexColors => false;
+    protected override Matrix4 ModelMatrix { get; }
 
-    public DebugSphere(Vector3 position, float radius, Color4 color, float lifetimeSeconds)
+
+    static DebugSphere()
     {
-        Position = position;
-        Radius = radius;
-        Color = color;
-        LifetimeSeconds = lifetimeSeconds;
-
-        // Generate vertices for the sphere
         List<float> vertices = new();
-        const int precision = 20; // Increase for a more detailed sphere    TODO: Instead of generating the vertices for each sphere, use the model matrix.
+        const int precision = 20; // Increase for a more detailed sphere.
         for (int i = 0; i <= precision; i++)
         {
             double lat = Math.PI * i / precision;
@@ -163,17 +179,25 @@ public class DebugSphere : DebugDrawable
                 float x = (float)(Math.Cos(lon) * Math.Sin(lat));
                 float y = (float)Math.Cos(lat);
                 float z = (float)(Math.Sin(lon) * Math.Sin(lat));
-                vertices.AddRange(new[] { Position.X + Radius * x, Position.Y + Radius * y, Position.Z + Radius * z, Color.R, Color.G, Color.B });
+                vertices.AddRange(new[] { 0.5f * x, 0.5f * y, 0.5f * z, 1, 1, 1 });
             }
         }
         Vertices = vertices.ToArray();
     }
+    
 
-    public override void Draw()
+    public DebugSphere(Vector3 position, float radius, Color4 color, float lifetimeSeconds)
     {
-        Matrix4 modelMatrix = Matrix4.Identity;
-        ShaderManager.DebugShader.SetMatrix4("model", modelMatrix);
+        Position = position;
+        Radius = radius;
+        Color = color;
+        LifetimeSeconds = lifetimeSeconds;
+        ModelMatrix = Matrix4.CreateScale(new Vector3(Radius * 2, Radius * 2, Radius * 2)) * Matrix4.CreateTranslation(Position);
+    }
 
+
+    protected override void Draw()
+    {
         GL.BindVertexArray(DebugDrawer.VAO);
         GL.BindBuffer(BufferTarget.ArrayBuffer, DebugDrawer.VBO);
         GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.DynamicDraw);
@@ -246,7 +270,7 @@ public static class DebugDrawer
         ShaderManager.DebugShader.Use();
 
         foreach (DebugDrawable drawable in Drawables)
-            drawable.Draw();
+            drawable.DrawObject();
 
         Drawables.Clear();
 
@@ -256,7 +280,7 @@ public static class DebugDrawer
             if (drawable.LifetimeSeconds <= 0f)
                 drawablesToRemove.Add(drawable);
             else
-                drawable.Draw();
+                drawable.DrawObject();
 
             drawable.LifetimeSeconds -= (float)Time.DeltaTime;
         }

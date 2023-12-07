@@ -8,6 +8,7 @@ out vec3 vertColor;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform vec3 overrideColor;
 
 void main()
 {
@@ -44,6 +45,6 @@ void main()
     vertColor = finalColor;
     */
     
-    vertColor = aColor;
+    vertColor = aColor * overrideColor;
     gl_Position = vec4(aPosition, 1.0) * model * view * projection;
 }
