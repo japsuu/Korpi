@@ -457,11 +457,11 @@ public class ChunkManager
             // Calculate the intersection point (travelled distance).
             travelledDistance = Math.Min(Math.Min(intersectionDistance.X, intersectionDistance.Y), intersectionDistance.Z);
 
-            if (!blockState.IsAir)
-            {
-                Vector3 hitPos = startPos + direction * travelledDistance;
-                return new RaycastResult(true, hitPos, blockPos, (BlockFace)intersectedFace, blockState);
-            }
+            if (blockState.IsAir)
+                continue;
+            
+            Vector3 hitPos = startPos + direction * travelledDistance;
+            return new RaycastResult(true, hitPos, blockPos, (BlockFace)intersectedFace, blockState);
         }
 
         Vector3 rayEnd = startPos + direction * maxDistance;
