@@ -207,18 +207,14 @@ public class ChunkManager
     }
 
 
-    public bool TryGetBlockStateAt(Vector3i position, out BlockState state)
+    public BlockState GetBlockStateAt(Vector3i position)
     {
         Chunk? chunk = GetChunkAt(position);
         if (chunk == null)
-        {
-            state = BlockRegistry.Air.GetDefaultState();
-            return false;
-        }
+            return BlockRegistry.Air.GetDefaultState();
 
         Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
-        state = chunk.GetBlockState(chunkRelativePos);
-        return true;
+        return chunk.GetBlockState(chunkRelativePos);
     }
 
 
@@ -408,53 +404,67 @@ public class ChunkManager
     public RaycastResult RaycastBlocks(Ray ray, float maxDistance)
     {
         Vector3 direction = ray.NormalizedDirection;
-        Vector3 currentPos = ray.Start;
-        Vector3i blockPosition = new((int)Math.Floor(currentPos.X), (int)Math.Floor(currentPos.Y), (int)Math.Floor(currentPos.Z));
+        Vector3 position = ray.Start;
+
+        return Raycast(position, direction, maxDistance);
+    }
+
+
+    private RaycastResult Raycast(Vector3 startPos, Vector3 direction, float maxDistance)
+    {
         Vector3i step = new(Math.Sign(direction.X), Math.Sign(direction.Y), Math.Sign(direction.Z));
-        Vector3 tMax = new(
-            (blockPosition.X + step.X - currentPos.X) / direction.X, (blockPosition.Y + step.Y - currentPos.Y) / direction.Y,
-            (blockPosition.Z + step.Z - currentPos.Z) / direction.Z);
-        Vector3 tDelta = new(step.X / direction.X, step.Y / direction.Y, step.Z / direction.Z);
 
-        while ((currentPos - ray.Start).Length < maxDistance)
+        Vector3 directionAbs = new(Math.Abs(direction.X), Math.Abs(direction.Y), Math.Abs(direction.Z));
+        Vector3 posOffset = startPos - new Vector3((float)Math.Floor(startPos.X), (float)Math.Floor(startPos.Y), (float)Math.Floor(startPos.Z)) -
+                            Vector3.ComponentMax(step, Vector3.Zero);
+        Vector3 posOffsetAbs = new(Math.Abs(posOffset.X), Math.Abs(posOffset.Y), Math.Abs(posOffset.Z));
+        Vector3 nextIntersectionDistance = posOffsetAbs / directionAbs; // Distance to the next intersection with a block boundary.
+
+        Vector3 intersectionDistanceDelta = Vector3.One / directionAbs; // Change in intersection distance when moving to the next block boundary.
+
+        Vector3i blockPos = new((int)Math.Floor(startPos.X), (int)Math.Floor(startPos.Y), (int)Math.Floor(startPos.Z));
+
+        int itr = 0;
+        float travelledDistance = 0;
+        while (++itr < 100 && travelledDistance < maxDistance)
         {
-            if (DebugSettings.RenderRaycastPath)
-                DebugDrawer.DrawBox(new Vector3(blockPosition.X + 0.5f, blockPosition.Y + 0.5f, blockPosition.Z + 0.5f), Vector3.One, Color4.Red);
-            if (TryGetBlockStateAt(blockPosition, out BlockState state) && !state.IsAir)
+            int intersectedFace;    // The face of the block that the ray intersected with.
+            Vector3 intersectionDistance = nextIntersectionDistance; // Cache the old tMax value to later calculate the intersection point.
+            if (nextIntersectionDistance.X < nextIntersectionDistance.Y && nextIntersectionDistance.X < nextIntersectionDistance.Z)
             {
-                return new RaycastResult(true, currentPos, blockPosition, state);
+                blockPos.X += step.X;
+                nextIntersectionDistance.X += intersectionDistanceDelta.X;
+                intersectedFace = step.X > 0 ? 3 : 0;
             }
-
-            if (tMax.X < tMax.Y)
+            else if (nextIntersectionDistance.Y < nextIntersectionDistance.Z)
             {
-                if (tMax.X < tMax.Z)
-                {
-                    blockPosition.X += step.X;
-                    tMax.X += tDelta.X;
-                }
-                else
-                {
-                    blockPosition.Z += step.Z;
-                    tMax.Z += tDelta.Z;
-                }
+                blockPos.Y += step.Y;
+                nextIntersectionDistance.Y += intersectionDistanceDelta.Y;
+                intersectedFace = step.Y > 0 ? 4 : 1;
             }
             else
             {
-                if (tMax.Y < tMax.Z)
-                {
-                    blockPosition.Y += step.Y;
-                    tMax.Y += tDelta.Y;
-                }
-                else
-                {
-                    blockPosition.Z += step.Z;
-                    tMax.Z += tDelta.Z;
-                }
+                blockPos.Z += step.Z;
+                nextIntersectionDistance.Z += intersectionDistanceDelta.Z;
+                intersectedFace = step.Z > 0 ? 5 : 2;
             }
 
-            currentPos = ray.Start + direction * Math.Min(Math.Min(tMax.X, tMax.Y), tMax.Z) * 0.5f;
+            if (DebugSettings.RenderRaycastPath)
+                DebugDrawer.DrawBox(new Vector3(blockPos.X + 0.5f, blockPos.Y + 0.5f, blockPos.Z + 0.5f), Vector3.One, Color4.Red);
+
+            BlockState blockState = GetBlockStateAt(blockPos);
+            
+            // Calculate the intersection point (travelled distance).
+            travelledDistance = Math.Min(Math.Min(intersectionDistance.X, intersectionDistance.Y), intersectionDistance.Z);
+
+            if (!blockState.IsAir)
+            {
+                Vector3 hitPos = startPos + direction * travelledDistance;
+                return new RaycastResult(true, hitPos, blockPos, (BlockFace)intersectedFace, blockState);
+            }
         }
 
-        return new RaycastResult(false, currentPos, blockPosition, BlockRegistry.Air.GetDefaultState());
+        Vector3 rayEnd = startPos + direction * maxDistance;
+        return new RaycastResult(false, rayEnd, blockPos, 0, BlockRegistry.Air.GetDefaultState());
     }
 }
