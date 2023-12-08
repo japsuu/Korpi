@@ -30,5 +30,8 @@ public class CameraWindow : ImGuiWindow
         ImGui.Text($"Fly spd: {_camera.GetFlySpeedFormatted()}");
         ImGui.Separator();
         ImGui.Text($"Raycast result: {CameraStats.RaycastResult}");
+        ImGui.Separator();
+        ImGui.Text($"Time: {GameTime.GetFormattedTime()}");
+        ImGui.Text($"Date: {GameTime.GetFormattedDate()}");
     }
 }

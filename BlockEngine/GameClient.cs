@@ -47,38 +47,32 @@ public class GameClient : GameWindow
     {
         base.OnLoad();
         Logger.Log($"Starting v{Constants.ENGINE_VERSION}...");
-
+        
+        GL.Enable(EnableCap.DepthTest);     // Enable depth testing.
+        GL.Enable(EnableCap.Multisample);   // Enable multisampling.
+        GL.Enable(EnableCap.Blend);         // Enable blending for transparent textures.
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         
-        // We enable depth testing here. If you try to draw something more complex than one plane without this,
-        // you'll notice that polygons further in the background will occasionally be drawn over the top of the ones in the foreground.
-        GL.Enable(EnableCap.DepthTest);
-        
-        // Enable multisampling.
-        GL.Enable(EnableCap.Multisample);
-        
-        // Enable blending for transparent textures.
-        GL.Enable(EnableCap.Blend);
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        
+        // Resource initialization.
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
         ShaderManager.UpdateWindowSize(ClientSize.X, ClientSize.Y);
-        
-        _world = new World("World1");
-        
-        _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
-        
         _shaderManager = new ShaderManager();
         
+        // World initialization.
+        GameTime.Initialize();
+        _world = new World("World1");
         _skybox = new Skybox(false);
         
+        // Player initialization.
         _camera = new Camera(Vector3.Zero, ClientSize.X / (float)ClientSize.Y);
         CursorState = CursorState.Grabbed;
-        
         _crosshair = new Crosshair();
         
+        // UI initialization.
+        _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
         ImGuiWindowManager.CreateDefaultWindows();
 
         ClientLoad?.Invoke();
@@ -102,6 +96,7 @@ public class GameClient : GameWindow
         base.OnUpdateFrame(args);
         
         Time.Update(args.Time);
+        GameTime.Update();
         
         Input.Update(KeyboardState, MouseState);
 

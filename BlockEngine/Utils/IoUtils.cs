@@ -1,4 +1,6 @@
-﻿namespace BlockEngine.Utils;
+﻿using BlockEngine.Framework;
+
+namespace BlockEngine.Utils;
 
 public static class IoUtils
 {
