@@ -4,6 +4,7 @@ layout (location = 0) in ivec2 aData;
 
 out vec3 uv;
 out vec3 aoColor;
+out float faceShading;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -22,10 +23,15 @@ vec3 aoColors[4] = vec3[](
     vec3(0.7, 0.7, 0.7),
     vec3(0.9, 0.9, 0.9),
     vec3(1.0, 1.0, 1.0)
-    // vec3(1.0, 0.0, 0.0),
-    // vec3(0.0, 1.0, 0.0),
-    // vec3(0.0, 0.0, 1.0),
-    // vec3(1.0, 0.0, 1.0)
+//     vec3(1.0, 0.0, 0.0),
+//     vec3(0.0, 1.0, 0.0),
+//     vec3(0.0, 0.0, 1.0),
+//     vec3(1.0, 0.0, 1.0)
+);
+
+float face_shading[6] = float[6](
+0.8, 1.0, 0.5,  //  X,  Y,  Z
+0.5, 0.5, 0.8   // -X, -Y, -Z
 );
 
 void main()
@@ -78,5 +84,6 @@ void main()
     
     aoColor = aoColors[aoIndex];
     uv = vec3(textureCoords[uvIndex], textureIndex);
+    faceShading = face_shading[normal];
     gl_Position = vec4(position, 1.0) * model * view * projection;
 }

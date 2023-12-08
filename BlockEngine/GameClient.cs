@@ -26,6 +26,7 @@ public class GameClient : GameWindow
     private Skybox _skybox = null!;
     private World _world = null!;
     private Camera _camera = null!;
+    private Crosshair _crosshair = null!;
 
 
     public GameClient() : base(
@@ -46,9 +47,6 @@ public class GameClient : GameWindow
     {
         base.OnLoad();
         Logger.Log($"Starting v{Constants.ENGINE_VERSION}...");
-        
-        _world = new World("World1");
-        _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
 
         GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         
@@ -59,21 +57,29 @@ public class GameClient : GameWindow
         // Enable multisampling.
         GL.Enable(EnableCap.Multisample);
         
+        // Enable blending for transparent textures.
+        GL.Enable(EnableCap.Blend);
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
+        ShaderManager.UpdateWindowSize(ClientSize.X, ClientSize.Y);
         
-        // Load shaders.
+        _world = new World("World1");
+        
+        _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
+        
         _shaderManager = new ShaderManager();
         
         _skybox = new Skybox(false);
         
-        // Initialize the camera.
-        _camera = new Camera(Vector3.Zero, Size.X / (float)Size.Y);
+        _camera = new Camera(Vector3.Zero, ClientSize.X / (float)ClientSize.Y);
         CursorState = CursorState.Grabbed;
         
+        _crosshair = new Crosshair();
+        
         ImGuiWindowManager.CreateDefaultWindows();
-        ShaderManager.UpdateWindowSize(Size.X, Size.Y);
 
         ClientLoad?.Invoke();
         Logger.Log("Started.");
@@ -102,8 +108,8 @@ public class GameClient : GameWindow
         // Emulate the cursor being fixed to center of the screen, as OpenTK doesn't fix the cursor position when it's grabbed.
         Vector2 mousePos = Input.MouseState.Position;
         if (CursorState == CursorState.Grabbed)
-            mousePos = new Vector2(Size.X / 2f, Size.Y / 2f);
-        // MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
+            mousePos = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
+        // MousePosition = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
 
         _imGuiController.Update(this, (float)args.Time, mousePos);
         
@@ -112,7 +118,7 @@ public class GameClient : GameWindow
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
             SwitchCursorState();
 
-        _world.Tick(_camera.Transform.Position, args.Time);
+        _world.Tick(_camera, args.Time);
     }
 
     
@@ -143,6 +149,10 @@ public class GameClient : GameWindow
 
         if (DebugSettings.RenderSkybox)
             _skybox.Draw();
+        
+        DebugDrawer.Draw();
+        
+        _crosshair.Draw();
 
         DrawImGui();
 
@@ -173,6 +183,9 @@ public class GameClient : GameWindow
     {
         base.OnResize(e);
 
+        // if (e.Width == ShaderManager.WindowWidth && e.Height == ShaderManager.WindowHeight)
+        //     return;
+
         GL.Viewport(0, 0, e.Width, e.Height);
         
         ShaderManager.UpdateWindowSize(e.Width, e.Height);
@@ -181,7 +194,7 @@ public class GameClient : GameWindow
         _imGuiController.WindowResized(ClientSize.X, ClientSize.Y);
         
         // Tell the camera the new aspect ratio.
-        _camera.AspectRatio = Size.X / (float)Size.Y;
+        _camera.AspectRatio = ClientSize.X / (float)ClientSize.Y;
     }
 
     

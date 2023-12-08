@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
 using BlockEngine.Utils;
@@ -10,28 +9,6 @@ namespace BlockEngine.Framework.Rendering.ImGuiWindows;
 
 public class RenderingWindow : ImGuiWindow
 {
-    public static class RenderingStats
-    {
-        public static ulong LoadedColumnCount;
-        public static ulong ChunksInMeshingQueue;
-        public static float MeshingTime { get; private set; }
-        
-        private static readonly Stopwatch MeshingTimer = new();
-        
-        
-        public static void StartMeshing()
-        {
-            MeshingTimer.Restart();
-        }
-        
-        
-        public static void StopMeshing(int chunksMeshed)
-        {
-            MeshingTimer.Stop();
-            MeshingTime = MeshingTimer.ElapsedMilliseconds / (float)chunksMeshed;
-        }
-    }
-    
     public override string Title => "Rendering Settings";
 
     private readonly NumberFormatInfo _numberFormat;
@@ -57,6 +34,11 @@ public class RenderingWindow : ImGuiWindow
                 DebugChunkDrawer.Dispose();
         }
 
+        if (ImGui.Checkbox("Enable Ambient Occlusion", ref DebugSettings.EnableAmbientOcclusion))
+        {
+            World.CurrentWorld.ChunkManager.ReloadAllChunks();
+        }
+
         if (ImGui.Checkbox("Render column borders", ref DebugSettings.RenderChunkColumnBorders))
         {
             if (DebugSettings.RenderChunkColumnBorders)
@@ -67,6 +49,14 @@ public class RenderingWindow : ImGuiWindow
         
         ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
 
+        ImGui.Separator();
+        
+        ImGui.Checkbox("Render raycast path", ref DebugSettings.RenderRaycastPath);
+        ImGui.Checkbox("Render raycast hit", ref DebugSettings.RenderRaycastHit);
+        ImGui.Checkbox("Render raycast hit block", ref DebugSettings.RenderRaycastHitBlock);
+
+        ImGui.Separator();
+        
         ulong loadedChunks = RenderingStats.LoadedColumnCount * Constants.CHUNK_COLUMN_HEIGHT;
         ImGui.Text($"Loaded Blocks = {(loadedChunks * Constants.CHUNK_SIZE_CUBED).ToString("#,0", _numberFormat)}");
         ImGui.Text($"Loaded Chunks = {loadedChunks.ToString("#,0", _numberFormat)}");

@@ -1,4 +1,5 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Framework.Debugging;
+using BlockEngine.Utils;
 using ImGuiNET;
 using OpenTK.Mathematics;
 
@@ -27,5 +28,7 @@ public class CameraWindow : ImGuiWindow
         ImGui.Text($"Yaw: {_camera.Yaw:F1}");
         ImGui.Text($"Fov: {_camera.Fov:F1}");
         ImGui.Text($"Fly spd: {_camera.GetFlySpeedFormatted()}");
+        ImGui.Separator();
+        ImGui.Text($"Raycast result: {CameraStats.RaycastResult}");
     }
 }

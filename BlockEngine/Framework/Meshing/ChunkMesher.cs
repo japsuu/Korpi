@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Chunks;
+using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Registries;
 using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Utils;
@@ -50,8 +51,8 @@ public class ChunkMesher
 
     public void ProcessMeshingQueue()
     {
-        RenderingWindow.RenderingStats.ChunksInMeshingQueue = (ulong)_chunkMeshingQueue.Count;
-        RenderingWindow.RenderingStats.StartMeshing();
+        RenderingStats.ChunksInMeshingQueue = (ulong)_chunkMeshingQueue.Count;
+        RenderingStats.StartMeshing();
         
         int chunksMeshed = 0;
         while (chunksMeshed < MAX_CHUNKS_MESHED_PER_FRAME && _chunkMeshingQueue.Count > 0)
@@ -65,7 +66,7 @@ public class ChunkMesher
             chunksMeshed++;
         }
         
-        RenderingWindow.RenderingStats.StopMeshing(chunksMeshed);
+        RenderingStats.StopMeshing(chunksMeshed);
     }
 
 

@@ -1,5 +1,6 @@
 ﻿namespace BlockEngine.Framework.Blocks;
 
+[Obsolete("Please use BlockFace instead")]
 public enum BlockOrientation
 {
     /// <summary>

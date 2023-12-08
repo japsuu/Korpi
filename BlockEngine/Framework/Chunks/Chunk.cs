@@ -44,6 +44,20 @@ public class Chunk
     }
 
 
+    /// <summary>
+    /// Indexes to the block at the given position.
+    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+    /// for z in range:
+    ///    for y in range:
+    ///       for x in range:
+    ///          block = BlockMap[x, y, z]
+    /// </summary>
+    public BlockState GetBlockState(Vector3i position)
+    {
+        return _blockStorage.GetBlock(position.X, position.Y, position.Z);
+    }
+
+
     public void Tick(double deltaTime)
     {
     }

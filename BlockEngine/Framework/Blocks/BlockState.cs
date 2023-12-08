@@ -31,6 +31,9 @@ public struct BlockState
     public byte NeighbourMask { get; private set; }
     
     
+    public bool IsAir => Id == 0;
+    
+    
     public BlockState(Block block)
     {
         Id = block.Id;
@@ -111,5 +114,11 @@ public struct BlockState
     public static bool operator !=(BlockState left, BlockState right)
     {
         return !(left == right);
+    }
+
+
+    public override string ToString()
+    {
+        return $"BlockState(Id={Id}, RenderType={RenderType}, Data={Data}, NeighbourMask={NeighbourMask})";
     }
 }

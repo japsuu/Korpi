@@ -56,11 +56,11 @@ public class ChunkColumn
 
     public void Load()
     {
-        // if (Position != Vector2i.Zero)
-        //     return;
-        
-        if (Position.X > 1 * Constants.CHUNK_SIZE || Position.X < -1 * Constants.CHUNK_SIZE || Position.Y > 1 * Constants.CHUNK_SIZE || Position.Y < -1 * Constants.CHUNK_SIZE)
+        if (Position != Vector2i.Zero)
             return;
+        
+        // if (Position.X > 1 * Constants.CHUNK_SIZE || Position.X < -1 * Constants.CHUNK_SIZE || Position.Y > 1 * Constants.CHUNK_SIZE || Position.Y < -1 * Constants.CHUNK_SIZE)
+        //     return;
 
         // Generate test data
         //for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
@@ -77,7 +77,11 @@ public class ChunkColumn
                         if (isChecker)
                             continue;
 
-                        ushort id = (ushort)Rng.Next(0, BlockRegistry.GetBlockCount());
+                        ushort id = (ushort)Rng.Next(1, BlockRegistry.GetBlockCount());
+                        if (Rng.NextDouble() < 0.8f)
+                        {
+                            id = 0;
+                        }
                         chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(id).GetDefaultState());
                     }
                 }

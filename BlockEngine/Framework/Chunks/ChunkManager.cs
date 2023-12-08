@@ -1,8 +1,8 @@
 ﻿using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Debugging;
 using BlockEngine.Framework.Meshing;
+using BlockEngine.Framework.Physics;
 using BlockEngine.Framework.Registries;
-using BlockEngine.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Framework.Rendering.Shaders;
 using BlockEngine.Utils;
 using OpenTK.Mathematics;
@@ -14,42 +14,44 @@ public class ChunkManager
     /// <summary>
     /// Contains all 26 neighbouring chunk offsets.
     /// </summary>
-    private static readonly Vector3i[] NeighbouringChunkOffsets = {
+    private static readonly Vector3i[] NeighbouringChunkOffsets =
+    {
         // 8 Corners
-        new (1, 1, 1),
-        new (-1, 1, 1),
-        new (-1, 1, -1),
-        new (1, 1, -1),
-        new (1, -1, 1),
-        new (-1, -1, 1),
-        new (-1, -1, -1),
-        new (1, -1, -1),
-        
+        new(1, 1, 1),
+        new(-1, 1, 1),
+        new(-1, 1, -1),
+        new(1, 1, -1),
+        new(1, -1, 1),
+        new(-1, -1, 1),
+        new(-1, -1, -1),
+        new(1, -1, -1),
+
         // 12 Edges
-        new (1, 1, 0),
-        new (0, 1, 1),
-        new (-1, 1, 0),
-        new (0, 1, -1),
-        new (1, -1, 0),
-        new (0, -1, 1),
-        new (-1, -1, 0),
-        new (0, -1, -1),
-        new (1, 0, 1),
-        new (-1, 0, 1),
-        new (-1, 0, -1),
-        new (1, 0, -1),
-        
+        new(1, 1, 0),
+        new(0, 1, 1),
+        new(-1, 1, 0),
+        new(0, 1, -1),
+        new(1, -1, 0),
+        new(0, -1, 1),
+        new(-1, -1, 0),
+        new(0, -1, -1),
+        new(1, 0, 1),
+        new(-1, 0, 1),
+        new(-1, 0, -1),
+        new(1, 0, -1),
+
         // 6 Faces
-        new (1, 0, 0),
-        new (0, 0, 1),
-        new (-1, 0, 0),
-        new (0, 0, -1),
-        new (0, 1, 0),
-        new (0, -1, 0)
+        new(1, 0, 0),
+        new(0, 0, 1),
+        new(-1, 0, 0),
+        new(0, 0, -1),
+        new(0, 1, 0),
+        new(0, -1, 0)
     };
-    
-    private static readonly NeighbouringChunkPosition[] NeighbouringChunkPositions = Enum.GetValues(typeof(NeighbouringChunkPosition)).Cast<NeighbouringChunkPosition>().ToArray();
-    
+
+    private static readonly NeighbouringChunkPosition[] NeighbouringChunkPositions =
+        Enum.GetValues(typeof(NeighbouringChunkPosition)).Cast<NeighbouringChunkPosition>().ToArray();
+
     private readonly Vector3i[] _precomputedNeighbouringChunkOffsets = new Vector3i[26];
     private readonly Dictionary<Vector2i, ChunkColumn> _loadedColumns = new();
     private readonly List<Vector2i> _columnsToLoad = new();
@@ -76,56 +78,55 @@ public class ChunkManager
         UnloadColumns();
         FindColumnsToLoad(cameraPos);
         LoadColumns(cameraPos);
-        
+
         // Tick all columns
         foreach (ChunkColumn column in _loadedColumns.Values)
         {
             column.Tick(deltaTime);
-            
+
             if (!column.IsMeshDirty)
                 continue;
-            
+
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
                 Chunk? chunk = column.GetChunk(i);
                 if (chunk == null)
                     continue;
-                
+
                 if (!chunk.IsMeshed)
                     continue;
-                
+
                 if (!chunk.IsMeshDirty)
                     continue;
-                
+
                 Vector3i chunkPos = new(column.Position.X, i * Constants.CHUNK_SIZE, column.Position.Y);
 
                 _chunkMesher.EnqueueChunkForMeshing(chunkPos, cameraPos);
+
                 // Logger.Debug($"Enqueued chunk at {chunkPos} for meshing, as it was dirty.");
             }
         }
-        
+
         _chunkMesher.ProcessMeshingQueue();
-        RenderingWindow.RenderingStats.LoadedColumnCount = (ulong)_loadedColumns.Count;
+        RenderingStats.LoadedColumnCount = (ulong)_loadedColumns.Count;
     }
 
 
     public void Draw(Vector3 cameraPos, Shader chunkShader)
     {
         foreach (ChunkColumn column in _loadedColumns.Values)
-        {
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
                 Chunk? chunk = column.GetChunk(i);
                 if (chunk == null)
                     continue;
-                
+
                 if (!chunk.IsMeshed)
                     continue;
-                
+
                 Vector3i chunkPos = new(column.Position.X, i * Constants.CHUNK_SIZE, column.Position.Y);
                 DrawChunkAt(chunkPos, chunkShader);
             }
-        }
 
         if (DebugSettings.RenderChunkBorders)
         {
@@ -141,14 +142,14 @@ public class ChunkManager
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
     }
-    
-    
+
+
     public bool IsChunkLoaded(Vector3i chunkPos)
     {
         Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(chunkPos);
         if (!_loadedColumns.TryGetValue(columnPos, out ChunkColumn? column))
             return false;
-        
+
         return column.GetChunkAtHeight(chunkPos.Y) != null;
     }
 
@@ -181,14 +182,39 @@ public class ChunkManager
 
             if (neighbourChunk == null)
                 continue;
-            
+
             NeighbouringChunkPosition position = NeighbouringChunkPositions[i];
 
             // Copy the slice of block data from the neighbour chunk
             neighbourChunk.CacheMeshingData(cache, position);
         }
-        
+
         return loadedChunk;
+    }
+
+
+    public void ReloadAllChunks()
+    {
+        foreach (ChunkColumn column in _loadedColumns.Values)
+            for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
+            {
+                Chunk? chunk = column.GetChunk(i);
+                if (chunk == null)
+                    continue;
+
+                chunk.IsMeshDirty = true;
+            }
+    }
+
+
+    public BlockState GetBlockStateAt(Vector3i position)
+    {
+        Chunk? chunk = GetChunkAt(position);
+        if (chunk == null)
+            return BlockRegistry.Air.GetDefaultState();
+
+        Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
+        return chunk.GetBlockState(chunkRelativePos);
     }
 
 
@@ -226,6 +252,7 @@ public class ChunkManager
                 Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y);
                 ChunkRendererStorage.RemoveRenderer(chunkPos);
             }
+
             // TODO: Check if this chunk was queued for meshing, and remove it from the queue.
 
             // Logger.Log($"Unloaded chunk column at {columnPos}.");
@@ -280,9 +307,10 @@ public class ChunkManager
             if (chunk == null)
                 continue;
 
-            Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y); 
+            Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y);
             _chunkMesher.EnqueueChunkForInitialMeshing(chunkPos, cameraPos);
         }
+
         // Logger.Debug($"Enqueued column at {column.Position} for full meshing.");
     }
 
@@ -292,10 +320,9 @@ public class ChunkManager
         Vector2i chunkColumnPos = CoordinateConversions.GetContainingColumnPos(position);
 
         if (!_loadedColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
-        {
+
             //Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
             return null;
-        }
 
         return column.GetChunkAtHeight(position.Y);
     }
@@ -326,7 +353,7 @@ public class ChunkManager
         const int size = Constants.CHUNK_COLUMN_LOAD_RADIUS * 2 + 1;
         _columnLoadSpiral = new List<Vector2i>
         {
-            new Vector2i(0, 0)
+            new(0, 0)
         };
 
         foreach (Vector2i pos in EnumerateSpiral(size * size - 1))
@@ -371,5 +398,73 @@ public class ChunkManager
             if (dj == 0)
                 ++segmentLength;
         }
+    }
+
+
+    public RaycastResult RaycastBlocks(Ray ray, float maxDistance)
+    {
+        Vector3 direction = ray.NormalizedDirection;
+        Vector3 position = ray.Start;
+
+        return Raycast(position, direction, maxDistance);
+    }
+
+
+    private RaycastResult Raycast(Vector3 startPos, Vector3 direction, float maxDistance)
+    {
+        Vector3i step = new(Math.Sign(direction.X), Math.Sign(direction.Y), Math.Sign(direction.Z));
+
+        Vector3 directionAbs = new(Math.Abs(direction.X), Math.Abs(direction.Y), Math.Abs(direction.Z));
+        Vector3 posOffset = startPos - new Vector3((float)Math.Floor(startPos.X), (float)Math.Floor(startPos.Y), (float)Math.Floor(startPos.Z)) -
+                            Vector3.ComponentMax(step, Vector3.Zero);
+        Vector3 posOffsetAbs = new(Math.Abs(posOffset.X), Math.Abs(posOffset.Y), Math.Abs(posOffset.Z));
+        Vector3 nextIntersectionDistance = posOffsetAbs / directionAbs; // Distance to the next intersection with a block boundary.
+
+        Vector3 intersectionDistanceDelta = Vector3.One / directionAbs; // Change in intersection distance when moving to the next block boundary.
+
+        Vector3i blockPos = new((int)Math.Floor(startPos.X), (int)Math.Floor(startPos.Y), (int)Math.Floor(startPos.Z));
+
+        int itr = 0;
+        float travelledDistance = 0;
+        while (++itr < 100 && travelledDistance < maxDistance)
+        {
+            int intersectedFace;    // The face of the block that the ray intersected with.
+            Vector3 intersectionDistance = nextIntersectionDistance; // Cache the old tMax value to later calculate the intersection point.
+            if (nextIntersectionDistance.X < nextIntersectionDistance.Y && nextIntersectionDistance.X < nextIntersectionDistance.Z)
+            {
+                blockPos.X += step.X;
+                nextIntersectionDistance.X += intersectionDistanceDelta.X;
+                intersectedFace = step.X > 0 ? 3 : 0;
+            }
+            else if (nextIntersectionDistance.Y < nextIntersectionDistance.Z)
+            {
+                blockPos.Y += step.Y;
+                nextIntersectionDistance.Y += intersectionDistanceDelta.Y;
+                intersectedFace = step.Y > 0 ? 4 : 1;
+            }
+            else
+            {
+                blockPos.Z += step.Z;
+                nextIntersectionDistance.Z += intersectionDistanceDelta.Z;
+                intersectedFace = step.Z > 0 ? 5 : 2;
+            }
+
+            if (DebugSettings.RenderRaycastPath)
+                DebugDrawer.DrawBox(new Vector3(blockPos.X + 0.5f, blockPos.Y + 0.5f, blockPos.Z + 0.5f), Vector3.One, Color4.Red);
+
+            BlockState blockState = GetBlockStateAt(blockPos);
+            
+            // Calculate the intersection point (travelled distance).
+            travelledDistance = Math.Min(Math.Min(intersectionDistance.X, intersectionDistance.Y), intersectionDistance.Z);
+
+            if (blockState.IsAir)
+                continue;
+            
+            Vector3 hitPos = startPos + direction * travelledDistance;
+            return new RaycastResult(true, hitPos, blockPos, (BlockFace)intersectedFace, blockState);
+        }
+
+        Vector3 rayEnd = startPos + direction * maxDistance;
+        return new RaycastResult(false, rayEnd, blockPos, 0, BlockRegistry.Air.GetDefaultState());
     }
 }

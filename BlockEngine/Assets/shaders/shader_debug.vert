@@ -1,16 +1,18 @@
 #version 330 core
 
 layout (location = 0) in vec3 aPosition;
-layout (location = 1) in vec3 aNormal;
+layout (location = 1) in vec3 aColor;
 
 out vec3 vertColor;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform vec3 overrideColor;
 
 void main()
 {
+    /*
     // Define colors for each direction
     vec3 colorXPos = vec3(1.0, 0.0, 0.0);   // Red
     vec3 colorYPos = vec3(0.0, 1.0, 0.0);   // Green
@@ -41,5 +43,8 @@ void main()
     
     // Assign the color to the output variable
     vertColor = finalColor;
+    */
+    
+    vertColor = aColor * overrideColor;
     gl_Position = vec4(aPosition, 1.0) * model * view * projection;
 }
