@@ -1,0 +1,32 @@
+name: Capture Screenshot
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  DOTNET_VERSION: '6.0.410'
+  CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.IMGUR_CLIENT_SECRET }}
+
+jobs:
+  capture-screenshot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Capture Screenshot
+      run: ./update_readme_img.sh $CLIENT_ID $CLIENT_SECRET
