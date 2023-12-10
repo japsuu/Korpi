@@ -29,4 +29,4 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Capture Screenshot
-      run: ./update_readme_img.sh $CLIENT_ID $CLIENT_SECRET
+      run: ${GITHUB_WORKSPACE}/scripts/update_readme_img.sh $CLIENT_ID $CLIENT_SECRET
