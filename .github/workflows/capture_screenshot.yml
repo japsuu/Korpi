@@ -28,5 +28,8 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
+    - name: Make the script files executable
+      run: chmod +x ${GITHUB_WORKSPACE}/scripts/update_readme_img.sh
+
     - name: Capture Screenshot
       run: ${GITHUB_WORKSPACE}/scripts/update_readme_img.sh $CLIENT_ID $CLIENT_SECRET
