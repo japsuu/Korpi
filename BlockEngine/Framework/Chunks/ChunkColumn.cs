@@ -56,11 +56,14 @@ public class ChunkColumn
 
     public void Load()
     {
-        if (Position != Vector2i.Zero)
-            return;
+        // if (Position != Vector2i.Zero)
+        //     return;
         
         // if (Position.X > 1 * Constants.CHUNK_SIZE || Position.X < -1 * Constants.CHUNK_SIZE || Position.Y > 1 * Constants.CHUNK_SIZE || Position.Y < -1 * Constants.CHUNK_SIZE)
         //     return;
+        
+        if (Position.X > 2 * Constants.CHUNK_SIZE || Position.X < -2 * Constants.CHUNK_SIZE || Position.Y > 2 * Constants.CHUNK_SIZE || Position.Y < -2 * Constants.CHUNK_SIZE)
+            return;
 
         // Generate test data
         //for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)

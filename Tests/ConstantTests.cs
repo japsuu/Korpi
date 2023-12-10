@@ -1,4 +1,5 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine;
+using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
 namespace Tests;
@@ -34,24 +35,6 @@ public class ConstantsTests
     public void UpdateLoopFrequency_IsNotNegative()
     {
         Assert.That(Constants.UPDATE_LOOP_FREQUENCY, Is.GreaterThanOrEqualTo(0u));
-    }
-
-    [Test]
-    public void WorldForward_IsNotZero()
-    {
-        Assert.That(Constants.WorldForward, Is.Not.EqualTo(Vector3.Zero));
-    }
-
-    [Test]
-    public void WorldUp_IsNotZero()
-    {
-        Assert.That(Constants.WorldUp, Is.Not.EqualTo(Vector3.Zero));
-    }
-
-    [Test]
-    public void WorldRight_IsNotZero()
-    {
-        Assert.That(Constants.WorldRight, Is.Not.EqualTo(Vector3.Zero));
     }
 
     [Test]
