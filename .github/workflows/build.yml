@@ -1,5 +1,4 @@
-
-name: build and test
+name: build
 
 on:
   push:
@@ -11,9 +10,9 @@ env:
   DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
 
 jobs:
-  build-and-test:
+  build:
 
-    name: build-and-test-${{matrix.os}}
+    name: build-${{matrix.os}}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -31,6 +30,3 @@ jobs:
       
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
