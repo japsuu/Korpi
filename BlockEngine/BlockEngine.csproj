@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BigGustave" Version="1.0.6" />
     <PackageReference Include="Config.Net" Version="5.1.5" />
     <PackageReference Include="ImGui.NET" Version="1.89.9.3" />
     <PackageReference Include="OpenTK" Version="4.8.1" />
@@ -25,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Framework\VoxelShapes\" />
+    <Folder Include="Screenshots\" />
   </ItemGroup>
 
 </Project>
