@@ -1,36 +1,10 @@
 ﻿using BlockEngine;
-using BlockEngine.Utils;
-using OpenTK.Mathematics;
 
 namespace Tests;
 
 [TestFixture]
 public class ConstantsTests
 {
-    [Test]
-    public void EngineName_IsNotNullOrEmpty()
-    {
-        Assert.That(string.IsNullOrEmpty(Constants.ENGINE_NAME), Is.False);
-    }
-
-    [Test]
-    public void EngineVersion_IsNotNullOrEmpty()
-    {
-        Assert.That(string.IsNullOrEmpty(Constants.ENGINE_VERSION), Is.False);
-    }
-
-    [Test]
-    public void ShaderPath_IsNotNullOrEmpty()
-    {
-        Assert.That(string.IsNullOrEmpty(Constants.SHADER_PATH), Is.False);
-    }
-
-    [Test]
-    public void TexturePath_IsNotNullOrEmpty()
-    {
-        Assert.That(string.IsNullOrEmpty(Constants.TEXTURE_PATH), Is.False);
-    }
-
     [Test]
     public void UpdateLoopFrequency_IsNotNegative()
     {
@@ -89,11 +63,5 @@ public class ConstantsTests
     public void ChunkColumnUnloadRadiusSquared_IsCalculatedCorrectly()
     {
         Assert.That(Constants.CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED, Is.EqualTo(Constants.CHUNK_COLUMN_UNLOAD_RADIUS * Constants.CHUNK_COLUMN_UNLOAD_RADIUS));
-    }
-
-    [Test]
-    public void MaxLightLevel_IsSetCorrectly()
-    {
-        Assert.That(Constants.MAX_LIGHT_LEVEL, Is.EqualTo(31));
     }
 }

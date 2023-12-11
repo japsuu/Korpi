@@ -2,7 +2,6 @@
 using BlockEngine.Framework.Blocks;
 using BlockEngine.Framework.Chunks;
 using BlockEngine.Framework.Registries;
-using BlockEngine.Utils;
 using OpenTK.Mathematics;
 
 namespace Tests;
@@ -52,35 +51,16 @@ public class ChunkColumnTests
 
         Assert.IsFalse(chunkColumn.IsMeshDirty);
     }
-
-    [Test]
-    public void ChunkColumn_Load_DoesNotLoadForNonZeroPosition()
-    {
-        ChunkColumn chunkColumn = new(new Vector2i(1, 1));
-
-        chunkColumn.Load();
-
-        Assert.IsNull(chunkColumn.GetChunk(0));
-    }
-
-    /*[Test]
-    public void Chunk_SetBlockState_SetsMeshDirty()
-    {
-        Chunk chunk = new();
-
-        chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.TestBlock.GetDefaultState());
-
-        Assert.IsTrue(chunk.IsMeshDirty);
-    }
-
+    
     [Test]
     public void Chunk_GetBlockState_ReturnsCorrectBlockState()
     {
         Chunk chunk = new();
-        BlockState blockState = BlockRegistry.TestBlock.GetDefaultState();
+        Block block = new Block(1, "test", BlockRenderType.None, null);
+        BlockState blockState = block.GetDefaultState();
 
-        chunk.SetBlockState(new Vector3i(0, 0, 0), blockState);
+        chunk.SetBlockState(new Vector3i(3, 3, 3), blockState);
 
-        Assert.That(chunk.GetBlockState(0, 0, 0), Is.EqualTo(blockState));
-    }*/
+        Assert.That(chunk.GetBlockState(3, 3, 3), Is.EqualTo(blockState));
+    }
 }

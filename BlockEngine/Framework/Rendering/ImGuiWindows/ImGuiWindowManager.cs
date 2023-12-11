@@ -4,7 +4,7 @@ namespace BlockEngine.Framework.Rendering.ImGuiWindows;
 
 public static class ImGuiWindowManager
 {
-    private static readonly List<ImGuiWindow> RegisteredWindows = new();
+    private static readonly Dictionary<ImGuiWindow, string> RegisteredWindows = new();
     
     private static bool shouldRenderWindows = true;
     
@@ -22,7 +22,7 @@ public static class ImGuiWindowManager
         if (window == null)
             throw new ArgumentNullException(nameof(window));
 
-        RegisteredWindows.Add(window);
+        RegisteredWindows.Add(window, window.GetType().Name);
     }
 
 
@@ -40,18 +40,18 @@ public static class ImGuiWindowManager
         ImGui.Begin("Windows", ImGuiWindowFlags.AlwaysAutoResize);
         ImGui.Checkbox("Render Windows", ref shouldRenderWindows);
         ImGui.Separator();
-        foreach (ImGuiWindow window in RegisteredWindows)
+        foreach (KeyValuePair<ImGuiWindow, string> kvp in RegisteredWindows)
         {
-            bool windowVisible = window.IsVisible;
-            if (ImGui.Checkbox($"{window.GetType().Name} -> {window.Title}", ref windowVisible))
-                window.ToggleVisibility();
+            bool windowVisible = kvp.Key.IsVisible;
+            if (ImGui.Checkbox($"{kvp.Value} -> {kvp.Key.Title}", ref windowVisible))
+                kvp.Key.ToggleVisibility();
         }
         ImGui.End();
         
         if (!shouldRenderWindows)
             return;
         
-        foreach (ImGuiWindow window in RegisteredWindows)
+        foreach (ImGuiWindow window in RegisteredWindows.Keys)
             window.Update();
     }
 }
