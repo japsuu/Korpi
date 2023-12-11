@@ -20,6 +20,8 @@ public class GameClient : GameWindow
 {
     public static event Action? ClientLoad;
     public static event Action? ClientUnload;
+
+    private readonly bool _isPhotomode;
     
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
@@ -29,7 +31,7 @@ public class GameClient : GameWindow
     private Crosshair _crosshair = null!;
 
 
-    public GameClient() : base(
+    public GameClient(IReadOnlyList<string> args) : base(
         new GameWindowSettings
         {
             UpdateFrequency = Constants.UPDATE_LOOP_FREQUENCY
@@ -40,7 +42,12 @@ public class GameClient : GameWindow
             Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}",
             NumberOfSamples = 8
         })
-    { }
+    {
+        // Check if args contains the "-photomode" flag
+        _isPhotomode = args.Count > 0 && args[0] == "-photomode";
+        if (_isPhotomode)
+            Logger.Log("Running in photo mode...");
+    }
     
     
     protected override void OnLoad()
@@ -67,7 +74,10 @@ public class GameClient : GameWindow
         _skybox = new Skybox(false);
         
         // Player initialization.
-        _camera = new Camera(Vector3.Zero, ClientSize.X / (float)ClientSize.Y);
+        if (_isPhotomode)
+            _camera = new Camera(new Vector3(48, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y);
+        else
+            _camera = new Camera(Vector3.Zero, ClientSize.X / (float)ClientSize.Y);
         CursorState = CursorState.Grabbed;
         _crosshair = new Crosshair();
         
@@ -154,6 +164,13 @@ public class GameClient : GameWindow
         if (Input.KeyboardState.IsKeyPressed(Keys.F2))
         {
             Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
+        }
+
+        if (_isPhotomode && Time.TotalTime > 1f)
+        {
+            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots", "latest", true);
+            Close();
+            return;
         }
 
         SwapBuffers();
