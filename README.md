@@ -3,6 +3,8 @@
 [![build](https://github.com/japsuu/BlockEngine/actions/workflows/build.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/build.yml)
 [![tests](https://github.com/japsuu/BlockEngine/actions/workflows/test.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/test.yml)
 
+![Latest progress screenshot](https://raw.githubusercontent.com/japsuu/BlockEngine/master/BlockEngine/Screenshots/latest.png)
+
 BlockEngine is a (still unnamed) voxel[*](#voxel-engine-vs-block-engine) engine written in C#, that uses OpenGL as the rendering backend.
 
 This project is still searching for its own identity :)
