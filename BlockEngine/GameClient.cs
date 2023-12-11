@@ -151,6 +151,11 @@ public class GameClient : GameWindow
 
         DrawImGui();
 
+        if (Input.KeyboardState.IsKeyPressed(Keys.F2))
+        {
+            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
+        }
+
         SwapBuffers();
     }
 

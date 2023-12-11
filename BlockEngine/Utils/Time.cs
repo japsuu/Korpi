@@ -13,4 +13,12 @@ public static class Time
         DeltaTimeFloat = (float) deltaTime;
         TotalTime += deltaTime;
     }
+    
+    
+    public static void Reset()
+    {
+        DeltaTime = 0;
+        DeltaTimeFloat = 0;
+        TotalTime = 0;
+    }
 }

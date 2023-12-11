@@ -12,6 +12,7 @@ public static class Screenshotter
         private readonly byte[] _pixels;
         private readonly int _width;
         private readonly int _height;
+        private readonly string _fileName;
         
         
         public FrameCapture(byte[] pixels, int width, int height)
@@ -19,15 +20,15 @@ public static class Screenshotter
             _pixels = pixels;
             _width = width;
             _height = height;
+            _fileName = $"screenshot_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}";
         }
         
         
-        public void SaveAsPng(string folderPath)
+        public string SaveAsPng(string folderPath)
         {
             byte[] pngBytes = CreatePngBytes();
-            string timeDate = $"{DateTime.Now:HH-mm-ss}";
             
-            string filePath = Path.Combine(folderPath, $"screenshot_{timeDate}.png");
+            string filePath = Path.Combine(folderPath, $"{_fileName}.png");
 
             // Check if file exists.
             if (File.Exists(filePath))
@@ -35,18 +36,21 @@ public static class Screenshotter
                 int i = 0;
                 while (File.Exists(filePath))
                 {
-                    filePath = Path.Combine(folderPath, $"screenshot_{timeDate}_{i}.png");
+                    filePath = Path.Combine(folderPath, $"{_fileName}_{i}.png");
                     i++;
                 }
             }
             
             // Check if folder exists.
             if (!Directory.Exists(folderPath))
+            {
                 Directory.CreateDirectory(folderPath);
+            }
             
             File.WriteAllBytes(filePath, pngBytes);
             
             Logger.Log($"Saved screenshot to {filePath}");
+            return filePath;
         }
         
         
@@ -71,6 +75,10 @@ public static class Screenshotter
         byte[] pixels = new byte[width * height * 4];
 
         GL.ReadPixels(0, 0, width, height, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+        
+        // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
+        // so we need to flip the image vertically.
+        pixels = ImageUtils.FlipImageVertically(pixels, width, height);
         
         return new FrameCapture(pixels, width, height);
     }

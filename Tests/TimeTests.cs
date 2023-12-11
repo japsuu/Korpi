@@ -8,7 +8,7 @@ public class TimeTests
     [SetUp]
     public void SetUp()
     {
-        Time.Update(0); // Resetting the time before each test
+        Time.Reset();
     }
 
     [Test]
