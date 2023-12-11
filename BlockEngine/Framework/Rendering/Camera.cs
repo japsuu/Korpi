@@ -100,6 +100,20 @@ public class Camera : TransformEntity
 
         Singleton = this;
     }
+    
+    
+    public Camera(Vector3 position, float pitch, float yaw, float aspectRatio) : base(position)
+    {
+        AspectRatio = aspectRatio;
+        _cameraWindow = new CameraWindow(this);
+        Pitch = pitch;
+        Yaw = yaw;
+
+        if (Singleton != null)
+            throw new Exception("Only one camera can exist at a time.");
+
+        Singleton = this;
+    }
 
 
     protected override void OnUpdate(double time)

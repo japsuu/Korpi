@@ -8,7 +8,7 @@ namespace BlockEngine
         {
             Settings.Initialize();
 
-            using GameClient client = new();
+            using GameClient client = new(args);
             
             client.Run();
         }

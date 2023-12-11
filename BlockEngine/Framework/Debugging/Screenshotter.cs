@@ -12,7 +12,7 @@ public static class Screenshotter
         private readonly byte[] _pixels;
         private readonly int _width;
         private readonly int _height;
-        private readonly string _fileName;
+        private string _fileName;
         
         
         public FrameCapture(byte[] pixels, int width, int height)
@@ -24,14 +24,29 @@ public static class Screenshotter
         }
         
         
-        public string SaveAsPng(string folderPath)
+        public string SaveAsPng(string folderPath, string? overrideName = null, bool renameOther = false)
         {
+            if (!string.IsNullOrEmpty(overrideName))
+                _fileName = overrideName;
+            
             byte[] pngBytes = CreatePngBytes();
             
             string filePath = Path.Combine(folderPath, $"{_fileName}.png");
 
-            // Check if file exists.
-            if (File.Exists(filePath))
+            // Check if file exists. If renameOther is true, rename the other file. Otherwise rename this file.
+            if (renameOther && File.Exists(filePath))
+            {
+                string otherFilePath = filePath;
+                int i = 0;
+                while (File.Exists(otherFilePath))
+                {
+                    otherFilePath = Path.Combine(folderPath, $"{_fileName}_{i}.png");
+                    i++;
+                }
+                // Move the existing file to the new name.
+                File.Move(filePath, otherFilePath);
+            }
+            else if (File.Exists(filePath))
             {
                 int i = 0;
                 while (File.Exists(filePath))
