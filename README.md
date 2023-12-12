@@ -23,16 +23,23 @@ The long-term goal of this project is to eventually develop into its own game, w
 A non-exhaustive list of currently implemented features. Updated every once in a while.
 
 - [Rendering pipeline](#rendering-pipeline)
+  - Internal face culling
+  - Texturing
+  - Ambient occlusion
+  - ImGui integration
 - [World Chunking](#world-chunking)
+  - Cubic chunks
+  - Chunk loading/unloading (world streaming)
+  - Seamless chunk borders
+  - [Palette-based block compression](#palette-compression)
 - [Raycasting](#raycasting)
-- [Palette-based block compression](#palette-compression)
-- ImGui integration
+  - Ray-block intersections (with face detection)
 
 ### Rendering pipeline
 
 The engine has a fully functional OpenGL voxel rendering pipeline.
 A chunk is passed to a chunk mesher, which uses a meshing buffer to create vertices and indices, used to construct a polygonal mesh for the chunk.
-The mesh is rendered by a shader which unpacks the bitpacked vertex data, positions the vertices based on the chunk position, and renders the fragments.
+The mesh is rendered by a shader which unpacks the bitpacked vertex data, positions the vertices based on the chunk position, assigns textures, applies shading, and renders the fragments.
 TODO: More info.
 
 ### World chunking
@@ -42,6 +49,7 @@ As usual with voxel engines, the actual block data is stored inside so-called "c
 Dividing the game world into chunks offers some advantages.
 - A chunk-based architecture enables efficient rendering and optimization, allowing the engine to perform chunk culling to selectively update and render only the visible portions of the world. This drastically improves performance by minimizing the computational load and memory requirements.
 - Dynamic world modification and streaming are made possible (infinite worlds!), as individual chunks can be loaded or unloaded based on the player's proximity.
+- Simple multithreading/parallel processing of chunks. All the currently loaded chunks can be processed in 8 batches, so that each thread in a batch always has a 3x3x3 chunk area to perform operations on. The processing order is [x,y,z] [x±1,y,z] [x,y±1,z] [x,y,z±1] [x±1,y±1,z] [x±1,y,z±1] [x,y±1,z±1] [x±1,y±1,z±1], which can also be visualized in 2D as: TODO
 
 ### Raycasting
 
