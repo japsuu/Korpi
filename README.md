@@ -9,14 +9,21 @@ BlockEngine is a (still unnamed) voxel[*](#voxel-engine-vs-block-engine) engine 
 
 This project is still searching for its own identity :)
 
-- [Project goal](#project-goal)
+- [Project goals](#project-goals)
+- [Personal goals](#personal-goals)
 - [Project status](#project-status)
 - [Voxel engine vs BlockEngine](#voxel-engine-vs-block-engine)
 - [Credits](#credits)
 
-## Project goal
+## Project goals
 
 The long-term goal of this project is to eventually develop into its own game, with player-hosted servers and official modding support.
+
+## Personal goals
+
+This is my first-ever custom game-engine. I haven't dabbled with OpenGL before, nor have I worked on a proper game project without an engine or a framework.
+
+My main goal with this project is to get familiar wih OpenGL and the ins-and-outs of engine/tool development.
 
 ## Project status
 
