@@ -31,16 +31,17 @@ A non-exhaustive list of currently implemented features. Updated every once in a
 
 - [Rendering pipeline](#rendering-pipeline)
   - Internal face culling
-  - Texturing
+  - Texturing (animated texture support!)
   - Ambient occlusion
   - ImGui integration
-- [World Chunking](#world-chunking)
-  - Cubic chunks
-  - Chunk loading/unloading (world streaming)
-  - Seamless chunk borders
+- [Data management](#data-management)
   - [Palette-based block compression](#palette-compression)
-- [Raycasting](#raycasting)
-  - Ray-block intersections (with face detection)
+  - [World Chunking](#world-chunking)
+    - Cubic chunks
+    - Chunk loading/unloading (world streaming)
+    - Seamless chunk borders
+- [Physics](#physics)
+  - [Raycasting](#raycasting)
 
 ### Rendering pipeline
 
@@ -49,20 +50,9 @@ A chunk is passed to a chunk mesher, which uses a meshing buffer to create verti
 The mesh is rendered by a shader which unpacks the bitpacked vertex data, positions the vertices based on the chunk position, assigns textures, applies shading, and renders the fragments.
 TODO: More info.
 
-### World chunking
+### Data management
 
-As usual with voxel engines, the actual block data is stored inside so-called "chunks" of blocks. This engine uses **cubic chunks** of 32x32x32 blocks.
-
-Dividing the game world into chunks offers some advantages.
-- A chunk-based architecture enables efficient rendering and optimization, allowing the engine to perform chunk culling to selectively update and render only the visible portions of the world. This drastically improves performance by minimizing the computational load and memory requirements.
-- Dynamic world modification and streaming are made possible (infinite worlds!), as individual chunks can be loaded or unloaded based on the player's proximity.
-- Simple multithreading/parallel processing of chunks. All the currently loaded chunks can be processed in 8 batches, so that each thread in a batch always has a 3x3x3 chunk area to perform operations on. The processing order is [x,y,z] [x±1,y,z] [x,y±1,z] [x,y,z±1] [x±1,y±1,z] [x±1,y,z±1] [x,y±1,z±1] [x±1,y±1,z±1], which can also be visualized in 2D as: TODO
-
-### Raycasting
-
-Raycasting is currently implemented for ray/cube intersections, based on the infamous ["A Fast Voxel Traversal Algorithm for Ray Tracing"](http://www.cse.yorku.ca/~amana/research/grid.pdf) -paper by *John Amanatides & Andrew Woo*. A more in-depth overview can be found [here](https://github.com/cgyurgyik/fast-voxel-traversal-algorithm/blob/master/overview/FastVoxelTraversalOverview.md).
-
-### Palette compression
+#### Palette compression
 
 With the release of Minecraft 1.13, Mojang improved their compression for block data. The method is conceptually similar to color palette compression: the **distinct** items (colors) are compressed into an array, and pixels use variable-length indices to reference these items in said array. This eliminates the need to store the same data multiple times.
 
@@ -80,6 +70,22 @@ Notes:
 - Palette compression can usually be combined with other compression techniques (like [RLE](https://en.wikipedia.org/wiki/Run-length_encoding)) if required.
   - I'm not planning to implement run-length encoding in this project as I find it unnecessary, and it would have negative effects in high entropy (maximum block randomness) situations.
 - Palette compression does not have to be used for just blocks: I'm planning on using it to compress chunk light data, as I will keep lighting data separate from actual block data.
+
+#### World chunking
+
+As usual with voxel engines, the actual block data is stored inside so-called "chunks" of blocks. This engine uses **cubic chunks** of 32x32x32 blocks.
+
+Dividing the game world into chunks offers some advantages.
+- A chunk-based architecture enables efficient rendering and optimization, allowing the engine to perform chunk culling to selectively update and render only the visible portions of the world. This drastically improves performance by minimizing the computational load and memory requirements.
+- Dynamic world modification and streaming are made possible (infinite worlds!), as individual chunks can be loaded or unloaded based on the player's proximity.
+- Simple multithreading/parallel processing of chunks. All the currently loaded chunks can be processed in 8 batches, so that each thread in a batch always has a 3x3x3 chunk area to perform operations on. The processing order is [x,y,z] [x±1,y,z] [x,y±1,z] [x,y,z±1] [x±1,y±1,z] [x±1,y,z±1] [x,y±1,z±1] [x±1,y±1,z±1], which can also be visualized in 2D as: TODO
+
+### Physics
+
+#### Raycasting
+
+Raycasting is currently implemented for ray/cube intersections, based on the infamous ["A Fast Voxel Traversal Algorithm for Ray Tracing"](http://www.cse.yorku.ca/~amana/research/grid.pdf) -paper by *John Amanatides & Andrew Woo*. A more in-depth overview can be found [here](https://github.com/cgyurgyik/fast-voxel-traversal-algorithm/blob/master/overview/FastVoxelTraversalOverview.md).
+The current solution supports also collision face detection.
 
 ## Input
 
