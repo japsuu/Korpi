@@ -7,9 +7,9 @@ public static class Constants
     public const string ENGINE_VERSION = "0.0.1";
     
     // IO Paths
-    public const string SHADER_PATH = "Assets/shaders/";
-    public const string TEXTURE_PATH = "Assets/textures/";
-    public const string MODS_PATH = "Assets/mods/";
+    public const string SHADER_PATH = "assets/shaders/";
+    public const string TEXTURE_PATH = "assets/textures/";
+    public const string MODS_PATH = "assets/mods/";
     
     // Mods
     public const string BUILT_INS_NAMESPACE = "block_engine";
