@@ -1,7 +1,7 @@
 ﻿
-using BlockEngine.Framework.Bitpacking;
+using BlockEngine.Client.Framework.Bitpacking;
 
-namespace Tests;
+namespace ClientTests;
 
 [TestFixture]
 public unsafe class ArraySerializeUnsafeTests

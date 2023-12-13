@@ -1,11 +1,9 @@
 ﻿using System.Globalization;
-using BlockEngine.Framework.Debugging;
-using BlockEngine.Framework.Meshing;
-using BlockEngine.Utils;
+using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Meshing;
 using ImGuiNET;
-using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Framework.Rendering.ImGuiWindows;
+namespace BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 
 public class RenderingWindow : ImGuiWindow
 {

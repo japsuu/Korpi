@@ -1,6 +1,4 @@
-﻿using BlockEngine.Utils;
-
-namespace BlockEngine.Framework.Obsolete;
+﻿namespace BlockEngine.Client.Framework.Obsolete;
 
 /// <summary>
 /// Indexes ushorts to a flattened 3D array.

@@ -1,6 +1,6 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Client.Utils;
 
-namespace BlockEngine.Framework;
+namespace BlockEngine.Client.Framework;
 
 public static class GameTime
 {

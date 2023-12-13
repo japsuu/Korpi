@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.ECS.Components;
+namespace BlockEngine.Client.Framework.ECS.Components;
 
 public class Transform : Component
 {

@@ -1,9 +1,9 @@
-﻿using BlockEngine.Framework.Debugging;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Utils;
 using ImGuiNET;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Rendering.ImGuiWindows;
+namespace BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 
 public class CameraWindow : ImGuiWindow
 {

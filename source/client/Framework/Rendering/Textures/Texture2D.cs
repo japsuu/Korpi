@@ -1,8 +1,7 @@
-﻿using BlockEngine.Utils;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 
-namespace BlockEngine.Framework.Rendering.Textures;
+namespace BlockEngine.Client.Framework.Rendering.Textures;
 
 public class Texture2D : Texture
 {

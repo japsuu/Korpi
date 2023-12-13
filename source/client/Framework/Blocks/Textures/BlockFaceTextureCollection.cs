@@ -1,6 +1,6 @@
-﻿using BlockEngine.Framework.Meshing;
+﻿using BlockEngine.Client.Framework.Meshing;
 
-namespace BlockEngine.Framework.Blocks.Textures;
+namespace BlockEngine.Client.Framework.Blocks.Textures;
 
 /// <summary>
 /// All face textures of a <see cref="Block"/>.

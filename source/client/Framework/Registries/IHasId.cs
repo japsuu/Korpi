@@ -1,4 +1,4 @@
-namespace BlockEngine.Framework.Registries;
+namespace BlockEngine.Client.Framework.Registries;
 
 public interface IHasId
 {

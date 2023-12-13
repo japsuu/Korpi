@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Utils;
+﻿namespace BlockEngine.Client.Utils;
 
 public static class MathUtils
 {

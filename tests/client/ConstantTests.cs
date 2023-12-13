@@ -1,6 +1,7 @@
 ﻿using BlockEngine;
+using BlockEngine.Client;
 
-namespace Tests;
+namespace ClientTests;
 
 [TestFixture]
 public class ConstantsTests

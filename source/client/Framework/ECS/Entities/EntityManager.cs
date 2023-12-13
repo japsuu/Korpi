@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.ECS.Entities;
+﻿namespace BlockEngine.Client.Framework.ECS.Entities;
 
 public class EntityManager
 {

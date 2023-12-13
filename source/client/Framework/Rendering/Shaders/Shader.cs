@@ -1,8 +1,8 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Client.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Rendering.Shaders;
+namespace BlockEngine.Client.Framework.Rendering.Shaders;
 
 public class Shader : IDisposable
 {

@@ -1,7 +1,6 @@
-﻿using BlockEngine.Utils;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Meshing;
+namespace BlockEngine.Client.Framework.Meshing;
 
 /// <summary>
 /// Used to store and dynamically fetch chunk meshes/renderers.

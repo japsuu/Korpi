@@ -1,9 +1,9 @@
 ﻿using BigGustave;
-using BlockEngine.Utils;
+using BlockEngine.Client.Utils;
 using OpenTK.Graphics.OpenGL4;
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 
-namespace BlockEngine.Framework.Debugging;
+namespace BlockEngine.Client.Framework.Debugging;
 
 public static class Screenshotter
 {

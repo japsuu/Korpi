@@ -1,7 +1,7 @@
-using BlockEngine.Utils;
+using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
-namespace Tests;
+namespace ClientTests;
 
 [TestFixture]
 public class CoordinateConversionsTests

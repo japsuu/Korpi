@@ -1,8 +1,8 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Chunks;
+﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Chunks;
 using OpenTK.Mathematics;
 
-namespace Tests;
+namespace ClientTests;
 
 public class ChunkTests
 {

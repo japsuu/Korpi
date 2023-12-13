@@ -1,7 +1,6 @@
-using BlockEngine.Framework.Meshing;
-using BlockEngine.Utils;
+using BlockEngine.Client.Framework.Meshing;
 
-namespace BlockEngine.Framework.Blocks;
+namespace BlockEngine.Client.Framework.Blocks;
 
 /// <summary>
 /// BlockState is what chunks actually store.

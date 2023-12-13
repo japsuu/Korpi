@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Obsolete;
+﻿namespace BlockEngine.Client.Framework.Obsolete;
 
 [Obsolete("Use the ImGui perf window instead")]
 public class FpsCounter

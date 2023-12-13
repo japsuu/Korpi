@@ -1,8 +1,7 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Registries;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Registries;
 
-namespace BlockEngine.Framework.Bitpacking;
+namespace BlockEngine.Client.Framework.Bitpacking;
 
 public class BlockPalette : IBlockStorage
 {

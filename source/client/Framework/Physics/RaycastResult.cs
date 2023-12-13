@@ -1,8 +1,8 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Meshing;
+﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Meshing;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Physics;
+namespace BlockEngine.Client.Framework.Physics;
 
 public struct RaycastResult
 {

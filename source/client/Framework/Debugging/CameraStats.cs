@@ -1,6 +1,6 @@
-﻿using BlockEngine.Framework.Blocks;
+﻿using BlockEngine.Client.Framework.Blocks;
 
-namespace BlockEngine.Framework.Debugging;
+namespace BlockEngine.Client.Framework.Debugging;
 
 public static class CameraStats
 {

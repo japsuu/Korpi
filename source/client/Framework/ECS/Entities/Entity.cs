@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using BlockEngine.Framework.ECS.Components;
+using BlockEngine.Client.Framework.ECS.Components;
 
-namespace BlockEngine.Framework.ECS.Entities;
+namespace BlockEngine.Client.Framework.ECS.Entities;
 
 public abstract class Entity
 {

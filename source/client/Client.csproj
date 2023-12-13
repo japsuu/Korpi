@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RootNamespace>BlockEngine</RootNamespace>
+    <RootNamespace>BlockEngine.Client</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

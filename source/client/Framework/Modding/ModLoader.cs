@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Blocks.Serialization;
-using BlockEngine.Framework.Registries;
-using BlockEngine.Utils;
+using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Blocks.Serialization;
+using BlockEngine.Client.Framework.Registries;
+using BlockEngine.Client.Utils;
 
-namespace BlockEngine.Framework.Modding;
+namespace BlockEngine.Client.Framework.Modding;
 
 public static class ModLoader
 {

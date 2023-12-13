@@ -22,7 +22,7 @@
 * THE SOFTWARE.
 */
 
-namespace BlockEngine.Framework.Bitpacking
+namespace BlockEngine.Client.Framework.Bitpacking
 {
 
 	public static class ArraySerializeUnsafe

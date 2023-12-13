@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Blocks;
+﻿namespace BlockEngine.Client.Framework.Blocks;
 
 /// <summary>
 /// 9-bit color value.

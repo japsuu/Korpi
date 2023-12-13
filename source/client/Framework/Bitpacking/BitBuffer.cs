@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Bitpacking;
+﻿namespace BlockEngine.Client.Framework.Bitpacking;
 
 public unsafe class BitBuffer
 {

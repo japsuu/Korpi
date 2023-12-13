@@ -1,6 +1,6 @@
-﻿using BlockEngine.Framework.Blocks;
+﻿using BlockEngine.Client.Framework.Blocks;
 
-namespace BlockEngine.Framework.Bitpacking;
+namespace BlockEngine.Client.Framework.Bitpacking;
 
 public interface IBlockStorage
 {

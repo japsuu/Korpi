@@ -1,6 +1,6 @@
-﻿using BlockEngine.Framework.Configuration;
+﻿using BlockEngine.Client.Framework.Configuration;
 
-namespace BlockEngine
+namespace BlockEngine.Client
 {
     internal static class Program
     {

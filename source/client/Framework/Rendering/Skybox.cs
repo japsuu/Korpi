@@ -1,10 +1,10 @@
-﻿using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Framework.Rendering.Textures;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Rendering.Shaders;
+using BlockEngine.Client.Framework.Rendering.Textures;
+using BlockEngine.Client.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Rendering;
+namespace BlockEngine.Client.Framework.Rendering;
 
 public class Skybox : IDisposable
 {

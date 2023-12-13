@@ -1,7 +1,7 @@
 ﻿using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace BlockEngine.Utils;
+namespace BlockEngine.Client.Utils;
 
 public static class YamlHelper
 {

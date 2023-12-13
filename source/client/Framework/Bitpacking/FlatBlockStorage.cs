@@ -1,7 +1,6 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks;
 
-namespace BlockEngine.Framework.Bitpacking;
+namespace BlockEngine.Client.Framework.Bitpacking;
 
 public class FlatBlockStorage : IBlockStorage
 {
