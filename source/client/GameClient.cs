@@ -22,6 +22,7 @@ public class GameClient : GameWindow
     public static event Action? ClientUnload;
 
     private readonly bool _isPhotomode;
+    private readonly string _photomodeResultPath;
     
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
@@ -46,7 +47,16 @@ public class GameClient : GameWindow
         // Check if args contains the "-photomode" flag
         _isPhotomode = args.Count > 0 && args[0] == "-photomode";
         if (_isPhotomode)
+        {
             Logger.Log("Running in photo mode...");
+            if (args.Count > 1)
+                _photomodeResultPath = args[1];
+            else
+            {
+                _photomodeResultPath = "Screenshots";
+                Logger.LogWarning("No path specified for photo mode, using default path \"Screenshots\".");
+            }
+        }
     }
     
     
@@ -75,13 +85,20 @@ public class GameClient : GameWindow
         
         // Player initialization.
         if (_isPhotomode)
-            _camera = new Camera(new Vector3(48, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y);
+        {
+            _camera = new Camera(new Vector3(0, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y)
+            {
+                IsInputEnabled = false
+            };
+        }
         else
+        {
             _camera = new Camera(new Vector3(0, 256, 0), ClientSize.X / (float)ClientSize.Y);
+        }
         CursorState = CursorState.Grabbed;
-        _crosshair = new Crosshair();
         
         // UI initialization.
+        _crosshair = new Crosshair();
         _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
         ImGuiWindowManager.CreateDefaultWindows();
 
@@ -154,6 +171,13 @@ public class GameClient : GameWindow
 
         if (DebugSettings.RenderSkybox)
             _skybox.Draw();
+
+        if (_isPhotomode && Time.TotalTime > 1f)
+        {
+            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(_photomodeResultPath, "latest", true, true);
+            Close();
+            return;
+        }
         
         DebugDrawer.Draw();
         
@@ -164,13 +188,6 @@ public class GameClient : GameWindow
         if (Input.KeyboardState.IsKeyPressed(Keys.F2))
         {
             Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
-        }
-
-        if (_isPhotomode && Time.TotalTime > 1f)
-        {
-            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots", "latest", true);
-            Close();
-            return;
         }
 
         SwapBuffers();
@@ -233,6 +250,8 @@ public class GameClient : GameWindow
 
     private void SwitchCursorState()
     {
+        if (_isPhotomode)
+            return;
         if (CursorState == CursorState.Grabbed)
         {
             _camera.IsMouseFirstMove = true;
