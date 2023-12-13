@@ -1,4 +1,5 @@
-﻿using BlockEngine.Framework.Bitpacking;
+﻿
+using BlockEngine.Framework.Bitpacking;
 
 namespace Tests;
 

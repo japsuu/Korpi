@@ -20,5 +20,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BlockEngine\BlockEngine.csproj" />
+      <ProjectReference Include="..\source\Client.csproj" />
     </ItemGroup>
 </Project>
