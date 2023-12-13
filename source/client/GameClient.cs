@@ -77,7 +77,7 @@ public class GameClient : GameWindow
         if (_isPhotomode)
             _camera = new Camera(new Vector3(48, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y);
         else
-            _camera = new Camera(Vector3.Zero, ClientSize.X / (float)ClientSize.Y);
+            _camera = new Camera(new Vector3(0, 256, 0), ClientSize.X / (float)ClientSize.Y);
         CursorState = CursorState.Grabbed;
         _crosshair = new Crosshair();
         
