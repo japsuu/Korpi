@@ -1,4 +1,4 @@
-name: ctests
+name: client tests
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install dependencies
-      run: dotnet restore ./tests/Tests.csproj
+      run: dotnet restore ./tests/client/ClientTests.csproj
       
     - name: Test
-      run: dotnet test --no-restore --verbosity normal ./tests/Tests.csproj
+      run: dotnet test --no-restore --verbosity normal ./tests/client/ClientTests.csproj
