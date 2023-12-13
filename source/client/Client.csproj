@@ -22,12 +22,5 @@
     <Content Include="Assets\**">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</Content>
-	
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Framework\VoxelShapes\" />
-    <Folder Include="Screenshots\" />
-  </ItemGroup>
-
 </Project>

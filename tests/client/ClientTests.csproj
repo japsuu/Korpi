@@ -17,9 +17,4 @@
         <PackageReference Include="NUnit.Analyzers" Version="3.6.1"/>
         <PackageReference Include="coverlet.collector" Version="3.2.0"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\BlockEngine\BlockEngine.csproj" />
-      <ProjectReference Include="..\source\Client.csproj" />
-    </ItemGroup>
 </Project>
