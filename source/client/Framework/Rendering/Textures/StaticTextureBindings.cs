@@ -1,7 +1,7 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Client.Utils;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Framework.Rendering.Textures;
+namespace BlockEngine.Client.Framework.Rendering.Textures;
 
 /// <summary>
 /// Collection of methods to bind textures to texture units statically (for the entire lifetime of the program).

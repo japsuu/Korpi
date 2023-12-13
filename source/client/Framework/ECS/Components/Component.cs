@@ -1,6 +1,6 @@
-﻿using BlockEngine.Framework.ECS.Entities;
+﻿using BlockEngine.Client.Framework.ECS.Entities;
 
-namespace BlockEngine.Framework.ECS.Components;
+namespace BlockEngine.Client.Framework.ECS.Components;
 
 public abstract class Component
 {

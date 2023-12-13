@@ -1,9 +1,8 @@
-﻿using BlockEngine.Framework.Blocks.Serialization;
-using BlockEngine.Framework.Exceptions;
-using BlockEngine.Framework.Rendering.Textures;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks.Serialization;
+using BlockEngine.Client.Framework.Exceptions;
+using BlockEngine.Client.Framework.Rendering.Textures;
 
-namespace BlockEngine.Framework.Registries;
+namespace BlockEngine.Client.Framework.Registries;
 
 public class ArrayTextureBuilder
 {

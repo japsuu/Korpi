@@ -1,10 +1,9 @@
-﻿using BlockEngine.Framework.Bitpacking;
-using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Meshing;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Bitpacking;
+using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Meshing;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Chunks;
+namespace BlockEngine.Client.Framework.Chunks;
 
 public class Chunk
 {

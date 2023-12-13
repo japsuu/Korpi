@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Utils;
+namespace BlockEngine.Client.Utils;
 
 public static class Input
 {

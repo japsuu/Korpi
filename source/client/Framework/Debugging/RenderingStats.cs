@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace BlockEngine.Framework.Debugging;
+namespace BlockEngine.Client.Framework.Debugging;
 
 public static class RenderingStats
 {

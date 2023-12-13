@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using ImGuiNET;
 
-namespace BlockEngine.Framework.Rendering.ImGuiWindows;
+namespace BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 
 public class MemoryProfilerWindow : ImGuiWindow
 {

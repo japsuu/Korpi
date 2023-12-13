@@ -1,10 +1,10 @@
-﻿using BlockEngine.Framework.ECS.Entities;
-using BlockEngine.Framework.Rendering.ImGuiWindows;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.ECS.Entities;
+using BlockEngine.Client.Framework.Rendering.ImGuiWindows;
+using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Framework.Rendering;
+namespace BlockEngine.Client.Framework.Rendering;
 
 public class Camera : TransformEntity
 {

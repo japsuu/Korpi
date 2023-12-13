@@ -1,8 +1,8 @@
-﻿using BlockEngine.Framework.Rendering.Shaders;
+﻿using BlockEngine.Client.Framework.Rendering.Shaders;
 using ImGuiNET;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Rendering.ImGuiWindows;
+namespace BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 
 public class DebugTextWindow : ImGuiWindow
 {

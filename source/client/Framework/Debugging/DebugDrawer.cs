@@ -1,9 +1,9 @@
-﻿using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Rendering.Shaders;
+using BlockEngine.Client.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Debugging;
+namespace BlockEngine.Client.Framework.Debugging;
 
 public abstract class DebugDrawable
 {

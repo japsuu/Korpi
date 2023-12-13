@@ -1,12 +1,11 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Chunks;
-using BlockEngine.Framework.Debugging;
-using BlockEngine.Framework.Registries;
-using BlockEngine.Framework.Rendering.ImGuiWindows;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Registries;
+using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Meshing;
+namespace BlockEngine.Client.Framework.Meshing;
 
 
 public class ChunkMesher

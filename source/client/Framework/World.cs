@@ -1,14 +1,14 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Chunks;
-using BlockEngine.Framework.Debugging;
-using BlockEngine.Framework.ECS.Entities;
-using BlockEngine.Framework.Physics;
-using BlockEngine.Framework.Rendering;
-using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.ECS.Entities;
+using BlockEngine.Client.Framework.Physics;
+using BlockEngine.Client.Framework.Rendering;
+using BlockEngine.Client.Framework.Rendering.Shaders;
+using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework;
+namespace BlockEngine.Client.Framework;
 
 public class World
 {

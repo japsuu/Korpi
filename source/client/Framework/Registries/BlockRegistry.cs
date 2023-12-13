@@ -1,11 +1,11 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Blocks.Serialization;
-using BlockEngine.Framework.Blocks.Textures;
-using BlockEngine.Framework.Exceptions;
-using BlockEngine.Framework.Modding;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Blocks.Serialization;
+using BlockEngine.Client.Framework.Blocks.Textures;
+using BlockEngine.Client.Framework.Exceptions;
+using BlockEngine.Client.Framework.Modding;
+using BlockEngine.Client.Utils;
 
-namespace BlockEngine.Framework.Registries;
+namespace BlockEngine.Client.Framework.Registries;
 
 /// <summary>
 /// Allows retrieving block references through either a namespaced name or an ID.

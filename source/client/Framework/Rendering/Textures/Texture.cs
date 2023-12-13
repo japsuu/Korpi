@@ -1,7 +1,7 @@
-﻿using BlockEngine.Framework.Debugging;
+﻿using BlockEngine.Client.Framework.Debugging;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Framework.Rendering.Textures;
+namespace BlockEngine.Client.Framework.Rendering.Textures;
 
 public abstract class Texture : IHasName, IDisposable
 {

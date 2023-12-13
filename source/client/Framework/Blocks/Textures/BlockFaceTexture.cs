@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Blocks.Textures;
+﻿namespace BlockEngine.Client.Framework.Blocks.Textures;
 
 /// <summary>
 /// Texture of one side of a <see cref="Block"/>.

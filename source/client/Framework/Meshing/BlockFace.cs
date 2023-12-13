@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Meshing;
+﻿namespace BlockEngine.Client.Framework.Meshing;
 
 public enum BlockFace
 {

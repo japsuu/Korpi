@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Debugging;
+﻿namespace BlockEngine.Client.Framework.Debugging;
 
 public interface IHasName
 {

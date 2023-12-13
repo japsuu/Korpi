@@ -1,8 +1,6 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Utils;
-using OpenTK.Mathematics;
+﻿using BlockEngine.Client.Framework.Blocks;
 
-namespace BlockEngine.Framework.Meshing;
+namespace BlockEngine.Client.Framework.Meshing;
 
 /// <summary>
 /// Contains the BlockState data of a chunk, and a border of its neighbouring chunks.

@@ -1,12 +1,12 @@
-﻿using BlockEngine.Framework;
-using BlockEngine.Framework.Configuration;
-using BlockEngine.Framework.Debugging;
-using BlockEngine.Framework.Modding;
-using BlockEngine.Framework.Registries;
-using BlockEngine.Framework.Rendering;
-using BlockEngine.Framework.Rendering.ImGuiWindows;
-using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework;
+using BlockEngine.Client.Framework.Configuration;
+using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Modding;
+using BlockEngine.Client.Framework.Registries;
+using BlockEngine.Client.Framework.Rendering;
+using BlockEngine.Client.Framework.Rendering.ImGuiWindows;
+using BlockEngine.Client.Framework.Rendering.Shaders;
+using BlockEngine.Client.Utils;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -14,7 +14,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine;
+namespace BlockEngine.Client;
 
 public class GameClient : GameWindow
 {

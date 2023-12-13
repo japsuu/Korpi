@@ -1,6 +1,6 @@
 ﻿using ImGuiNET;
 
-namespace BlockEngine.Framework.Rendering.ImGuiWindows;
+namespace BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 
 public abstract class ImGuiWindow
 {

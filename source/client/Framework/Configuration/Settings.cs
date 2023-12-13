@@ -1,6 +1,6 @@
 ﻿using Config.Net;
 
-namespace BlockEngine.Framework.Configuration;
+namespace BlockEngine.Client.Framework.Configuration;
 
 public static class Settings
 {

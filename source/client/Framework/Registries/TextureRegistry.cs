@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Framework.Blocks.Serialization;
-using BlockEngine.Framework.Blocks.Textures;
-using BlockEngine.Framework.Rendering.Textures;
-using BlockEngine.Utils;
+using BlockEngine.Client.Framework.Blocks.Serialization;
+using BlockEngine.Client.Framework.Blocks.Textures;
+using BlockEngine.Client.Framework.Rendering.Textures;
+using BlockEngine.Client.Utils;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Framework.Registries;
+namespace BlockEngine.Client.Framework.Registries;
 
 public static class TextureRegistry
 {

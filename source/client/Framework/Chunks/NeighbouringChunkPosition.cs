@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Chunks;
+﻿namespace BlockEngine.Client.Framework.Chunks;
 
 public enum NeighbouringChunkPosition
 {

@@ -1,9 +1,8 @@
-﻿using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Debugging;
+namespace BlockEngine.Client.Framework.Debugging;
 
 public static class DebugChunkDrawer
 {

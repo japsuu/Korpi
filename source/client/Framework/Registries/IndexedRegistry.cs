@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Registries;
+﻿namespace BlockEngine.Client.Framework.Registries;
 
 /// <summary>
 /// Allows retrieving references to values through either a namespaced key or an ID.

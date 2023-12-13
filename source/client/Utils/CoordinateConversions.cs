@@ -1,7 +1,6 @@
-﻿using BlockEngine.Framework;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Utils;
+namespace BlockEngine.Client.Utils;
 
 public class CoordinateConversions
 {

@@ -26,7 +26,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace BlockEngine.Framework.Bitpacking;
+namespace BlockEngine.Client.Framework.Bitpacking;
 
 [StructLayout(LayoutKind.Explicit)]
 public struct ByteConverter

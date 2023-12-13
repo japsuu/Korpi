@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Blocks.Serialization;
+﻿namespace BlockEngine.Client.Framework.Blocks.Serialization;
 
 /// <summary>
 /// Serializable data of a block.

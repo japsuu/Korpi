@@ -1,8 +1,8 @@
-﻿using BlockEngine.Framework.Bitpacking;
-using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Registries;
+﻿using BlockEngine.Client.Framework.Bitpacking;
+using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Registries;
 
-namespace Tests;
+namespace ClientTests;
 
 public class FlatBlockStorageTests
 {

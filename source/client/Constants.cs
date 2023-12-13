@@ -1,6 +1,4 @@
-﻿using OpenTK.Mathematics;
-
-namespace BlockEngine;
+﻿namespace BlockEngine.Client;
 
 public static class Constants
 {

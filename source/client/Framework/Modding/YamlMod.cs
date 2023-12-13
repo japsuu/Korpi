@@ -1,8 +1,7 @@
-﻿using BlockEngine.Framework.Blocks.Serialization;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks.Serialization;
 using YamlDotNet.Serialization;
 
-namespace BlockEngine.Framework.Modding;
+namespace BlockEngine.Client.Framework.Modding;
 
 public sealed class YamlMod
 {

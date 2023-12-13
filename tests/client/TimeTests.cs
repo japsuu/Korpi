@@ -1,6 +1,6 @@
-﻿using BlockEngine.Utils;
+﻿using BlockEngine.Client.Utils;
 
-namespace Tests;
+namespace ClientTests;
 
 [TestFixture]
 public class TimeTests

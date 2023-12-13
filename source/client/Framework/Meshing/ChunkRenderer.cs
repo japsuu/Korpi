@@ -1,8 +1,8 @@
-﻿using BlockEngine.Framework.Rendering.Shaders;
+﻿using BlockEngine.Client.Framework.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Meshing;
+namespace BlockEngine.Client.Framework.Meshing;
 
 public class ChunkRenderer
 {

@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Physics;
+namespace BlockEngine.Client.Framework.Physics;
 
 public class Ray
 {

@@ -1,13 +1,13 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Debugging;
-using BlockEngine.Framework.Meshing;
-using BlockEngine.Framework.Physics;
-using BlockEngine.Framework.Registries;
-using BlockEngine.Framework.Rendering.Shaders;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Meshing;
+using BlockEngine.Client.Framework.Physics;
+using BlockEngine.Client.Framework.Registries;
+using BlockEngine.Client.Framework.Rendering.Shaders;
+using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Chunks;
+namespace BlockEngine.Client.Framework.Chunks;
 
 public class ChunkManager
 {

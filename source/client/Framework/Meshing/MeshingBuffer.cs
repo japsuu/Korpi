@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Framework.Bitpacking;
-using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Debugging;
-using BlockEngine.Utils;
+using BlockEngine.Client.Framework.Bitpacking;
+using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Debugging;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Meshing;
+namespace BlockEngine.Client.Framework.Meshing;
 
 /// <summary>
 /// Buffer in to which meshes are generated.

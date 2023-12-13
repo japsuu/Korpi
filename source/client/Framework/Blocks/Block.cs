@@ -1,10 +1,8 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Framework.Blocks.Serialization;
-using BlockEngine.Framework.Blocks.Textures;
-using BlockEngine.Framework.Meshing;
-using BlockEngine.Framework.Registries;
+using BlockEngine.Client.Framework.Blocks.Textures;
+using BlockEngine.Client.Framework.Meshing;
 
-namespace BlockEngine.Framework.Blocks;
+namespace BlockEngine.Client.Framework.Blocks;
 
 /// <summary>
 /// Blocks are what define the unique functionality of a block. It has functions to override the default behavior of a block.

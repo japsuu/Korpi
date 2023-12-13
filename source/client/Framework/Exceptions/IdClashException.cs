@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Framework.Exceptions;
+﻿namespace BlockEngine.Client.Framework.Exceptions;
 
 public class IdClashException : Exception
 {

@@ -23,7 +23,7 @@
 */
 
 
-namespace BlockEngine.Framework.Bitpacking
+namespace BlockEngine.Client.Framework.Bitpacking
 {
 	/// <summary>
 	/// Extension methods for writing bits to primitive buffers.

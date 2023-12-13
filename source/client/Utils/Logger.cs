@@ -1,6 +1,4 @@
-﻿using BlockEngine.Framework;
-
-namespace BlockEngine.Utils
+﻿namespace BlockEngine.Client.Utils
 {
     public static class Logger
     {

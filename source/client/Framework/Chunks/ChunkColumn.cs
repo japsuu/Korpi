@@ -1,9 +1,7 @@
-﻿using BlockEngine.Framework.Blocks;
-using BlockEngine.Framework.Registries;
-using BlockEngine.Utils;
+﻿using BlockEngine.Client.Framework.Registries;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Framework.Chunks;
+namespace BlockEngine.Client.Framework.Chunks;
 
 public class ChunkColumn
 {

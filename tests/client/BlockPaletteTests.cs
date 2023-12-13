@@ -1,7 +1,7 @@
-﻿using BlockEngine.Framework.Bitpacking;
-using BlockEngine.Framework.Blocks;
+﻿using BlockEngine.Client.Framework.Bitpacking;
+using BlockEngine.Client.Framework.Blocks;
 
-namespace Tests;
+namespace ClientTests;
 
 [TestFixture]
 public class BlockPaletteTests
