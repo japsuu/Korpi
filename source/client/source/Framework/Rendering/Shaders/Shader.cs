@@ -230,7 +230,7 @@ public class Shader : IDisposable
     {
         if (_isDisposed == false)
         {
-            Logger.LogWarning("GPU Resource leak! Did you forget to call Dispose()?");
+            Logger.LogWarning($"[{nameof(Shader)}] GPU Resource leak! Did you forget to call Dispose()?");
         }
     }
 }
