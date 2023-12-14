@@ -22,8 +22,12 @@ public static class ChunkRendererStorage
     
     public static void RemoveRenderer(Vector3i chunkPos)
     {
-        GeneratedRenderers.Remove(chunkPos);
-        GeneratedRendererCount--;
+        GeneratedRenderers.Remove(chunkPos, out ChunkRenderer? renderer);
+        if (renderer is not null)
+        {
+            renderer.Dispose();
+            GeneratedRendererCount--;
+        }
     }
     
     

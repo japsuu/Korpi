@@ -142,20 +142,6 @@ public class MeshingBuffer
             return 0;
         
         return 3 - (left.RenderType == BlockRenderType.Normal ? 1 : 0) - (right.RenderType == BlockRenderType.Normal ? 1 : 0) - (corner.RenderType == BlockRenderType.Normal ? 1 : 0);
-
-        /*if (left.RenderType == BlockRenderType.None || right.RenderType == BlockRenderType.None || corner.RenderType == BlockRenderType.None)
-            return 0;
-        if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal && corner.RenderType == BlockRenderType.Normal)
-            return 3;
-        if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal)
-            return 2;
-        if (left.RenderType == BlockRenderType.Normal && corner.RenderType == BlockRenderType.Normal)
-            return 2;
-        if (right.RenderType == BlockRenderType.Normal && corner.RenderType == BlockRenderType.Normal)
-            return 2;
-        if (left.RenderType == BlockRenderType.Normal || right.RenderType == BlockRenderType.Normal || corner.RenderType == BlockRenderType.Normal)
-            return 1;
-        return 0;*/
     }
 
 
@@ -204,14 +190,6 @@ public class MeshingBuffer
         data2 |= (uint)textureUvIndex      << bitIndex2;
         bitIndex2 += 2;
         data2 |= (uint)aoIndex             << bitIndex2;
-        // positionIndex       .InjectUnsigned(ref data1, ref bitIndex1, 18);
-        // lightColorValue     .InjectUnsigned(ref data1, ref bitIndex1, 9);
-        // lightLevel          .InjectUnsigned(ref data1, ref bitIndex1, 5);
-        // textureIndex        .InjectUnsigned(ref data2, ref bitIndex2, 12);
-        // skyLightLevel       .InjectUnsigned(ref data2, ref bitIndex2, 5);
-        // normal              .InjectUnsigned(ref data2, ref bitIndex2, 3);
-        // textureUvIndex      .InjectUnsigned(ref data2, ref bitIndex2, 2);
-        // aoIndex             .InjectUnsigned(ref data2, ref bitIndex2, 2);
         _vertexData[AddedVertexDataCount] = data1;
         _vertexData[AddedVertexDataCount + 1] = data2;
         AddedVertexDataCount += 2;
