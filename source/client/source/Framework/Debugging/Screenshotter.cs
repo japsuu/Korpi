@@ -24,7 +24,7 @@ public static class Screenshotter
         }
         
         
-        public string SaveAsPng(string folderPath, string? overrideName = null, bool renameOther = false)
+        public string SaveAsPng(string folderPath, string? overrideName = null, bool renameOther = false, bool renameOtherFromCreatedDateTime = false)
         {
             if (!string.IsNullOrEmpty(overrideName))
                 _fileName = overrideName;
@@ -40,8 +40,25 @@ public static class Screenshotter
                 int i = 0;
                 while (File.Exists(otherFilePath))
                 {
-                    otherFilePath = Path.Combine(folderPath, $"{_fileName}_{i}.png");
-                    i++;
+                    if (renameOtherFromCreatedDateTime)
+                    {
+                        // Get the existing file creation time.
+                        DateTime existingFileCreatedDateTime = File.GetCreationTime(otherFilePath);
+                        // Get the new file name.
+                        if (i == 0)
+                        {
+                            otherFilePath = Path.Combine(folderPath, $"screenshot_{existingFileCreatedDateTime:yyyy-MM-dd_HH-mm-ss}.png");
+                        }
+                        else
+                        {
+                            otherFilePath = Path.Combine(folderPath, $"screenshot_{existingFileCreatedDateTime:yyyy-MM-dd_HH-mm-ss}_{i}.png");
+                        }
+                    }
+                    else
+                    {
+                        otherFilePath = Path.Combine(folderPath, $"{_fileName}_{i}.png");
+                        i++;
+                    }
                 }
                 // Move the existing file to the new name.
                 File.Move(filePath, otherFilePath);
@@ -64,7 +81,8 @@ public static class Screenshotter
             
             File.WriteAllBytes(filePath, pngBytes);
             
-            Logger.Log($"Saved screenshot to {filePath}");
+            string fullPath = Path.GetFullPath(filePath);
+            Logger.Log($"Saved screenshot to {fullPath}");
             return filePath;
         }
         

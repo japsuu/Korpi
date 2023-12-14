@@ -60,9 +60,11 @@ public class ChunkMesher
             _queuedChunks.Remove(chunkPos);
             if (!_chunkManager.IsChunkLoaded(chunkPos))
                 continue;
+            RenderingStats.StartChunkMeshing();
             ChunkRenderer mesh = GenerateMesh(chunkPos);
             ChunkRendererStorage.AddRenderer(chunkPos, mesh);
             chunksMeshed++;
+            RenderingStats.StopChunkMeshing();
         }
         
         RenderingStats.StopMeshing(chunksMeshed);

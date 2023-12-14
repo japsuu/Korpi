@@ -60,12 +60,12 @@ public class ChunkColumn
         // if (Position.X > 1 * Constants.CHUNK_SIZE || Position.X < -1 * Constants.CHUNK_SIZE || Position.Y > 1 * Constants.CHUNK_SIZE || Position.Y < -1 * Constants.CHUNK_SIZE)
         //     return;
         
-        if (Position.X > 2 * Constants.CHUNK_SIZE || Position.X < -2 * Constants.CHUNK_SIZE || Position.Y > 2 * Constants.CHUNK_SIZE || Position.Y < -2 * Constants.CHUNK_SIZE)
+        if (Position.X > 1 * Constants.CHUNK_SIZE || Position.X < -2 * Constants.CHUNK_SIZE || Position.Y > 1 * Constants.CHUNK_SIZE || Position.Y < -2 * Constants.CHUNK_SIZE)
             return;
 
         // Generate test data
-        //for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT / 2 - 1; i++)
+        // for (int i = 0; i < 1; i++)
         {
             Chunk chunk = new Chunk();
             for (int z = 0; z < Constants.CHUNK_SIZE; z++)
@@ -87,8 +87,6 @@ public class ChunkColumn
                     }
                 }
             }
-            //chunk.SetBlockState(new Vector3i(0, 0, 0), BlockRegistry.Stone.GetDefaultState());
-            //chunk.SetBlockState(new Vector3i(Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1, Constants.CHUNK_SIZE - 1), BlockRegistry.Stone.GetDefaultState());
             _chunks[i] = chunk;
         }
     }
