@@ -141,13 +141,6 @@ public class Shader : IDisposable
     public static void SetMatrix3(int location, Matrix3 matrix) => GL.UniformMatrix3(location, true, ref matrix);
     public static void SetMatrix4(int location, Matrix4 matrix) => GL.UniformMatrix4(location, true, ref matrix);
 
-    
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
 
     private static (int vertexShader, int fragmentShader) GenerateShader(string vertexShaderSource, string fragmentShaderSource)
     {
@@ -212,6 +205,13 @@ public class Shader : IDisposable
         GL.DetachShader(Handle, fragmentShader);
         GL.DeleteShader(fragmentShader);
         GL.DeleteShader(vertexShader);
+    }
+
+    
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
 
