@@ -32,17 +32,17 @@ public class RenderingWindow : ImGuiWindow
                 DebugChunkDrawer.Dispose();
         }
 
-        if (ImGui.Checkbox("Enable Ambient Occlusion", ref DebugSettings.EnableAmbientOcclusion))
-        {
-            World.CurrentWorld.ChunkManager.ReloadAllChunks();
-        }
-
         if (ImGui.Checkbox("Render column borders", ref DebugSettings.RenderChunkColumnBorders))
         {
             if (DebugSettings.RenderChunkColumnBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();
+        }
+
+        if (ImGui.Checkbox("Enable Ambient Occlusion", ref DebugSettings.EnableAmbientOcclusion))
+        {
+            World.CurrentWorld.ChunkManager.ReloadAllChunks();
         }
         
         ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
@@ -62,5 +62,6 @@ public class RenderingWindow : ImGuiWindow
         ImGui.Text($"Cached chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");
         ImGui.Text($"Meshing time = {RenderingStats.MeshingTime:F1}ms");
+        ImGui.Text($"Average chunk meshing time = {RenderingStats.AverageChunkMeshingTime:F1}ms");
     }
 }
