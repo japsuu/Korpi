@@ -2,6 +2,7 @@
 
 [![client build](https://github.com/japsuu/BlockEngine/actions/workflows/build_client.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/build_client.yml)
 [![client tests](https://github.com/japsuu/BlockEngine/actions/workflows/test_client.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/test_client.yml)
+[![documentation](https://github.com/japsuu/BlockEngine/actions/workflows/documentation.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/documentation.yml)
 
 ![Latest progress screenshot](https://raw.githubusercontent.com/japsuu/BlockEngine/master/screenshots/latest.png)
 
