@@ -73,6 +73,14 @@ public abstract class Entity
     }
     
     
+    public void AddComponent<T>(T comp) where T : Component
+    {
+        _components.Add(typeof(T), comp);
+        comp.SetEntity(this);
+        comp.Enable();
+    }
+    
+    
     public T AddComponent<T>() where T : Component, new()
     {
         T comp = new();

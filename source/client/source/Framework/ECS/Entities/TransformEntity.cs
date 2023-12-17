@@ -3,15 +3,15 @@ using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.ECS.Entities;
 
-public class TransformEntity : Entity
+public abstract class TransformEntity : Entity
 {
-    public Transform Transform { get; private set; }
-    
-    
-    public TransformEntity(Vector3 position = default)
+    public readonly Transform Transform;
+
+
+    protected TransformEntity(Vector3 localPosition = default)
     {
         Transform = AddComponent<Transform>();
         
-        Transform.Position = position;
+        Transform.LocalPosition = localPosition;
     }
 }

@@ -9,6 +9,9 @@ public abstract class Component
     protected Entity Entity { get; private set; } = null!;
     
     
+    protected Component() { }
+
+
     public void SetEntity(Entity entity)
     {
         Entity = entity;

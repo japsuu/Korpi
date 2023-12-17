@@ -1,9 +1,11 @@
 ﻿using BlockEngine.Client.Framework;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Modding;
 using BlockEngine.Client.Framework.Registries;
 using BlockEngine.Client.Framework.Rendering;
+using BlockEngine.Client.Framework.Rendering.Cameras;
 using BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 using BlockEngine.Client.Framework.Rendering.Shaders;
 using BlockEngine.Client.Utils;
@@ -22,14 +24,14 @@ public class GameClient : GameWindow
     public static event Action? ClientUnload;
 
     private readonly bool _isPhotomode;
-    private readonly string _photomodeResultPath;
+    private readonly string? _photomodeResultPath;
     
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
     private Skybox _skybox = null!;
     private World _world = null!;
-    private Camera _camera = null!;
     private Crosshair _crosshair = null!;
+    private Player _player = null!;
 
 
     public GameClient(IReadOnlyList<string> args) : base(
@@ -86,14 +88,12 @@ public class GameClient : GameWindow
         // Player initialization.
         if (_isPhotomode)
         {
-            _camera = new Camera(new Vector3(0, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y)
-            {
-                IsInputEnabled = false
-            };
+            _player = new Player(new Vector3(0, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y);
+            _player.Camera.IsInputEnabled = false;
         }
         else
         {
-            _camera = new Camera(new Vector3(0, 256, 0), ClientSize.X / (float)ClientSize.Y);
+            _player = new Player(new Vector3(0, 256, 0), 0, 0, ClientSize.X / (float)ClientSize.Y);
         }
         CursorState = CursorState.Grabbed;
         
@@ -140,7 +140,7 @@ public class GameClient : GameWindow
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
             SwitchCursorState();
 
-        _world.Tick(_camera, args.Time);
+        _world.Tick(args.Time);
     }
 
     
@@ -155,7 +155,7 @@ public class GameClient : GameWindow
         
         // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
-        Matrix4 cameraViewMatrix = _camera.GetViewMatrix();
+        Matrix4 cameraViewMatrix = Camera.ActiveCamera.GetViewMatrix();
 
         // IMPORTANT: OpenTK's matrix types are transposed from what OpenGL would expect - rows and columns are reversed.
         // They are then transposed properly when passed to the shader. 
@@ -165,7 +165,7 @@ public class GameClient : GameWindow
         // and finally apply the viewToProjectedSpace (aka projection) matrix.
         // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
         ShaderManager.UpdateViewMatrix(cameraViewMatrix);
-        ShaderManager.UpdateProjectionMatrix(_camera.GetProjectionMatrix());
+        ShaderManager.UpdateProjectionMatrix(Camera.ActiveCamera.GetProjectionMatrix());
         
         DrawWorld();
 
@@ -174,7 +174,7 @@ public class GameClient : GameWindow
 
         if (_isPhotomode && Time.TotalTime > 1f)
         {
-            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(_photomodeResultPath, "latest", true, true);
+            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(_photomodeResultPath!, "latest", true, true);
             Close();
             return;
         }
@@ -200,7 +200,7 @@ public class GameClient : GameWindow
 
         // Enable backface culling.
         GL.Enable(EnableCap.CullFace);
-        _world.DrawChunks(_camera.Transform.Position, ShaderManager.ChunkShader);
+        _world.DrawChunks(Player.LocalPlayer.Transform.LocalPosition, ShaderManager.ChunkShader);
         GL.Disable(EnableCap.CullFace);
     }
 
@@ -228,7 +228,7 @@ public class GameClient : GameWindow
         _imGuiController.WindowResized(ClientSize.X, ClientSize.Y);
         
         // Tell the camera the new aspect ratio.
-        _camera.AspectRatio = ClientSize.X / (float)ClientSize.Y;
+        Camera.ActiveCamera.AspectRatio = ClientSize.X / (float)ClientSize.Y;
     }
 
     
@@ -254,15 +254,15 @@ public class GameClient : GameWindow
             return;
         if (CursorState == CursorState.Grabbed)
         {
-            _camera.IsMouseFirstMove = true;
+            Camera.ActiveCamera.IsMouseFirstMove = true;
             CursorState = CursorState.Normal;
-            _camera.IsInputEnabled = false;
+            Camera.ActiveCamera.IsInputEnabled = false;
         }
         else if (CursorState == CursorState.Normal)
         {
-            _camera.IsMouseFirstMove = true;
+            Camera.ActiveCamera.IsMouseFirstMove = true;
             CursorState = CursorState.Grabbed;
-            _camera.IsInputEnabled = true;
+            Camera.ActiveCamera.IsInputEnabled = true;
         }
     }
 }

@@ -4,6 +4,7 @@ using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Physics;
 using BlockEngine.Client.Framework.Rendering;
+using BlockEngine.Client.Framework.Rendering.Cameras;
 using BlockEngine.Client.Framework.Rendering.Shaders;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
@@ -34,11 +35,11 @@ public class World
     }
     
     
-    public void Tick(Camera camera, double time)
+    public void Tick(double time)
     {
-        ChunkManager.Tick(camera.Transform.Position, time);
+        ChunkManager.Tick(Player.LocalPlayer.Transform.LocalPosition, time);
         _entityManager.Update(time);
-        CameraStats.RaycastResult = RaycastWorld(camera.Transform.Position, camera.Front, 10);
+        CameraStats.RaycastResult = RaycastWorld(Player.LocalPlayer.Transform.LocalPosition, Player.LocalPlayer.Camera.Front, 10);
     }
     
     
