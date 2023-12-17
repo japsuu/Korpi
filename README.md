@@ -13,6 +13,8 @@ This project is still searching for its own identity :)
 - [Project goals](#project-goals)
 - [Personal goals](#personal-goals)
 - [Project status](#project-status)
+- [Documentation](#documentation)
+- [Input](#input)
 - [Voxel engine vs BlockEngine](#voxel-engine-vs-block-engine)
 - [Credits](#credits)
 
@@ -87,6 +89,12 @@ Dividing the game world into chunks offers some advantages.
 
 Raycasting is currently implemented for ray/cube intersections, based on the infamous ["A Fast Voxel Traversal Algorithm for Ray Tracing"](http://www.cse.yorku.ca/~amana/research/grid.pdf) -paper by *John Amanatides & Andrew Woo*. A more in-depth overview can be found [here](https://github.com/cgyurgyik/fast-voxel-traversal-algorithm/blob/master/overview/FastVoxelTraversalOverview.md).
 The current solution supports also collision face detection.
+
+## Documentation
+
+- [Docs index](https://japsuu.github.io/BlockEngine/)
+- [Introduction](https://japsuu.github.io/BlockEngine/documentation/introduction.html)
+- [API documentation](https://japsuu.github.io/BlockEngine/api/BlockEngine.Client.html)
 
 ## Input
 
