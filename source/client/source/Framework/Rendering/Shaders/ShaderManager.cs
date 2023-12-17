@@ -5,6 +5,7 @@ namespace BlockEngine.Client.Framework.Rendering.Shaders;
 
 public class ShaderManager : IDisposable
 {
+    public static Shader PassShader { get; private set; } = null!;
     public static Shader DebugShader { get; private set; } = null!;
     public static Shader ChunkShader { get; private set; } = null!;
     public static Shader SkyboxShader { get; private set; } = null!;
@@ -18,6 +19,9 @@ public class ShaderManager : IDisposable
 
     public ShaderManager()
     {
+        PassShader = new Shader(IoUtils.GetShaderPath("shader_pass.vert"), IoUtils.GetShaderPath("shader_pass.frag"));
+        PassShader.Use();
+        
         DebugShader = new Shader(IoUtils.GetShaderPath("shader_debug.vert"), IoUtils.GetShaderPath("shader_debug.frag"));
         DebugShader.Use();
         
@@ -33,6 +37,9 @@ public class ShaderManager : IDisposable
     {
         ProjectionMatrix = projectionMatrix;
         
+        PassShader.Use();
+        PassShader.SetMatrix4("projection", projectionMatrix);
+        
         DebugShader.Use();
         DebugShader.SetMatrix4("projection", projectionMatrix);
         
@@ -47,6 +54,9 @@ public class ShaderManager : IDisposable
     public static void UpdateViewMatrix(Matrix4 viewMatrix)
     {
         ViewMatrix = viewMatrix;
+        
+        PassShader.Use();
+        PassShader.SetMatrix4("view", viewMatrix);
         
         DebugShader.Use();
         DebugShader.SetMatrix4("view", viewMatrix);

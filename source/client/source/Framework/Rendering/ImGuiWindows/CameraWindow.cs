@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Rendering.Cameras;
 using BlockEngine.Client.Utils;
 using ImGuiNET;
 using OpenTK.Mathematics;
@@ -21,7 +22,7 @@ public class CameraWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        Vector3 camPos = _camera.Transform.Position;
+        Vector3 camPos = _camera.Transform.LocalPosition;
         ImGui.Text($"Pos: {camPos:F1}");
         ImGui.Text($"Chunk Pos: {CoordinateConversions.GetContainingChunkPos(camPos):F0}");
         ImGui.Text($"Pitch: {_camera.Pitch:F1}");

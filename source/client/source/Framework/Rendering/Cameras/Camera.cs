@@ -4,13 +4,15 @@ using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Client.Framework.Rendering;
+namespace BlockEngine.Client.Framework.Rendering.Cameras;
 
 public class Camera : TransformEntity
 {
-    public static Camera Singleton { get; private set; } = null!;
+    public static Camera ActiveCamera { get; private set; } = null!;
 
     private const float SENSITIVITY = 0.2f;
+    
+    private bool _isActive;
     
     private CameraWindow _cameraWindow;
     
@@ -90,69 +92,80 @@ public class Camera : TransformEntity
     }
     
     
-    public Camera(Vector3 position, float aspectRatio) : base(position)
+    public Camera(Vector3 localPosition, float aspectRatio) : base(localPosition)
     {
         AspectRatio = aspectRatio;
         _cameraWindow = new CameraWindow(this);
 
-        if (Singleton != null)
-            throw new Exception("Only one camera can exist at a time.");
-
-        Singleton = this;
+        SetActive(true);
     }
     
     
-    public Camera(Vector3 position, float pitch, float yaw, float aspectRatio) : base(position)
+    public Camera(Vector3 localPosition, float pitch, float yaw, float aspectRatio) : base(localPosition)
     {
         AspectRatio = aspectRatio;
         _cameraWindow = new CameraWindow(this);
         Pitch = pitch;
         Yaw = yaw;
 
-        if (Singleton != null)
-            throw new Exception("Only one camera can exist at a time.");
+        SetActive(true);
+    }
+    
+    
+    public void SetActive(bool cancelIfActiveExists = false)
+    {
+        if (_isActive)
+            return;
+        
+        if (ActiveCamera != null)
+        {
+            if (cancelIfActiveExists)
+                return;
+            
+            ActiveCamera._isActive = false;
+        }
 
-        Singleton = this;
+        ActiveCamera = this;
+        _isActive = true;
     }
 
 
+    // TODO: Project the Front/Right vectors onto the XZ plane while keeping their magnitude and use those for movement.
+    // TODO: Use world up/down instead of camera up/down for vertical movement.
+    // TODO: Possibly use the Transform.forward property.
     protected override void OnUpdate(double time)
     {
         if (!IsInputEnabled)
             return;
         
-        // TODO: Project the Front/Right vectors onto the XZ plane while keeping their magnitude and use those for movement.
-        // TODO: Use world up/down instead of camera up/down for vertical movement.
-        // TODO: Possibly use the Transform.forward property.
-        
         if (Input.KeyboardState.IsKeyDown(Keys.W))
         {
-            Transform.Position += Front * _cameraFlySpeed * (float)time; // Forward
+            Transform.LocalPosition += Front * _cameraFlySpeed * (float)time; // Forward
         }
 
         if (Input.KeyboardState.IsKeyDown(Keys.S))
         {
-            Transform.Position -= Front * _cameraFlySpeed * (float)time; // Backwards
+            Transform.LocalPosition -= Front * _cameraFlySpeed * (float)time; // Backwards
         }
-        
+
         if (Input.KeyboardState.IsKeyDown(Keys.A))
         {
-            Transform.Position -= Right * _cameraFlySpeed * (float)time; // Left
+            Transform.LocalPosition -= Right * _cameraFlySpeed * (float)time; // Left
         }
-        
+
         if (Input.KeyboardState.IsKeyDown(Keys.D))
         {
-            Transform.Position += Right * _cameraFlySpeed * (float)time; // Right
+            Transform.LocalPosition += Right * _cameraFlySpeed * (float)time; // Right
         }
-        
+
         if (Input.KeyboardState.IsKeyDown(Keys.Space))
         {
-            Transform.Position += Up * _cameraFlySpeed * (float)time; // Up
+            Transform.LocalPosition += Up * _cameraFlySpeed * (float)time; // Up
         }
-        
+
         if (Input.KeyboardState.IsKeyDown(Keys.LeftShift))
         {
-            Transform.Position -= Up * _cameraFlySpeed * (float)time; // Down
+            Transform.LocalPosition -= Up * _cameraFlySpeed * (float)time; // Down
         }
 
         if (IsMouseFirstMove)
@@ -209,7 +222,7 @@ public class Camera : TransformEntity
                     default:
                     {
                         _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 5f;
-                    
+
                         if (_cameraFlySpeed < 10f)
                         {
                             _cameraFlySpeed = 9f;
@@ -228,7 +241,7 @@ public class Camera : TransformEntity
     // Get the view matrix using the amazing LookAt function.
     public Matrix4 GetViewMatrix()
     {
-        return Matrix4.LookAt(Transform.Position, Transform.Position + _front, _up);
+        return Matrix4.LookAt(Transform.LocalPosition, Transform.LocalPosition + _front, _up);
     }
 
     
