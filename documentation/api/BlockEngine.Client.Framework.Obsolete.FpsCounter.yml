@@ -1,0 +1,412 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Obsolete.FpsCounter
+  commentId: T:BlockEngine.Client.Framework.Obsolete.FpsCounter
+  id: FpsCounter
+  parent: BlockEngine.Client.Framework.Obsolete
+  children:
+  - BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps
+  - BlockEngine.Client.Framework.Obsolete.FpsCounter.Update(System.Double)
+  langs:
+  - csharp
+  - vb
+  name: FpsCounter
+  nameWithType: FpsCounter
+  fullName: BlockEngine.Client.Framework.Obsolete.FpsCounter
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Obsolete/FpsCounter.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FpsCounter
+    path: ../source/client/source/Framework/Obsolete/FpsCounter.cs
+    startLine: 2
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Obsolete
+  syntax:
+    content: >-
+      [Obsolete("Use the ImGui perf window instead")]
+
+      public class FpsCounter
+    content.vb: >-
+      <Obsolete("Use the ImGui perf window instead")>
+
+      Public Class FpsCounter
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use the ImGui perf window instead
+- uid: BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps
+  commentId: P:BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps
+  id: Fps
+  parent: BlockEngine.Client.Framework.Obsolete.FpsCounter
+  langs:
+  - csharp
+  - vb
+  name: Fps
+  nameWithType: FpsCounter.Fps
+  fullName: BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Obsolete/FpsCounter.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Fps
+    path: ../source/client/source/Framework/Obsolete/FpsCounter.cs
+    startLine: 7
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Obsolete
+  syntax:
+    content: public double Fps { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Fps As Double
+  overload: BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps*
+- uid: BlockEngine.Client.Framework.Obsolete.FpsCounter.Update(System.Double)
+  commentId: M:BlockEngine.Client.Framework.Obsolete.FpsCounter.Update(System.Double)
+  id: Update(System.Double)
+  parent: BlockEngine.Client.Framework.Obsolete.FpsCounter
+  langs:
+  - csharp
+  - vb
+  name: Update(double)
+  nameWithType: FpsCounter.Update(double)
+  fullName: BlockEngine.Client.Framework.Obsolete.FpsCounter.Update(double)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Obsolete/FpsCounter.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Update
+    path: ../source/client/source/Framework/Obsolete/FpsCounter.cs
+    startLine: 12
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Obsolete
+  syntax:
+    content: public void Update(double deltaTime)
+    parameters:
+    - id: deltaTime
+      type: System.Double
+    content.vb: Public Sub Update(deltaTime As Double)
+  overload: BlockEngine.Client.Framework.Obsolete.FpsCounter.Update*
+  nameWithType.vb: FpsCounter.Update(Double)
+  fullName.vb: BlockEngine.Client.Framework.Obsolete.FpsCounter.Update(Double)
+  name.vb: Update(Double)
+references:
+- uid: BlockEngine.Client.Framework.Obsolete
+  commentId: N:BlockEngine.Client.Framework.Obsolete
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Obsolete
+  nameWithType: BlockEngine.Client.Framework.Obsolete
+  fullName: BlockEngine.Client.Framework.Obsolete
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Obsolete
+    name: Obsolete
+    href: BlockEngine.Client.Framework.Obsolete.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Obsolete
+    name: Obsolete
+    href: BlockEngine.Client.Framework.Obsolete.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps*
+  commentId: Overload:BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps
+  href: BlockEngine.Client.Framework.Obsolete.FpsCounter.html#BlockEngine_Client_Framework_Obsolete_FpsCounter_Fps
+  name: Fps
+  nameWithType: FpsCounter.Fps
+  fullName: BlockEngine.Client.Framework.Obsolete.FpsCounter.Fps
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: BlockEngine.Client.Framework.Obsolete.FpsCounter.Update*
+  commentId: Overload:BlockEngine.Client.Framework.Obsolete.FpsCounter.Update
+  href: BlockEngine.Client.Framework.Obsolete.FpsCounter.html#BlockEngine_Client_Framework_Obsolete_FpsCounter_Update_System_Double_
+  name: Update
+  nameWithType: FpsCounter.Update
+  fullName: BlockEngine.Client.Framework.Obsolete.FpsCounter.Update

@@ -1,0 +1,30 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Obsolete
+  commentId: N:BlockEngine.Client.Framework.Obsolete
+  id: BlockEngine.Client.Framework.Obsolete
+  children:
+  - BlockEngine.Client.Framework.Obsolete.FpsCounter
+  - BlockEngine.Client.Framework.Obsolete.IdStorage
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Obsolete
+  nameWithType: BlockEngine.Client.Framework.Obsolete
+  fullName: BlockEngine.Client.Framework.Obsolete
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Obsolete.FpsCounter
+  commentId: T:BlockEngine.Client.Framework.Obsolete.FpsCounter
+  href: BlockEngine.Client.Framework.Obsolete.FpsCounter.html
+  name: FpsCounter
+  nameWithType: FpsCounter
+  fullName: BlockEngine.Client.Framework.Obsolete.FpsCounter
+- uid: BlockEngine.Client.Framework.Obsolete.IdStorage
+  commentId: T:BlockEngine.Client.Framework.Obsolete.IdStorage
+  href: BlockEngine.Client.Framework.Obsolete.IdStorage.html
+  name: IdStorage
+  nameWithType: IdStorage
+  fullName: BlockEngine.Client.Framework.Obsolete.IdStorage

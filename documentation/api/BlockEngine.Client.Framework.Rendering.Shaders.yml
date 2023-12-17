@@ -1,0 +1,77 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Rendering.Shaders
+  commentId: N:BlockEngine.Client.Framework.Rendering.Shaders
+  id: BlockEngine.Client.Framework.Rendering.Shaders
+  children:
+  - BlockEngine.Client.Framework.Rendering.Shaders.Shader
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Rendering.Shaders
+  nameWithType: BlockEngine.Client.Framework.Rendering.Shaders
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+  commentId: T:BlockEngine.Client.Framework.Rendering.Shaders.Shader
+  parent: BlockEngine.Client.Framework.Rendering.Shaders
+  href: BlockEngine.Client.Framework.Rendering.Shaders.Shader.html
+  name: Shader
+  nameWithType: Shader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  commentId: T:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html
+  name: ShaderManager
+  nameWithType: ShaderManager
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+- uid: BlockEngine.Client.Framework.Rendering.Shaders
+  commentId: N:BlockEngine.Client.Framework.Rendering.Shaders
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.Shaders
+  nameWithType: BlockEngine.Client.Framework.Rendering.Shaders
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders
+    name: Shaders
+    href: BlockEngine.Client.Framework.Rendering.Shaders.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders
+    name: Shaders
+    href: BlockEngine.Client.Framework.Rendering.Shaders.html

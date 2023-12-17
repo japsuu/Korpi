@@ -1,0 +1,784 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.World
+  commentId: T:BlockEngine.Client.Framework.World
+  id: World
+  parent: BlockEngine.Client.Framework
+  children:
+  - BlockEngine.Client.Framework.World.#ctor(System.String)
+  - BlockEngine.Client.Framework.World.ChunkManager
+  - BlockEngine.Client.Framework.World.CurrentWorld
+  - BlockEngine.Client.Framework.World.DrawChunks(OpenTK.Mathematics.Vector3,BlockEngine.Client.Framework.Rendering.Shaders.Shader)
+  - BlockEngine.Client.Framework.World.RaycastWorld(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,System.Single)
+  - BlockEngine.Client.Framework.World.Tick(System.Double)
+  - BlockEngine.Client.Framework.World.ToString
+  langs:
+  - csharp
+  - vb
+  name: World
+  nameWithType: World
+  fullName: BlockEngine.Client.Framework.World
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: World
+    path: ../source/client/source/Framework/World.cs
+    startLine: 13
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  syntax:
+    content: public class World
+    content.vb: Public Class World
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: BlockEngine.Client.Framework.World.CurrentWorld
+  commentId: P:BlockEngine.Client.Framework.World.CurrentWorld
+  id: CurrentWorld
+  parent: BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: CurrentWorld
+  nameWithType: World.CurrentWorld
+  fullName: BlockEngine.Client.Framework.World.CurrentWorld
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CurrentWorld
+    path: ../source/client/source/Framework/World.cs
+    startLine: 15
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  syntax:
+    content: public static World CurrentWorld { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.World
+    content.vb: Public Shared Property CurrentWorld As World
+  overload: BlockEngine.Client.Framework.World.CurrentWorld*
+- uid: BlockEngine.Client.Framework.World.ChunkManager
+  commentId: F:BlockEngine.Client.Framework.World.ChunkManager
+  id: ChunkManager
+  parent: BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: ChunkManager
+  nameWithType: World.ChunkManager
+  fullName: BlockEngine.Client.Framework.World.ChunkManager
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ChunkManager
+    path: ../source/client/source/Framework/World.cs
+    startLine: 17
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  syntax:
+    content: public readonly ChunkManager ChunkManager
+    return:
+      type: BlockEngine.Client.Framework.Chunks.ChunkManager
+    content.vb: Public ReadOnly ChunkManager As ChunkManager
+- uid: BlockEngine.Client.Framework.World.#ctor(System.String)
+  commentId: M:BlockEngine.Client.Framework.World.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: World(string)
+  nameWithType: World.World(string)
+  fullName: BlockEngine.Client.Framework.World.World(string)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/World.cs
+    startLine: 23
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  syntax:
+    content: public World(string name)
+    parameters:
+    - id: name
+      type: System.String
+    content.vb: Public Sub New(name As String)
+  overload: BlockEngine.Client.Framework.World.#ctor*
+  nameWithType.vb: World.New(String)
+  fullName.vb: BlockEngine.Client.Framework.World.New(String)
+  name.vb: New(String)
+- uid: BlockEngine.Client.Framework.World.Tick(System.Double)
+  commentId: M:BlockEngine.Client.Framework.World.Tick(System.Double)
+  id: Tick(System.Double)
+  parent: BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: Tick(double)
+  nameWithType: World.Tick(double)
+  fullName: BlockEngine.Client.Framework.World.Tick(double)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Tick
+    path: ../source/client/source/Framework/World.cs
+    startLine: 37
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  syntax:
+    content: public void Tick(double time)
+    parameters:
+    - id: time
+      type: System.Double
+    content.vb: Public Sub Tick(time As Double)
+  overload: BlockEngine.Client.Framework.World.Tick*
+  nameWithType.vb: World.Tick(Double)
+  fullName.vb: BlockEngine.Client.Framework.World.Tick(Double)
+  name.vb: Tick(Double)
+- uid: BlockEngine.Client.Framework.World.DrawChunks(OpenTK.Mathematics.Vector3,BlockEngine.Client.Framework.Rendering.Shaders.Shader)
+  commentId: M:BlockEngine.Client.Framework.World.DrawChunks(OpenTK.Mathematics.Vector3,BlockEngine.Client.Framework.Rendering.Shaders.Shader)
+  id: DrawChunks(OpenTK.Mathematics.Vector3,BlockEngine.Client.Framework.Rendering.Shaders.Shader)
+  parent: BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: DrawChunks(Vector3, Shader)
+  nameWithType: World.DrawChunks(Vector3, Shader)
+  fullName: BlockEngine.Client.Framework.World.DrawChunks(OpenTK.Mathematics.Vector3, BlockEngine.Client.Framework.Rendering.Shaders.Shader)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DrawChunks
+    path: ../source/client/source/Framework/World.cs
+    startLine: 45
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  syntax:
+    content: public void DrawChunks(Vector3 cameraPos, Shader chunkShader)
+    parameters:
+    - id: cameraPos
+      type: OpenTK.Mathematics.Vector3
+    - id: chunkShader
+      type: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+    content.vb: Public Sub DrawChunks(cameraPos As Vector3, chunkShader As Shader)
+  overload: BlockEngine.Client.Framework.World.DrawChunks*
+- uid: BlockEngine.Client.Framework.World.RaycastWorld(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,System.Single)
+  commentId: M:BlockEngine.Client.Framework.World.RaycastWorld(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,System.Single)
+  id: RaycastWorld(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,System.Single)
+  parent: BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: RaycastWorld(Vector3, Vector3, float)
+  nameWithType: World.RaycastWorld(Vector3, Vector3, float)
+  fullName: BlockEngine.Client.Framework.World.RaycastWorld(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, float)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: RaycastWorld
+    path: ../source/client/source/Framework/World.cs
+    startLine: 51
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  syntax:
+    content: public BlockState RaycastWorld(Vector3 start, Vector3 direction, float maxDistance)
+    parameters:
+    - id: start
+      type: OpenTK.Mathematics.Vector3
+    - id: direction
+      type: OpenTK.Mathematics.Vector3
+    - id: maxDistance
+      type: System.Single
+    return:
+      type: BlockEngine.Client.Framework.Blocks.BlockState
+    content.vb: Public Function RaycastWorld(start As Vector3, direction As Vector3, maxDistance As Single) As BlockState
+  overload: BlockEngine.Client.Framework.World.RaycastWorld*
+  nameWithType.vb: World.RaycastWorld(Vector3, Vector3, Single)
+  fullName.vb: BlockEngine.Client.Framework.World.RaycastWorld(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, Single)
+  name.vb: RaycastWorld(Vector3, Vector3, Single)
+- uid: BlockEngine.Client.Framework.World.ToString
+  commentId: M:BlockEngine.Client.Framework.World.ToString
+  id: ToString
+  parent: BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: World.ToString()
+  fullName: BlockEngine.Client.Framework.World.ToString()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/World.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ToString
+    path: ../source/client/source/Framework/World.cs
+    startLine: 66
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: BlockEngine.Client.Framework.World.ToString*
+references:
+- uid: BlockEngine.Client.Framework
+  commentId: N:BlockEngine.Client.Framework
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework
+  nameWithType: BlockEngine.Client.Framework
+  fullName: BlockEngine.Client.Framework
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.World.CurrentWorld*
+  commentId: Overload:BlockEngine.Client.Framework.World.CurrentWorld
+  href: BlockEngine.Client.Framework.World.html#BlockEngine_Client_Framework_World_CurrentWorld
+  name: CurrentWorld
+  nameWithType: World.CurrentWorld
+  fullName: BlockEngine.Client.Framework.World.CurrentWorld
+- uid: BlockEngine.Client.Framework.World
+  commentId: T:BlockEngine.Client.Framework.World
+  parent: BlockEngine.Client.Framework
+  href: BlockEngine.Client.Framework.World.html
+  name: World
+  nameWithType: World
+  fullName: BlockEngine.Client.Framework.World
+- uid: BlockEngine.Client.Framework.Chunks.ChunkManager
+  commentId: T:BlockEngine.Client.Framework.Chunks.ChunkManager
+  parent: BlockEngine.Client.Framework.Chunks
+  href: BlockEngine.Client.Framework.Chunks.ChunkManager.html
+  name: ChunkManager
+  nameWithType: ChunkManager
+  fullName: BlockEngine.Client.Framework.Chunks.ChunkManager
+- uid: BlockEngine.Client.Framework.Chunks
+  commentId: N:BlockEngine.Client.Framework.Chunks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Chunks
+  nameWithType: BlockEngine.Client.Framework.Chunks
+  fullName: BlockEngine.Client.Framework.Chunks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Chunks
+    name: Chunks
+    href: BlockEngine.Client.Framework.Chunks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Chunks
+    name: Chunks
+    href: BlockEngine.Client.Framework.Chunks.html
+- uid: BlockEngine.Client.Framework.World.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.World.#ctor
+  href: BlockEngine.Client.Framework.World.html#BlockEngine_Client_Framework_World__ctor_System_String_
+  name: World
+  nameWithType: World.World
+  fullName: BlockEngine.Client.Framework.World.World
+  nameWithType.vb: World.New
+  fullName.vb: BlockEngine.Client.Framework.World.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: BlockEngine.Client.Framework.World.Tick*
+  commentId: Overload:BlockEngine.Client.Framework.World.Tick
+  href: BlockEngine.Client.Framework.World.html#BlockEngine_Client_Framework_World_Tick_System_Double_
+  name: Tick
+  nameWithType: World.Tick
+  fullName: BlockEngine.Client.Framework.World.Tick
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: BlockEngine.Client.Framework.World.DrawChunks*
+  commentId: Overload:BlockEngine.Client.Framework.World.DrawChunks
+  href: BlockEngine.Client.Framework.World.html#BlockEngine_Client_Framework_World_DrawChunks_OpenTK_Mathematics_Vector3_BlockEngine_Client_Framework_Rendering_Shaders_Shader_
+  name: DrawChunks
+  nameWithType: World.DrawChunks
+  fullName: BlockEngine.Client.Framework.World.DrawChunks
+- uid: OpenTK.Mathematics.Vector3
+  commentId: T:OpenTK.Mathematics.Vector3
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3
+  nameWithType: Vector3
+  fullName: OpenTK.Mathematics.Vector3
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+  commentId: T:BlockEngine.Client.Framework.Rendering.Shaders.Shader
+  parent: BlockEngine.Client.Framework.Rendering.Shaders
+  href: BlockEngine.Client.Framework.Rendering.Shaders.Shader.html
+  name: Shader
+  nameWithType: Shader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: BlockEngine.Client.Framework.Rendering.Shaders
+  commentId: N:BlockEngine.Client.Framework.Rendering.Shaders
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.Shaders
+  nameWithType: BlockEngine.Client.Framework.Rendering.Shaders
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders
+    name: Shaders
+    href: BlockEngine.Client.Framework.Rendering.Shaders.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders
+    name: Shaders
+    href: BlockEngine.Client.Framework.Rendering.Shaders.html
+- uid: BlockEngine.Client.Framework.World.RaycastWorld*
+  commentId: Overload:BlockEngine.Client.Framework.World.RaycastWorld
+  href: BlockEngine.Client.Framework.World.html#BlockEngine_Client_Framework_World_RaycastWorld_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Vector3_System_Single_
+  name: RaycastWorld
+  nameWithType: World.RaycastWorld
+  fullName: BlockEngine.Client.Framework.World.RaycastWorld
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: BlockEngine.Client.Framework.Blocks.BlockState
+  commentId: T:BlockEngine.Client.Framework.Blocks.BlockState
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.BlockState.html
+  name: BlockState
+  nameWithType: BlockState
+  fullName: BlockEngine.Client.Framework.Blocks.BlockState
+- uid: BlockEngine.Client.Framework.Blocks
+  commentId: N:BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks
+  nameWithType: BlockEngine.Client.Framework.Blocks
+  fullName: BlockEngine.Client.Framework.Blocks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.World.ToString*
+  commentId: Overload:BlockEngine.Client.Framework.World.ToString
+  href: BlockEngine.Client.Framework.World.html#BlockEngine_Client_Framework_World_ToString
+  name: ToString
+  nameWithType: World.ToString
+  fullName: BlockEngine.Client.Framework.World.ToString

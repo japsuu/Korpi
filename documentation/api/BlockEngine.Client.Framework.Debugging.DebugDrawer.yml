@@ -1,0 +1,719 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugDrawer
+  id: DebugDrawer
+  parent: BlockEngine.Client.Framework.Debugging
+  children:
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4)
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4,System.Single)
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.VAO
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer.VBO
+  langs:
+  - csharp
+  - vb
+  name: DebugDrawer
+  nameWithType: DebugDrawer
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DebugDrawer
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 215
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static class DebugDrawer
+    content.vb: Public Module DebugDrawer
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.VBO
+  commentId: F:BlockEngine.Client.Framework.Debugging.DebugDrawer.VBO
+  id: VBO
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: VBO
+  nameWithType: DebugDrawer.VBO
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.VBO
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: VBO
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 220
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static readonly int VBO
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly VBO As Integer
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.VAO
+  commentId: F:BlockEngine.Client.Framework.Debugging.DebugDrawer.VAO
+  id: VAO
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: VAO
+  nameWithType: DebugDrawer.VAO
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.VAO
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: VAO
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 221
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static readonly int VAO
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly VAO As Integer
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  commentId: M:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  id: DrawLine(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawLine(Vector3, Vector3, Color4)
+  nameWithType: DebugDrawer.DrawLine(Vector3, Vector3, Color4)
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Color4)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DrawLine
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 231
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static void DrawLine(Vector3 start, Vector3 end, Color4 color)
+    parameters:
+    - id: start
+      type: OpenTK.Mathematics.Vector3
+    - id: end
+      type: OpenTK.Mathematics.Vector3
+    - id: color
+      type: OpenTK.Mathematics.Color4
+    content.vb: Public Shared Sub DrawLine(start As Vector3, [end] As Vector3, color As Color4)
+  overload: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine*
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  commentId: M:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  id: DrawLineTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawLineTemporary(Vector3, Vector3, Color4, float)
+  nameWithType: DebugDrawer.DrawLineTemporary(Vector3, Vector3, Color4, float)
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Color4, float)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DrawLineTemporary
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 237
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static void DrawLineTemporary(Vector3 start, Vector3 end, Color4 color, float lifetimeSeconds)
+    parameters:
+    - id: start
+      type: OpenTK.Mathematics.Vector3
+    - id: end
+      type: OpenTK.Mathematics.Vector3
+    - id: color
+      type: OpenTK.Mathematics.Color4
+    - id: lifetimeSeconds
+      type: System.Single
+    content.vb: Public Shared Sub DrawLineTemporary(start As Vector3, [end] As Vector3, color As Color4, lifetimeSeconds As Single)
+  overload: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary*
+  nameWithType.vb: DebugDrawer.DrawLineTemporary(Vector3, Vector3, Color4, Single)
+  fullName.vb: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Color4, Single)
+  name.vb: DrawLineTemporary(Vector3, Vector3, Color4, Single)
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  commentId: M:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  id: DrawBox(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4)
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawBox(Vector3, Vector3, Color4)
+  nameWithType: DebugDrawer.DrawBox(Vector3, Vector3, Color4)
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Color4)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DrawBox
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 243
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static void DrawBox(Vector3 position, Vector3 size, Color4 color)
+    parameters:
+    - id: position
+      type: OpenTK.Mathematics.Vector3
+    - id: size
+      type: OpenTK.Mathematics.Vector3
+    - id: color
+      type: OpenTK.Mathematics.Color4
+    content.vb: Public Shared Sub DrawBox(position As Vector3, size As Vector3, color As Color4)
+  overload: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox*
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  commentId: M:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  id: DrawBoxTemporary(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Color4,System.Single)
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawBoxTemporary(Vector3, Vector3, Color4, float)
+  nameWithType: DebugDrawer.DrawBoxTemporary(Vector3, Vector3, Color4, float)
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Color4, float)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DrawBoxTemporary
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 249
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static void DrawBoxTemporary(Vector3 position, Vector3 size, Color4 color, float lifetimeSeconds)
+    parameters:
+    - id: position
+      type: OpenTK.Mathematics.Vector3
+    - id: size
+      type: OpenTK.Mathematics.Vector3
+    - id: color
+      type: OpenTK.Mathematics.Color4
+    - id: lifetimeSeconds
+      type: System.Single
+    content.vb: Public Shared Sub DrawBoxTemporary(position As Vector3, size As Vector3, color As Color4, lifetimeSeconds As Single)
+  overload: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary*
+  nameWithType.vb: DebugDrawer.DrawBoxTemporary(Vector3, Vector3, Color4, Single)
+  fullName.vb: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Color4, Single)
+  name.vb: DrawBoxTemporary(Vector3, Vector3, Color4, Single)
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4)
+  commentId: M:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4)
+  id: DrawSphere(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4)
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawSphere(Vector3, float, Color4)
+  nameWithType: DebugDrawer.DrawSphere(Vector3, float, Color4)
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere(OpenTK.Mathematics.Vector3, float, OpenTK.Mathematics.Color4)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DrawSphere
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 255
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static void DrawSphere(Vector3 position, float radius, Color4 color)
+    parameters:
+    - id: position
+      type: OpenTK.Mathematics.Vector3
+    - id: radius
+      type: System.Single
+    - id: color
+      type: OpenTK.Mathematics.Color4
+    content.vb: Public Shared Sub DrawSphere(position As Vector3, radius As Single, color As Color4)
+  overload: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere*
+  nameWithType.vb: DebugDrawer.DrawSphere(Vector3, Single, Color4)
+  fullName.vb: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere(OpenTK.Mathematics.Vector3, Single, OpenTK.Mathematics.Color4)
+  name.vb: DrawSphere(Vector3, Single, Color4)
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4,System.Single)
+  commentId: M:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4,System.Single)
+  id: DrawSphereTemporary(OpenTK.Mathematics.Vector3,System.Single,OpenTK.Mathematics.Color4,System.Single)
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawSphereTemporary(Vector3, float, Color4, float)
+  nameWithType: DebugDrawer.DrawSphereTemporary(Vector3, float, Color4, float)
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary(OpenTK.Mathematics.Vector3, float, OpenTK.Mathematics.Color4, float)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DrawSphereTemporary
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 261
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static void DrawSphereTemporary(Vector3 position, float radius, Color4 color, float lifetimeSeconds)
+    parameters:
+    - id: position
+      type: OpenTK.Mathematics.Vector3
+    - id: radius
+      type: System.Single
+    - id: color
+      type: OpenTK.Mathematics.Color4
+    - id: lifetimeSeconds
+      type: System.Single
+    content.vb: Public Shared Sub DrawSphereTemporary(position As Vector3, radius As Single, color As Color4, lifetimeSeconds As Single)
+  overload: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary*
+  nameWithType.vb: DebugDrawer.DrawSphereTemporary(Vector3, Single, Color4, Single)
+  fullName.vb: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary(OpenTK.Mathematics.Vector3, Single, OpenTK.Mathematics.Color4, Single)
+  name.vb: DrawSphereTemporary(Vector3, Single, Color4, Single)
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw
+  commentId: M:BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw
+  id: Draw
+  parent: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: Draw()
+  nameWithType: DebugDrawer.Draw()
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Debugging/DebugDrawer.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Draw
+    path: ../source/client/source/Framework/Debugging/DebugDrawer.cs
+    startLine: 267
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Debugging
+  syntax:
+    content: public static void Draw()
+    content.vb: Public Shared Sub Draw()
+  overload: BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw*
+references:
+- uid: BlockEngine.Client.Framework.Debugging
+  commentId: N:BlockEngine.Client.Framework.Debugging
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Debugging
+  nameWithType: BlockEngine.Client.Framework.Debugging
+  fullName: BlockEngine.Client.Framework.Debugging
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Debugging
+    name: Debugging
+    href: BlockEngine.Client.Framework.Debugging.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Debugging
+    name: Debugging
+    href: BlockEngine.Client.Framework.Debugging.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine*
+  commentId: Overload:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html#BlockEngine_Client_Framework_Debugging_DebugDrawer_DrawLine_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Color4_
+  name: DrawLine
+  nameWithType: DebugDrawer.DrawLine
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLine
+- uid: OpenTK.Mathematics.Vector3
+  commentId: T:OpenTK.Mathematics.Vector3
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3
+  nameWithType: Vector3
+  fullName: OpenTK.Mathematics.Vector3
+- uid: OpenTK.Mathematics.Color4
+  commentId: T:OpenTK.Mathematics.Color4
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Color4
+  nameWithType: Color4
+  fullName: OpenTK.Mathematics.Color4
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary*
+  commentId: Overload:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html#BlockEngine_Client_Framework_Debugging_DebugDrawer_DrawLineTemporary_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Color4_System_Single_
+  name: DrawLineTemporary
+  nameWithType: DebugDrawer.DrawLineTemporary
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawLineTemporary
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox*
+  commentId: Overload:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html#BlockEngine_Client_Framework_Debugging_DebugDrawer_DrawBox_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Color4_
+  name: DrawBox
+  nameWithType: DebugDrawer.DrawBox
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBox
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary*
+  commentId: Overload:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html#BlockEngine_Client_Framework_Debugging_DebugDrawer_DrawBoxTemporary_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Color4_System_Single_
+  name: DrawBoxTemporary
+  nameWithType: DebugDrawer.DrawBoxTemporary
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawBoxTemporary
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere*
+  commentId: Overload:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html#BlockEngine_Client_Framework_Debugging_DebugDrawer_DrawSphere_OpenTK_Mathematics_Vector3_System_Single_OpenTK_Mathematics_Color4_
+  name: DrawSphere
+  nameWithType: DebugDrawer.DrawSphere
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphere
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary*
+  commentId: Overload:BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html#BlockEngine_Client_Framework_Debugging_DebugDrawer_DrawSphereTemporary_OpenTK_Mathematics_Vector3_System_Single_OpenTK_Mathematics_Color4_System_Single_
+  name: DrawSphereTemporary
+  nameWithType: DebugDrawer.DrawSphereTemporary
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.DrawSphereTemporary
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw*
+  commentId: Overload:BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html#BlockEngine_Client_Framework_Debugging_DebugDrawer_Draw
+  name: Draw
+  nameWithType: DebugDrawer.Draw
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer.Draw

@@ -1,0 +1,448 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Bitpacking.PaletteEntry
+  commentId: T:BlockEngine.Client.Framework.Bitpacking.PaletteEntry
+  id: PaletteEntry
+  parent: BlockEngine.Client.Framework.Bitpacking
+  children:
+  - BlockEngine.Client.Framework.Bitpacking.PaletteEntry.#ctor(System.Int32,System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState})
+  - BlockEngine.Client.Framework.Bitpacking.PaletteEntry.BlockState
+  - BlockEngine.Client.Framework.Bitpacking.PaletteEntry.RefCount
+  langs:
+  - csharp
+  - vb
+  name: PaletteEntry
+  nameWithType: PaletteEntry
+  fullName: BlockEngine.Client.Framework.Bitpacking.PaletteEntry
+  type: Struct
+  source:
+    remote:
+      path: source/client/source/Framework/Bitpacking/PaletteEntry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: PaletteEntry
+    path: ../source/client/source/Framework/Bitpacking/PaletteEntry.cs
+    startLine: 4
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Bitpacking
+  syntax:
+    content: public struct PaletteEntry
+    content.vb: Public Structure PaletteEntry
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.RefCount
+  commentId: F:BlockEngine.Client.Framework.Bitpacking.PaletteEntry.RefCount
+  id: RefCount
+  parent: BlockEngine.Client.Framework.Bitpacking.PaletteEntry
+  langs:
+  - csharp
+  - vb
+  name: RefCount
+  nameWithType: PaletteEntry.RefCount
+  fullName: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.RefCount
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Bitpacking/PaletteEntry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: RefCount
+    path: ../source/client/source/Framework/Bitpacking/PaletteEntry.cs
+    startLine: 6
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Bitpacking
+  syntax:
+    content: public int RefCount
+    return:
+      type: System.Int32
+    content.vb: Public RefCount As Integer
+- uid: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.BlockState
+  commentId: F:BlockEngine.Client.Framework.Bitpacking.PaletteEntry.BlockState
+  id: BlockState
+  parent: BlockEngine.Client.Framework.Bitpacking.PaletteEntry
+  langs:
+  - csharp
+  - vb
+  name: BlockState
+  nameWithType: PaletteEntry.BlockState
+  fullName: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.BlockState
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Bitpacking/PaletteEntry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: BlockState
+    path: ../source/client/source/Framework/Bitpacking/PaletteEntry.cs
+    startLine: 7
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Bitpacking
+  syntax:
+    content: public BlockState? BlockState
+    return:
+      type: System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState}
+    content.vb: Public BlockState As BlockState?
+- uid: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.#ctor(System.Int32,System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState})
+  commentId: M:BlockEngine.Client.Framework.Bitpacking.PaletteEntry.#ctor(System.Int32,System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState})
+  id: '#ctor(System.Int32,System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState})'
+  parent: BlockEngine.Client.Framework.Bitpacking.PaletteEntry
+  langs:
+  - csharp
+  - vb
+  name: PaletteEntry(int, BlockState?)
+  nameWithType: PaletteEntry.PaletteEntry(int, BlockState?)
+  fullName: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.PaletteEntry(int, BlockEngine.Client.Framework.Blocks.BlockState?)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Bitpacking/PaletteEntry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Bitpacking/PaletteEntry.cs
+    startLine: 10
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Bitpacking
+  syntax:
+    content: public PaletteEntry(int refCount, BlockState? blockState)
+    parameters:
+    - id: refCount
+      type: System.Int32
+    - id: blockState
+      type: System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState}
+    content.vb: Public Sub New(refCount As Integer, blockState As BlockState?)
+  overload: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.#ctor*
+  nameWithType.vb: PaletteEntry.New(Integer, BlockState?)
+  fullName.vb: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.New(Integer, BlockEngine.Client.Framework.Blocks.BlockState?)
+  name.vb: New(Integer, BlockState?)
+references:
+- uid: BlockEngine.Client.Framework.Bitpacking
+  commentId: N:BlockEngine.Client.Framework.Bitpacking
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Bitpacking
+  nameWithType: BlockEngine.Client.Framework.Bitpacking
+  fullName: BlockEngine.Client.Framework.Bitpacking
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Bitpacking
+    name: Bitpacking
+    href: BlockEngine.Client.Framework.Bitpacking.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Bitpacking
+    name: Bitpacking
+    href: BlockEngine.Client.Framework.Bitpacking.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState}
+  commentId: T:System.Nullable{BlockEngine.Client.Framework.Blocks.BlockState}
+  parent: System
+  definition: System.Nullable`1
+  href: BlockEngine.Client.Framework.Blocks.BlockState.html
+  name: BlockState?
+  nameWithType: BlockState?
+  fullName: BlockEngine.Client.Framework.Blocks.BlockState?
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.Blocks.BlockState
+    name: BlockState
+    href: BlockEngine.Client.Framework.Blocks.BlockState.html
+  - name: '?'
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.Blocks.BlockState
+    name: BlockState
+    href: BlockEngine.Client.Framework.Blocks.BlockState.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Bitpacking.PaletteEntry.#ctor
+  href: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.html#BlockEngine_Client_Framework_Bitpacking_PaletteEntry__ctor_System_Int32_System_Nullable_BlockEngine_Client_Framework_Blocks_BlockState__
+  name: PaletteEntry
+  nameWithType: PaletteEntry.PaletteEntry
+  fullName: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.PaletteEntry
+  nameWithType.vb: PaletteEntry.New
+  fullName.vb: BlockEngine.Client.Framework.Bitpacking.PaletteEntry.New
+  name.vb: New

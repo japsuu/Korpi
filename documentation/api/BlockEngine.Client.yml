@@ -1,0 +1,30 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client
+  commentId: N:BlockEngine.Client
+  id: BlockEngine.Client
+  children:
+  - BlockEngine.Client.Constants
+  - BlockEngine.Client.GameClient
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client
+  nameWithType: BlockEngine.Client
+  fullName: BlockEngine.Client
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.GameClient
+  commentId: T:BlockEngine.Client.GameClient
+  href: BlockEngine.Client.GameClient.html
+  name: GameClient
+  nameWithType: GameClient
+  fullName: BlockEngine.Client.GameClient
+- uid: BlockEngine.Client.Constants
+  commentId: T:BlockEngine.Client.Constants
+  href: BlockEngine.Client.Constants.html
+  name: Constants
+  nameWithType: Constants
+  fullName: BlockEngine.Client.Constants

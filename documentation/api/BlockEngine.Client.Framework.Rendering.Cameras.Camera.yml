@@ -1,0 +1,1510 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  commentId: T:BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  id: Camera
+  parent: BlockEngine.Client.Framework.Rendering.Cameras
+  children:
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor(OpenTK.Mathematics.Vector3,System.Single)
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor(OpenTK.Mathematics.Vector3,System.Single,System.Single,System.Single)
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsInputEnabled
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsMouseFirstMove
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate(System.Double)
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive(System.Boolean)
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up
+  - BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw
+  langs:
+  - csharp
+  - vb
+  name: Camera
+  nameWithType: Camera
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Camera
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 8
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: 'public class Camera : TransformEntity'
+    content.vb: Public Class Camera Inherits TransformEntity
+  inheritance:
+  - System.Object
+  - BlockEngine.Client.Framework.ECS.Entities.Entity
+  - BlockEngine.Client.Framework.ECS.Entities.TransformEntity
+  inheritedMembers:
+  - BlockEngine.Client.Framework.ECS.Entities.TransformEntity.Transform
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.EnableEvent
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.IsEnabled
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.Enable
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.Update(System.Double)
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.Render(System.Double)
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.Disable
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1({T})
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.GetOrAddComponent``1
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1({T}@)
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.RemoveComponent``1
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.OnEnable
+  - BlockEngine.Client.Framework.ECS.Entities.Entity.OnDisable
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera
+  id: ActiveCamera
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: ActiveCamera
+  nameWithType: Camera.ActiveCamera
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ActiveCamera
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 10
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public static Camera ActiveCamera { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+    content.vb: Public Shared Property ActiveCamera As Camera
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio
+  id: AspectRatio
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: AspectRatio
+  nameWithType: Camera.AspectRatio
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: AspectRatio
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 35
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public float AspectRatio { set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property AspectRatio As Single
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsMouseFirstMove
+  commentId: F:BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsMouseFirstMove
+  id: IsMouseFirstMove
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: IsMouseFirstMove
+  nameWithType: Camera.IsMouseFirstMove
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsMouseFirstMove
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: IsMouseFirstMove
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 38
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public bool IsMouseFirstMove
+    return:
+      type: System.Boolean
+    content.vb: Public IsMouseFirstMove As Boolean
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsInputEnabled
+  commentId: F:BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsInputEnabled
+  id: IsInputEnabled
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: IsInputEnabled
+  nameWithType: Camera.IsInputEnabled
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.IsInputEnabled
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: IsInputEnabled
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 40
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public bool IsInputEnabled
+    return:
+      type: System.Boolean
+    content.vb: Public IsInputEnabled As Boolean
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front
+  id: Front
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Front
+  nameWithType: Camera.Front
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Front
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 43
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public Vector3 Front { get; }
+    parameters: []
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public ReadOnly Property Front As Vector3
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up
+  id: Up
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Up
+  nameWithType: Camera.Up
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Up
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 45
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public Vector3 Up { get; }
+    parameters: []
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Property Up As Vector3
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right
+  id: Right
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Right
+  nameWithType: Camera.Right
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Right
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 51
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public Vector3 Right { get; }
+    parameters: []
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Property Right As Vector3
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch
+  id: Pitch
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Pitch
+  nameWithType: Camera.Pitch
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Pitch
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 57
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public float Pitch { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Pitch As Single
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw
+  id: Yaw
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Yaw
+  nameWithType: Camera.Yaw
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Yaw
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 70
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public float Yaw { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Yaw As Single
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov
+  commentId: P:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov
+  id: Fov
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Fov
+  nameWithType: Camera.Fov
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Fov
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 82
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public float Fov { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Fov As Single
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor(OpenTK.Mathematics.Vector3,System.Single)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor(OpenTK.Mathematics.Vector3,System.Single)
+  id: '#ctor(OpenTK.Mathematics.Vector3,System.Single)'
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Camera(Vector3, float)
+  nameWithType: Camera.Camera(Vector3, float)
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Camera(OpenTK.Mathematics.Vector3, float)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 94
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public Camera(Vector3 localPosition, float aspectRatio)
+    parameters:
+    - id: localPosition
+      type: OpenTK.Mathematics.Vector3
+    - id: aspectRatio
+      type: System.Single
+    content.vb: Public Sub New(localPosition As Vector3, aspectRatio As Single)
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor*
+  nameWithType.vb: Camera.New(Vector3, Single)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Cameras.Camera.New(OpenTK.Mathematics.Vector3, Single)
+  name.vb: New(Vector3, Single)
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor(OpenTK.Mathematics.Vector3,System.Single,System.Single,System.Single)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor(OpenTK.Mathematics.Vector3,System.Single,System.Single,System.Single)
+  id: '#ctor(OpenTK.Mathematics.Vector3,System.Single,System.Single,System.Single)'
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: Camera(Vector3, float, float, float)
+  nameWithType: Camera.Camera(Vector3, float, float, float)
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Camera(OpenTK.Mathematics.Vector3, float, float, float)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 103
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public Camera(Vector3 localPosition, float pitch, float yaw, float aspectRatio)
+    parameters:
+    - id: localPosition
+      type: OpenTK.Mathematics.Vector3
+    - id: pitch
+      type: System.Single
+    - id: yaw
+      type: System.Single
+    - id: aspectRatio
+      type: System.Single
+    content.vb: Public Sub New(localPosition As Vector3, pitch As Single, yaw As Single, aspectRatio As Single)
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor*
+  nameWithType.vb: Camera.New(Vector3, Single, Single, Single)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Cameras.Camera.New(OpenTK.Mathematics.Vector3, Single, Single, Single)
+  name.vb: New(Vector3, Single, Single, Single)
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive(System.Boolean)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive(System.Boolean)
+  id: SetActive(System.Boolean)
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: SetActive(bool)
+  nameWithType: Camera.SetActive(bool)
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive(bool)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: SetActive
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 114
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public void SetActive(bool cancelIfActiveExists = false)
+    parameters:
+    - id: cancelIfActiveExists
+      type: System.Boolean
+    content.vb: Public Sub SetActive(cancelIfActiveExists As Boolean = False)
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive*
+  nameWithType.vb: Camera.SetActive(Boolean)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive(Boolean)
+  name.vb: SetActive(Boolean)
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate(System.Double)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate(System.Double)
+  id: OnUpdate(System.Double)
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: OnUpdate(double)
+  nameWithType: Camera.OnUpdate(double)
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate(double)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: OnUpdate
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 135
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  summary: Called when the Entity is updated.
+  example: []
+  syntax:
+    content: protected override void OnUpdate(double time)
+    parameters:
+    - id: time
+      type: System.Double
+    content.vb: Protected Overrides Sub OnUpdate(time As Double)
+  overridden: BlockEngine.Client.Framework.ECS.Entities.Entity.OnUpdate(System.Double)
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate*
+  nameWithType.vb: Camera.OnUpdate(Double)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate(Double)
+  name.vb: OnUpdate(Double)
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix
+  commentId: M:BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix
+  id: GetViewMatrix
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: GetViewMatrix()
+  nameWithType: Camera.GetViewMatrix()
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetViewMatrix
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 241
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public Matrix4 GetViewMatrix()
+    return:
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Function GetViewMatrix() As Matrix4
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix
+  commentId: M:BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix
+  id: GetProjectionMatrix
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: GetProjectionMatrix()
+  nameWithType: Camera.GetProjectionMatrix()
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetProjectionMatrix
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 247
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public Matrix4 GetProjectionMatrix()
+    return:
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Function GetProjectionMatrix() As Matrix4
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix*
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted
+  commentId: M:BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted
+  id: GetFlySpeedFormatted
+  parent: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  langs:
+  - csharp
+  - vb
+  name: GetFlySpeedFormatted()
+  nameWithType: Camera.GetFlySpeedFormatted()
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Cameras/Camera.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetFlySpeedFormatted
+    path: ../source/client/source/Framework/Rendering/Cameras/Camera.cs
+    startLine: 271
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Cameras
+  syntax:
+    content: public string GetFlySpeedFormatted()
+    return:
+      type: System.String
+    content.vb: Public Function GetFlySpeedFormatted() As String
+  overload: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted*
+references:
+- uid: BlockEngine.Client.Framework.Rendering.Cameras
+  commentId: N:BlockEngine.Client.Framework.Rendering.Cameras
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.Cameras
+  nameWithType: BlockEngine.Client.Framework.Rendering.Cameras
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Cameras
+    name: Cameras
+    href: BlockEngine.Client.Framework.Rendering.Cameras.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Cameras
+    name: Cameras
+    href: BlockEngine.Client.Framework.Rendering.Cameras.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity
+  commentId: T:BlockEngine.Client.Framework.ECS.Entities.Entity
+  parent: BlockEngine.Client.Framework.ECS.Entities
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity
+- uid: BlockEngine.Client.Framework.ECS.Entities.TransformEntity
+  commentId: T:BlockEngine.Client.Framework.ECS.Entities.TransformEntity
+  parent: BlockEngine.Client.Framework.ECS.Entities
+  href: BlockEngine.Client.Framework.ECS.Entities.TransformEntity.html
+  name: TransformEntity
+  nameWithType: TransformEntity
+  fullName: BlockEngine.Client.Framework.ECS.Entities.TransformEntity
+- uid: BlockEngine.Client.Framework.ECS.Entities.TransformEntity.Transform
+  commentId: F:BlockEngine.Client.Framework.ECS.Entities.TransformEntity.Transform
+  parent: BlockEngine.Client.Framework.ECS.Entities.TransformEntity
+  href: BlockEngine.Client.Framework.ECS.Entities.TransformEntity.html#BlockEngine_Client_Framework_ECS_Entities_TransformEntity_Transform
+  name: Transform
+  nameWithType: TransformEntity.Transform
+  fullName: BlockEngine.Client.Framework.ECS.Entities.TransformEntity.Transform
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.EnableEvent
+  commentId: E:BlockEngine.Client.Framework.ECS.Entities.Entity.EnableEvent
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_EnableEvent
+  name: EnableEvent
+  nameWithType: Entity.EnableEvent
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.EnableEvent
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.IsEnabled
+  commentId: P:BlockEngine.Client.Framework.ECS.Entities.Entity.IsEnabled
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_IsEnabled
+  name: IsEnabled
+  nameWithType: Entity.IsEnabled
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.IsEnabled
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Enable
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.Enable
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Enable
+  name: Enable()
+  nameWithType: Entity.Enable()
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.Enable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Enable
+    name: Enable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Enable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Enable
+    name: Enable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Enable
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Update(System.Double)
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.Update(System.Double)
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  isExternal: true
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Update_System_Double_
+  name: Update(double)
+  nameWithType: Entity.Update(double)
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.Update(double)
+  nameWithType.vb: Entity.Update(Double)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.Update(Double)
+  name.vb: Update(Double)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Update(System.Double)
+    name: Update
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Update(System.Double)
+    name: Update
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Render(System.Double)
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.Render(System.Double)
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  isExternal: true
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Render_System_Double_
+  name: Render(double)
+  nameWithType: Entity.Render(double)
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.Render(double)
+  nameWithType.vb: Entity.Render(Double)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.Render(Double)
+  name.vb: Render(Double)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Render(System.Double)
+    name: Render
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Render_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Render(System.Double)
+    name: Render
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Render_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Disable
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.Disable
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Disable
+  name: Disable()
+  nameWithType: Entity.Disable()
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.Disable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Disable
+    name: Disable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Disable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.Disable
+    name: Disable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_Disable
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1({T})
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  definition: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1___0_
+  name: AddComponent<T>(T)
+  nameWithType: Entity.AddComponent<T>(T)
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent<T>(T)
+  nameWithType.vb: Entity.AddComponent(Of T)(T)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent(Of T)(T)
+  name.vb: AddComponent(Of T)(T)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+    name: AddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+    name: AddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1
+  name: AddComponent<T>()
+  nameWithType: Entity.AddComponent<T>()
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent<T>()
+  nameWithType.vb: Entity.AddComponent(Of T)()
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent(Of T)()
+  name.vb: AddComponent(Of T)()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1
+    name: AddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1
+    name: AddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.GetOrAddComponent``1
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.GetOrAddComponent``1
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_GetOrAddComponent__1
+  name: GetOrAddComponent<T>()
+  nameWithType: Entity.GetOrAddComponent<T>()
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.GetOrAddComponent<T>()
+  nameWithType.vb: Entity.GetOrAddComponent(Of T)()
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.GetOrAddComponent(Of T)()
+  name.vb: GetOrAddComponent(Of T)()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.GetOrAddComponent``1
+    name: GetOrAddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_GetOrAddComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.GetOrAddComponent``1
+    name: GetOrAddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_GetOrAddComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1({T}@)
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  definition: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_TryGetComponent__1___0__
+  name: TryGetComponent<T>(out T)
+  nameWithType: Entity.TryGetComponent<T>(out T)
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent<T>(out T)
+  nameWithType.vb: Entity.TryGetComponent(Of T)(T)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent(Of T)(T)
+  name.vb: TryGetComponent(Of T)(T)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_TryGetComponent__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_TryGetComponent__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.RemoveComponent``1
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.RemoveComponent``1
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_RemoveComponent__1
+  name: RemoveComponent<T>()
+  nameWithType: Entity.RemoveComponent<T>()
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.RemoveComponent<T>()
+  nameWithType.vb: Entity.RemoveComponent(Of T)()
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.RemoveComponent(Of T)()
+  name.vb: RemoveComponent(Of T)()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.RemoveComponent``1
+    name: RemoveComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_RemoveComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.RemoveComponent``1
+    name: RemoveComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_RemoveComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnEnable
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.OnEnable
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnEnable
+  name: OnEnable()
+  nameWithType: Entity.OnEnable()
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.OnEnable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnEnable
+    name: OnEnable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnEnable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnEnable
+    name: OnEnable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnEnable
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnDisable
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.OnDisable
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnDisable
+  name: OnDisable()
+  nameWithType: Entity.OnDisable()
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.OnDisable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnDisable
+    name: OnDisable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnDisable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnDisable
+    name: OnDisable
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnDisable
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.ECS.Entities
+  commentId: N:BlockEngine.Client.Framework.ECS.Entities
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.ECS.Entities
+  nameWithType: BlockEngine.Client.Framework.ECS.Entities
+  fullName: BlockEngine.Client.Framework.ECS.Entities
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS
+    name: ECS
+    href: BlockEngine.Client.Framework.ECS.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS.Entities
+    name: Entities
+    href: BlockEngine.Client.Framework.ECS.Entities.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS
+    name: ECS
+    href: BlockEngine.Client.Framework.ECS.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS.Entities
+    name: Entities
+    href: BlockEngine.Client.Framework.ECS.Entities.html
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1___0_
+  name: AddComponent<T>(T)
+  nameWithType: Entity.AddComponent<T>(T)
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent<T>(T)
+  nameWithType.vb: Entity.AddComponent(Of T)(T)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent(Of T)(T)
+  name.vb: AddComponent(Of T)(T)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+    name: AddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.AddComponent``1(``0)
+    name: AddComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_AddComponent__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_TryGetComponent__1___0__
+  name: TryGetComponent<T>(out T)
+  nameWithType: Entity.TryGetComponent<T>(out T)
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent<T>(out T)
+  nameWithType.vb: Entity.TryGetComponent(Of T)(T)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent(Of T)(T)
+  name.vb: TryGetComponent(Of T)(T)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_TryGetComponent__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_TryGetComponent__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_ActiveCamera
+  name: ActiveCamera
+  nameWithType: Camera.ActiveCamera
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.ActiveCamera
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  commentId: T:BlockEngine.Client.Framework.Rendering.Cameras.Camera
+  parent: BlockEngine.Client.Framework.Rendering.Cameras
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html
+  name: Camera
+  nameWithType: Camera
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_AspectRatio
+  name: AspectRatio
+  nameWithType: Camera.AspectRatio
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.AspectRatio
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_Front
+  name: Front
+  nameWithType: Camera.Front
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Front
+- uid: OpenTK.Mathematics.Vector3
+  commentId: T:OpenTK.Mathematics.Vector3
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3
+  nameWithType: Vector3
+  fullName: OpenTK.Mathematics.Vector3
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_Up
+  name: Up
+  nameWithType: Camera.Up
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Up
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_Right
+  name: Right
+  nameWithType: Camera.Right
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Right
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_Pitch
+  name: Pitch
+  nameWithType: Camera.Pitch
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Pitch
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_Yaw
+  name: Yaw
+  nameWithType: Camera.Yaw
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Yaw
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_Fov
+  name: Fov
+  nameWithType: Camera.Fov
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Fov
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.#ctor
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera__ctor_OpenTK_Mathematics_Vector3_System_Single_
+  name: Camera
+  nameWithType: Camera.Camera
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.Camera
+  nameWithType.vb: Camera.New
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Cameras.Camera.New
+  name.vb: New
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_SetActive_System_Boolean_
+  name: SetActive
+  nameWithType: Camera.SetActive
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.SetActive
+- uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnUpdate(System.Double)
+  commentId: M:BlockEngine.Client.Framework.ECS.Entities.Entity.OnUpdate(System.Double)
+  parent: BlockEngine.Client.Framework.ECS.Entities.Entity
+  isExternal: true
+  href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnUpdate_System_Double_
+  name: OnUpdate(double)
+  nameWithType: Entity.OnUpdate(double)
+  fullName: BlockEngine.Client.Framework.ECS.Entities.Entity.OnUpdate(double)
+  nameWithType.vb: Entity.OnUpdate(Double)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Entities.Entity.OnUpdate(Double)
+  name.vb: OnUpdate(Double)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnUpdate(System.Double)
+    name: OnUpdate
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity.OnUpdate(System.Double)
+    name: OnUpdate
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html#BlockEngine_Client_Framework_ECS_Entities_Entity_OnUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_OnUpdate_System_Double_
+  name: OnUpdate
+  nameWithType: Camera.OnUpdate
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.OnUpdate
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_GetViewMatrix
+  name: GetViewMatrix
+  nameWithType: Camera.GetViewMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetViewMatrix
+- uid: OpenTK.Mathematics.Matrix4
+  commentId: T:OpenTK.Mathematics.Matrix4
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Matrix4
+  nameWithType: Matrix4
+  fullName: OpenTK.Mathematics.Matrix4
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_GetProjectionMatrix
+  name: GetProjectionMatrix
+  nameWithType: Camera.GetProjectionMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetProjectionMatrix
+- uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted
+  href: BlockEngine.Client.Framework.Rendering.Cameras.Camera.html#BlockEngine_Client_Framework_Rendering_Cameras_Camera_GetFlySpeedFormatted
+  name: GetFlySpeedFormatted
+  nameWithType: Camera.GetFlySpeedFormatted
+  fullName: BlockEngine.Client.Framework.Rendering.Cameras.Camera.GetFlySpeedFormatted
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

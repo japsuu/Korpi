@@ -1,0 +1,69 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Modding
+  commentId: N:BlockEngine.Client.Framework.Modding
+  id: BlockEngine.Client.Framework.Modding
+  children:
+  - BlockEngine.Client.Framework.Modding.ModLoader
+  - BlockEngine.Client.Framework.Modding.YamlMod
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Modding
+  nameWithType: BlockEngine.Client.Framework.Modding
+  fullName: BlockEngine.Client.Framework.Modding
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Modding.ModLoader
+  commentId: T:BlockEngine.Client.Framework.Modding.ModLoader
+  href: BlockEngine.Client.Framework.Modding.ModLoader.html
+  name: ModLoader
+  nameWithType: ModLoader
+  fullName: BlockEngine.Client.Framework.Modding.ModLoader
+- uid: BlockEngine.Client.Framework.Modding.YamlMod
+  commentId: T:BlockEngine.Client.Framework.Modding.YamlMod
+  parent: BlockEngine.Client.Framework.Modding
+  href: BlockEngine.Client.Framework.Modding.YamlMod.html
+  name: YamlMod
+  nameWithType: YamlMod
+  fullName: BlockEngine.Client.Framework.Modding.YamlMod
+- uid: BlockEngine.Client.Framework.Modding
+  commentId: N:BlockEngine.Client.Framework.Modding
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Modding
+  nameWithType: BlockEngine.Client.Framework.Modding
+  fullName: BlockEngine.Client.Framework.Modding
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Modding
+    name: Modding
+    href: BlockEngine.Client.Framework.Modding.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Modding
+    name: Modding
+    href: BlockEngine.Client.Framework.Modding.html

@@ -1,0 +1,745 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  id: YamlBlockData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  children:
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.Collections.Generic.IReadOnlyList{BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData})
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.String)
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty(System.String)
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.FaceTextures
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Name
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.RenderType
+  langs:
+  - csharp
+  - vb
+  name: YamlBlockData
+  nameWithType: YamlBlockData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: YamlBlockData
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 6
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  summary: >-
+    Serializable data of a block.
+
+    Loaded from YAML files.
+  example: []
+  syntax:
+    content: public sealed class YamlBlockData
+    content.vb: Public NotInheritable Class YamlBlockData
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Name
+  commentId: F:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Name
+  id: Name
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: YamlBlockData.Name
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Name
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Name
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 8
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public string? Name
+    return:
+      type: System.String
+    content.vb: Public Name As String
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.RenderType
+  commentId: F:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.RenderType
+  id: RenderType
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: RenderType
+  nameWithType: YamlBlockData.RenderType
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.RenderType
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: RenderType
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 10
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public BlockRenderType RenderType
+    return:
+      type: BlockEngine.Client.Framework.Blocks.BlockRenderType
+    content.vb: Public RenderType As BlockRenderType
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.FaceTextures
+  commentId: F:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.FaceTextures
+  id: FaceTextures
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: FaceTextures
+  nameWithType: YamlBlockData.FaceTextures
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.FaceTextures
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FaceTextures
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 12
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public BlockFaceTextureCollectionData FaceTextures
+    return:
+      type: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+    content.vb: Public FaceTextures As BlockFaceTextureCollectionData
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor
+  commentId: M:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor
+  id: '#ctor'
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: YamlBlockData()
+  nameWithType: YamlBlockData.YamlBlockData()
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.YamlBlockData()
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 15
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public YamlBlockData()
+    content.vb: Public Sub New()
+  overload: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor*
+  nameWithType.vb: YamlBlockData.New()
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.New()
+  name.vb: New()
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  commentId: M:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  id: '#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)'
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: YamlBlockData(string?, BlockRenderType, BlockFaceTextureCollectionData)
+  nameWithType: YamlBlockData.YamlBlockData(string?, BlockRenderType, BlockFaceTextureCollectionData)
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.YamlBlockData(string?, BlockEngine.Client.Framework.Blocks.BlockRenderType, BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 20
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public YamlBlockData(string? name, BlockRenderType renderType, BlockFaceTextureCollectionData faceTextures)
+    parameters:
+    - id: name
+      type: System.String
+    - id: renderType
+      type: BlockEngine.Client.Framework.Blocks.BlockRenderType
+    - id: faceTextures
+      type: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+    content.vb: Public Sub New(name As String, renderType As BlockRenderType, faceTextures As BlockFaceTextureCollectionData)
+  overload: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor*
+  nameWithType.vb: YamlBlockData.New(String, BlockRenderType, BlockFaceTextureCollectionData)
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.New(String, BlockEngine.Client.Framework.Blocks.BlockRenderType, BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  name.vb: New(String, BlockRenderType, BlockFaceTextureCollectionData)
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.Collections.Generic.IReadOnlyList{BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData})
+  commentId: M:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.Collections.Generic.IReadOnlyList{BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData})
+  id: '#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.Collections.Generic.IReadOnlyList{BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData})'
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: YamlBlockData(string?, BlockRenderType, IReadOnlyList<BlockFaceTextureData>)
+  nameWithType: YamlBlockData.YamlBlockData(string?, BlockRenderType, IReadOnlyList<BlockFaceTextureData>)
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.YamlBlockData(string?, BlockEngine.Client.Framework.Blocks.BlockRenderType, System.Collections.Generic.IReadOnlyList<BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData>)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 28
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public YamlBlockData(string? name, BlockRenderType renderType, IReadOnlyList<BlockFaceTextureData> faceTextures)
+    parameters:
+    - id: name
+      type: System.String
+    - id: renderType
+      type: BlockEngine.Client.Framework.Blocks.BlockRenderType
+    - id: faceTextures
+      type: System.Collections.Generic.IReadOnlyList{BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData}
+    content.vb: Public Sub New(name As String, renderType As BlockRenderType, faceTextures As IReadOnlyList(Of BlockFaceTextureData))
+  overload: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor*
+  nameWithType.vb: YamlBlockData.New(String, BlockRenderType, IReadOnlyList(Of BlockFaceTextureData))
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.New(String, BlockEngine.Client.Framework.Blocks.BlockRenderType, System.Collections.Generic.IReadOnlyList(Of BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData))
+  name.vb: New(String, BlockRenderType, IReadOnlyList(Of BlockFaceTextureData))
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.String)
+  commentId: M:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.String)
+  id: '#ctor(System.String,BlockEngine.Client.Framework.Blocks.BlockRenderType,System.String)'
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: YamlBlockData(string?, BlockRenderType, string)
+  nameWithType: YamlBlockData.YamlBlockData(string?, BlockRenderType, string)
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.YamlBlockData(string?, BlockEngine.Client.Framework.Blocks.BlockRenderType, string)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 36
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public YamlBlockData(string? name, BlockRenderType renderType, string faceTexture)
+    parameters:
+    - id: name
+      type: System.String
+    - id: renderType
+      type: BlockEngine.Client.Framework.Blocks.BlockRenderType
+    - id: faceTexture
+      type: System.String
+    content.vb: Public Sub New(name As String, renderType As BlockRenderType, faceTexture As String)
+  overload: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor*
+  nameWithType.vb: YamlBlockData.New(String, BlockRenderType, String)
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.New(String, BlockEngine.Client.Framework.Blocks.BlockRenderType, String)
+  name.vb: New(String, BlockRenderType, String)
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty(System.String)
+  commentId: M:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty(System.String)
+  id: Empty(System.String)
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: Empty(string?)
+  nameWithType: YamlBlockData.Empty(string?)
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty(string?)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Empty
+    path: ../source/client/source/Framework/Blocks/Serialization/YamlBlockData.cs
+    startLine: 44
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public static YamlBlockData Empty(string? name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+    content.vb: Public Shared Function Empty(name As String) As YamlBlockData
+  overload: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty*
+  nameWithType.vb: YamlBlockData.Empty(String)
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty(String)
+  name.vb: Empty(String)
+references:
+- uid: BlockEngine.Client.Framework.Blocks.Serialization
+  commentId: N:BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks.Serialization
+  nameWithType: BlockEngine.Client.Framework.Blocks.Serialization
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: BlockEngine.Client.Framework.Blocks.BlockRenderType
+  commentId: T:BlockEngine.Client.Framework.Blocks.BlockRenderType
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.BlockRenderType.html
+  name: BlockRenderType
+  nameWithType: BlockRenderType
+  fullName: BlockEngine.Client.Framework.Blocks.BlockRenderType
+- uid: BlockEngine.Client.Framework.Blocks
+  commentId: N:BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks
+  nameWithType: BlockEngine.Client.Framework.Blocks
+  fullName: BlockEngine.Client.Framework.Blocks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData.html
+  name: BlockFaceTextureCollectionData
+  nameWithType: BlockFaceTextureCollectionData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.#ctor
+  href: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.html#BlockEngine_Client_Framework_Blocks_Serialization_YamlBlockData__ctor
+  name: YamlBlockData
+  nameWithType: YamlBlockData.YamlBlockData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.YamlBlockData
+  nameWithType.vb: YamlBlockData.New
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.New
+  name.vb: New
+- uid: System.Collections.Generic.IReadOnlyList{BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData}
+  commentId: T:System.Collections.Generic.IReadOnlyList{BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<BlockFaceTextureData>
+  nameWithType: IReadOnlyList<BlockFaceTextureData>
+  fullName: System.Collections.Generic.IReadOnlyList<BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData>
+  nameWithType.vb: IReadOnlyList(Of BlockFaceTextureData)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData)
+  name.vb: IReadOnlyList(Of BlockFaceTextureData)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+    name: BlockFaceTextureData
+    href: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+    name: BlockFaceTextureData
+    href: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty*
+  commentId: Overload:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty
+  href: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.html#BlockEngine_Client_Framework_Blocks_Serialization_YamlBlockData_Empty_System_String_
+  name: Empty
+  nameWithType: YamlBlockData.Empty
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.Empty
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.html
+  name: YamlBlockData
+  nameWithType: YamlBlockData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData

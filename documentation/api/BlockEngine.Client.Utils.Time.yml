@@ -1,0 +1,508 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Utils.Time
+  commentId: T:BlockEngine.Client.Utils.Time
+  id: Time
+  parent: BlockEngine.Client.Utils
+  children:
+  - BlockEngine.Client.Utils.Time.DeltaTime
+  - BlockEngine.Client.Utils.Time.DeltaTimeFloat
+  - BlockEngine.Client.Utils.Time.Reset
+  - BlockEngine.Client.Utils.Time.TotalTime
+  - BlockEngine.Client.Utils.Time.Update(System.Double)
+  langs:
+  - csharp
+  - vb
+  name: Time
+  nameWithType: Time
+  fullName: BlockEngine.Client.Utils.Time
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Utils/Time.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Time
+    path: ../source/client/source/Utils/Time.cs
+    startLine: 2
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Utils
+  syntax:
+    content: public static class Time
+    content.vb: Public Module Time
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Utils.Time.DeltaTime
+  commentId: P:BlockEngine.Client.Utils.Time.DeltaTime
+  id: DeltaTime
+  parent: BlockEngine.Client.Utils.Time
+  langs:
+  - csharp
+  - vb
+  name: DeltaTime
+  nameWithType: Time.DeltaTime
+  fullName: BlockEngine.Client.Utils.Time.DeltaTime
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Utils/Time.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DeltaTime
+    path: ../source/client/source/Utils/Time.cs
+    startLine: 4
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Utils
+  syntax:
+    content: public static double DeltaTime { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Shared Property DeltaTime As Double
+  overload: BlockEngine.Client.Utils.Time.DeltaTime*
+- uid: BlockEngine.Client.Utils.Time.DeltaTimeFloat
+  commentId: P:BlockEngine.Client.Utils.Time.DeltaTimeFloat
+  id: DeltaTimeFloat
+  parent: BlockEngine.Client.Utils.Time
+  langs:
+  - csharp
+  - vb
+  name: DeltaTimeFloat
+  nameWithType: Time.DeltaTimeFloat
+  fullName: BlockEngine.Client.Utils.Time.DeltaTimeFloat
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Utils/Time.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DeltaTimeFloat
+    path: ../source/client/source/Utils/Time.cs
+    startLine: 5
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Utils
+  syntax:
+    content: public static float DeltaTimeFloat { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Shared Property DeltaTimeFloat As Single
+  overload: BlockEngine.Client.Utils.Time.DeltaTimeFloat*
+- uid: BlockEngine.Client.Utils.Time.TotalTime
+  commentId: P:BlockEngine.Client.Utils.Time.TotalTime
+  id: TotalTime
+  parent: BlockEngine.Client.Utils.Time
+  langs:
+  - csharp
+  - vb
+  name: TotalTime
+  nameWithType: Time.TotalTime
+  fullName: BlockEngine.Client.Utils.Time.TotalTime
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Utils/Time.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: TotalTime
+    path: ../source/client/source/Utils/Time.cs
+    startLine: 6
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Utils
+  syntax:
+    content: public static double TotalTime { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Shared Property TotalTime As Double
+  overload: BlockEngine.Client.Utils.Time.TotalTime*
+- uid: BlockEngine.Client.Utils.Time.Update(System.Double)
+  commentId: M:BlockEngine.Client.Utils.Time.Update(System.Double)
+  id: Update(System.Double)
+  parent: BlockEngine.Client.Utils.Time
+  langs:
+  - csharp
+  - vb
+  name: Update(double)
+  nameWithType: Time.Update(double)
+  fullName: BlockEngine.Client.Utils.Time.Update(double)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Utils/Time.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Update
+    path: ../source/client/source/Utils/Time.cs
+    startLine: 9
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Utils
+  syntax:
+    content: public static void Update(double deltaTime)
+    parameters:
+    - id: deltaTime
+      type: System.Double
+    content.vb: Public Shared Sub Update(deltaTime As Double)
+  overload: BlockEngine.Client.Utils.Time.Update*
+  nameWithType.vb: Time.Update(Double)
+  fullName.vb: BlockEngine.Client.Utils.Time.Update(Double)
+  name.vb: Update(Double)
+- uid: BlockEngine.Client.Utils.Time.Reset
+  commentId: M:BlockEngine.Client.Utils.Time.Reset
+  id: Reset
+  parent: BlockEngine.Client.Utils.Time
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: Time.Reset()
+  fullName: BlockEngine.Client.Utils.Time.Reset()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Utils/Time.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Reset
+    path: ../source/client/source/Utils/Time.cs
+    startLine: 17
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Utils
+  syntax:
+    content: public static void Reset()
+    content.vb: Public Shared Sub Reset()
+  overload: BlockEngine.Client.Utils.Time.Reset*
+references:
+- uid: BlockEngine.Client.Utils
+  commentId: N:BlockEngine.Client.Utils
+  href: BlockEngine.html
+  name: BlockEngine.Client.Utils
+  nameWithType: BlockEngine.Client.Utils
+  fullName: BlockEngine.Client.Utils
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Utils
+    name: Utils
+    href: BlockEngine.Client.Utils.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Utils
+    name: Utils
+    href: BlockEngine.Client.Utils.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Utils.Time.DeltaTime*
+  commentId: Overload:BlockEngine.Client.Utils.Time.DeltaTime
+  href: BlockEngine.Client.Utils.Time.html#BlockEngine_Client_Utils_Time_DeltaTime
+  name: DeltaTime
+  nameWithType: Time.DeltaTime
+  fullName: BlockEngine.Client.Utils.Time.DeltaTime
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: BlockEngine.Client.Utils.Time.DeltaTimeFloat*
+  commentId: Overload:BlockEngine.Client.Utils.Time.DeltaTimeFloat
+  href: BlockEngine.Client.Utils.Time.html#BlockEngine_Client_Utils_Time_DeltaTimeFloat
+  name: DeltaTimeFloat
+  nameWithType: Time.DeltaTimeFloat
+  fullName: BlockEngine.Client.Utils.Time.DeltaTimeFloat
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: BlockEngine.Client.Utils.Time.TotalTime*
+  commentId: Overload:BlockEngine.Client.Utils.Time.TotalTime
+  href: BlockEngine.Client.Utils.Time.html#BlockEngine_Client_Utils_Time_TotalTime
+  name: TotalTime
+  nameWithType: Time.TotalTime
+  fullName: BlockEngine.Client.Utils.Time.TotalTime
+- uid: BlockEngine.Client.Utils.Time.Update*
+  commentId: Overload:BlockEngine.Client.Utils.Time.Update
+  href: BlockEngine.Client.Utils.Time.html#BlockEngine_Client_Utils_Time_Update_System_Double_
+  name: Update
+  nameWithType: Time.Update
+  fullName: BlockEngine.Client.Utils.Time.Update
+- uid: BlockEngine.Client.Utils.Time.Reset*
+  commentId: Overload:BlockEngine.Client.Utils.Time.Reset
+  href: BlockEngine.Client.Utils.Time.html#BlockEngine_Client_Utils_Time_Reset
+  name: Reset
+  nameWithType: Time.Reset
+  fullName: BlockEngine.Client.Utils.Time.Reset

@@ -1,0 +1,99 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Meshing
+  commentId: N:BlockEngine.Client.Framework.Meshing
+  id: BlockEngine.Client.Framework.Meshing
+  children:
+  - BlockEngine.Client.Framework.Meshing.BlockFace
+  - BlockEngine.Client.Framework.Meshing.ChunkMesher
+  - BlockEngine.Client.Framework.Meshing.ChunkRenderer
+  - BlockEngine.Client.Framework.Meshing.ChunkRendererStorage
+  - BlockEngine.Client.Framework.Meshing.MeshingBuffer
+  - BlockEngine.Client.Framework.Meshing.MeshingDataCache
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Meshing
+  nameWithType: BlockEngine.Client.Framework.Meshing
+  fullName: BlockEngine.Client.Framework.Meshing
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Meshing.BlockFace
+  commentId: T:BlockEngine.Client.Framework.Meshing.BlockFace
+  parent: BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.Client.Framework.Meshing.BlockFace.html
+  name: BlockFace
+  nameWithType: BlockFace
+  fullName: BlockEngine.Client.Framework.Meshing.BlockFace
+- uid: BlockEngine.Client.Framework.Meshing.ChunkMesher
+  commentId: T:BlockEngine.Client.Framework.Meshing.ChunkMesher
+  href: BlockEngine.Client.Framework.Meshing.ChunkMesher.html
+  name: ChunkMesher
+  nameWithType: ChunkMesher
+  fullName: BlockEngine.Client.Framework.Meshing.ChunkMesher
+- uid: BlockEngine.Client.Framework.Meshing.ChunkRenderer
+  commentId: T:BlockEngine.Client.Framework.Meshing.ChunkRenderer
+  parent: BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.Client.Framework.Meshing.ChunkRenderer.html
+  name: ChunkRenderer
+  nameWithType: ChunkRenderer
+  fullName: BlockEngine.Client.Framework.Meshing.ChunkRenderer
+- uid: BlockEngine.Client.Framework.Meshing.ChunkRendererStorage
+  commentId: T:BlockEngine.Client.Framework.Meshing.ChunkRendererStorage
+  href: BlockEngine.Client.Framework.Meshing.ChunkRendererStorage.html
+  name: ChunkRendererStorage
+  nameWithType: ChunkRendererStorage
+  fullName: BlockEngine.Client.Framework.Meshing.ChunkRendererStorage
+- uid: BlockEngine.Client.Framework.Meshing.MeshingBuffer
+  commentId: T:BlockEngine.Client.Framework.Meshing.MeshingBuffer
+  href: BlockEngine.Client.Framework.Meshing.MeshingBuffer.html
+  name: MeshingBuffer
+  nameWithType: MeshingBuffer
+  fullName: BlockEngine.Client.Framework.Meshing.MeshingBuffer
+- uid: BlockEngine.Client.Framework.Meshing.MeshingDataCache
+  commentId: T:BlockEngine.Client.Framework.Meshing.MeshingDataCache
+  parent: BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.Client.Framework.Meshing.MeshingDataCache.html
+  name: MeshingDataCache
+  nameWithType: MeshingDataCache
+  fullName: BlockEngine.Client.Framework.Meshing.MeshingDataCache
+- uid: BlockEngine.Client.Framework.Meshing
+  commentId: N:BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Meshing
+  nameWithType: BlockEngine.Client.Framework.Meshing
+  fullName: BlockEngine.Client.Framework.Meshing
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Meshing
+    name: Meshing
+    href: BlockEngine.Client.Framework.Meshing.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Meshing
+    name: Meshing
+    href: BlockEngine.Client.Framework.Meshing.html
