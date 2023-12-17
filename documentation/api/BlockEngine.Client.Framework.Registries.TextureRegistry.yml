@@ -1,0 +1,629 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry
+  commentId: T:BlockEngine.Client.Framework.Registries.TextureRegistry
+  id: TextureRegistry
+  parent: BlockEngine.Client.Framework.Registries
+  children:
+  - BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture
+  - BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration
+  - BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures(System.String,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  - BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration
+  langs:
+  - csharp
+  - vb
+  name: TextureRegistry
+  nameWithType: TextureRegistry
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/TextureRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: TextureRegistry
+    path: ../source/client/source/Framework/Registries/TextureRegistry.cs
+    startLine: 9
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public static class TextureRegistry
+    content.vb: Public Module TextureRegistry
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture
+  commentId: P:BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture
+  id: BlockArrayTexture
+  parent: BlockEngine.Client.Framework.Registries.TextureRegistry
+  langs:
+  - csharp
+  - vb
+  name: BlockArrayTexture
+  nameWithType: TextureRegistry.BlockArrayTexture
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/TextureRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: BlockArrayTexture
+    path: ../source/client/source/Framework/Registries/TextureRegistry.cs
+    startLine: 11
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public static ArrayTexture BlockArrayTexture { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+    content.vb: Public Shared Property BlockArrayTexture As ArrayTexture
+  overload: BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture*
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration
+  commentId: M:BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration
+  id: StartTextureRegistration
+  parent: BlockEngine.Client.Framework.Registries.TextureRegistry
+  langs:
+  - csharp
+  - vb
+  name: StartTextureRegistration()
+  nameWithType: TextureRegistry.StartTextureRegistration()
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/TextureRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: StartTextureRegistration
+    path: ../source/client/source/Framework/Registries/TextureRegistry.cs
+    startLine: 16
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public static void StartTextureRegistration()
+    content.vb: Public Shared Sub StartTextureRegistration()
+  overload: BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration*
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration
+  commentId: M:BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration
+  id: FinishTextureRegistration
+  parent: BlockEngine.Client.Framework.Registries.TextureRegistry
+  langs:
+  - csharp
+  - vb
+  name: FinishTextureRegistration()
+  nameWithType: TextureRegistry.FinishTextureRegistration()
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/TextureRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FinishTextureRegistration
+    path: ../source/client/source/Framework/Registries/TextureRegistry.cs
+    startLine: 25
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public static void FinishTextureRegistration()
+    content.vb: Public Shared Sub FinishTextureRegistration()
+  overload: BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration*
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures(System.String,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  commentId: M:BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures(System.String,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  id: RegisterBlockTextures(System.String,BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  parent: BlockEngine.Client.Framework.Registries.TextureRegistry
+  langs:
+  - csharp
+  - vb
+  name: RegisterBlockTextures(string, BlockFaceTextureCollectionData)
+  nameWithType: TextureRegistry.RegisterBlockTextures(string, BlockFaceTextureCollectionData)
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures(string, BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/TextureRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: RegisterBlockTextures
+    path: ../source/client/source/Framework/Registries/TextureRegistry.cs
+    startLine: 34
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public static BlockFaceTextureCollection RegisterBlockTextures(string containingFolderPath, BlockFaceTextureCollectionData dataFaceTextures)
+    parameters:
+    - id: containingFolderPath
+      type: System.String
+    - id: dataFaceTextures
+      type: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+    return:
+      type: BlockEngine.Client.Framework.Blocks.Textures.BlockFaceTextureCollection
+    content.vb: Public Shared Function RegisterBlockTextures(containingFolderPath As String, dataFaceTextures As BlockFaceTextureCollectionData) As BlockFaceTextureCollection
+  overload: BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures*
+  nameWithType.vb: TextureRegistry.RegisterBlockTextures(String, BlockFaceTextureCollectionData)
+  fullName.vb: BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures(String, BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData)
+  name.vb: RegisterBlockTextures(String, BlockFaceTextureCollectionData)
+references:
+- uid: BlockEngine.Client.Framework.Registries
+  commentId: N:BlockEngine.Client.Framework.Registries
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Registries
+  nameWithType: BlockEngine.Client.Framework.Registries
+  fullName: BlockEngine.Client.Framework.Registries
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Registries
+    name: Registries
+    href: BlockEngine.Client.Framework.Registries.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Registries
+    name: Registries
+    href: BlockEngine.Client.Framework.Registries.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture
+  href: BlockEngine.Client.Framework.Registries.TextureRegistry.html#BlockEngine_Client_Framework_Registries_TextureRegistry_BlockArrayTexture
+  name: BlockArrayTexture
+  nameWithType: TextureRegistry.BlockArrayTexture
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.BlockArrayTexture
+- uid: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+  commentId: T:BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+  parent: BlockEngine.Client.Framework.Rendering.Textures
+  href: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture.html
+  name: ArrayTexture
+  nameWithType: ArrayTexture
+  fullName: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+- uid: BlockEngine.Client.Framework.Rendering.Textures
+  commentId: N:BlockEngine.Client.Framework.Rendering.Textures
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.Textures
+  nameWithType: BlockEngine.Client.Framework.Rendering.Textures
+  fullName: BlockEngine.Client.Framework.Rendering.Textures
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Textures
+    name: Textures
+    href: BlockEngine.Client.Framework.Rendering.Textures.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Textures
+    name: Textures
+    href: BlockEngine.Client.Framework.Rendering.Textures.html
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration
+  href: BlockEngine.Client.Framework.Registries.TextureRegistry.html#BlockEngine_Client_Framework_Registries_TextureRegistry_StartTextureRegistration
+  name: StartTextureRegistration
+  nameWithType: TextureRegistry.StartTextureRegistration
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.StartTextureRegistration
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration
+  href: BlockEngine.Client.Framework.Registries.TextureRegistry.html#BlockEngine_Client_Framework_Registries_TextureRegistry_FinishTextureRegistration
+  name: FinishTextureRegistration
+  nameWithType: TextureRegistry.FinishTextureRegistration
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.FinishTextureRegistration
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures
+  href: BlockEngine.Client.Framework.Registries.TextureRegistry.html#BlockEngine_Client_Framework_Registries_TextureRegistry_RegisterBlockTextures_System_String_BlockEngine_Client_Framework_Blocks_Serialization_BlockFaceTextureCollectionData_
+  name: RegisterBlockTextures
+  nameWithType: TextureRegistry.RegisterBlockTextures
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry.RegisterBlockTextures
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData.html
+  name: BlockFaceTextureCollectionData
+  nameWithType: BlockFaceTextureCollectionData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+- uid: BlockEngine.Client.Framework.Blocks.Textures.BlockFaceTextureCollection
+  commentId: T:BlockEngine.Client.Framework.Blocks.Textures.BlockFaceTextureCollection
+  parent: BlockEngine.Client.Framework.Blocks.Textures
+  href: BlockEngine.Client.Framework.Blocks.Textures.BlockFaceTextureCollection.html
+  name: BlockFaceTextureCollection
+  nameWithType: BlockFaceTextureCollection
+  fullName: BlockEngine.Client.Framework.Blocks.Textures.BlockFaceTextureCollection
+- uid: BlockEngine.Client.Framework.Blocks.Serialization
+  commentId: N:BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks.Serialization
+  nameWithType: BlockEngine.Client.Framework.Blocks.Serialization
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html
+- uid: BlockEngine.Client.Framework.Blocks.Textures
+  commentId: N:BlockEngine.Client.Framework.Blocks.Textures
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks.Textures
+  nameWithType: BlockEngine.Client.Framework.Blocks.Textures
+  fullName: BlockEngine.Client.Framework.Blocks.Textures
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Textures
+    name: Textures
+    href: BlockEngine.Client.Framework.Blocks.Textures.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Textures
+    name: Textures
+    href: BlockEngine.Client.Framework.Blocks.Textures.html

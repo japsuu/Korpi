@@ -1,0 +1,30 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Exceptions
+  commentId: N:BlockEngine.Client.Framework.Exceptions
+  id: BlockEngine.Client.Framework.Exceptions
+  children:
+  - BlockEngine.Client.Framework.Exceptions.IdClashException
+  - BlockEngine.Client.Framework.Exceptions.IdOverflowException
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Exceptions
+  nameWithType: BlockEngine.Client.Framework.Exceptions
+  fullName: BlockEngine.Client.Framework.Exceptions
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Exceptions.IdClashException
+  commentId: T:BlockEngine.Client.Framework.Exceptions.IdClashException
+  href: BlockEngine.Client.Framework.Exceptions.IdClashException.html
+  name: IdClashException
+  nameWithType: IdClashException
+  fullName: BlockEngine.Client.Framework.Exceptions.IdClashException
+- uid: BlockEngine.Client.Framework.Exceptions.IdOverflowException
+  commentId: T:BlockEngine.Client.Framework.Exceptions.IdOverflowException
+  href: BlockEngine.Client.Framework.Exceptions.IdOverflowException.html
+  name: IdOverflowException
+  nameWithType: IdOverflowException
+  fullName: BlockEngine.Client.Framework.Exceptions.IdOverflowException

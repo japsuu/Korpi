@@ -1,0 +1,436 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  id: BlockFaceTextureData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  children:
+  - BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor(System.String)
+  - BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor(System.String[])
+  - BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.Textures
+  langs:
+  - csharp
+  - vb
+  name: BlockFaceTextureData
+  nameWithType: BlockFaceTextureData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  type: Struct
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: BlockFaceTextureData
+    path: ../source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+    startLine: 2
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public struct BlockFaceTextureData
+    content.vb: Public Structure BlockFaceTextureData
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.Textures
+  commentId: F:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.Textures
+  id: Textures
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  langs:
+  - csharp
+  - vb
+  name: Textures
+  nameWithType: BlockFaceTextureData.Textures
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.Textures
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Textures
+    path: ../source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+    startLine: 4
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public string[] Textures
+    return:
+      type: System.String[]
+    content.vb: Public Textures As String()
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor(System.String[])
+  commentId: M:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor(System.String[])
+  id: '#ctor(System.String[])'
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  langs:
+  - csharp
+  - vb
+  name: BlockFaceTextureData(string[])
+  nameWithType: BlockFaceTextureData.BlockFaceTextureData(string[])
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.BlockFaceTextureData(string[])
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+    startLine: 7
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public BlockFaceTextureData(string[] textures)
+    parameters:
+    - id: textures
+      type: System.String[]
+    content.vb: Public Sub New(textures As String())
+  overload: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor*
+  nameWithType.vb: BlockFaceTextureData.New(String())
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.New(String())
+  name.vb: New(String())
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor(System.String)
+  commentId: M:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  langs:
+  - csharp
+  - vb
+  name: BlockFaceTextureData(string)
+  nameWithType: BlockFaceTextureData.BlockFaceTextureData(string)
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.BlockFaceTextureData(string)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Blocks/Serialization/BlockFaceTextureData.cs
+    startLine: 13
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Blocks.Serialization
+  syntax:
+    content: public BlockFaceTextureData(string texture)
+    parameters:
+    - id: texture
+      type: System.String
+    content.vb: Public Sub New(texture As String)
+  overload: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor*
+  nameWithType.vb: BlockFaceTextureData.New(String)
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.New(String)
+  name.vb: New(String)
+references:
+- uid: BlockEngine.Client.Framework.Blocks.Serialization
+  commentId: N:BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks.Serialization
+  nameWithType: BlockEngine.Client.Framework.Blocks.Serialization
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.#ctor
+  href: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.html#BlockEngine_Client_Framework_Blocks_Serialization_BlockFaceTextureData__ctor_System_String___
+  name: BlockFaceTextureData
+  nameWithType: BlockFaceTextureData.BlockFaceTextureData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.BlockFaceTextureData
+  nameWithType.vb: BlockFaceTextureData.New
+  fullName.vb: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

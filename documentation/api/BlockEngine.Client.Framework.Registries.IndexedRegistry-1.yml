@@ -1,0 +1,523 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  commentId: T:BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  id: IndexedRegistry`1
+  parent: BlockEngine.Client.Framework.Registries
+  children:
+  - BlockEngine.Client.Framework.Registries.IndexedRegistry`1.#ctor(System.String)
+  - BlockEngine.Client.Framework.Registries.IndexedRegistry`1.GetValue(System.UInt16)
+  - BlockEngine.Client.Framework.Registries.IndexedRegistry`1.Register(`0)
+  - BlockEngine.Client.Framework.Registries.IndexedRegistry`1.ToString
+  langs:
+  - csharp
+  - vb
+  name: IndexedRegistry<T>
+  nameWithType: IndexedRegistry<T>
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/IndexedRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: IndexedRegistry
+    path: ../source/client/source/Framework/Registries/IndexedRegistry.cs
+    startLine: 6
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  summary: Allows retrieving references to values through either a namespaced key or an ID.
+  example: []
+  syntax:
+    content: 'public class IndexedRegistry<T> where T : IHasId'
+    typeParameters:
+    - id: T
+      description: ''
+    content.vb: Public Class IndexedRegistry(Of T As IHasId)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: IndexedRegistry(Of T)
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T)
+  name.vb: IndexedRegistry(Of T)
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.#ctor(System.String)
+  commentId: M:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: IndexedRegistry(string)
+  nameWithType: IndexedRegistry<T>.IndexedRegistry(string)
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.IndexedRegistry(string)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/IndexedRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Registries/IndexedRegistry.cs
+    startLine: 12
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public IndexedRegistry(string name)
+    parameters:
+    - id: name
+      type: System.String
+    content.vb: Public Sub New(name As String)
+  overload: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.#ctor*
+  nameWithType.vb: IndexedRegistry(Of T).New(String)
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).New(String)
+  name.vb: New(String)
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.Register(`0)
+  commentId: M:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.Register(`0)
+  id: Register(`0)
+  parent: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: Register(T)
+  nameWithType: IndexedRegistry<T>.Register(T)
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.Register(T)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/IndexedRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Register
+    path: ../source/client/source/Framework/Registries/IndexedRegistry.cs
+    startLine: 19
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public T Register(T value)
+    parameters:
+    - id: value
+      type: '{T}'
+    return:
+      type: '{T}'
+    content.vb: Public Function Register(value As T) As T
+  overload: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.Register*
+  nameWithType.vb: IndexedRegistry(Of T).Register(T)
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).Register(T)
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.GetValue(System.UInt16)
+  commentId: M:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.GetValue(System.UInt16)
+  id: GetValue(System.UInt16)
+  parent: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: GetValue(ushort)
+  nameWithType: IndexedRegistry<T>.GetValue(ushort)
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.GetValue(ushort)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/IndexedRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetValue
+    path: ../source/client/source/Framework/Registries/IndexedRegistry.cs
+    startLine: 28
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public T GetValue(ushort id)
+    parameters:
+    - id: id
+      type: System.UInt16
+    return:
+      type: '{T}'
+    content.vb: Public Function GetValue(id As UShort) As T
+  overload: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.GetValue*
+  nameWithType.vb: IndexedRegistry(Of T).GetValue(UShort)
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).GetValue(UShort)
+  name.vb: GetValue(UShort)
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.ToString
+  commentId: M:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.ToString
+  id: ToString
+  parent: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: IndexedRegistry<T>.ToString()
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.ToString()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/IndexedRegistry.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ToString
+    path: ../source/client/source/Framework/Registries/IndexedRegistry.cs
+    startLine: 34
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.ToString*
+  nameWithType.vb: IndexedRegistry(Of T).ToString()
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).ToString()
+references:
+- uid: BlockEngine.Client.Framework.Registries
+  commentId: N:BlockEngine.Client.Framework.Registries
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Registries
+  nameWithType: BlockEngine.Client.Framework.Registries
+  fullName: BlockEngine.Client.Framework.Registries
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Registries
+    name: Registries
+    href: BlockEngine.Client.Framework.Registries.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Registries
+    name: Registries
+    href: BlockEngine.Client.Framework.Registries.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.#ctor
+  href: BlockEngine.Client.Framework.Registries.IndexedRegistry-1.html#BlockEngine_Client_Framework_Registries_IndexedRegistry_1__ctor_System_String_
+  name: IndexedRegistry
+  nameWithType: IndexedRegistry<T>.IndexedRegistry
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.IndexedRegistry
+  nameWithType.vb: IndexedRegistry(Of T).New
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.Register*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.Register
+  href: BlockEngine.Client.Framework.Registries.IndexedRegistry-1.html#BlockEngine_Client_Framework_Registries_IndexedRegistry_1_Register__0_
+  name: Register
+  nameWithType: IndexedRegistry<T>.Register
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.Register
+  nameWithType.vb: IndexedRegistry(Of T).Register
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).Register
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.GetValue*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.GetValue
+  href: BlockEngine.Client.Framework.Registries.IndexedRegistry-1.html#BlockEngine_Client_Framework_Registries_IndexedRegistry_1_GetValue_System_UInt16_
+  name: GetValue
+  nameWithType: IndexedRegistry<T>.GetValue
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.GetValue
+  nameWithType.vb: IndexedRegistry(Of T).GetValue
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).GetValue
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint16
+  name: ushort
+  nameWithType: ushort
+  fullName: ushort
+  nameWithType.vb: UShort
+  fullName.vb: UShort
+  name.vb: UShort
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1.ToString*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.IndexedRegistry`1.ToString
+  href: BlockEngine.Client.Framework.Registries.IndexedRegistry-1.html#BlockEngine_Client_Framework_Registries_IndexedRegistry_1_ToString
+  name: ToString
+  nameWithType: IndexedRegistry<T>.ToString
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>.ToString
+  nameWithType.vb: IndexedRegistry(Of T).ToString
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T).ToString

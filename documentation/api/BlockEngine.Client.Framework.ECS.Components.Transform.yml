@@ -1,0 +1,1209 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform
+  commentId: T:BlockEngine.Client.Framework.ECS.Components.Transform
+  id: Transform
+  parent: BlockEngine.Client.Framework.ECS.Components
+  children:
+  - BlockEngine.Client.Framework.ECS.Components.Transform.#ctor
+  - BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix
+  - BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix
+  - BlockEngine.Client.Framework.ECS.Components.Transform.LocalPosition
+  - BlockEngine.Client.Framework.ECS.Components.Transform.LocalRotation
+  - BlockEngine.Client.Framework.ECS.Components.Transform.Parent
+  - BlockEngine.Client.Framework.ECS.Components.Transform.Rotate(OpenTK.Mathematics.Vector3)
+  - BlockEngine.Client.Framework.ECS.Components.Transform.Scale
+  - BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy(OpenTK.Mathematics.Vector3)
+  - BlockEngine.Client.Framework.ECS.Components.Transform.SetParent(BlockEngine.Client.Framework.ECS.Components.Transform,System.Boolean)
+  - BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition(OpenTK.Mathematics.Vector3)
+  - BlockEngine.Client.Framework.ECS.Components.Transform.ToString
+  - BlockEngine.Client.Framework.ECS.Components.Transform.Translate(OpenTK.Mathematics.Vector3)
+  - BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition
+  - BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation
+  langs:
+  - csharp
+  - vb
+  name: Transform
+  nameWithType: Transform
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Transform
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 4
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: 'public class Transform : Component'
+    content.vb: Public Class Transform Inherits Component
+  inheritance:
+  - System.Object
+  - BlockEngine.Client.Framework.ECS.Components.Component
+  inheritedMembers:
+  - BlockEngine.Client.Framework.ECS.Components.Component.IsEnabled
+  - BlockEngine.Client.Framework.ECS.Components.Component.Entity
+  - BlockEngine.Client.Framework.ECS.Components.Component.SetEntity(BlockEngine.Client.Framework.ECS.Entities.Entity)
+  - BlockEngine.Client.Framework.ECS.Components.Component.Enable
+  - BlockEngine.Client.Framework.ECS.Components.Component.Update(System.Double)
+  - BlockEngine.Client.Framework.ECS.Components.Component.Render(System.Double)
+  - BlockEngine.Client.Framework.ECS.Components.Component.Disable
+  - BlockEngine.Client.Framework.ECS.Components.Component.Destroy
+  - BlockEngine.Client.Framework.ECS.Components.Component.OnEnable
+  - BlockEngine.Client.Framework.ECS.Components.Component.OnUpdate(System.Double)
+  - BlockEngine.Client.Framework.ECS.Components.Component.OnRender(System.Double)
+  - BlockEngine.Client.Framework.ECS.Components.Component.OnDisable
+  - BlockEngine.Client.Framework.ECS.Components.Component.OnDestroy
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.Parent
+  commentId: P:BlockEngine.Client.Framework.ECS.Components.Transform.Parent
+  id: Parent
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: Parent
+  nameWithType: Transform.Parent
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Parent
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Parent
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 6
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Transform? Parent { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.ECS.Components.Transform
+    content.vb: Public Property Parent As Transform
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.Parent*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition
+  commentId: P:BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition
+  id: WorldPosition
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: WorldPosition
+  nameWithType: Transform.WorldPosition
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: WorldPosition
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 8
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Vector3 WorldPosition { get; set; }
+    parameters: []
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Property WorldPosition As Vector3
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation
+  commentId: P:BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation
+  id: WorldRotation
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: WorldRotation
+  nameWithType: Transform.WorldRotation
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: WorldRotation
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 24
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Vector3 WorldRotation { get; set; }
+    parameters: []
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Property WorldRotation As Vector3
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.LocalPosition
+  commentId: F:BlockEngine.Client.Framework.ECS.Components.Transform.LocalPosition
+  id: LocalPosition
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: LocalPosition
+  nameWithType: Transform.LocalPosition
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.LocalPosition
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: LocalPosition
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 41
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Vector3 LocalPosition
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public LocalPosition As Vector3
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.LocalRotation
+  commentId: F:BlockEngine.Client.Framework.ECS.Components.Transform.LocalRotation
+  id: LocalRotation
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: LocalRotation
+  nameWithType: Transform.LocalRotation
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.LocalRotation
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: LocalRotation
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 42
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Vector3 LocalRotation
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public LocalRotation As Vector3
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.Scale
+  commentId: F:BlockEngine.Client.Framework.ECS.Components.Transform.Scale
+  id: Scale
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: Scale
+  nameWithType: Transform.Scale
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Scale
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Scale
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 43
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Vector3 Scale
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Scale As Vector3
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.#ctor
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.#ctor
+  id: '#ctor'
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: Transform()
+  nameWithType: Transform.Transform()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Transform()
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 46
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Transform()
+    content.vb: Public Sub New()
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.#ctor*
+  nameWithType.vb: Transform.New()
+  fullName.vb: BlockEngine.Client.Framework.ECS.Components.Transform.New()
+  name.vb: New()
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.SetParent(BlockEngine.Client.Framework.ECS.Components.Transform,System.Boolean)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.SetParent(BlockEngine.Client.Framework.ECS.Components.Transform,System.Boolean)
+  id: SetParent(BlockEngine.Client.Framework.ECS.Components.Transform,System.Boolean)
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: SetParent(Transform?, bool)
+  nameWithType: Transform.SetParent(Transform?, bool)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.SetParent(BlockEngine.Client.Framework.ECS.Components.Transform?, bool)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: SetParent
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 54
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public void SetParent(Transform? parent, bool keepWorldPosition = true)
+    parameters:
+    - id: parent
+      type: BlockEngine.Client.Framework.ECS.Components.Transform
+    - id: keepWorldPosition
+      type: System.Boolean
+    content.vb: Public Sub SetParent(parent As Transform, keepWorldPosition As Boolean = True)
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.SetParent*
+  nameWithType.vb: Transform.SetParent(Transform, Boolean)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Components.Transform.SetParent(BlockEngine.Client.Framework.ECS.Components.Transform, Boolean)
+  name.vb: SetParent(Transform, Boolean)
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix
+  id: GetWorldModelMatrix
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: GetWorldModelMatrix()
+  nameWithType: Transform.GetWorldModelMatrix()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetWorldModelMatrix
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 83
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Matrix4 GetWorldModelMatrix()
+    return:
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Function GetWorldModelMatrix() As Matrix4
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix
+  id: GetLocalModelMatrix
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: GetLocalModelMatrix()
+  nameWithType: Transform.GetLocalModelMatrix()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetLocalModelMatrix
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 94
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public Matrix4 GetLocalModelMatrix()
+    return:
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Function GetLocalModelMatrix() As Matrix4
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition(OpenTK.Mathematics.Vector3)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition(OpenTK.Mathematics.Vector3)
+  id: SetPosition(OpenTK.Mathematics.Vector3)
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: SetPosition(Vector3)
+  nameWithType: Transform.SetPosition(Vector3)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition(OpenTK.Mathematics.Vector3)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: SetPosition
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 105
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public void SetPosition(Vector3 position)
+    parameters:
+    - id: position
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Sub SetPosition(position As Vector3)
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.Translate(OpenTK.Mathematics.Vector3)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.Translate(OpenTK.Mathematics.Vector3)
+  id: Translate(OpenTK.Mathematics.Vector3)
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: Translate(Vector3)
+  nameWithType: Transform.Translate(Vector3)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Translate(OpenTK.Mathematics.Vector3)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Translate
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 111
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public void Translate(Vector3 translation)
+    parameters:
+    - id: translation
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Sub Translate(translation As Vector3)
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.Translate*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.Rotate(OpenTK.Mathematics.Vector3)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.Rotate(OpenTK.Mathematics.Vector3)
+  id: Rotate(OpenTK.Mathematics.Vector3)
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: Rotate(Vector3)
+  nameWithType: Transform.Rotate(Vector3)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Rotate(OpenTK.Mathematics.Vector3)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Rotate
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 117
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public void Rotate(Vector3 rotation)
+    parameters:
+    - id: rotation
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Sub Rotate(rotation As Vector3)
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.Rotate*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy(OpenTK.Mathematics.Vector3)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy(OpenTK.Mathematics.Vector3)
+  id: ScaleBy(OpenTK.Mathematics.Vector3)
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: ScaleBy(Vector3)
+  nameWithType: Transform.ScaleBy(Vector3)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy(OpenTK.Mathematics.Vector3)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ScaleBy
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 123
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  syntax:
+    content: public void ScaleBy(Vector3 scale)
+    parameters:
+    - id: scale
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public Sub ScaleBy(scale As Vector3)
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy*
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.ToString
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Transform.ToString
+  id: ToString
+  parent: BlockEngine.Client.Framework.ECS.Components.Transform
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Transform.ToString()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.ToString()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/ECS/Components/Transform.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ToString
+    path: ../source/client/source/Framework/ECS/Components/Transform.cs
+    startLine: 129
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.ECS.Components
+  summary: Returns a string that represents the current object.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string that represents the current object.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: BlockEngine.Client.Framework.ECS.Components.Transform.ToString*
+references:
+- uid: BlockEngine.Client.Framework.ECS.Components
+  commentId: N:BlockEngine.Client.Framework.ECS.Components
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.ECS.Components
+  nameWithType: BlockEngine.Client.Framework.ECS.Components
+  fullName: BlockEngine.Client.Framework.ECS.Components
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS
+    name: ECS
+    href: BlockEngine.Client.Framework.ECS.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS.Components
+    name: Components
+    href: BlockEngine.Client.Framework.ECS.Components.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS
+    name: ECS
+    href: BlockEngine.Client.Framework.ECS.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.ECS.Components
+    name: Components
+    href: BlockEngine.Client.Framework.ECS.Components.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: BlockEngine.Client.Framework.ECS.Components.Component
+  commentId: T:BlockEngine.Client.Framework.ECS.Components.Component
+  parent: BlockEngine.Client.Framework.ECS.Components
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html
+  name: Component
+  nameWithType: Component
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.IsEnabled
+  commentId: P:BlockEngine.Client.Framework.ECS.Components.Component.IsEnabled
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_IsEnabled
+  name: IsEnabled
+  nameWithType: Component.IsEnabled
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.IsEnabled
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.Entity
+  commentId: P:BlockEngine.Client.Framework.ECS.Components.Component.Entity
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Entity
+  name: Entity
+  nameWithType: Component.Entity
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.Entity
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.SetEntity(BlockEngine.Client.Framework.ECS.Entities.Entity)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.SetEntity(BlockEngine.Client.Framework.ECS.Entities.Entity)
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_SetEntity_BlockEngine_Client_Framework_ECS_Entities_Entity_
+  name: SetEntity(Entity)
+  nameWithType: Component.SetEntity(Entity)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.SetEntity(BlockEngine.Client.Framework.ECS.Entities.Entity)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.SetEntity(BlockEngine.Client.Framework.ECS.Entities.Entity)
+    name: SetEntity
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_SetEntity_BlockEngine_Client_Framework_ECS_Entities_Entity_
+  - name: (
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity
+    name: Entity
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.SetEntity(BlockEngine.Client.Framework.ECS.Entities.Entity)
+    name: SetEntity
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_SetEntity_BlockEngine_Client_Framework_ECS_Entities_Entity_
+  - name: (
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity
+    name: Entity
+    href: BlockEngine.Client.Framework.ECS.Entities.Entity.html
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.Enable
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.Enable
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Enable
+  name: Enable()
+  nameWithType: Component.Enable()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.Enable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Enable
+    name: Enable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Enable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Enable
+    name: Enable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Enable
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.Update(System.Double)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.Update(System.Double)
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  isExternal: true
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Update_System_Double_
+  name: Update(double)
+  nameWithType: Component.Update(double)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.Update(double)
+  nameWithType.vb: Component.Update(Double)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Components.Component.Update(Double)
+  name.vb: Update(Double)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Update(System.Double)
+    name: Update
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Update(System.Double)
+    name: Update
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.Render(System.Double)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.Render(System.Double)
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  isExternal: true
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Render_System_Double_
+  name: Render(double)
+  nameWithType: Component.Render(double)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.Render(double)
+  nameWithType.vb: Component.Render(Double)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Components.Component.Render(Double)
+  name.vb: Render(Double)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Render(System.Double)
+    name: Render
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Render_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Render(System.Double)
+    name: Render
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Render_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.Disable
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.Disable
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Disable
+  name: Disable()
+  nameWithType: Component.Disable()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.Disable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Disable
+    name: Disable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Disable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Disable
+    name: Disable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Disable
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.Destroy
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.Destroy
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Destroy
+  name: Destroy()
+  nameWithType: Component.Destroy()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.Destroy()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Destroy
+    name: Destroy
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Destroy
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.Destroy
+    name: Destroy
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_Destroy
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.OnEnable
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.OnEnable
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnEnable
+  name: OnEnable()
+  nameWithType: Component.OnEnable()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.OnEnable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnEnable
+    name: OnEnable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnEnable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnEnable
+    name: OnEnable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnEnable
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.OnUpdate(System.Double)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.OnUpdate(System.Double)
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  isExternal: true
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnUpdate_System_Double_
+  name: OnUpdate(double)
+  nameWithType: Component.OnUpdate(double)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.OnUpdate(double)
+  nameWithType.vb: Component.OnUpdate(Double)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Components.Component.OnUpdate(Double)
+  name.vb: OnUpdate(Double)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnUpdate(System.Double)
+    name: OnUpdate
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnUpdate(System.Double)
+    name: OnUpdate
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.OnRender(System.Double)
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.OnRender(System.Double)
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  isExternal: true
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnRender_System_Double_
+  name: OnRender(double)
+  nameWithType: Component.OnRender(double)
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.OnRender(double)
+  nameWithType.vb: Component.OnRender(Double)
+  fullName.vb: BlockEngine.Client.Framework.ECS.Components.Component.OnRender(Double)
+  name.vb: OnRender(Double)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnRender(System.Double)
+    name: OnRender
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnRender_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnRender(System.Double)
+    name: OnRender
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnRender_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.OnDisable
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.OnDisable
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnDisable
+  name: OnDisable()
+  nameWithType: Component.OnDisable()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.OnDisable()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnDisable
+    name: OnDisable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnDisable
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnDisable
+    name: OnDisable
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnDisable
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Component.OnDestroy
+  commentId: M:BlockEngine.Client.Framework.ECS.Components.Component.OnDestroy
+  parent: BlockEngine.Client.Framework.ECS.Components.Component
+  href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnDestroy
+  name: OnDestroy()
+  nameWithType: Component.OnDestroy()
+  fullName: BlockEngine.Client.Framework.ECS.Components.Component.OnDestroy()
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnDestroy
+    name: OnDestroy
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnDestroy
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component.OnDestroy
+    name: OnDestroy
+    href: BlockEngine.Client.Framework.ECS.Components.Component.html#BlockEngine_Client_Framework_ECS_Components_Component_OnDestroy
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.Parent*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.Parent
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_Parent
+  name: Parent
+  nameWithType: Transform.Parent
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Parent
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform
+  commentId: T:BlockEngine.Client.Framework.ECS.Components.Transform
+  parent: BlockEngine.Client.Framework.ECS.Components
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html
+  name: Transform
+  nameWithType: Transform
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_WorldPosition
+  name: WorldPosition
+  nameWithType: Transform.WorldPosition
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.WorldPosition
+- uid: OpenTK.Mathematics.Vector3
+  commentId: T:OpenTK.Mathematics.Vector3
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3
+  nameWithType: Vector3
+  fullName: OpenTK.Mathematics.Vector3
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_WorldRotation
+  name: WorldRotation
+  nameWithType: Transform.WorldRotation
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.WorldRotation
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.#ctor
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform__ctor
+  name: Transform
+  nameWithType: Transform.Transform
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Transform
+  nameWithType.vb: Transform.New
+  fullName.vb: BlockEngine.Client.Framework.ECS.Components.Transform.New
+  name.vb: New
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.SetParent*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.SetParent
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_SetParent_BlockEngine_Client_Framework_ECS_Components_Transform_System_Boolean_
+  name: SetParent
+  nameWithType: Transform.SetParent
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.SetParent
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_GetWorldModelMatrix
+  name: GetWorldModelMatrix
+  nameWithType: Transform.GetWorldModelMatrix
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.GetWorldModelMatrix
+- uid: OpenTK.Mathematics.Matrix4
+  commentId: T:OpenTK.Mathematics.Matrix4
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Matrix4
+  nameWithType: Matrix4
+  fullName: OpenTK.Mathematics.Matrix4
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_GetLocalModelMatrix
+  name: GetLocalModelMatrix
+  nameWithType: Transform.GetLocalModelMatrix
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.GetLocalModelMatrix
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_SetPosition_OpenTK_Mathematics_Vector3_
+  name: SetPosition
+  nameWithType: Transform.SetPosition
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.SetPosition
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.Translate*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.Translate
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_Translate_OpenTK_Mathematics_Vector3_
+  name: Translate
+  nameWithType: Transform.Translate
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Translate
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.Rotate*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.Rotate
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_Rotate_OpenTK_Mathematics_Vector3_
+  name: Rotate
+  nameWithType: Transform.Rotate
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.Rotate
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_ScaleBy_OpenTK_Mathematics_Vector3_
+  name: ScaleBy
+  nameWithType: Transform.ScaleBy
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.ScaleBy
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.ECS.Components.Transform.ToString*
+  commentId: Overload:BlockEngine.Client.Framework.ECS.Components.Transform.ToString
+  href: BlockEngine.Client.Framework.ECS.Components.Transform.html#BlockEngine_Client_Framework_ECS_Components_Transform_ToString
+  name: ToString
+  nameWithType: Transform.ToString
+  fullName: BlockEngine.Client.Framework.ECS.Components.Transform.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

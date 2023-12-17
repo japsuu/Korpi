@@ -1,0 +1,618 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult
+  commentId: T:BlockEngine.Client.Framework.Physics.RaycastResult
+  id: RaycastResult
+  parent: BlockEngine.Client.Framework.Physics
+  children:
+  - BlockEngine.Client.Framework.Physics.RaycastResult.#ctor(System.Boolean,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Meshing.BlockFace,BlockEngine.Client.Framework.Blocks.BlockState)
+  - BlockEngine.Client.Framework.Physics.RaycastResult.BlockState
+  - BlockEngine.Client.Framework.Physics.RaycastResult.Hit
+  - BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockFace
+  - BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockPosition
+  - BlockEngine.Client.Framework.Physics.RaycastResult.HitPosition
+  langs:
+  - csharp
+  - vb
+  name: RaycastResult
+  nameWithType: RaycastResult
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult
+  type: Struct
+  source:
+    remote:
+      path: source/client/source/Framework/Physics/RaycastResult.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: RaycastResult
+    path: ../source/client/source/Framework/Physics/RaycastResult.cs
+    startLine: 6
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Physics
+  syntax:
+    content: public struct RaycastResult
+    content.vb: Public Structure RaycastResult
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult.Hit
+  commentId: F:BlockEngine.Client.Framework.Physics.RaycastResult.Hit
+  id: Hit
+  parent: BlockEngine.Client.Framework.Physics.RaycastResult
+  langs:
+  - csharp
+  - vb
+  name: Hit
+  nameWithType: RaycastResult.Hit
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult.Hit
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Physics/RaycastResult.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Hit
+    path: ../source/client/source/Framework/Physics/RaycastResult.cs
+    startLine: 8
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Physics
+  syntax:
+    content: public readonly bool Hit
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Hit As Boolean
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult.HitPosition
+  commentId: F:BlockEngine.Client.Framework.Physics.RaycastResult.HitPosition
+  id: HitPosition
+  parent: BlockEngine.Client.Framework.Physics.RaycastResult
+  langs:
+  - csharp
+  - vb
+  name: HitPosition
+  nameWithType: RaycastResult.HitPosition
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult.HitPosition
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Physics/RaycastResult.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: HitPosition
+    path: ../source/client/source/Framework/Physics/RaycastResult.cs
+    startLine: 9
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Physics
+  syntax:
+    content: public readonly Vector3 HitPosition
+    return:
+      type: OpenTK.Mathematics.Vector3
+    content.vb: Public ReadOnly HitPosition As Vector3
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockPosition
+  commentId: F:BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockPosition
+  id: HitBlockPosition
+  parent: BlockEngine.Client.Framework.Physics.RaycastResult
+  langs:
+  - csharp
+  - vb
+  name: HitBlockPosition
+  nameWithType: RaycastResult.HitBlockPosition
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockPosition
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Physics/RaycastResult.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: HitBlockPosition
+    path: ../source/client/source/Framework/Physics/RaycastResult.cs
+    startLine: 10
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Physics
+  syntax:
+    content: public readonly Vector3i HitBlockPosition
+    return:
+      type: OpenTK.Mathematics.Vector3i
+    content.vb: Public ReadOnly HitBlockPosition As Vector3i
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockFace
+  commentId: F:BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockFace
+  id: HitBlockFace
+  parent: BlockEngine.Client.Framework.Physics.RaycastResult
+  langs:
+  - csharp
+  - vb
+  name: HitBlockFace
+  nameWithType: RaycastResult.HitBlockFace
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult.HitBlockFace
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Physics/RaycastResult.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: HitBlockFace
+    path: ../source/client/source/Framework/Physics/RaycastResult.cs
+    startLine: 11
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Physics
+  syntax:
+    content: public readonly BlockFace HitBlockFace
+    return:
+      type: BlockEngine.Client.Framework.Meshing.BlockFace
+    content.vb: Public ReadOnly HitBlockFace As BlockFace
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult.BlockState
+  commentId: F:BlockEngine.Client.Framework.Physics.RaycastResult.BlockState
+  id: BlockState
+  parent: BlockEngine.Client.Framework.Physics.RaycastResult
+  langs:
+  - csharp
+  - vb
+  name: BlockState
+  nameWithType: RaycastResult.BlockState
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult.BlockState
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Physics/RaycastResult.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: BlockState
+    path: ../source/client/source/Framework/Physics/RaycastResult.cs
+    startLine: 12
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Physics
+  syntax:
+    content: public readonly BlockState BlockState
+    return:
+      type: BlockEngine.Client.Framework.Blocks.BlockState
+    content.vb: Public ReadOnly BlockState As BlockState
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult.#ctor(System.Boolean,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Meshing.BlockFace,BlockEngine.Client.Framework.Blocks.BlockState)
+  commentId: M:BlockEngine.Client.Framework.Physics.RaycastResult.#ctor(System.Boolean,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Meshing.BlockFace,BlockEngine.Client.Framework.Blocks.BlockState)
+  id: '#ctor(System.Boolean,OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Meshing.BlockFace,BlockEngine.Client.Framework.Blocks.BlockState)'
+  parent: BlockEngine.Client.Framework.Physics.RaycastResult
+  langs:
+  - csharp
+  - vb
+  name: RaycastResult(bool, Vector3, Vector3i, BlockFace, BlockState)
+  nameWithType: RaycastResult.RaycastResult(bool, Vector3, Vector3i, BlockFace, BlockState)
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult.RaycastResult(bool, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3i, BlockEngine.Client.Framework.Meshing.BlockFace, BlockEngine.Client.Framework.Blocks.BlockState)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Physics/RaycastResult.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Physics/RaycastResult.cs
+    startLine: 15
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Physics
+  syntax:
+    content: public RaycastResult(bool hit, Vector3 hitPosition, Vector3i hitBlockPosition, BlockFace hitBlockFace, BlockState blockState)
+    parameters:
+    - id: hit
+      type: System.Boolean
+    - id: hitPosition
+      type: OpenTK.Mathematics.Vector3
+    - id: hitBlockPosition
+      type: OpenTK.Mathematics.Vector3i
+    - id: hitBlockFace
+      type: BlockEngine.Client.Framework.Meshing.BlockFace
+    - id: blockState
+      type: BlockEngine.Client.Framework.Blocks.BlockState
+    content.vb: Public Sub New(hit As Boolean, hitPosition As Vector3, hitBlockPosition As Vector3i, hitBlockFace As BlockFace, blockState As BlockState)
+  overload: BlockEngine.Client.Framework.Physics.RaycastResult.#ctor*
+  nameWithType.vb: RaycastResult.New(Boolean, Vector3, Vector3i, BlockFace, BlockState)
+  fullName.vb: BlockEngine.Client.Framework.Physics.RaycastResult.New(Boolean, OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector3i, BlockEngine.Client.Framework.Meshing.BlockFace, BlockEngine.Client.Framework.Blocks.BlockState)
+  name.vb: New(Boolean, Vector3, Vector3i, BlockFace, BlockState)
+references:
+- uid: BlockEngine.Client.Framework.Physics
+  commentId: N:BlockEngine.Client.Framework.Physics
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Physics
+  nameWithType: BlockEngine.Client.Framework.Physics
+  fullName: BlockEngine.Client.Framework.Physics
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Physics
+    name: Physics
+    href: BlockEngine.Client.Framework.Physics.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Physics
+    name: Physics
+    href: BlockEngine.Client.Framework.Physics.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: OpenTK.Mathematics.Vector3
+  commentId: T:OpenTK.Mathematics.Vector3
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3
+  nameWithType: Vector3
+  fullName: OpenTK.Mathematics.Vector3
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: OpenTK.Mathematics.Vector3i
+  commentId: T:OpenTK.Mathematics.Vector3i
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3i
+  nameWithType: Vector3i
+  fullName: OpenTK.Mathematics.Vector3i
+- uid: BlockEngine.Client.Framework.Meshing.BlockFace
+  commentId: T:BlockEngine.Client.Framework.Meshing.BlockFace
+  parent: BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.Client.Framework.Meshing.BlockFace.html
+  name: BlockFace
+  nameWithType: BlockFace
+  fullName: BlockEngine.Client.Framework.Meshing.BlockFace
+- uid: BlockEngine.Client.Framework.Meshing
+  commentId: N:BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Meshing
+  nameWithType: BlockEngine.Client.Framework.Meshing
+  fullName: BlockEngine.Client.Framework.Meshing
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Meshing
+    name: Meshing
+    href: BlockEngine.Client.Framework.Meshing.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Meshing
+    name: Meshing
+    href: BlockEngine.Client.Framework.Meshing.html
+- uid: BlockEngine.Client.Framework.Blocks.BlockState
+  commentId: T:BlockEngine.Client.Framework.Blocks.BlockState
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.BlockState.html
+  name: BlockState
+  nameWithType: BlockState
+  fullName: BlockEngine.Client.Framework.Blocks.BlockState
+- uid: BlockEngine.Client.Framework.Blocks
+  commentId: N:BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks
+  nameWithType: BlockEngine.Client.Framework.Blocks
+  fullName: BlockEngine.Client.Framework.Blocks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Physics.RaycastResult.#ctor
+  href: BlockEngine.Client.Framework.Physics.RaycastResult.html#BlockEngine_Client_Framework_Physics_RaycastResult__ctor_System_Boolean_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Vector3i_BlockEngine_Client_Framework_Meshing_BlockFace_BlockEngine_Client_Framework_Blocks_BlockState_
+  name: RaycastResult
+  nameWithType: RaycastResult.RaycastResult
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult.RaycastResult
+  nameWithType.vb: RaycastResult.New
+  fullName.vb: BlockEngine.Client.Framework.Physics.RaycastResult.New
+  name.vb: New

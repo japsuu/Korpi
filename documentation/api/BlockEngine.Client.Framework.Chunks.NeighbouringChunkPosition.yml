@@ -1,0 +1,776 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  commentId: T:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  id: NeighbouringChunkPosition
+  parent: BlockEngine.Client.Framework.Chunks
+  children:
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthEast
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthWest
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthEast
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthWest
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceDown
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceEast
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceNorth
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceSouth
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceUp
+  - BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceWest
+  langs:
+  - csharp
+  - vb
+  name: NeighbouringChunkPosition
+  nameWithType: NeighbouringChunkPosition
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  type: Enum
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: NeighbouringChunkPosition
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 2
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: public enum NeighbouringChunkPosition
+    content.vb: Public Enum NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastUp
+  id: CornerNorthEastUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerNorthEastUp
+  nameWithType: NeighbouringChunkPosition.CornerNorthEastUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerNorthEastUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 5
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerNorthEastUp = 0
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastUp
+  id: CornerSouthEastUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerSouthEastUp
+  nameWithType: NeighbouringChunkPosition.CornerSouthEastUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerSouthEastUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 6
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerSouthEastUp = 1
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestUp
+  id: CornerSouthWestUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerSouthWestUp
+  nameWithType: NeighbouringChunkPosition.CornerSouthWestUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerSouthWestUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 7
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerSouthWestUp = 2
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestUp
+  id: CornerNorthWestUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerNorthWestUp
+  nameWithType: NeighbouringChunkPosition.CornerNorthWestUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerNorthWestUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 8
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerNorthWestUp = 3
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastDown
+  id: CornerNorthEastDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerNorthEastDown
+  nameWithType: NeighbouringChunkPosition.CornerNorthEastDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthEastDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerNorthEastDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 9
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerNorthEastDown = 4
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastDown
+  id: CornerSouthEastDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerSouthEastDown
+  nameWithType: NeighbouringChunkPosition.CornerSouthEastDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthEastDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerSouthEastDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 10
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerSouthEastDown = 5
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestDown
+  id: CornerSouthWestDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerSouthWestDown
+  nameWithType: NeighbouringChunkPosition.CornerSouthWestDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerSouthWestDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerSouthWestDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 11
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerSouthWestDown = 6
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestDown
+  id: CornerNorthWestDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: CornerNorthWestDown
+  nameWithType: NeighbouringChunkPosition.CornerNorthWestDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.CornerNorthWestDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CornerNorthWestDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 12
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: CornerNorthWestDown = 7
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthUp
+  id: EdgeNorthUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeNorthUp
+  nameWithType: NeighbouringChunkPosition.EdgeNorthUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeNorthUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 15
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeNorthUp = 8
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastUp
+  id: EdgeEastUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeEastUp
+  nameWithType: NeighbouringChunkPosition.EdgeEastUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeEastUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 16
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeEastUp = 9
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthUp
+  id: EdgeSouthUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeSouthUp
+  nameWithType: NeighbouringChunkPosition.EdgeSouthUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeSouthUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 17
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeSouthUp = 10
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestUp
+  id: EdgeWestUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeWestUp
+  nameWithType: NeighbouringChunkPosition.EdgeWestUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeWestUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 18
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeWestUp = 11
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthDown
+  id: EdgeNorthDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeNorthDown
+  nameWithType: NeighbouringChunkPosition.EdgeNorthDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeNorthDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 19
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeNorthDown = 12
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastDown
+  id: EdgeEastDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeEastDown
+  nameWithType: NeighbouringChunkPosition.EdgeEastDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeEastDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeEastDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 20
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeEastDown = 13
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthDown
+  id: EdgeSouthDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeSouthDown
+  nameWithType: NeighbouringChunkPosition.EdgeSouthDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeSouthDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 21
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeSouthDown = 14
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestDown
+  id: EdgeWestDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeWestDown
+  nameWithType: NeighbouringChunkPosition.EdgeWestDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeWestDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeWestDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 22
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeWestDown = 15
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthEast
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthEast
+  id: EdgeNorthEast
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeNorthEast
+  nameWithType: NeighbouringChunkPosition.EdgeNorthEast
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthEast
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeNorthEast
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 23
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeNorthEast = 16
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthEast
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthEast
+  id: EdgeSouthEast
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeSouthEast
+  nameWithType: NeighbouringChunkPosition.EdgeSouthEast
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthEast
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeSouthEast
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 24
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeSouthEast = 17
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthWest
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthWest
+  id: EdgeSouthWest
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeSouthWest
+  nameWithType: NeighbouringChunkPosition.EdgeSouthWest
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeSouthWest
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeSouthWest
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 25
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeSouthWest = 18
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthWest
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthWest
+  id: EdgeNorthWest
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: EdgeNorthWest
+  nameWithType: NeighbouringChunkPosition.EdgeNorthWest
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.EdgeNorthWest
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: EdgeNorthWest
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 26
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: EdgeNorthWest = 19
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceNorth
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceNorth
+  id: FaceNorth
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: FaceNorth
+  nameWithType: NeighbouringChunkPosition.FaceNorth
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceNorth
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FaceNorth
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 29
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: FaceNorth = 20
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceEast
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceEast
+  id: FaceEast
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: FaceEast
+  nameWithType: NeighbouringChunkPosition.FaceEast
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceEast
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FaceEast
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 30
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: FaceEast = 21
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceSouth
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceSouth
+  id: FaceSouth
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: FaceSouth
+  nameWithType: NeighbouringChunkPosition.FaceSouth
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceSouth
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FaceSouth
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 31
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: FaceSouth = 22
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceWest
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceWest
+  id: FaceWest
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: FaceWest
+  nameWithType: NeighbouringChunkPosition.FaceWest
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceWest
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FaceWest
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 32
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: FaceWest = 23
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceUp
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceUp
+  id: FaceUp
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: FaceUp
+  nameWithType: NeighbouringChunkPosition.FaceUp
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceUp
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FaceUp
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 33
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: FaceUp = 24
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceDown
+  commentId: F:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceDown
+  id: FaceDown
+  parent: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  langs:
+  - csharp
+  - vb
+  name: FaceDown
+  nameWithType: NeighbouringChunkPosition.FaceDown
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.FaceDown
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: FaceDown
+    path: ../source/client/source/Framework/Chunks/NeighbouringChunkPosition.cs
+    startLine: 34
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: FaceDown = 25
+    return:
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+references:
+- uid: BlockEngine.Client.Framework.Chunks
+  commentId: N:BlockEngine.Client.Framework.Chunks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Chunks
+  nameWithType: BlockEngine.Client.Framework.Chunks
+  fullName: BlockEngine.Client.Framework.Chunks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Chunks
+    name: Chunks
+    href: BlockEngine.Client.Framework.Chunks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Chunks
+    name: Chunks
+    href: BlockEngine.Client.Framework.Chunks.html
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  commentId: T:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  parent: BlockEngine.Client.Framework.Chunks
+  href: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.html
+  name: NeighbouringChunkPosition
+  nameWithType: NeighbouringChunkPosition
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition

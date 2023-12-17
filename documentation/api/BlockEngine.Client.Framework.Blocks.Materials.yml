@@ -1,0 +1,23 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Blocks.Materials
+  commentId: N:BlockEngine.Client.Framework.Blocks.Materials
+  id: BlockEngine.Client.Framework.Blocks.Materials
+  children:
+  - BlockEngine.Client.Framework.Blocks.Materials.AbstractMaterial
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Blocks.Materials
+  nameWithType: BlockEngine.Client.Framework.Blocks.Materials
+  fullName: BlockEngine.Client.Framework.Blocks.Materials
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Blocks.Materials.AbstractMaterial
+  commentId: T:BlockEngine.Client.Framework.Blocks.Materials.AbstractMaterial
+  href: BlockEngine.Client.Framework.Blocks.Materials.AbstractMaterial.html
+  name: AbstractMaterial
+  nameWithType: AbstractMaterial
+  fullName: BlockEngine.Client.Framework.Blocks.Materials.AbstractMaterial

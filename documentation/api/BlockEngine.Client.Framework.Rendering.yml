@@ -1,0 +1,30 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Rendering
+  commentId: N:BlockEngine.Client.Framework.Rendering
+  id: BlockEngine.Client.Framework.Rendering
+  children:
+  - BlockEngine.Client.Framework.Rendering.Crosshair
+  - BlockEngine.Client.Framework.Rendering.Skybox
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Rendering
+  nameWithType: BlockEngine.Client.Framework.Rendering
+  fullName: BlockEngine.Client.Framework.Rendering
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Rendering.Crosshair
+  commentId: T:BlockEngine.Client.Framework.Rendering.Crosshair
+  href: BlockEngine.Client.Framework.Rendering.Crosshair.html
+  name: Crosshair
+  nameWithType: Crosshair
+  fullName: BlockEngine.Client.Framework.Rendering.Crosshair
+- uid: BlockEngine.Client.Framework.Rendering.Skybox
+  commentId: T:BlockEngine.Client.Framework.Rendering.Skybox
+  href: BlockEngine.Client.Framework.Rendering.Skybox.html
+  name: Skybox
+  nameWithType: Skybox
+  fullName: BlockEngine.Client.Framework.Rendering.Skybox

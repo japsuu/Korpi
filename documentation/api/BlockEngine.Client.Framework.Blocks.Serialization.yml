@@ -1,0 +1,86 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Blocks.Serialization
+  commentId: N:BlockEngine.Client.Framework.Blocks.Serialization
+  id: BlockEngine.Client.Framework.Blocks.Serialization
+  children:
+  - BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+  - BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  - BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Blocks.Serialization
+  nameWithType: BlockEngine.Client.Framework.Blocks.Serialization
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData.html
+  name: BlockFaceTextureCollectionData
+  nameWithType: BlockFaceTextureCollectionData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData.html
+  name: BlockFaceTextureData
+  nameWithType: BlockFaceTextureData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+- uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  commentId: T:BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+  parent: BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData.html
+  name: YamlBlockData
+  nameWithType: YamlBlockData
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+- uid: BlockEngine.Client.Framework.Blocks.Serialization
+  commentId: N:BlockEngine.Client.Framework.Blocks.Serialization
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks.Serialization
+  nameWithType: BlockEngine.Client.Framework.Blocks.Serialization
+  fullName: BlockEngine.Client.Framework.Blocks.Serialization
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization
+    name: Serialization
+    href: BlockEngine.Client.Framework.Blocks.Serialization.html

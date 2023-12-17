@@ -1,0 +1,984 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  commentId: T:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  id: ShaderManager
+  parent: BlockEngine.Client.Framework.Rendering.Shaders
+  children:
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.#ctor
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix(OpenTK.Mathematics.Matrix4)
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix(OpenTK.Mathematics.Matrix4)
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix(OpenTK.Mathematics.Matrix4)
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize(System.Int32,System.Int32)
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth
+  - BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector2@)
+  langs:
+  - csharp
+  - vb
+  name: ShaderManager
+  nameWithType: ShaderManager
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ShaderManager
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 5
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: 'public class ShaderManager : IDisposable'
+    content.vb: Public Class ShaderManager Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader
+  id: PassShader
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: PassShader
+  nameWithType: ShaderManager.PassShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: PassShader
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 7
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static Shader PassShader { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+    content.vb: Public Shared Property PassShader As Shader
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader
+  id: DebugShader
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: DebugShader
+  nameWithType: ShaderManager.DebugShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DebugShader
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 8
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static Shader DebugShader { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+    content.vb: Public Shared Property DebugShader As Shader
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader
+  id: ChunkShader
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: ChunkShader
+  nameWithType: ShaderManager.ChunkShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ChunkShader
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 9
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static Shader ChunkShader { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+    content.vb: Public Shared Property ChunkShader As Shader
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader
+  id: SkyboxShader
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: SkyboxShader
+  nameWithType: ShaderManager.SkyboxShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: SkyboxShader
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 10
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static Shader SkyboxShader { get; }
+    parameters: []
+    return:
+      type: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+    content.vb: Public Shared Property SkyboxShader As Shader
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix
+  id: ProjectionMatrix
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: ProjectionMatrix
+  nameWithType: ShaderManager.ProjectionMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ProjectionMatrix
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 12
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static Matrix4 ProjectionMatrix { get; }
+    parameters: []
+    return:
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Shared Property ProjectionMatrix As Matrix4
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix
+  id: ViewMatrix
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: ViewMatrix
+  nameWithType: ShaderManager.ViewMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ViewMatrix
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 13
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static Matrix4 ViewMatrix { get; }
+    parameters: []
+    return:
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Shared Property ViewMatrix As Matrix4
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth
+  id: WindowWidth
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: WindowWidth
+  nameWithType: ShaderManager.WindowWidth
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: WindowWidth
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 15
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static int WindowWidth { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property WindowWidth As Integer
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight
+  commentId: P:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight
+  id: WindowHeight
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: WindowHeight
+  nameWithType: ShaderManager.WindowHeight
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight
+  type: Property
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: WindowHeight
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 16
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static int WindowHeight { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property WindowHeight As Integer
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.#ctor
+  commentId: M:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.#ctor
+  id: '#ctor'
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: ShaderManager()
+  nameWithType: ShaderManager.ShaderManager()
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ShaderManager()
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 19
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public ShaderManager()
+    content.vb: Public Sub New()
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.#ctor*
+  nameWithType.vb: ShaderManager.New()
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.New()
+  name.vb: New()
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix(OpenTK.Mathematics.Matrix4)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix(OpenTK.Mathematics.Matrix4)
+  id: UpdateProjectionMatrix(OpenTK.Mathematics.Matrix4)
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateProjectionMatrix(Matrix4)
+  nameWithType: ShaderManager.UpdateProjectionMatrix(Matrix4)
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix(OpenTK.Mathematics.Matrix4)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: UpdateProjectionMatrix
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 35
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static void UpdateProjectionMatrix(Matrix4 projectionMatrix)
+    parameters:
+    - id: projectionMatrix
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Shared Sub UpdateProjectionMatrix(projectionMatrix As Matrix4)
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix(OpenTK.Mathematics.Matrix4)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix(OpenTK.Mathematics.Matrix4)
+  id: UpdateViewMatrix(OpenTK.Mathematics.Matrix4)
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateViewMatrix(Matrix4)
+  nameWithType: ShaderManager.UpdateViewMatrix(Matrix4)
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix(OpenTK.Mathematics.Matrix4)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: UpdateViewMatrix
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 53
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static void UpdateViewMatrix(Matrix4 viewMatrix)
+    parameters:
+    - id: viewMatrix
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Shared Sub UpdateViewMatrix(viewMatrix As Matrix4)
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix(OpenTK.Mathematics.Matrix4)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix(OpenTK.Mathematics.Matrix4)
+  id: UpdateSkyboxViewMatrix(OpenTK.Mathematics.Matrix4)
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateSkyboxViewMatrix(Matrix4)
+  nameWithType: ShaderManager.UpdateSkyboxViewMatrix(Matrix4)
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix(OpenTK.Mathematics.Matrix4)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: UpdateSkyboxViewMatrix
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 68
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static void UpdateSkyboxViewMatrix(Matrix4 skyboxViewMatrix)
+    parameters:
+    - id: skyboxViewMatrix
+      type: OpenTK.Mathematics.Matrix4
+    content.vb: Public Shared Sub UpdateSkyboxViewMatrix(skyboxViewMatrix As Matrix4)
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix*
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize(System.Int32,System.Int32)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize(System.Int32,System.Int32)
+  id: UpdateWindowSize(System.Int32,System.Int32)
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateWindowSize(int, int)
+  nameWithType: ShaderManager.UpdateWindowSize(int, int)
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize(int, int)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: UpdateWindowSize
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 75
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  syntax:
+    content: public static void UpdateWindowSize(int width, int height)
+    parameters:
+    - id: width
+      type: System.Int32
+    - id: height
+      type: System.Int32
+    content.vb: Public Shared Sub UpdateWindowSize(width As Integer, height As Integer)
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize*
+  nameWithType.vb: ShaderManager.UpdateWindowSize(Integer, Integer)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize(Integer, Integer)
+  name.vb: UpdateWindowSize(Integer, Integer)
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector2@)
+  commentId: M:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector2@)
+  id: WorldPositionToScreenPosition(OpenTK.Mathematics.Vector3,OpenTK.Mathematics.Vector2@)
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: WorldPositionToScreenPosition(Vector3, out Vector2)
+  nameWithType: ShaderManager.WorldPositionToScreenPosition(Vector3, out Vector2)
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition(OpenTK.Mathematics.Vector3, out OpenTK.Mathematics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: WorldPositionToScreenPosition
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 83
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  example: []
+  syntax:
+    content: public static bool WorldPositionToScreenPosition(Vector3 worldPosition, out Vector2 screenPos)
+    parameters:
+    - id: worldPosition
+      type: OpenTK.Mathematics.Vector3
+    - id: screenPos
+      type: OpenTK.Mathematics.Vector2
+    return:
+      type: System.Boolean
+      description: If the provided world position is visible on screen.
+    content.vb: Public Shared Function WorldPositionToScreenPosition(worldPosition As Vector3, screenPos As Vector2) As Boolean
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition*
+  nameWithType.vb: ShaderManager.WorldPositionToScreenPosition(Vector3, Vector2)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition(OpenTK.Mathematics.Vector3, OpenTK.Mathematics.Vector2)
+  name.vb: WorldPositionToScreenPosition(Vector3, Vector2)
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose
+  commentId: M:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose
+  id: Dispose
+  parent: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: ShaderManager.Dispose()
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Dispose
+    path: ../source/client/source/Framework/Rendering/Shaders/ShaderManager.cs
+    startLine: 105
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.Shaders
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: BlockEngine.Client.Framework.Rendering.Shaders
+  commentId: N:BlockEngine.Client.Framework.Rendering.Shaders
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.Shaders
+  nameWithType: BlockEngine.Client.Framework.Rendering.Shaders
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders
+    name: Shaders
+    href: BlockEngine.Client.Framework.Rendering.Shaders.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders
+    name: Shaders
+    href: BlockEngine.Client.Framework.Rendering.Shaders.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_PassShader
+  name: PassShader
+  nameWithType: ShaderManager.PassShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.PassShader
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+  commentId: T:BlockEngine.Client.Framework.Rendering.Shaders.Shader
+  parent: BlockEngine.Client.Framework.Rendering.Shaders
+  href: BlockEngine.Client.Framework.Rendering.Shaders.Shader.html
+  name: Shader
+  nameWithType: Shader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_DebugShader
+  name: DebugShader
+  nameWithType: ShaderManager.DebugShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.DebugShader
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_ChunkShader
+  name: ChunkShader
+  nameWithType: ShaderManager.ChunkShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ChunkShader
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_SkyboxShader
+  name: SkyboxShader
+  nameWithType: ShaderManager.SkyboxShader
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.SkyboxShader
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_ProjectionMatrix
+  name: ProjectionMatrix
+  nameWithType: ShaderManager.ProjectionMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ProjectionMatrix
+- uid: OpenTK.Mathematics.Matrix4
+  commentId: T:OpenTK.Mathematics.Matrix4
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Matrix4
+  nameWithType: Matrix4
+  fullName: OpenTK.Mathematics.Matrix4
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_ViewMatrix
+  name: ViewMatrix
+  nameWithType: ShaderManager.ViewMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ViewMatrix
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_WindowWidth
+  name: WindowWidth
+  nameWithType: ShaderManager.WindowWidth
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowWidth
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_WindowHeight
+  name: WindowHeight
+  nameWithType: ShaderManager.WindowHeight
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WindowHeight
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.#ctor
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager__ctor
+  name: ShaderManager
+  nameWithType: ShaderManager.ShaderManager
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.ShaderManager
+  nameWithType.vb: ShaderManager.New
+  fullName.vb: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.New
+  name.vb: New
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_UpdateProjectionMatrix_OpenTK_Mathematics_Matrix4_
+  name: UpdateProjectionMatrix
+  nameWithType: ShaderManager.UpdateProjectionMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateProjectionMatrix
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_UpdateViewMatrix_OpenTK_Mathematics_Matrix4_
+  name: UpdateViewMatrix
+  nameWithType: ShaderManager.UpdateViewMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateViewMatrix
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_UpdateSkyboxViewMatrix_OpenTK_Mathematics_Matrix4_
+  name: UpdateSkyboxViewMatrix
+  nameWithType: ShaderManager.UpdateSkyboxViewMatrix
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateSkyboxViewMatrix
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_UpdateWindowSize_System_Int32_System_Int32_
+  name: UpdateWindowSize
+  nameWithType: ShaderManager.UpdateWindowSize
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.UpdateWindowSize
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_WorldPositionToScreenPosition_OpenTK_Mathematics_Vector3_OpenTK_Mathematics_Vector2__
+  name: WorldPositionToScreenPosition
+  nameWithType: ShaderManager.WorldPositionToScreenPosition
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.WorldPositionToScreenPosition
+- uid: OpenTK.Mathematics.Vector3
+  commentId: T:OpenTK.Mathematics.Vector3
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3
+  nameWithType: Vector3
+  fullName: OpenTK.Mathematics.Vector3
+- uid: OpenTK.Mathematics.Vector2
+  commentId: T:OpenTK.Mathematics.Vector2
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector2
+  nameWithType: Vector2
+  fullName: OpenTK.Mathematics.Vector2
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose
+  href: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.html#BlockEngine_Client_Framework_Rendering_Shaders_ShaderManager_Dispose
+  name: Dispose
+  nameWithType: ShaderManager.Dispose
+  fullName: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

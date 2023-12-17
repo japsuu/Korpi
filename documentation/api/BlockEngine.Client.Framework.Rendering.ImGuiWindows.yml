@@ -1,0 +1,112 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  commentId: N:BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  id: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  children:
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.CameraWindow
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.DebugTextWindow
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindow
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindowManager
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.MemoryProfilerWindow
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.RenderingWindow
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  nameWithType: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.CameraWindow
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.CameraWindow
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.CameraWindow.html
+  name: CameraWindow
+  nameWithType: CameraWindow
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.CameraWindow
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.DebugTextWindow
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.DebugTextWindow
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.DebugTextWindow.html
+  name: DebugTextWindow
+  nameWithType: DebugTextWindow
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.DebugTextWindow
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html
+  name: ImGuiController
+  nameWithType: ImGuiController
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindow
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindow
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindow.html
+  name: ImGuiWindow
+  nameWithType: ImGuiWindow
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindow
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindowManager
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindowManager
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindowManager.html
+  name: ImGuiWindowManager
+  nameWithType: ImGuiWindowManager
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindowManager
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.MemoryProfilerWindow
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.MemoryProfilerWindow
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.MemoryProfilerWindow.html
+  name: MemoryProfilerWindow
+  nameWithType: MemoryProfilerWindow
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.MemoryProfilerWindow
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.RenderingWindow
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.RenderingWindow
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.RenderingWindow.html
+  name: RenderingWindow
+  nameWithType: RenderingWindow
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.RenderingWindow
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  commentId: N:BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  nameWithType: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+    name: ImGuiWindows
+    href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+    name: ImGuiWindows
+    href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.html

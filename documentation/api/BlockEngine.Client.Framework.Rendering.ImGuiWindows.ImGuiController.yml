@@ -1,0 +1,922 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  commentId: T:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  id: ImGuiController
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  children:
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.#ctor(System.Int32,System.Int32)
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError(System.String)
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram(System.String,System.String,System.String)
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject(OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier,System.Int32,System.String)
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update(OpenTK.Windowing.Desktop.GameWindow,System.Single,OpenTK.Mathematics.Vector2)
+  - BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized(System.Int32,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: ImGuiController
+  nameWithType: ImGuiController
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: ImGuiController
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 13
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  syntax:
+    content: 'public class ImGuiController : IDisposable'
+    content.vb: Public Class ImGuiController Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.#ctor(System.Int32,System.Int32)
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.#ctor(System.Int32,System.Int32)
+  id: '#ctor(System.Int32,System.Int32)'
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: ImGuiController(int, int)
+  nameWithType: ImGuiController.ImGuiController(int, int)
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.ImGuiController(int, int)
+  type: Constructor
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: .ctor
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 44
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  summary: Constructs a new ImGuiController.
+  example: []
+  syntax:
+    content: public ImGuiController(int width, int height)
+    parameters:
+    - id: width
+      type: System.Int32
+    - id: height
+      type: System.Int32
+    content.vb: Public Sub New(width As Integer, height As Integer)
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.#ctor*
+  nameWithType.vb: ImGuiController.New(Integer, Integer)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.New(Integer, Integer)
+  name.vb: New(Integer, Integer)
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized(System.Int32,System.Int32)
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized(System.Int32,System.Int32)
+  id: WindowResized(System.Int32,System.Int32)
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: WindowResized(int, int)
+  nameWithType: ImGuiController.WindowResized(int, int)
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized(int, int)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: WindowResized
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 74
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  syntax:
+    content: public void WindowResized(int width, int height)
+    parameters:
+    - id: width
+      type: System.Int32
+    - id: height
+      type: System.Int32
+    content.vb: Public Sub WindowResized(width As Integer, height As Integer)
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized*
+  nameWithType.vb: ImGuiController.WindowResized(Integer, Integer)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized(Integer, Integer)
+  name.vb: WindowResized(Integer, Integer)
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects
+  id: DestroyDeviceObjects
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: DestroyDeviceObjects()
+  nameWithType: ImGuiController.DestroyDeviceObjects()
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: DestroyDeviceObjects
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 80
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  syntax:
+    content: public void DestroyDeviceObjects()
+    content.vb: Public Sub DestroyDeviceObjects()
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects*
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources
+  id: CreateDeviceResources
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: CreateDeviceResources()
+  nameWithType: ImGuiController.CreateDeviceResources()
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CreateDeviceResources
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 85
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  syntax:
+    content: public void CreateDeviceResources()
+    content.vb: Public Sub CreateDeviceResources()
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources*
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture
+  id: RecreateFontDeviceTexture
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: RecreateFontDeviceTexture()
+  nameWithType: ImGuiController.RecreateFontDeviceTexture()
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: RecreateFontDeviceTexture
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 162
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  summary: Recreates the device texture used to render text.
+  example: []
+  syntax:
+    content: public void RecreateFontDeviceTexture()
+    content.vb: Public Sub RecreateFontDeviceTexture()
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture*
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render
+  id: Render
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: Render()
+  nameWithType: ImGuiController.Render()
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Render
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 202
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  summary: Renders the ImGui draw list data.
+  example: []
+  syntax:
+    content: public void Render()
+    content.vb: Public Sub Render()
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render*
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update(OpenTK.Windowing.Desktop.GameWindow,System.Single,OpenTK.Mathematics.Vector2)
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update(OpenTK.Windowing.Desktop.GameWindow,System.Single,OpenTK.Mathematics.Vector2)
+  id: Update(OpenTK.Windowing.Desktop.GameWindow,System.Single,OpenTK.Mathematics.Vector2)
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: Update(GameWindow, float, Vector2)
+  nameWithType: ImGuiController.Update(GameWindow, float, Vector2)
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update(OpenTK.Windowing.Desktop.GameWindow, float, OpenTK.Mathematics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Update
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 215
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  summary: Updates ImGui input and IO configuration state.
+  example: []
+  syntax:
+    content: public void Update(GameWindow wnd, float deltaSeconds, Vector2 mousePos)
+    parameters:
+    - id: wnd
+      type: OpenTK.Windowing.Desktop.GameWindow
+    - id: deltaSeconds
+      type: System.Single
+    - id: mousePos
+      type: OpenTK.Mathematics.Vector2
+    content.vb: Public Sub Update(wnd As GameWindow, deltaSeconds As Single, mousePos As Vector2)
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update*
+  nameWithType.vb: ImGuiController.Update(GameWindow, Single, Vector2)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update(OpenTK.Windowing.Desktop.GameWindow, Single, OpenTK.Mathematics.Vector2)
+  name.vb: Update(GameWindow, Single, Vector2)
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose
+  id: Dispose
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: ImGuiController.Dispose()
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose()
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Dispose
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 506
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  summary: Frees all graphics resources used by the renderer.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject(OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier,System.Int32,System.String)
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject(OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier,System.Int32,System.String)
+  id: LabelObject(OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier,System.Int32,System.String)
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: LabelObject(ObjectLabelIdentifier, int, string)
+  nameWithType: ImGuiController.LabelObject(ObjectLabelIdentifier, int, string)
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject(OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier, int, string)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: LabelObject
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 516
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  syntax:
+    content: public static void LabelObject(ObjectLabelIdentifier objLabelIdent, int glObject, string name)
+    parameters:
+    - id: objLabelIdent
+      type: OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier
+    - id: glObject
+      type: System.Int32
+    - id: name
+      type: System.String
+    content.vb: Public Shared Sub LabelObject(objLabelIdent As ObjectLabelIdentifier, glObject As Integer, name As String)
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject*
+  nameWithType.vb: ImGuiController.LabelObject(ObjectLabelIdentifier, Integer, String)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject(OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier, Integer, String)
+  name.vb: LabelObject(ObjectLabelIdentifier, Integer, String)
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram(System.String,System.String,System.String)
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram(System.String,System.String,System.String)
+  id: CreateProgram(System.String,System.String,System.String)
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: CreateProgram(string, string, string)
+  nameWithType: ImGuiController.CreateProgram(string, string, string)
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram(string, string, string)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CreateProgram
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 534
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  syntax:
+    content: public static int CreateProgram(string name, string vertexSource, string fragmentSoruce)
+    parameters:
+    - id: name
+      type: System.String
+    - id: vertexSource
+      type: System.String
+    - id: fragmentSoruce
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function CreateProgram(name As String, vertexSource As String, fragmentSoruce As String) As Integer
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram*
+  nameWithType.vb: ImGuiController.CreateProgram(String, String, String)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram(String, String, String)
+  name.vb: CreateProgram(String, String, String)
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError(System.String)
+  commentId: M:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError(System.String)
+  id: CheckGlError(System.String)
+  parent: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+  langs:
+  - csharp
+  - vb
+  name: CheckGlError(string)
+  nameWithType: ImGuiController.CheckGlError(string)
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError(string)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CheckGlError
+    path: ../source/client/source/Framework/Rendering/ImGuiWindows/ImGuiController.cs
+    startLine: 581
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  syntax:
+    content: public static void CheckGlError(string title)
+    parameters:
+    - id: title
+      type: System.String
+    content.vb: Public Shared Sub CheckGlError(title As String)
+  overload: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError*
+  nameWithType.vb: ImGuiController.CheckGlError(String)
+  fullName.vb: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError(String)
+  name.vb: CheckGlError(String)
+references:
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  commentId: N:BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  nameWithType: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+    name: ImGuiWindows
+    href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+    name: ImGuiWindows
+    href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.#ctor*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.#ctor
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController__ctor_System_Int32_System_Int32_
+  name: ImGuiController
+  nameWithType: ImGuiController.ImGuiController
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.ImGuiController
+  nameWithType.vb: ImGuiController.New
+  fullName.vb: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_WindowResized_System_Int32_System_Int32_
+  name: WindowResized
+  nameWithType: ImGuiController.WindowResized
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.WindowResized
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_DestroyDeviceObjects
+  name: DestroyDeviceObjects
+  nameWithType: ImGuiController.DestroyDeviceObjects
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.DestroyDeviceObjects
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_CreateDeviceResources
+  name: CreateDeviceResources
+  nameWithType: ImGuiController.CreateDeviceResources
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateDeviceResources
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_RecreateFontDeviceTexture
+  name: RecreateFontDeviceTexture
+  nameWithType: ImGuiController.RecreateFontDeviceTexture
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.RecreateFontDeviceTexture
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_Render
+  name: Render
+  nameWithType: ImGuiController.Render
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Render
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_Update_OpenTK_Windowing_Desktop_GameWindow_System_Single_OpenTK_Mathematics_Vector2_
+  name: Update
+  nameWithType: ImGuiController.Update
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Update
+- uid: OpenTK.Windowing.Desktop.GameWindow
+  commentId: T:OpenTK.Windowing.Desktop.GameWindow
+  parent: OpenTK.Windowing.Desktop
+  isExternal: true
+  name: GameWindow
+  nameWithType: GameWindow
+  fullName: OpenTK.Windowing.Desktop.GameWindow
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: OpenTK.Mathematics.Vector2
+  commentId: T:OpenTK.Mathematics.Vector2
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector2
+  nameWithType: Vector2
+  fullName: OpenTK.Mathematics.Vector2
+- uid: OpenTK.Windowing.Desktop
+  commentId: N:OpenTK.Windowing.Desktop
+  isExternal: true
+  name: OpenTK.Windowing.Desktop
+  nameWithType: OpenTK.Windowing.Desktop
+  fullName: OpenTK.Windowing.Desktop
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Windowing
+    name: Windowing
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Windowing.Desktop
+    name: Desktop
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Windowing
+    name: Windowing
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Windowing.Desktop
+    name: Desktop
+    isExternal: true
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_Dispose
+  name: Dispose
+  nameWithType: ImGuiController.Dispose
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_LabelObject_OpenTK_Graphics_OpenGL4_ObjectLabelIdentifier_System_Int32_System_String_
+  name: LabelObject
+  nameWithType: ImGuiController.LabelObject
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.LabelObject
+- uid: OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier
+  commentId: T:OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier
+  parent: OpenTK.Graphics.OpenGL4
+  isExternal: true
+  name: ObjectLabelIdentifier
+  nameWithType: ObjectLabelIdentifier
+  fullName: OpenTK.Graphics.OpenGL4.ObjectLabelIdentifier
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: OpenTK.Graphics.OpenGL4
+  commentId: N:OpenTK.Graphics.OpenGL4
+  isExternal: true
+  name: OpenTK.Graphics.OpenGL4
+  nameWithType: OpenTK.Graphics.OpenGL4
+  fullName: OpenTK.Graphics.OpenGL4
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Graphics.OpenGL4
+    name: OpenGL4
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Graphics.OpenGL4
+    name: OpenGL4
+    isExternal: true
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_CreateProgram_System_String_System_String_System_String_
+  name: CreateProgram
+  nameWithType: ImGuiController.CreateProgram
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CreateProgram
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError*
+  commentId: Overload:BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError
+  href: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.html#BlockEngine_Client_Framework_Rendering_ImGuiWindows_ImGuiController_CheckGlError_System_String_
+  name: CheckGlError
+  nameWithType: ImGuiController.CheckGlError
+  fullName: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController.CheckGlError
