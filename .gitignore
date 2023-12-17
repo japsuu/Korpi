@@ -32,3 +32,7 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# DocFx
+.cache
+**/_site/
