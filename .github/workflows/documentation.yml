@@ -37,14 +37,14 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - run: dotnet tool update -g docfx
-    - run: docfx ./documentation/docfx.json
+    - run: docfx documentation/docfx.json
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: './documentation/_site'
+        path: 'documentation/_site'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v3
