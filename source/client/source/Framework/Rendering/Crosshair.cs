@@ -53,7 +53,7 @@ public class Crosshair
     public void Draw()
     {
         _shader.Use();
-        _shader.SetFloat("aspectRatio", ShaderManager.WindowWidth / (float)ShaderManager.WindowHeight);
+        _shader.SetFloat("aspectRatio", GameClient.WindowAspectRatio);
         GL.BindVertexArray(_vao);
         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         GL.BindVertexArray(0);

@@ -73,7 +73,7 @@ public class ChunkManager
     }
 
 
-    public void Tick(Vector3 cameraPos, double deltaTime)
+    public void Tick(Vector3 cameraPos)
     {
         FindColumnsToUnload(cameraPos);
         UnloadColumns();
@@ -83,7 +83,7 @@ public class ChunkManager
         // Tick all columns
         foreach (ChunkColumn column in _loadedColumns.Values)
         {
-            column.Tick(deltaTime);
+            column.Tick();
 
             if (!column.IsMeshDirty)
                 continue;
@@ -132,14 +132,14 @@ public class ChunkManager
 #if DEBUG
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
-            // Get the chunk the player is currently in
+            // Get the chunk the playerEntity is currently in
             Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(cameraPos);
             DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
         if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
         {
-            // Get the chunk the player is currently in
+            // Get the chunk the playerEntity is currently in
             Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(cameraPos);
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }

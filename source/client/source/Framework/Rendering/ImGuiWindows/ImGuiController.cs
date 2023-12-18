@@ -428,7 +428,7 @@ void main()
         GL.Disable(EnableCap.CullFace);
         GL.Disable(EnableCap.DepthTest);
 
-        // Render command lists
+        // Draw command lists
         for (int n = 0; n < drawData.CmdListsCount; n++)
         {
             ImDrawListPtr cmdList = drawData.CmdLists[n];

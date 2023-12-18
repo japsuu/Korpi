@@ -34,17 +34,18 @@ public class World
     }
     
     
-    public void Tick(double time)
+    public void Tick()
     {
-        ChunkManager.Tick(Player.LocalPlayer.Transform.LocalPosition, time);
-        _entityManager.Update(time);
-        CameraStats.RaycastResult = RaycastWorld(Player.LocalPlayer.Transform.LocalPosition, Player.LocalPlayer.Camera.Front, 10);
+        ChunkManager.Tick(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
+        _entityManager.Update();
+        CameraStats.RaycastResult = RaycastWorld(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition, PlayerEntity.LocalPlayerEntity.Forward, 10);
     }
     
     
-    public void DrawChunks(Vector3 cameraPos, Shader chunkShader)
+    public void Draw()
     {
-        ChunkManager.Draw(cameraPos, chunkShader);
+        ChunkManager.Draw(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition, ShaderManager.ChunkShader);
+        _entityManager.Draw();
     }
     
     

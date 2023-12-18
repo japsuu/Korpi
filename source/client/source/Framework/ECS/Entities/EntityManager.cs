@@ -11,11 +11,20 @@ public class EntityManager
     }
 
 
-    public void Update(double time)
+    public void Update()
     {
         foreach (Entity obj in _entities)
         {
-            obj.Update(time);
+            obj.Update();
+        }
+    }
+
+
+    public void Draw()
+    {
+        foreach (Entity obj in _entities)
+        {
+            obj.Draw();
         }
     }
 

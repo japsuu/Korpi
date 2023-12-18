@@ -12,9 +12,6 @@ public class ShaderManager : IDisposable
     
     public static Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
     public static Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
-    
-    public static int WindowWidth { get; private set; }
-    public static int WindowHeight { get; private set; }
 
 
     public ShaderManager()
@@ -73,13 +70,6 @@ public class ShaderManager : IDisposable
     }
     
     
-    public static void UpdateWindowSize(int width, int height)
-    {
-        WindowWidth = width;
-        WindowHeight = height;
-    }
-    
-    
     /// <returns>If the provided world position is visible on screen.</returns>
     public static bool WorldPositionToScreenPosition(Vector3 worldPosition, out Vector2 screenPos)
     {
@@ -96,8 +86,8 @@ public class ShaderManager : IDisposable
         Vector2 screenCoordinates = new Vector2(normalizedDeviceCoordinates.X, -normalizedDeviceCoordinates.Y);
         screenCoordinates += Vector2.One;
         screenCoordinates /= 2;
-        screenCoordinates.X *= WindowWidth;
-        screenCoordinates.Y *= WindowHeight;
+        screenCoordinates.X *= GameClient.WindowWidth;
+        screenCoordinates.Y *= GameClient.WindowHeight;
         screenPos = screenCoordinates;
         return true;
     }

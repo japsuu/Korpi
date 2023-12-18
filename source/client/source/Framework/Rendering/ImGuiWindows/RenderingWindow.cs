@@ -26,7 +26,7 @@ public class RenderingWindow : ImGuiWindow
     {
         ImGui.Checkbox("Wireframe rendering", ref ClientConfig.DebugModeConfig.RenderWireframe);
 
-        if (ImGui.Checkbox("Render chunk borders", ref ClientConfig.DebugModeConfig.RenderChunkBorders))
+        if (ImGui.Checkbox("Draw chunk borders", ref ClientConfig.DebugModeConfig.RenderChunkBorders))
         {
             if (ClientConfig.DebugModeConfig.RenderChunkBorders)
                 DebugChunkDrawer.Initialize();
@@ -34,7 +34,7 @@ public class RenderingWindow : ImGuiWindow
                 DebugChunkDrawer.Dispose();
         }
 
-        if (ImGui.Checkbox("Render column borders", ref ClientConfig.DebugModeConfig.RenderChunkColumnBorders))
+        if (ImGui.Checkbox("Draw column borders", ref ClientConfig.DebugModeConfig.RenderChunkColumnBorders))
         {
             if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
                 DebugChunkDrawer.Initialize();
@@ -47,13 +47,13 @@ public class RenderingWindow : ImGuiWindow
             World.CurrentWorld.ChunkManager.ReloadAllChunks();
         }
         
-        ImGui.Checkbox("Render skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
+        ImGui.Checkbox("Draw skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
 
         ImGui.Separator();
         
-        ImGui.Checkbox("Render raycast path", ref ClientConfig.DebugModeConfig.RenderRaycastPath);
-        ImGui.Checkbox("Render raycast hit", ref ClientConfig.DebugModeConfig.RenderRaycastHit);
-        ImGui.Checkbox("Render raycast hit block", ref ClientConfig.DebugModeConfig.RenderRaycastHitBlock);
+        ImGui.Checkbox("Draw raycast path", ref ClientConfig.DebugModeConfig.RenderRaycastPath);
+        ImGui.Checkbox("Draw raycast hit", ref ClientConfig.DebugModeConfig.RenderRaycastHit);
+        ImGui.Checkbox("Draw raycast hit block", ref ClientConfig.DebugModeConfig.RenderRaycastHitBlock);
 
         ImGui.Separator();
         

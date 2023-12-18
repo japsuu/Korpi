@@ -25,15 +25,15 @@ public abstract class Component
     }
     
     
-    public void Update(double time)
+    public void Update()
     {
-        OnUpdate(time);
+        OnUpdate();
     }
     
     
-    public void Render(double time)
+    public void Draw()
     {
-        OnRender(time);
+        OnDraw();
     }
     
     
@@ -52,9 +52,9 @@ public abstract class Component
 
     protected virtual void OnEnable() { }
     
-    protected virtual void OnUpdate(double time) { }
+    protected virtual void OnUpdate() { }
     
-    protected virtual void OnRender(double time) { }
+    protected virtual void OnDraw() { }
     
     protected virtual void OnDisable() { }
     

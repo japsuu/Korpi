@@ -1,286 +1,245 @@
-﻿using BlockEngine.Client.Framework.ECS.Entities;
-using BlockEngine.Client.Framework.Rendering.ImGuiWindows;
-using BlockEngine.Client.Utils;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
+﻿using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Rendering.Cameras;
 
-public class Camera : TransformEntity
+/// <summary>
+/// The base class for a camera used to render the scene.
+/// </summary>
+public abstract class Camera : IDisposable, IComparable<Camera>
 {
-    public static Camera ActiveCamera { get; private set; } = null!;
+    /// <summary>
+    /// The current camera rendering to the screen.
+    /// </summary>
+    public static Camera RenderingCamera { get; private set; } = null!;
+    
+    /// <summary>
+    /// All cameras currently active.
+    /// </summary>
+    private static SortedSet<Camera> ActiveCameras { get; } = new();
+    
+    /// <summary>
+    /// The render priority of this camera.
+    /// Only the camera with the lowest render priority will be rendered.
+    /// </summary>
+    protected int RenderPriority;
+    
+    /// <summary>
+    /// The view matrix of this camera.
+    /// </summary>
+    public Matrix4 ViewMatrix { get; private set; }
+    
+    /// <summary>
+    /// The projection matrix of this camera.
+    /// </summary>
+    public Matrix4 ProjectionMatrix { get; private set; }
+    
+    /// <summary>
+    /// Local position of the camera.
+    /// </summary>
+    public Vector3 Position { get; private set; }
 
-    private const float SENSITIVITY = 0.2f;
-    
-    private bool _isActive;
-    
-    private CameraWindow _cameraWindow;
-    
-    private float _cameraFlySpeed = 1.5f;
-    
-    private Vector3 _front = -Vector3.UnitZ;
-    private Vector3 _up = Vector3.UnitY;
-    private Vector3 _right = Vector3.UnitX;
-    
-    // Rotation around the X axis (radians)
-    private float _pitch;
+    /// <summary>
+    /// Forward vector pointing outwards from the camera.
+    /// </summary>
+    public Vector3 Forward { get; private set; }
 
-    // Rotation around the Y axis (radians)
-    private float _yaw = -MathHelper.PiOver2; // Without this, you would be started rotated 90 degrees right.
+    /// <summary>
+    /// Up vector pointing upwards from the camera.
+    /// </summary>
+    public Vector3 Up { get; private set; }
 
-    // The field of view of the camera (radians)
-    private float _fov = MathHelper.PiOver2;
-    private Vector2 _mouseLastPos;
+    /// <summary>
+    /// Right vector pointing to the right of the camera.
+    /// </summary>
+    public Vector3 Right { get; private set; }
 
-    // This is simply the aspect ratio of the viewport, used for the projection matrix.
-    public float AspectRatio { private get; set; }
-    
-    // We use this variable to keep track of whether this is the first time the mouse has moved.
-    public bool IsMouseFirstMove = true;
-    
-    public bool IsInputEnabled = true;
+    /// <summary>
+    /// Rotation around the X axis (radians)
+    /// </summary>
+    public float PitchRadians { get; private set; }
 
-    // Those vectors are directions pointing outwards from the camera to define how it rotated.
-    public Vector3 Front => _front;
-
-    public Vector3 Up
+    /// <summary>
+    /// Rotation around the X axis (degrees)
+    /// </summary>
+    public float PitchDegrees
     {
-        get => _up;
-        private set => _up = value;
-    }
-
-    public Vector3 Right
-    {
-        get => _right;
-        private set => _right = value;
-    }
-
-    public float Pitch
-    {
-        get => MathHelper.RadiansToDegrees(_pitch);
+        get => MathHelper.RadiansToDegrees(PitchRadians);
         set
         {
             // We clamp the pitch value between -89 and 89 to prevent gimbal lock and/or the camera from going upside down.
             float angle = MathHelper.Clamp(value, -89f, 89f);
             // We convert from degrees to radians as soon as the property is set to improve performance.
-            _pitch = MathHelper.DegreesToRadians(angle);
-            UpdateVectors();
+            PitchRadians = MathHelper.DegreesToRadians(angle);
+            UpdateDirectionVectors();
         }
     }
 
-    public float Yaw
+    /// <summary>
+    /// Rotation around the Y axis (radians)
+    /// </summary>
+    public float YawRadians { get; private set; }
+
+    /// <summary>
+    /// Rotation around the Y axis (degrees)
+    /// </summary>
+    public float YawDegrees
     {
-        get => MathHelper.RadiansToDegrees(_yaw);
+        get => MathHelper.RadiansToDegrees(YawRadians);
         set
         {
             // We convert from degrees to radians as soon as the property is set to improve performance.
-            _yaw = MathHelper.DegreesToRadians(value);
-            UpdateVectors();
+            YawRadians = MathHelper.DegreesToRadians(value);
+            UpdateDirectionVectors();
         }
     }
 
-    // The field of view (FOV) is the vertical angle of the camera view.
-    public float Fov
+    /// <summary>
+    /// The field of view of the camera (radians)
+    /// </summary>
+    public float FovRadians { get; private set; }
+
+    /// <summary>
+    /// The field of view (FOV degrees, the vertical angle of the camera view).
+    /// </summary>
+    public float FovDegrees
     {
-        get => MathHelper.RadiansToDegrees(_fov);
+        get => MathHelper.RadiansToDegrees(FovRadians);
         set
         {
             float angle = MathHelper.Clamp(value, 1f, 90f);
             // We convert from degrees to radians as soon as the property is set to improve performance.
-            _fov = MathHelper.DegreesToRadians(angle);
+            FovRadians = MathHelper.DegreesToRadians(angle);
+            RecalculateProjectionMatrix();
         }
     }
-    
-    
-    public Camera(Vector3 localPosition, float aspectRatio) : base(localPosition)
-    {
-        AspectRatio = aspectRatio;
-        _cameraWindow = new CameraWindow(this);
 
-        SetActive(true);
+
+    protected Camera(Vector3 localPosition, int renderPriority = 0)
+    {
+        RenderPriority = renderPriority;
+        FovRadians = MathHelper.PiOver2;
+        Position = localPosition;
+        YawRadians = -MathHelper.PiOver2; // Without this, you would be started rotated 90 degrees right.
+        Forward = -Vector3.UnitZ;
+        Up = Vector3.UnitY;
+        Right = Vector3.UnitX;
+
+        GameClient.ClientResized += RecalculateProjectionMatrix;
+        
+        RecalculateMatrices();
+        ActiveCameras.Add(this);
+        RenderingCamera = ActiveCameras.Min!;
+    }
+
+
+    protected Camera(Vector3 localPosition, float pitch, float yaw, int renderPriority = 0)
+    {
+        RenderPriority = renderPriority;
+        FovRadians = MathHelper.PiOver2;
+        Position = localPosition;
+        YawRadians = -MathHelper.PiOver2; // Without this, you would be started rotated 90 degrees right.
+        Forward = -Vector3.UnitZ;
+        Up = Vector3.UnitY;
+        Right = Vector3.UnitX;
+        PitchDegrees = pitch;
+        YawDegrees = yaw;
+
+        GameClient.ClientResized += RecalculateProjectionMatrix;
+        
+        RecalculateMatrices();
+        ActiveCameras.Add(this);
+        RenderingCamera = ActiveCameras.Min!;
     }
     
     
-    public Camera(Vector3 localPosition, float pitch, float yaw, float aspectRatio) : base(localPosition)
+    /// <summary>
+    /// Sets the position of the camera and recalculates the view matrix.
+    /// </summary>
+    /// <param name="position">The new position</param>
+    public void SetPosition(Vector3 position)
     {
-        AspectRatio = aspectRatio;
-        _cameraWindow = new CameraWindow(this);
-        Pitch = pitch;
-        Yaw = yaw;
-
-        SetActive(true);
+        Position = position;
+        RecalculateViewMatrix();
     }
     
     
-    public void SetActive(bool cancelIfActiveExists = false)
+    protected abstract Vector3 CalculateForwardVector(float pitch, float yaw);
+    protected abstract Vector3 CalculateRightVector(Vector3 forward);
+    protected abstract Vector3 CalculateUpVector(Vector3 right, Vector3 forward);
+
+    
+    /// <summary>
+    /// Updates the direction vectors (<see cref="Forward"/>, <see cref="Right"/>, <see cref="Up"/>) of the camera.
+    /// </summary>
+    private void UpdateDirectionVectors()
     {
-        if (_isActive)
+        Vector3 forward = CalculateForwardVector(PitchRadians, YawRadians);
+        Vector3 right = CalculateRightVector(forward);
+        Vector3 up = CalculateUpVector(right, forward);
+        
+        Forward = forward;
+        Right = right;
+        Up = up;
+        RecalculateViewMatrix();
+    }
+
+
+    private void RecalculateMatrices()
+    {
+        RecalculateViewMatrix();
+        RecalculateProjectionMatrix();
+    }
+
+
+    /// <summary>
+    /// Calculates the view matrix of the camera using a LookAt function.
+    /// </summary>
+    private void RecalculateViewMatrix()
+    {
+        ViewMatrix = Matrix4.LookAt(Position, Position + Forward, Up);
+    }
+
+    
+    /// <summary>
+    /// Calculates the projection matrix of the camera using a perspective projection.
+    /// </summary>
+    private void RecalculateProjectionMatrix()
+    {
+        ProjectionMatrix = Matrix4.CreatePerspectiveFieldOfView(FovRadians, GameClient.WindowAspectRatio, 0.01f, 1000f);
+    }
+    
+    
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposing)
             return;
-        
-        if (ActiveCamera != null)
-        {
-            if (cancelIfActiveExists)
-                return;
-            
-            ActiveCamera._isActive = false;
-        }
 
-        ActiveCamera = this;
-        _isActive = true;
+        // Dispose managed resources.
+        ActiveCameras.Remove(this);
+        RenderingCamera = ActiveCameras.Min!;
+        GameClient.ClientResized -= RecalculateProjectionMatrix;
     }
 
 
-    // TODO: Project the Front/Right vectors onto the XZ plane while keeping their magnitude and use those for movement.
-    // TODO: Use world up/down instead of camera up/down for vertical movement.
-    // TODO: Possibly use the Transform.forward property.
-    protected override void OnUpdate(double time)
+    public void Dispose()
     {
-        if (!IsInputEnabled)
-            return;
-        
-        if (Input.KeyboardState.IsKeyDown(Keys.W))
-        {
-            Transform.LocalPosition += Front * _cameraFlySpeed * (float)time; // Forward
-        }
-
-        if (Input.KeyboardState.IsKeyDown(Keys.S))
-        {
-            Transform.LocalPosition -= Front * _cameraFlySpeed * (float)time; // Backwards
-        }
-
-        if (Input.KeyboardState.IsKeyDown(Keys.A))
-        {
-            Transform.LocalPosition -= Right * _cameraFlySpeed * (float)time; // Left
-        }
-
-        if (Input.KeyboardState.IsKeyDown(Keys.D))
-        {
-            Transform.LocalPosition += Right * _cameraFlySpeed * (float)time; // Right
-        }
-
-        if (Input.KeyboardState.IsKeyDown(Keys.Space))
-        {
-            Transform.LocalPosition += Up * _cameraFlySpeed * (float)time; // Up
-        }
-
-        if (Input.KeyboardState.IsKeyDown(Keys.LeftShift))
-        {
-            Transform.LocalPosition -= Up * _cameraFlySpeed * (float)time; // Down
-        }
-
-        if (IsMouseFirstMove)
-        {
-            _mouseLastPos = new Vector2(Input.MouseState.X, Input.MouseState.Y);
-            IsMouseFirstMove = false;
-        }
-        else
-        {
-            // Calculate the offset of the mouse position
-            float deltaX = Input.MouseState.X - _mouseLastPos.X;
-            float deltaY = Input.MouseState.Y - _mouseLastPos.Y;
-            _mouseLastPos = new Vector2(Input.MouseState.X, Input.MouseState.Y);
-
-            // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
-            Yaw += deltaX * SENSITIVITY;
-            Pitch -= deltaY * SENSITIVITY; // Reversed since y-coordinates range from bottom to top
-
-            if (Input.KeyboardState.IsKeyDown(Keys.LeftControl))
-            {
-                // Apply fov
-                Fov -= Input.MouseState.ScrollDelta.Y;
-            }
-            else
-            {
-                switch (_cameraFlySpeed)
-                {
-                    // Changing the fly speed should be accurate at the lower end, but fast when at the upper end.
-                    case <= 1f:
-                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 0.05f;
-                        break;
-                    case <= 5f:
-                    {
-                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 0.5f;
-
-                        if (_cameraFlySpeed < 1f)
-                        {
-                            _cameraFlySpeed = 0.95f;
-                        }
-
-                        break;
-                    }
-                    case <= 10f:
-                    {
-                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 1f;
-
-                        if (_cameraFlySpeed < 5f)
-                        {
-                            _cameraFlySpeed = 4.5f;
-                        }
-
-                        break;
-                    }
-                    default:
-                    {
-                        _cameraFlySpeed += Input.MouseState.ScrollDelta.Y * 5f;
-
-                        if (_cameraFlySpeed < 10f)
-                        {
-                            _cameraFlySpeed = 9f;
-                        }
-
-                        break;
-                    }
-                }
-
-                _cameraFlySpeed = MathHelper.Clamp(_cameraFlySpeed, 0.05f, 50f);
-            }
-        }
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
 
-    // Get the view matrix using the amazing LookAt function.
-    public Matrix4 GetViewMatrix()
+    public int CompareTo(Camera? other)
     {
-        return Matrix4.LookAt(Transform.LocalPosition, Transform.LocalPosition + _front, _up);
+        if (ReferenceEquals(this, other))
+            return 0;
+        if (ReferenceEquals(null, other))
+            return 1;
+        return RenderPriority.CompareTo(other.RenderPriority);
     }
-
     
-    public Matrix4 GetProjectionMatrix()
-    {
-        return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000f);
-    }
-
     
-    // This function is going to update the direction vertices using some of the math learned in the web tutorials.
-    private void UpdateVectors()
+    ~Camera()
     {
-        // First, the front matrix is calculated using some basic trigonometry.
-        _front.X = MathF.Cos(_pitch) * MathF.Cos(_yaw);
-        _front.Y = MathF.Sin(_pitch);
-        _front.Z = MathF.Cos(_pitch) * MathF.Sin(_yaw);
-
-        // We need to make sure the vectors are all normalized, as otherwise we would get some funky results.
-        _front = Vector3.Normalize(_front);
-
-        // Calculate both the right and the up vector using cross product.
-        // We are calculating the right from the "global" up.
-        _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
-        _up = Vector3.Normalize(Vector3.Cross(_right, _front));
-    }
-
-
-    public string GetFlySpeedFormatted()
-    {
-        if (_cameraFlySpeed <= 1f)
-        {
-            return $"{_cameraFlySpeed:F2}";
-        }
-
-        if (_cameraFlySpeed <= 5f)
-        {
-            return $"{_cameraFlySpeed:F1}";
-        }
-        
-        return $"{_cameraFlySpeed:F0}";
+        Dispose(false);
     }
 }
