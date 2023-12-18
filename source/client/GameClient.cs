@@ -89,7 +89,7 @@ public class GameClient : GameWindow
         _playerEntity = new PlayerEntity(new Vector3(0, 256, 0), 0, 0);
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
-            PhotoModeCamera.Create(new Vector3(0, 256, 48), -60, -100);
+            PhotoModeCamera.Create(new Vector3(0, 256, 48), -30, -100);
 #endif
         CursorState = CursorState.Grabbed;
         
@@ -173,7 +173,7 @@ public class GameClient : GameWindow
         _skybox.Draw();
 
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && Time.TotalTime > 1f)
+        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && Time.TotalTime > 1f && RenderingStats.ChunksInMeshingQueue == 0)
         {
             Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
             Close();
