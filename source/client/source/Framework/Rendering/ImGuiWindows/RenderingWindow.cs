@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿#if DEBUG
+using System.Globalization;
+using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Meshing;
 using ImGuiNET;
@@ -22,36 +24,36 @@ public class RenderingWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        ImGui.Checkbox("Wireframe rendering", ref DebugSettings.RenderWireframe);
+        ImGui.Checkbox("Wireframe rendering", ref ClientConfig.DebugModeConfig.RenderWireframe);
 
-        if (ImGui.Checkbox("Render chunk borders", ref DebugSettings.RenderChunkBorders))
+        if (ImGui.Checkbox("Render chunk borders", ref ClientConfig.DebugModeConfig.RenderChunkBorders))
         {
-            if (DebugSettings.RenderChunkBorders)
+            if (ClientConfig.DebugModeConfig.RenderChunkBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();
         }
 
-        if (ImGui.Checkbox("Render column borders", ref DebugSettings.RenderChunkColumnBorders))
+        if (ImGui.Checkbox("Render column borders", ref ClientConfig.DebugModeConfig.RenderChunkColumnBorders))
         {
-            if (DebugSettings.RenderChunkColumnBorders)
+            if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();
         }
 
-        if (ImGui.Checkbox("Enable Ambient Occlusion", ref DebugSettings.EnableAmbientOcclusion))
+        if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.DebugModeConfig.EnableAmbientOcclusion))
         {
             World.CurrentWorld.ChunkManager.ReloadAllChunks();
         }
         
-        ImGui.Checkbox("Render skybox", ref DebugSettings.RenderSkybox);
+        ImGui.Checkbox("Render skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
 
         ImGui.Separator();
         
-        ImGui.Checkbox("Render raycast path", ref DebugSettings.RenderRaycastPath);
-        ImGui.Checkbox("Render raycast hit", ref DebugSettings.RenderRaycastHit);
-        ImGui.Checkbox("Render raycast hit block", ref DebugSettings.RenderRaycastHitBlock);
+        ImGui.Checkbox("Render raycast path", ref ClientConfig.DebugModeConfig.RenderRaycastPath);
+        ImGui.Checkbox("Render raycast hit", ref ClientConfig.DebugModeConfig.RenderRaycastHit);
+        ImGui.Checkbox("Render raycast hit block", ref ClientConfig.DebugModeConfig.RenderRaycastHitBlock);
 
         ImGui.Separator();
         
@@ -65,3 +67,4 @@ public class RenderingWindow : ImGuiWindow
         ImGui.Text($"Average chunk meshing time = {RenderingStats.AverageChunkMeshingTime:F1}ms");
     }
 }
+#endif

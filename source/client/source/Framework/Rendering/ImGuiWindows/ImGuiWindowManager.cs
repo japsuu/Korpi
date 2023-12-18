@@ -11,9 +11,11 @@ public static class ImGuiWindowManager
     
     public static void CreateDefaultWindows()
     {
-        RenderingWindow unused1 = new();
         MemoryProfilerWindow unused2 = new();
+#if DEBUG
+        RenderingWindow unused1 = new();
         DebugTextWindow unused3 = new();
+#endif
     }
 
 
