@@ -47,7 +47,7 @@ public class ChunkColumnTests
     {
         ChunkColumn chunkColumn = new(Vector2i.Zero);
 
-        chunkColumn.Tick(1.0);
+        chunkColumn.Tick();
 
         Assert.IsFalse(chunkColumn.IsMeshDirty);
     }

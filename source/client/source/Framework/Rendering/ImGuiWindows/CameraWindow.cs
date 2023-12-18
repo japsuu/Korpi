@@ -8,27 +8,25 @@ namespace BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 
 public class CameraWindow : ImGuiWindow
 {
-    private readonly Camera _camera;
-    
     public override string Title => "Main Camera";
 
 
-    public CameraWindow(Camera camera)
+    public CameraWindow()
     {
-        _camera = camera;
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
     }
 
 
     protected override void UpdateContent()
     {
-        Vector3 camPos = _camera.Transform.LocalPosition;
+        Vector3 camPos = Camera.RenderingCamera.Position;
         ImGui.Text($"Pos: {camPos:F1}");
         ImGui.Text($"Chunk Pos: {CoordinateConversions.GetContainingChunkPos(camPos):F0}");
-        ImGui.Text($"Pitch: {_camera.Pitch:F1}");
-        ImGui.Text($"Yaw: {_camera.Yaw:F1}");
-        ImGui.Text($"Fov: {_camera.Fov:F1}");
-        ImGui.Text($"Fly spd: {_camera.GetFlySpeedFormatted()}");
+        ImGui.Text($"PitchDegrees: {Camera.RenderingCamera.PitchDegrees:F1}");
+        ImGui.Text($"YawDegrees: {Camera.RenderingCamera.YawDegrees:F1}");
+        ImGui.Text($"FovDegrees: {Camera.RenderingCamera.FovDegrees:F1}");
+        if (Camera.RenderingCamera is NoclipCamera noclipCamera)
+            ImGui.Text($"Fly spd: {noclipCamera.GetFlySpeedFormatted()}");
         ImGui.Separator();
         ImGui.Text($"Raycast result: {CameraStats.RaycastResult}");
         ImGui.Separator();

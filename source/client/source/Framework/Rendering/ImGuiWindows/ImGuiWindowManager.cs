@@ -15,6 +15,7 @@ public static class ImGuiWindowManager
 #if DEBUG
         RenderingWindow unused1 = new();
         DebugTextWindow unused3 = new();
+        CameraWindow unused = new();
 #endif
     }
 
@@ -40,7 +41,7 @@ public static class ImGuiWindowManager
     public static void UpdateAllWindows()
     {
         ImGui.Begin("Windows", ImGuiWindowFlags.AlwaysAutoResize);
-        ImGui.Checkbox("Render Windows", ref shouldRenderWindows);
+        ImGui.Checkbox("Draw Windows", ref shouldRenderWindows);
         ImGui.Separator();
         foreach (KeyValuePair<ImGuiWindow, string> kvp in RegisteredWindows)
         {

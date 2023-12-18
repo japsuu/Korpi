@@ -37,22 +37,24 @@ public abstract class Entity
     }
     
     
-    public void Update(double time)
+    public void Update()
     {
-        OnUpdate(time);
+        OnUpdate();
         
         foreach (Component component in _components.Values)
         {
-            component.Update(time);
+            component.Update();
         }
     }
     
     
-    public void Render(double time)
+    public void Draw()
     {
+        OnDraw();
+        
         foreach (Component component in _components.Values)
         {
-            component.Render(time);
+            component.Draw();
         }
     }
     
@@ -136,7 +138,13 @@ public abstract class Entity
     /// <summary>
     /// Called when the Entity is updated.
     /// </summary>
-    protected virtual void OnUpdate(double time) { }
+    protected virtual void OnUpdate() { }
+    
+    
+    /// <summary>
+    /// Called when the Entity is drawn.
+    /// </summary>
+    protected virtual void OnDraw() { }
     
     
     /// <summary>

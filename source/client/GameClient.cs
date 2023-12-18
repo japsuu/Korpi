@@ -28,13 +28,22 @@ public class GameClient : GameWindow
     /// Called before <see cref="OnUnload"/> is exited.
     /// </summary>
     public static event Action? ClientUnload;
+    /// <summary>
+    /// Called when the game client is resized.
+    /// </summary>
+    public static event Action? ClientResized;
+    
+    public static int WindowWidth { get; private set; }
+    public static int WindowHeight { get; private set; }
+    public static float WindowAspectRatio { get; private set; }
+    public static bool IsPlayerInGui { get; set; }
     
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
     private Skybox _skybox = null!;
     private World _world = null!;
     private Crosshair _crosshair = null!;
-    private Player _player = null!;
+    private PlayerEntity _playerEntity = null!;
 
 
     public GameClient() : base(
@@ -55,6 +64,10 @@ public class GameClient : GameWindow
         base.OnLoad();
         Logger.Log($"Starting v{Constants.ENGINE_VERSION}...");
         
+        WindowWidth = ClientSize.X;
+        WindowHeight = ClientSize.Y;
+        WindowAspectRatio = ClientSize.X / (float)ClientSize.Y;
+        
         GL.Enable(EnableCap.DepthTest);     // Enable depth testing.
         GL.Enable(EnableCap.Multisample);   // Enable multisampling.
         GL.Enable(EnableCap.Blend);         // Enable blending for transparent textures.
@@ -65,7 +78,6 @@ public class GameClient : GameWindow
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
-        ShaderManager.UpdateWindowSize(ClientSize.X, ClientSize.Y);
         _shaderManager = new ShaderManager();
         
         // World initialization.
@@ -73,19 +85,11 @@ public class GameClient : GameWindow
         _world = new World("World1");
         _skybox = new Skybox(false);
         
-        // Player initialization.
+        // PlayerEntity initialization.
+        _playerEntity = new PlayerEntity(new Vector3(0, 256, 0), 0, 0);
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
-        {
-            _player = new Player(new Vector3(0, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y);
-            _player.Camera.IsInputEnabled = false;
-        }
-        else
-        {
-            _player = new Player(new Vector3(0, 256, 0), 0, 0, ClientSize.X / (float)ClientSize.Y);
-        }
-#else
-        _player = new Player(new Vector3(0, 256, 0), 0, 0, ClientSize.X / (float)ClientSize.Y);
+            PhotoModeCamera.Create(new Vector3(0, 256, 48), -60, -100);
 #endif
         CursorState = CursorState.Grabbed;
         
@@ -132,7 +136,7 @@ public class GameClient : GameWindow
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
             SwitchCursorState();
 
-        _world.Tick(args.Time);
+        _world.Tick();
     }
 
     
@@ -149,7 +153,7 @@ public class GameClient : GameWindow
         
         // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
-        Matrix4 cameraViewMatrix = Camera.ActiveCamera.GetViewMatrix();
+        Matrix4 cameraViewMatrix = Camera.RenderingCamera.ViewMatrix;
 
         // IMPORTANT: OpenTK's matrix types are transposed from what OpenGL would expect - rows and columns are reversed.
         // They are then transposed properly when passed to the shader. 
@@ -159,7 +163,7 @@ public class GameClient : GameWindow
         // and finally apply the viewToProjectedSpace (aka projection) matrix.
         // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
         ShaderManager.UpdateViewMatrix(cameraViewMatrix);
-        ShaderManager.UpdateProjectionMatrix(Camera.ActiveCamera.GetProjectionMatrix());
+        ShaderManager.UpdateProjectionMatrix(Camera.RenderingCamera.ProjectionMatrix);
         
         DrawWorld();
 
@@ -198,7 +202,7 @@ public class GameClient : GameWindow
 
         // Enable backface culling.
         GL.Enable(EnableCap.CullFace);
-        _world.DrawChunks(Player.LocalPlayer.Transform.LocalPosition, ShaderManager.ChunkShader);
+        _world.Draw();
         GL.Disable(EnableCap.CullFace);
     }
 
@@ -215,18 +219,15 @@ public class GameClient : GameWindow
     {
         base.OnResize(e);
 
-        // if (e.Width == ShaderManager.WindowWidth && e.Height == ShaderManager.WindowHeight)
-        //     return;
+        WindowWidth = e.Width;
+        WindowHeight = e.Height;
+        WindowAspectRatio = e.Width / (float)e.Height;
 
-        GL.Viewport(0, 0, e.Width, e.Height);
-        
-        ShaderManager.UpdateWindowSize(e.Width, e.Height);
+        GL.Viewport(0, 0, WindowWidth, WindowHeight);
 
         // Tell ImGui of the new window size.
         _imGuiController.WindowResized(ClientSize.X, ClientSize.Y);
-        
-        // Tell the camera the new aspect ratio.
-        Camera.ActiveCamera.AspectRatio = ClientSize.X / (float)ClientSize.Y;
+        ClientResized?.Invoke();
     }
 
     
@@ -255,15 +256,13 @@ public class GameClient : GameWindow
         
         if (CursorState == CursorState.Grabbed)
         {
-            Camera.ActiveCamera.IsMouseFirstMove = true;
             CursorState = CursorState.Normal;
-            Camera.ActiveCamera.IsInputEnabled = false;
+            IsPlayerInGui = true;
         }
         else if (CursorState == CursorState.Normal)
         {
-            Camera.ActiveCamera.IsMouseFirstMove = true;
             CursorState = CursorState.Grabbed;
-            Camera.ActiveCamera.IsInputEnabled = true;
+            IsPlayerInGui = false;
         }
     }
 }

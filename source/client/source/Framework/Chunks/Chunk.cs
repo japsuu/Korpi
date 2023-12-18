@@ -57,7 +57,7 @@ public class Chunk
     }
 
 
-    public void Tick(double deltaTime)
+    public void Tick()
     {
     }
 

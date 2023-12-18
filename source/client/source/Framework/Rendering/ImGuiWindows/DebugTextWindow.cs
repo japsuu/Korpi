@@ -90,7 +90,7 @@ public class DebugTextWindow : ImGuiWindow
 
     protected override void PreUpdate()
     {
-        ImGui.SetWindowSize(Title, new System.Numerics.Vector2(ShaderManager.WindowWidth, ShaderManager.WindowHeight));
+        ImGui.SetWindowSize(Title, new System.Numerics.Vector2(GameClient.WindowWidth, GameClient.WindowHeight));
         ImGui.SetWindowPos(Title, new System.Numerics.Vector2(0, 0));
     }
 

@@ -39,12 +39,12 @@ public class ChunkColumn
     }
         
         
-    public void Tick(double deltaTime)
+    public void Tick()
     {
         IsMeshDirty = false;
         foreach (Chunk? chunk in _chunks)
         {
-            chunk?.Tick(deltaTime);
+            chunk?.Tick();
             
             if (chunk?.IsMeshDirty == true)
                 IsMeshDirty = true;
