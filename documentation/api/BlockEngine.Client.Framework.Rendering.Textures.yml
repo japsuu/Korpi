@@ -1,0 +1,101 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Rendering.Textures
+  commentId: N:BlockEngine.Client.Framework.Rendering.Textures
+  id: BlockEngine.Client.Framework.Rendering.Textures
+  children:
+  - BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+  - BlockEngine.Client.Framework.Rendering.Textures.CubemapTexture
+  - BlockEngine.Client.Framework.Rendering.Textures.StaticTextureBindings
+  - BlockEngine.Client.Framework.Rendering.Textures.Texture
+  - BlockEngine.Client.Framework.Rendering.Textures.Texture2D
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Rendering.Textures
+  nameWithType: BlockEngine.Client.Framework.Rendering.Textures
+  fullName: BlockEngine.Client.Framework.Rendering.Textures
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+  commentId: T:BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+  parent: BlockEngine.Client.Framework.Rendering.Textures
+  href: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture.html
+  name: ArrayTexture
+  nameWithType: ArrayTexture
+  fullName: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+- uid: BlockEngine.Client.Framework.Rendering.Textures.CubemapTexture
+  commentId: T:BlockEngine.Client.Framework.Rendering.Textures.CubemapTexture
+  parent: BlockEngine.Client.Framework.Rendering.Textures
+  href: BlockEngine.Client.Framework.Rendering.Textures.CubemapTexture.html
+  name: CubemapTexture
+  nameWithType: CubemapTexture
+  fullName: BlockEngine.Client.Framework.Rendering.Textures.CubemapTexture
+- uid: BlockEngine.Client.Framework.Rendering.Textures.StaticTextureBindings
+  commentId: T:BlockEngine.Client.Framework.Rendering.Textures.StaticTextureBindings
+  href: BlockEngine.Client.Framework.Rendering.Textures.StaticTextureBindings.html
+  name: StaticTextureBindings
+  nameWithType: StaticTextureBindings
+  fullName: BlockEngine.Client.Framework.Rendering.Textures.StaticTextureBindings
+- uid: BlockEngine.Client.Framework.Rendering.Textures.Texture
+  commentId: T:BlockEngine.Client.Framework.Rendering.Textures.Texture
+  parent: BlockEngine.Client.Framework.Rendering.Textures
+  href: BlockEngine.Client.Framework.Rendering.Textures.Texture.html
+  name: Texture
+  nameWithType: Texture
+  fullName: BlockEngine.Client.Framework.Rendering.Textures.Texture
+- uid: BlockEngine.Client.Framework.Rendering.Textures.Texture2D
+  commentId: T:BlockEngine.Client.Framework.Rendering.Textures.Texture2D
+  parent: BlockEngine.Client.Framework.Rendering.Textures
+  href: BlockEngine.Client.Framework.Rendering.Textures.Texture2D.html
+  name: Texture2D
+  nameWithType: Texture2D
+  fullName: BlockEngine.Client.Framework.Rendering.Textures.Texture2D
+- uid: BlockEngine.Client.Framework.Rendering.Textures
+  commentId: N:BlockEngine.Client.Framework.Rendering.Textures
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Rendering.Textures
+  nameWithType: BlockEngine.Client.Framework.Rendering.Textures
+  fullName: BlockEngine.Client.Framework.Rendering.Textures
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Textures
+    name: Textures
+    href: BlockEngine.Client.Framework.Rendering.Textures.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering
+    name: Rendering
+    href: BlockEngine.Client.Framework.Rendering.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Rendering.Textures
+    name: Textures
+    href: BlockEngine.Client.Framework.Rendering.Textures.html

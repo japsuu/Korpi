@@ -1,0 +1,265 @@
+﻿### YamlMime:TableOfContent
+items:
+- uid: BlockEngine.Client
+  name: BlockEngine.Client
+  items:
+  - uid: BlockEngine.Client.Constants
+    name: Constants
+  - uid: BlockEngine.Client.GameClient
+    name: GameClient
+- uid: BlockEngine.Client.Framework
+  name: BlockEngine.Client.Framework
+  items:
+  - uid: BlockEngine.Client.Framework.GameTime
+    name: GameTime
+  - uid: BlockEngine.Client.Framework.World
+    name: World
+- uid: BlockEngine.Client.Framework.Bitpacking
+  name: BlockEngine.Client.Framework.Bitpacking
+  items:
+  - uid: BlockEngine.Client.Framework.Bitpacking.ArraySerializeUnsafe
+    name: ArraySerializeUnsafe
+  - uid: BlockEngine.Client.Framework.Bitpacking.BitBuffer
+    name: BitBuffer
+  - uid: BlockEngine.Client.Framework.Bitpacking.BlockPalette
+    name: BlockPalette
+  - uid: BlockEngine.Client.Framework.Bitpacking.ByteConverter
+    name: ByteConverter
+  - uid: BlockEngine.Client.Framework.Bitpacking.FlatBlockStorage
+    name: FlatBlockStorage
+  - uid: BlockEngine.Client.Framework.Bitpacking.IBlockStorage
+    name: IBlockStorage
+  - uid: BlockEngine.Client.Framework.Bitpacking.PaletteEntry
+    name: PaletteEntry
+  - uid: BlockEngine.Client.Framework.Bitpacking.PrimitiveSerializeExt
+    name: PrimitiveSerializeExt
+- uid: BlockEngine.Client.Framework.Blocks
+  name: BlockEngine.Client.Framework.Blocks
+  items:
+  - uid: BlockEngine.Client.Framework.Blocks.Block
+    name: Block
+  - uid: BlockEngine.Client.Framework.Blocks.BlockOrientation
+    name: BlockOrientation
+  - uid: BlockEngine.Client.Framework.Blocks.BlockRenderType
+    name: BlockRenderType
+  - uid: BlockEngine.Client.Framework.Blocks.BlockState
+    name: BlockState
+  - uid: BlockEngine.Client.Framework.Blocks.Color9
+    name: Color9
+- uid: BlockEngine.Client.Framework.Blocks.Materials
+  name: BlockEngine.Client.Framework.Blocks.Materials
+  items:
+  - uid: BlockEngine.Client.Framework.Blocks.Materials.AbstractMaterial
+    name: AbstractMaterial
+- uid: BlockEngine.Client.Framework.Blocks.Serialization
+  name: BlockEngine.Client.Framework.Blocks.Serialization
+  items:
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureCollectionData
+    name: BlockFaceTextureCollectionData
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization.BlockFaceTextureData
+    name: BlockFaceTextureData
+  - uid: BlockEngine.Client.Framework.Blocks.Serialization.YamlBlockData
+    name: YamlBlockData
+- uid: BlockEngine.Client.Framework.Blocks.Textures
+  name: BlockEngine.Client.Framework.Blocks.Textures
+  items:
+  - uid: BlockEngine.Client.Framework.Blocks.Textures.AnimatedBlockFaceTexture
+    name: AnimatedBlockFaceTexture
+  - uid: BlockEngine.Client.Framework.Blocks.Textures.BlockFaceTexture
+    name: BlockFaceTexture
+  - uid: BlockEngine.Client.Framework.Blocks.Textures.BlockFaceTextureCollection
+    name: BlockFaceTextureCollection
+- uid: BlockEngine.Client.Framework.Chunks
+  name: BlockEngine.Client.Framework.Chunks
+  items:
+  - uid: BlockEngine.Client.Framework.Chunks.Chunk
+    name: Chunk
+  - uid: BlockEngine.Client.Framework.Chunks.ChunkColumn
+    name: ChunkColumn
+  - uid: BlockEngine.Client.Framework.Chunks.ChunkManager
+    name: ChunkManager
+  - uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+    name: NeighbouringChunkPosition
+- uid: BlockEngine.Client.Framework.Configuration
+  name: BlockEngine.Client.Framework.Configuration
+  items:
+  - uid: BlockEngine.Client.Framework.Configuration.IClientSettings
+    name: IClientSettings
+  - uid: BlockEngine.Client.Framework.Configuration.ILoggingSettings
+    name: ILoggingSettings
+  - uid: BlockEngine.Client.Framework.Configuration.IWindowSettings
+    name: IWindowSettings
+  - uid: BlockEngine.Client.Framework.Configuration.Settings
+    name: Settings
+- uid: BlockEngine.Client.Framework.Debugging
+  name: BlockEngine.Client.Framework.Debugging
+  items:
+  - uid: BlockEngine.Client.Framework.Debugging.CameraStats
+    name: CameraStats
+  - uid: BlockEngine.Client.Framework.Debugging.DebugBox
+    name: DebugBox
+  - uid: BlockEngine.Client.Framework.Debugging.DebugChunkDrawer
+    name: DebugChunkDrawer
+  - uid: BlockEngine.Client.Framework.Debugging.DebugDrawable
+    name: DebugDrawable
+  - uid: BlockEngine.Client.Framework.Debugging.DebugDrawer
+    name: DebugDrawer
+  - uid: BlockEngine.Client.Framework.Debugging.DebugLine
+    name: DebugLine
+  - uid: BlockEngine.Client.Framework.Debugging.DebugSettings
+    name: DebugSettings
+  - uid: BlockEngine.Client.Framework.Debugging.DebugSphere
+    name: DebugSphere
+  - uid: BlockEngine.Client.Framework.Debugging.IHasName
+    name: IHasName
+  - uid: BlockEngine.Client.Framework.Debugging.RenderingStats
+    name: RenderingStats
+  - uid: BlockEngine.Client.Framework.Debugging.Screenshotter
+    name: Screenshotter
+  - uid: BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture
+    name: Screenshotter.FrameCapture
+- uid: BlockEngine.Client.Framework.ECS.Components
+  name: BlockEngine.Client.Framework.ECS.Components
+  items:
+  - uid: BlockEngine.Client.Framework.ECS.Components.Component
+    name: Component
+  - uid: BlockEngine.Client.Framework.ECS.Components.PlayerRenderer
+    name: PlayerRenderer
+  - uid: BlockEngine.Client.Framework.ECS.Components.Transform
+    name: Transform
+- uid: BlockEngine.Client.Framework.ECS.Entities
+  name: BlockEngine.Client.Framework.ECS.Entities
+  items:
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Entity
+    name: Entity
+  - uid: BlockEngine.Client.Framework.ECS.Entities.EntityManager
+    name: EntityManager
+  - uid: BlockEngine.Client.Framework.ECS.Entities.Player
+    name: Player
+  - uid: BlockEngine.Client.Framework.ECS.Entities.TransformEntity
+    name: TransformEntity
+- uid: BlockEngine.Client.Framework.Exceptions
+  name: BlockEngine.Client.Framework.Exceptions
+  items:
+  - uid: BlockEngine.Client.Framework.Exceptions.IdClashException
+    name: IdClashException
+  - uid: BlockEngine.Client.Framework.Exceptions.IdOverflowException
+    name: IdOverflowException
+- uid: BlockEngine.Client.Framework.Meshing
+  name: BlockEngine.Client.Framework.Meshing
+  items:
+  - uid: BlockEngine.Client.Framework.Meshing.BlockFace
+    name: BlockFace
+  - uid: BlockEngine.Client.Framework.Meshing.ChunkMesher
+    name: ChunkMesher
+  - uid: BlockEngine.Client.Framework.Meshing.ChunkRenderer
+    name: ChunkRenderer
+  - uid: BlockEngine.Client.Framework.Meshing.ChunkRendererStorage
+    name: ChunkRendererStorage
+  - uid: BlockEngine.Client.Framework.Meshing.MeshingBuffer
+    name: MeshingBuffer
+  - uid: BlockEngine.Client.Framework.Meshing.MeshingDataCache
+    name: MeshingDataCache
+- uid: BlockEngine.Client.Framework.Modding
+  name: BlockEngine.Client.Framework.Modding
+  items:
+  - uid: BlockEngine.Client.Framework.Modding.ModLoader
+    name: ModLoader
+  - uid: BlockEngine.Client.Framework.Modding.YamlMod
+    name: YamlMod
+- uid: BlockEngine.Client.Framework.Obsolete
+  name: BlockEngine.Client.Framework.Obsolete
+  items:
+  - uid: BlockEngine.Client.Framework.Obsolete.FpsCounter
+    name: FpsCounter
+  - uid: BlockEngine.Client.Framework.Obsolete.IdStorage
+    name: IdStorage
+- uid: BlockEngine.Client.Framework.Physics
+  name: BlockEngine.Client.Framework.Physics
+  items:
+  - uid: BlockEngine.Client.Framework.Physics.Ray
+    name: Ray
+  - uid: BlockEngine.Client.Framework.Physics.RaycastResult
+    name: RaycastResult
+- uid: BlockEngine.Client.Framework.Registries
+  name: BlockEngine.Client.Framework.Registries
+  items:
+  - uid: BlockEngine.Client.Framework.Registries.ArrayTextureBuilder
+    name: ArrayTextureBuilder
+  - uid: BlockEngine.Client.Framework.Registries.BlockRegistry
+    name: BlockRegistry
+  - uid: BlockEngine.Client.Framework.Registries.IHasId
+    name: IHasId
+  - uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+    name: IndexedRegistry<T>
+  - uid: BlockEngine.Client.Framework.Registries.TextureRegistry
+    name: TextureRegistry
+- uid: BlockEngine.Client.Framework.Rendering
+  name: BlockEngine.Client.Framework.Rendering
+  items:
+  - uid: BlockEngine.Client.Framework.Rendering.Crosshair
+    name: Crosshair
+  - uid: BlockEngine.Client.Framework.Rendering.Skybox
+    name: Skybox
+- uid: BlockEngine.Client.Framework.Rendering.Cameras
+  name: BlockEngine.Client.Framework.Rendering.Cameras
+  items:
+  - uid: BlockEngine.Client.Framework.Rendering.Cameras.Camera
+    name: Camera
+- uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  name: BlockEngine.Client.Framework.Rendering.ImGuiWindows
+  items:
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.CameraWindow
+    name: CameraWindow
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.DebugTextWindow
+    name: DebugTextWindow
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiController
+    name: ImGuiController
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindow
+    name: ImGuiWindow
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.ImGuiWindowManager
+    name: ImGuiWindowManager
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.MemoryProfilerWindow
+    name: MemoryProfilerWindow
+  - uid: BlockEngine.Client.Framework.Rendering.ImGuiWindows.RenderingWindow
+    name: RenderingWindow
+- uid: BlockEngine.Client.Framework.Rendering.Shaders
+  name: BlockEngine.Client.Framework.Rendering.Shaders
+  items:
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders.Shader
+    name: Shader
+  - uid: BlockEngine.Client.Framework.Rendering.Shaders.ShaderManager
+    name: ShaderManager
+- uid: BlockEngine.Client.Framework.Rendering.Textures
+  name: BlockEngine.Client.Framework.Rendering.Textures
+  items:
+  - uid: BlockEngine.Client.Framework.Rendering.Textures.ArrayTexture
+    name: ArrayTexture
+  - uid: BlockEngine.Client.Framework.Rendering.Textures.CubemapTexture
+    name: CubemapTexture
+  - uid: BlockEngine.Client.Framework.Rendering.Textures.StaticTextureBindings
+    name: StaticTextureBindings
+  - uid: BlockEngine.Client.Framework.Rendering.Textures.Texture
+    name: Texture
+  - uid: BlockEngine.Client.Framework.Rendering.Textures.Texture2D
+    name: Texture2D
+- uid: BlockEngine.Client.Utils
+  name: BlockEngine.Client.Utils
+  items:
+  - uid: BlockEngine.Client.Utils.CoordinateConversions
+    name: CoordinateConversions
+  - uid: BlockEngine.Client.Utils.ImageUtils
+    name: ImageUtils
+  - uid: BlockEngine.Client.Utils.Input
+    name: Input
+  - uid: BlockEngine.Client.Utils.IoUtils
+    name: IoUtils
+  - uid: BlockEngine.Client.Utils.Logger
+    name: Logger
+  - uid: BlockEngine.Client.Utils.MathUtils
+    name: MathUtils
+  - uid: BlockEngine.Client.Utils.Time
+    name: Time
+  - uid: BlockEngine.Client.Utils.YamlHelper
+    name: YamlHelper
+memberLayout: SamePage

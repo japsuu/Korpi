@@ -1,0 +1,70 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Registries
+  commentId: N:BlockEngine.Client.Framework.Registries
+  id: BlockEngine.Client.Framework.Registries
+  children:
+  - BlockEngine.Client.Framework.Registries.ArrayTextureBuilder
+  - BlockEngine.Client.Framework.Registries.BlockRegistry
+  - BlockEngine.Client.Framework.Registries.IHasId
+  - BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  - BlockEngine.Client.Framework.Registries.TextureRegistry
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Registries
+  nameWithType: BlockEngine.Client.Framework.Registries
+  fullName: BlockEngine.Client.Framework.Registries
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Registries.ArrayTextureBuilder
+  commentId: T:BlockEngine.Client.Framework.Registries.ArrayTextureBuilder
+  href: BlockEngine.Client.Framework.Registries.ArrayTextureBuilder.html
+  name: ArrayTextureBuilder
+  nameWithType: ArrayTextureBuilder
+  fullName: BlockEngine.Client.Framework.Registries.ArrayTextureBuilder
+- uid: BlockEngine.Client.Framework.Registries.BlockRegistry
+  commentId: T:BlockEngine.Client.Framework.Registries.BlockRegistry
+  href: BlockEngine.Client.Framework.Registries.BlockRegistry.html
+  name: BlockRegistry
+  nameWithType: BlockRegistry
+  fullName: BlockEngine.Client.Framework.Registries.BlockRegistry
+- uid: BlockEngine.Client.Framework.Registries.IHasId
+  commentId: T:BlockEngine.Client.Framework.Registries.IHasId
+  href: BlockEngine.Client.Framework.Registries.IHasId.html
+  name: IHasId
+  nameWithType: IHasId
+  fullName: BlockEngine.Client.Framework.Registries.IHasId
+- uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  commentId: T:BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+  href: BlockEngine.Client.Framework.Registries.IndexedRegistry-1.html
+  name: IndexedRegistry<T>
+  nameWithType: IndexedRegistry<T>
+  fullName: BlockEngine.Client.Framework.Registries.IndexedRegistry<T>
+  nameWithType.vb: IndexedRegistry(Of T)
+  fullName.vb: BlockEngine.Client.Framework.Registries.IndexedRegistry(Of T)
+  name.vb: IndexedRegistry(Of T)
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+    name: IndexedRegistry
+    href: BlockEngine.Client.Framework.Registries.IndexedRegistry-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.Registries.IndexedRegistry`1
+    name: IndexedRegistry
+    href: BlockEngine.Client.Framework.Registries.IndexedRegistry-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: BlockEngine.Client.Framework.Registries.TextureRegistry
+  commentId: T:BlockEngine.Client.Framework.Registries.TextureRegistry
+  href: BlockEngine.Client.Framework.Registries.TextureRegistry.html
+  name: TextureRegistry
+  nameWithType: TextureRegistry
+  fullName: BlockEngine.Client.Framework.Registries.TextureRegistry

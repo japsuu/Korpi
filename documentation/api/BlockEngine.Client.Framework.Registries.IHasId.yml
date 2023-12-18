@@ -1,0 +1,124 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Registries.IHasId
+  commentId: T:BlockEngine.Client.Framework.Registries.IHasId
+  id: IHasId
+  parent: BlockEngine.Client.Framework.Registries
+  children:
+  - BlockEngine.Client.Framework.Registries.IHasId.AssignId(System.UInt16)
+  langs:
+  - csharp
+  - vb
+  name: IHasId
+  nameWithType: IHasId
+  fullName: BlockEngine.Client.Framework.Registries.IHasId
+  type: Interface
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/IHasId.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: IHasId
+    path: ../source/client/source/Framework/Registries/IHasId.cs
+    startLine: 2
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: public interface IHasId
+    content.vb: Public Interface IHasId
+- uid: BlockEngine.Client.Framework.Registries.IHasId.AssignId(System.UInt16)
+  commentId: M:BlockEngine.Client.Framework.Registries.IHasId.AssignId(System.UInt16)
+  id: AssignId(System.UInt16)
+  parent: BlockEngine.Client.Framework.Registries.IHasId
+  langs:
+  - csharp
+  - vb
+  name: AssignId(ushort)
+  nameWithType: IHasId.AssignId(ushort)
+  fullName: BlockEngine.Client.Framework.Registries.IHasId.AssignId(ushort)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Registries/IHasId.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: AssignId
+    path: ../source/client/source/Framework/Registries/IHasId.cs
+    startLine: 4
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Registries
+  syntax:
+    content: void AssignId(ushort id)
+    parameters:
+    - id: id
+      type: System.UInt16
+    content.vb: Sub AssignId(id As UShort)
+  overload: BlockEngine.Client.Framework.Registries.IHasId.AssignId*
+  nameWithType.vb: IHasId.AssignId(UShort)
+  fullName.vb: BlockEngine.Client.Framework.Registries.IHasId.AssignId(UShort)
+  name.vb: AssignId(UShort)
+references:
+- uid: BlockEngine.Client.Framework.Registries
+  commentId: N:BlockEngine.Client.Framework.Registries
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Registries
+  nameWithType: BlockEngine.Client.Framework.Registries
+  fullName: BlockEngine.Client.Framework.Registries
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Registries
+    name: Registries
+    href: BlockEngine.Client.Framework.Registries.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Registries
+    name: Registries
+    href: BlockEngine.Client.Framework.Registries.html
+- uid: BlockEngine.Client.Framework.Registries.IHasId.AssignId*
+  commentId: Overload:BlockEngine.Client.Framework.Registries.IHasId.AssignId
+  href: BlockEngine.Client.Framework.Registries.IHasId.html#BlockEngine_Client_Framework_Registries_IHasId_AssignId_System_UInt16_
+  name: AssignId
+  nameWithType: IHasId.AssignId
+  fullName: BlockEngine.Client.Framework.Registries.IHasId.AssignId
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint16
+  name: ushort
+  nameWithType: ushort
+  fullName: ushort
+  nameWithType.vb: UShort
+  fullName.vb: UShort
+  name.vb: UShort
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

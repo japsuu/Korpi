@@ -1,0 +1,70 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Physics
+  commentId: N:BlockEngine.Client.Framework.Physics
+  id: BlockEngine.Client.Framework.Physics
+  children:
+  - BlockEngine.Client.Framework.Physics.Ray
+  - BlockEngine.Client.Framework.Physics.RaycastResult
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Physics
+  nameWithType: BlockEngine.Client.Framework.Physics
+  fullName: BlockEngine.Client.Framework.Physics
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Physics.Ray
+  commentId: T:BlockEngine.Client.Framework.Physics.Ray
+  parent: BlockEngine.Client.Framework.Physics
+  href: BlockEngine.Client.Framework.Physics.Ray.html
+  name: Ray
+  nameWithType: Ray
+  fullName: BlockEngine.Client.Framework.Physics.Ray
+- uid: BlockEngine.Client.Framework.Physics.RaycastResult
+  commentId: T:BlockEngine.Client.Framework.Physics.RaycastResult
+  parent: BlockEngine.Client.Framework.Physics
+  href: BlockEngine.Client.Framework.Physics.RaycastResult.html
+  name: RaycastResult
+  nameWithType: RaycastResult
+  fullName: BlockEngine.Client.Framework.Physics.RaycastResult
+- uid: BlockEngine.Client.Framework.Physics
+  commentId: N:BlockEngine.Client.Framework.Physics
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Physics
+  nameWithType: BlockEngine.Client.Framework.Physics
+  fullName: BlockEngine.Client.Framework.Physics
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Physics
+    name: Physics
+    href: BlockEngine.Client.Framework.Physics.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Physics
+    name: Physics
+    href: BlockEngine.Client.Framework.Physics.html

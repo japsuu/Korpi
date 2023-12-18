@@ -1,0 +1,61 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework
+  commentId: N:BlockEngine.Client.Framework
+  id: BlockEngine.Client.Framework
+  children:
+  - BlockEngine.Client.Framework.GameTime
+  - BlockEngine.Client.Framework.World
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework
+  nameWithType: BlockEngine.Client.Framework
+  fullName: BlockEngine.Client.Framework
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.GameTime
+  commentId: T:BlockEngine.Client.Framework.GameTime
+  href: BlockEngine.Client.Framework.GameTime.html
+  name: GameTime
+  nameWithType: GameTime
+  fullName: BlockEngine.Client.Framework.GameTime
+- uid: BlockEngine.Client.Framework.World
+  commentId: T:BlockEngine.Client.Framework.World
+  parent: BlockEngine.Client.Framework
+  href: BlockEngine.Client.Framework.World.html
+  name: World
+  nameWithType: World
+  fullName: BlockEngine.Client.Framework.World
+- uid: BlockEngine.Client.Framework
+  commentId: N:BlockEngine.Client.Framework
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework
+  nameWithType: BlockEngine.Client.Framework
+  fullName: BlockEngine.Client.Framework
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html

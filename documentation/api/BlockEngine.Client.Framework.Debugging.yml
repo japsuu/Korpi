@@ -1,0 +1,157 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Debugging
+  commentId: N:BlockEngine.Client.Framework.Debugging
+  id: BlockEngine.Client.Framework.Debugging
+  children:
+  - BlockEngine.Client.Framework.Debugging.CameraStats
+  - BlockEngine.Client.Framework.Debugging.DebugBox
+  - BlockEngine.Client.Framework.Debugging.DebugChunkDrawer
+  - BlockEngine.Client.Framework.Debugging.DebugDrawable
+  - BlockEngine.Client.Framework.Debugging.DebugDrawer
+  - BlockEngine.Client.Framework.Debugging.DebugLine
+  - BlockEngine.Client.Framework.Debugging.DebugSettings
+  - BlockEngine.Client.Framework.Debugging.DebugSphere
+  - BlockEngine.Client.Framework.Debugging.IHasName
+  - BlockEngine.Client.Framework.Debugging.RenderingStats
+  - BlockEngine.Client.Framework.Debugging.Screenshotter
+  - BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Debugging
+  nameWithType: BlockEngine.Client.Framework.Debugging
+  fullName: BlockEngine.Client.Framework.Debugging
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Debugging.CameraStats
+  commentId: T:BlockEngine.Client.Framework.Debugging.CameraStats
+  href: BlockEngine.Client.Framework.Debugging.CameraStats.html
+  name: CameraStats
+  nameWithType: CameraStats
+  fullName: BlockEngine.Client.Framework.Debugging.CameraStats
+- uid: BlockEngine.Client.Framework.Debugging.DebugChunkDrawer
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugChunkDrawer
+  href: BlockEngine.Client.Framework.Debugging.DebugChunkDrawer.html
+  name: DebugChunkDrawer
+  nameWithType: DebugChunkDrawer
+  fullName: BlockEngine.Client.Framework.Debugging.DebugChunkDrawer
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawable
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugDrawable
+  parent: BlockEngine.Client.Framework.Debugging
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawable.html
+  name: DebugDrawable
+  nameWithType: DebugDrawable
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawable
+- uid: BlockEngine.Client.Framework.Debugging.DebugLine
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugLine
+  href: BlockEngine.Client.Framework.Debugging.DebugLine.html
+  name: DebugLine
+  nameWithType: DebugLine
+  fullName: BlockEngine.Client.Framework.Debugging.DebugLine
+- uid: BlockEngine.Client.Framework.Debugging.DebugBox
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugBox
+  href: BlockEngine.Client.Framework.Debugging.DebugBox.html
+  name: DebugBox
+  nameWithType: DebugBox
+  fullName: BlockEngine.Client.Framework.Debugging.DebugBox
+- uid: BlockEngine.Client.Framework.Debugging.DebugSphere
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugSphere
+  href: BlockEngine.Client.Framework.Debugging.DebugSphere.html
+  name: DebugSphere
+  nameWithType: DebugSphere
+  fullName: BlockEngine.Client.Framework.Debugging.DebugSphere
+- uid: BlockEngine.Client.Framework.Debugging.DebugDrawer
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugDrawer
+  href: BlockEngine.Client.Framework.Debugging.DebugDrawer.html
+  name: DebugDrawer
+  nameWithType: DebugDrawer
+  fullName: BlockEngine.Client.Framework.Debugging.DebugDrawer
+- uid: BlockEngine.Client.Framework.Debugging.DebugSettings
+  commentId: T:BlockEngine.Client.Framework.Debugging.DebugSettings
+  href: BlockEngine.Client.Framework.Debugging.DebugSettings.html
+  name: DebugSettings
+  nameWithType: DebugSettings
+  fullName: BlockEngine.Client.Framework.Debugging.DebugSettings
+- uid: BlockEngine.Client.Framework.Debugging.IHasName
+  commentId: T:BlockEngine.Client.Framework.Debugging.IHasName
+  parent: BlockEngine.Client.Framework.Debugging
+  href: BlockEngine.Client.Framework.Debugging.IHasName.html
+  name: IHasName
+  nameWithType: IHasName
+  fullName: BlockEngine.Client.Framework.Debugging.IHasName
+- uid: BlockEngine.Client.Framework.Debugging.RenderingStats
+  commentId: T:BlockEngine.Client.Framework.Debugging.RenderingStats
+  href: BlockEngine.Client.Framework.Debugging.RenderingStats.html
+  name: RenderingStats
+  nameWithType: RenderingStats
+  fullName: BlockEngine.Client.Framework.Debugging.RenderingStats
+- uid: BlockEngine.Client.Framework.Debugging.Screenshotter
+  commentId: T:BlockEngine.Client.Framework.Debugging.Screenshotter
+  href: BlockEngine.Client.Framework.Debugging.Screenshotter.html
+  name: Screenshotter
+  nameWithType: Screenshotter
+  fullName: BlockEngine.Client.Framework.Debugging.Screenshotter
+- uid: BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture
+  commentId: T:BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture
+  parent: BlockEngine.Client.Framework.Debugging
+  href: BlockEngine.Client.Framework.Debugging.Screenshotter.html
+  name: Screenshotter.FrameCapture
+  nameWithType: Screenshotter.FrameCapture
+  fullName: BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture
+  spec.csharp:
+  - uid: BlockEngine.Client.Framework.Debugging.Screenshotter
+    name: Screenshotter
+    href: BlockEngine.Client.Framework.Debugging.Screenshotter.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture
+    name: FrameCapture
+    href: BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture.html
+  spec.vb:
+  - uid: BlockEngine.Client.Framework.Debugging.Screenshotter
+    name: Screenshotter
+    href: BlockEngine.Client.Framework.Debugging.Screenshotter.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture
+    name: FrameCapture
+    href: BlockEngine.Client.Framework.Debugging.Screenshotter.FrameCapture.html
+- uid: BlockEngine.Client.Framework.Debugging
+  commentId: N:BlockEngine.Client.Framework.Debugging
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Debugging
+  nameWithType: BlockEngine.Client.Framework.Debugging
+  fullName: BlockEngine.Client.Framework.Debugging
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Debugging
+    name: Debugging
+    href: BlockEngine.Client.Framework.Debugging.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Debugging
+    name: Debugging
+    href: BlockEngine.Client.Framework.Debugging.html

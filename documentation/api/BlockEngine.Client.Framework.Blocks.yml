@@ -1,0 +1,94 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Blocks
+  commentId: N:BlockEngine.Client.Framework.Blocks
+  id: BlockEngine.Client.Framework.Blocks
+  children:
+  - BlockEngine.Client.Framework.Blocks.Block
+  - BlockEngine.Client.Framework.Blocks.BlockOrientation
+  - BlockEngine.Client.Framework.Blocks.BlockRenderType
+  - BlockEngine.Client.Framework.Blocks.BlockState
+  - BlockEngine.Client.Framework.Blocks.Color9
+  langs:
+  - csharp
+  - vb
+  name: BlockEngine.Client.Framework.Blocks
+  nameWithType: BlockEngine.Client.Framework.Blocks
+  fullName: BlockEngine.Client.Framework.Blocks
+  type: Namespace
+  assemblies:
+  - Client
+references:
+- uid: BlockEngine.Client.Framework.Blocks.Block
+  commentId: T:BlockEngine.Client.Framework.Blocks.Block
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.Block.html
+  name: Block
+  nameWithType: Block
+  fullName: BlockEngine.Client.Framework.Blocks.Block
+- uid: BlockEngine.Client.Framework.Blocks.BlockOrientation
+  commentId: T:BlockEngine.Client.Framework.Blocks.BlockOrientation
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.BlockOrientation.html
+  name: BlockOrientation
+  nameWithType: BlockOrientation
+  fullName: BlockEngine.Client.Framework.Blocks.BlockOrientation
+- uid: BlockEngine.Client.Framework.Blocks.BlockRenderType
+  commentId: T:BlockEngine.Client.Framework.Blocks.BlockRenderType
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.BlockRenderType.html
+  name: BlockRenderType
+  nameWithType: BlockRenderType
+  fullName: BlockEngine.Client.Framework.Blocks.BlockRenderType
+- uid: BlockEngine.Client.Framework.Blocks.BlockState
+  commentId: T:BlockEngine.Client.Framework.Blocks.BlockState
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.BlockState.html
+  name: BlockState
+  nameWithType: BlockState
+  fullName: BlockEngine.Client.Framework.Blocks.BlockState
+- uid: BlockEngine.Client.Framework.Blocks.Color9
+  commentId: T:BlockEngine.Client.Framework.Blocks.Color9
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.Color9.html
+  name: Color9
+  nameWithType: Color9
+  fullName: BlockEngine.Client.Framework.Blocks.Color9
+- uid: BlockEngine.Client.Framework.Blocks
+  commentId: N:BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks
+  nameWithType: BlockEngine.Client.Framework.Blocks
+  fullName: BlockEngine.Client.Framework.Blocks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html

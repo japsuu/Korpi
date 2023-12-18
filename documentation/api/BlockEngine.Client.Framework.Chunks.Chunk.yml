@@ -1,0 +1,790 @@
+﻿### YamlMime:ManagedReference
+items:
+- uid: BlockEngine.Client.Framework.Chunks.Chunk
+  commentId: T:BlockEngine.Client.Framework.Chunks.Chunk
+  id: Chunk
+  parent: BlockEngine.Client.Framework.Chunks
+  children:
+  - BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache)
+  - BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache,BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition)
+  - BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(OpenTK.Mathematics.Vector3i)
+  - BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(System.Int32,System.Int32,System.Int32)
+  - BlockEngine.Client.Framework.Chunks.Chunk.IsMeshDirty
+  - BlockEngine.Client.Framework.Chunks.Chunk.IsMeshed
+  - BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState(OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Blocks.BlockState)
+  - BlockEngine.Client.Framework.Chunks.Chunk.Tick(System.Double)
+  langs:
+  - csharp
+  - vb
+  name: Chunk
+  nameWithType: Chunk
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk
+  type: Class
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Chunk
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 7
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: public class Chunk
+    content.vb: Public Class Chunk
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.IsMeshDirty
+  commentId: F:BlockEngine.Client.Framework.Chunks.Chunk.IsMeshDirty
+  id: IsMeshDirty
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: IsMeshDirty
+  nameWithType: Chunk.IsMeshDirty
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.IsMeshDirty
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: IsMeshDirty
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 11
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: public bool IsMeshDirty
+    return:
+      type: System.Boolean
+    content.vb: Public IsMeshDirty As Boolean
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.IsMeshed
+  commentId: F:BlockEngine.Client.Framework.Chunks.Chunk.IsMeshed
+  id: IsMeshed
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: IsMeshed
+  nameWithType: Chunk.IsMeshed
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.IsMeshed
+  type: Field
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: IsMeshed
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 12
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: public bool IsMeshed
+    return:
+      type: System.Boolean
+    content.vb: Public IsMeshed As Boolean
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState(OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Blocks.BlockState)
+  commentId: M:BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState(OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Blocks.BlockState)
+  id: SetBlockState(OpenTK.Mathematics.Vector3i,BlockEngine.Client.Framework.Blocks.BlockState)
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: SetBlockState(Vector3i, BlockState)
+  nameWithType: Chunk.SetBlockState(Vector3i, BlockState)
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState(OpenTK.Mathematics.Vector3i, BlockEngine.Client.Framework.Blocks.BlockState)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: SetBlockState
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 23
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  summary: >-
+    Indexes to the block at the given position.
+
+    If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+
+    for z in range:
+       for y in range:
+          for x in range:
+             block = BlockMap[x, y, z]
+  example: []
+  syntax:
+    content: public void SetBlockState(Vector3i position, BlockState block)
+    parameters:
+    - id: position
+      type: OpenTK.Mathematics.Vector3i
+    - id: block
+      type: BlockEngine.Client.Framework.Blocks.BlockState
+    content.vb: Public Sub SetBlockState(position As Vector3i, block As BlockState)
+  overload: BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState*
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(System.Int32,System.Int32,System.Int32)
+  commentId: M:BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(System.Int32,System.Int32,System.Int32)
+  id: GetBlockState(System.Int32,System.Int32,System.Int32)
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: GetBlockState(int, int, int)
+  nameWithType: Chunk.GetBlockState(int, int, int)
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetBlockState
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 39
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  summary: >-
+    Indexes to the block at the given position.
+
+    If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+
+    for z in range:
+       for y in range:
+          for x in range:
+             block = BlockMap[x, y, z]
+  example: []
+  syntax:
+    content: public BlockState GetBlockState(int x, int y, int z)
+    parameters:
+    - id: x
+      type: System.Int32
+    - id: y
+      type: System.Int32
+    - id: z
+      type: System.Int32
+    return:
+      type: BlockEngine.Client.Framework.Blocks.BlockState
+    content.vb: Public Function GetBlockState(x As Integer, y As Integer, z As Integer) As BlockState
+  overload: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState*
+  nameWithType.vb: Chunk.GetBlockState(Integer, Integer, Integer)
+  fullName.vb: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(Integer, Integer, Integer)
+  name.vb: GetBlockState(Integer, Integer, Integer)
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(OpenTK.Mathematics.Vector3i)
+  commentId: M:BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(OpenTK.Mathematics.Vector3i)
+  id: GetBlockState(OpenTK.Mathematics.Vector3i)
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: GetBlockState(Vector3i)
+  nameWithType: Chunk.GetBlockState(Vector3i)
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState(OpenTK.Mathematics.Vector3i)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: GetBlockState
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 53
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  summary: >-
+    Indexes to the block at the given position.
+
+    If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+
+    for z in range:
+       for y in range:
+          for x in range:
+             block = BlockMap[x, y, z]
+  example: []
+  syntax:
+    content: public BlockState GetBlockState(Vector3i position)
+    parameters:
+    - id: position
+      type: OpenTK.Mathematics.Vector3i
+    return:
+      type: BlockEngine.Client.Framework.Blocks.BlockState
+    content.vb: Public Function GetBlockState(position As Vector3i) As BlockState
+  overload: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState*
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.Tick(System.Double)
+  commentId: M:BlockEngine.Client.Framework.Chunks.Chunk.Tick(System.Double)
+  id: Tick(System.Double)
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: Tick(double)
+  nameWithType: Chunk.Tick(double)
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.Tick(double)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: Tick
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 59
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: public void Tick(double deltaTime)
+    parameters:
+    - id: deltaTime
+      type: System.Double
+    content.vb: Public Sub Tick(deltaTime As Double)
+  overload: BlockEngine.Client.Framework.Chunks.Chunk.Tick*
+  nameWithType.vb: Chunk.Tick(Double)
+  fullName.vb: BlockEngine.Client.Framework.Chunks.Chunk.Tick(Double)
+  name.vb: Tick(Double)
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache)
+  commentId: M:BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache)
+  id: CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache)
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: CacheMeshingData(MeshingDataCache)
+  nameWithType: Chunk.CacheMeshingData(MeshingDataCache)
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CacheMeshingData
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 64
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  syntax:
+    content: public void CacheMeshingData(MeshingDataCache meshingDataCache)
+    parameters:
+    - id: meshingDataCache
+      type: BlockEngine.Client.Framework.Meshing.MeshingDataCache
+    content.vb: Public Sub CacheMeshingData(meshingDataCache As MeshingDataCache)
+  overload: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData*
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache,BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition)
+  commentId: M:BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache,BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition)
+  id: CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache,BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition)
+  parent: BlockEngine.Client.Framework.Chunks.Chunk
+  langs:
+  - csharp
+  - vb
+  name: CacheMeshingData(MeshingDataCache, NeighbouringChunkPosition)
+  nameWithType: Chunk.CacheMeshingData(MeshingDataCache, NeighbouringChunkPosition)
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData(BlockEngine.Client.Framework.Meshing.MeshingDataCache, BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition)
+  type: Method
+  source:
+    remote:
+      path: source/client/source/Framework/Chunks/Chunk.cs
+      branch: dev
+      repo: https://github.com/japsuu/BlockEngine.git
+    id: CacheMeshingData
+    path: ../source/client/source/Framework/Chunks/Chunk.cs
+    startLine: 88
+  assemblies:
+  - Client
+  namespace: BlockEngine.Client.Framework.Chunks
+  summary: >-
+    Used to get a slice of block data from this chunk.
+
+    The size of the slice depends on which neighbouring chunk is asking for the data.
+
+    Alternative method would be to query the World.GetBlockData method for each block in the cache, but this would result in cache misses.
+  example: []
+  syntax:
+    content: public void CacheMeshingData(MeshingDataCache cache, NeighbouringChunkPosition myPosition)
+    parameters:
+    - id: cache
+      type: BlockEngine.Client.Framework.Meshing.MeshingDataCache
+      description: Cache to fill with data
+    - id: myPosition
+      type: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+      description: Position of this chunk relative to the requesting chunk
+    content.vb: Public Sub CacheMeshingData(cache As MeshingDataCache, myPosition As NeighbouringChunkPosition)
+  overload: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData*
+references:
+- uid: BlockEngine.Client.Framework.Chunks
+  commentId: N:BlockEngine.Client.Framework.Chunks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Chunks
+  nameWithType: BlockEngine.Client.Framework.Chunks
+  fullName: BlockEngine.Client.Framework.Chunks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Chunks
+    name: Chunks
+    href: BlockEngine.Client.Framework.Chunks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Chunks
+    name: Chunks
+    href: BlockEngine.Client.Framework.Chunks.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState*
+  commentId: Overload:BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState
+  href: BlockEngine.Client.Framework.Chunks.Chunk.html#BlockEngine_Client_Framework_Chunks_Chunk_SetBlockState_OpenTK_Mathematics_Vector3i_BlockEngine_Client_Framework_Blocks_BlockState_
+  name: SetBlockState
+  nameWithType: Chunk.SetBlockState
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.SetBlockState
+- uid: OpenTK.Mathematics.Vector3i
+  commentId: T:OpenTK.Mathematics.Vector3i
+  parent: OpenTK.Mathematics
+  isExternal: true
+  name: Vector3i
+  nameWithType: Vector3i
+  fullName: OpenTK.Mathematics.Vector3i
+- uid: BlockEngine.Client.Framework.Blocks.BlockState
+  commentId: T:BlockEngine.Client.Framework.Blocks.BlockState
+  parent: BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.Client.Framework.Blocks.BlockState.html
+  name: BlockState
+  nameWithType: BlockState
+  fullName: BlockEngine.Client.Framework.Blocks.BlockState
+- uid: OpenTK.Mathematics
+  commentId: N:OpenTK.Mathematics
+  isExternal: true
+  name: OpenTK.Mathematics
+  nameWithType: OpenTK.Mathematics
+  fullName: OpenTK.Mathematics
+  spec.csharp:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+  spec.vb:
+  - uid: OpenTK
+    name: OpenTK
+    isExternal: true
+  - name: .
+  - uid: OpenTK.Mathematics
+    name: Mathematics
+    isExternal: true
+- uid: BlockEngine.Client.Framework.Blocks
+  commentId: N:BlockEngine.Client.Framework.Blocks
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Blocks
+  nameWithType: BlockEngine.Client.Framework.Blocks
+  fullName: BlockEngine.Client.Framework.Blocks
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Blocks
+    name: Blocks
+    href: BlockEngine.Client.Framework.Blocks.html
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState*
+  commentId: Overload:BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState
+  href: BlockEngine.Client.Framework.Chunks.Chunk.html#BlockEngine_Client_Framework_Chunks_Chunk_GetBlockState_System_Int32_System_Int32_System_Int32_
+  name: GetBlockState
+  nameWithType: Chunk.GetBlockState
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.GetBlockState
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.Tick*
+  commentId: Overload:BlockEngine.Client.Framework.Chunks.Chunk.Tick
+  href: BlockEngine.Client.Framework.Chunks.Chunk.html#BlockEngine_Client_Framework_Chunks_Chunk_Tick_System_Double_
+  name: Tick
+  nameWithType: Chunk.Tick
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.Tick
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData*
+  commentId: Overload:BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData
+  href: BlockEngine.Client.Framework.Chunks.Chunk.html#BlockEngine_Client_Framework_Chunks_Chunk_CacheMeshingData_BlockEngine_Client_Framework_Meshing_MeshingDataCache_
+  name: CacheMeshingData
+  nameWithType: Chunk.CacheMeshingData
+  fullName: BlockEngine.Client.Framework.Chunks.Chunk.CacheMeshingData
+- uid: BlockEngine.Client.Framework.Meshing.MeshingDataCache
+  commentId: T:BlockEngine.Client.Framework.Meshing.MeshingDataCache
+  parent: BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.Client.Framework.Meshing.MeshingDataCache.html
+  name: MeshingDataCache
+  nameWithType: MeshingDataCache
+  fullName: BlockEngine.Client.Framework.Meshing.MeshingDataCache
+- uid: BlockEngine.Client.Framework.Meshing
+  commentId: N:BlockEngine.Client.Framework.Meshing
+  href: BlockEngine.html
+  name: BlockEngine.Client.Framework.Meshing
+  nameWithType: BlockEngine.Client.Framework.Meshing
+  fullName: BlockEngine.Client.Framework.Meshing
+  spec.csharp:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Meshing
+    name: Meshing
+    href: BlockEngine.Client.Framework.Meshing.html
+  spec.vb:
+  - uid: BlockEngine
+    name: BlockEngine
+    href: BlockEngine.html
+  - name: .
+  - uid: BlockEngine.Client
+    name: Client
+    href: BlockEngine.Client.html
+  - name: .
+  - uid: BlockEngine.Client.Framework
+    name: Framework
+    href: BlockEngine.Client.Framework.html
+  - name: .
+  - uid: BlockEngine.Client.Framework.Meshing
+    name: Meshing
+    href: BlockEngine.Client.Framework.Meshing.html
+- uid: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  commentId: T:BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
+  parent: BlockEngine.Client.Framework.Chunks
+  href: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition.html
+  name: NeighbouringChunkPosition
+  nameWithType: NeighbouringChunkPosition
+  fullName: BlockEngine.Client.Framework.Chunks.NeighbouringChunkPosition
