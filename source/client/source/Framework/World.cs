@@ -1,10 +1,9 @@
 ﻿using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Physics;
-using BlockEngine.Client.Framework.Rendering;
-using BlockEngine.Client.Framework.Rendering.Cameras;
 using BlockEngine.Client.Framework.Rendering.Shaders;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
@@ -53,12 +52,14 @@ public class World
     {
         Ray ray = new Ray(start, direction);
         RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
-        
-        if (DebugSettings.RenderRaycastHit)
+
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.RenderRaycastHit)
             DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.5f, Color4.Red);
         
-        if (DebugSettings.RenderRaycastHitBlock && !raycastResult.BlockState.IsAir)
+        if (ClientConfig.DebugModeConfig.RenderRaycastHitBlock && !raycastResult.BlockState.IsAir)
             DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
+#endif
         
         return raycastResult.BlockState;
     }

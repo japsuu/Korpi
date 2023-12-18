@@ -1,16 +1,18 @@
-﻿namespace BlockEngine.Client.Utils
+﻿using System.Diagnostics;
+using BlockEngine.Client.Framework.Configuration;
+
+namespace BlockEngine.Client.Utils
 {
     public static class Logger
     {
         private const string LOG_PREFIX = $"[{Constants.ENGINE_NAME}]";
         
-        public static bool EnableVerboseLogging = false;
         private static int debugCounter = -1;
         
         
         public static void LogVerbose(string message)
         {
-            if(EnableVerboseLogging)
+            if(ClientConfig.LoggingConfig.EnableVerboseLogging)
                 WriteLine(message);
         }
         
@@ -39,6 +41,7 @@
         }
 
         
+        [Conditional("DEBUG")]
         public static void Debug(string message)
         {
             ConsoleColor originalColor = Console.ForegroundColor;
@@ -48,6 +51,7 @@
         }
 
         
+        [Conditional("DEBUG")]
         public static void Debug(object message)
         {
             ConsoleColor originalColor = Console.ForegroundColor;
@@ -57,6 +61,7 @@
         }
 
         
+        [Conditional("DEBUG")]
         public static void Debug(object message, int maxCount)
         {
             if (debugCounter == -1)

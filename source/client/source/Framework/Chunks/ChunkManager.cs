@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Meshing;
 using BlockEngine.Client.Framework.Physics;
@@ -128,19 +129,21 @@ public class ChunkManager
                 DrawChunkAt(chunkPos, chunkShader);
             }
 
-        if (DebugSettings.RenderChunkBorders)
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
             // Get the chunk the player is currently in
             Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(cameraPos);
             DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
-        if (DebugSettings.RenderChunkColumnBorders)
+        if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
         {
             // Get the chunk the player is currently in
             Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(cameraPos);
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
+#endif
     }
 
 
@@ -449,8 +452,10 @@ public class ChunkManager
                 intersectedFace = step.Z > 0 ? 5 : 2;
             }
 
-            if (DebugSettings.RenderRaycastPath)
+#if DEBUG
+            if (ClientConfig.DebugModeConfig.RenderRaycastPath)
                 DebugDrawer.DrawBox(new Vector3(blockPos.X + 0.5f, blockPos.Y + 0.5f, blockPos.Z + 0.5f), Vector3.One, Color4.Red);
+#endif
 
             BlockState blockState = GetBlockStateAt(blockPos);
             

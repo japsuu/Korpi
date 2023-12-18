@@ -20,11 +20,14 @@ namespace BlockEngine.Client;
 
 public class GameClient : GameWindow
 {
+    /// <summary>
+    /// Called before <see cref="OnLoad"/> is exited.
+    /// </summary>
     public static event Action? ClientLoad;
+    /// <summary>
+    /// Called before <see cref="OnUnload"/> is exited.
+    /// </summary>
     public static event Action? ClientUnload;
-
-    private readonly bool _isPhotomode;
-    private readonly string? _photomodeResultPath;
     
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
@@ -34,32 +37,17 @@ public class GameClient : GameWindow
     private Player _player = null!;
 
 
-    public GameClient(IReadOnlyList<string> args) : base(
+    public GameClient() : base(
         new GameWindowSettings
         {
             UpdateFrequency = Constants.UPDATE_LOOP_FREQUENCY
         },
         new NativeWindowSettings
         {
-            Size = (Settings.Client.WindowSettings.WindowWidth, Settings.Client.WindowSettings.WindowHeight),
+            Size = (ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
             Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}",
             NumberOfSamples = 8
-        })
-    {
-        // Check if args contains the "-photomode" flag
-        _isPhotomode = args.Count > 0 && args[0] == "-photomode";
-        if (_isPhotomode)
-        {
-            Logger.Log("Running in photo mode...");
-            if (args.Count > 1)
-                _photomodeResultPath = args[1];
-            else
-            {
-                _photomodeResultPath = "Screenshots";
-                Logger.LogWarning("No path specified for photo mode, using default path \"Screenshots\".");
-            }
-        }
-    }
+        }) { }
     
     
     protected override void OnLoad()
@@ -86,7 +74,8 @@ public class GameClient : GameWindow
         _skybox = new Skybox(false);
         
         // Player initialization.
-        if (_isPhotomode)
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
         {
             _player = new Player(new Vector3(0, 256, 48), -60, -100, ClientSize.X / (float)ClientSize.Y);
             _player.Camera.IsInputEnabled = false;
@@ -95,6 +84,9 @@ public class GameClient : GameWindow
         {
             _player = new Player(new Vector3(0, 256, 0), 0, 0, ClientSize.X / (float)ClientSize.Y);
         }
+#else
+        _player = new Player(new Vector3(0, 256, 0), 0, 0, ClientSize.X / (float)ClientSize.Y);
+#endif
         CursorState = CursorState.Grabbed;
         
         // UI initialization.
@@ -150,8 +142,10 @@ public class GameClient : GameWindow
         
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
         
+#if DEBUG
         // Set the polygon mode to wireframe if the debug setting is enabled.
-        GL.PolygonMode(MaterialFace.FrontAndBack, DebugSettings.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
+        GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.DebugModeConfig.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
+#endif
         
         // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
@@ -169,17 +163,21 @@ public class GameClient : GameWindow
         
         DrawWorld();
 
-        if (DebugSettings.RenderSkybox)
-            _skybox.Draw();
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.RenderSkybox)
+#endif
+        _skybox.Draw();
 
-        if (_isPhotomode && Time.TotalTime > 1f)
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && Time.TotalTime > 1f)
         {
-            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(_photomodeResultPath!, "latest", true, true);
+            Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
             Close();
             return;
         }
         
         DebugDrawer.Draw();
+#endif
         
         _crosshair.Draw();
 
@@ -250,8 +248,11 @@ public class GameClient : GameWindow
 
     private void SwitchCursorState()
     {
-        if (_isPhotomode)
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
             return;
+#endif
+        
         if (CursorState == CursorState.Grabbed)
         {
             Camera.ActiveCamera.IsMouseFirstMove = true;

@@ -33,6 +33,9 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
+# Build folder
+[Bb]uilds/
+
 # DocFx
 .cache
 **/_site/
