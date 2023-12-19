@@ -193,7 +193,7 @@ public class GameClient : GameWindow
             _skybox.Draw();
 
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && Time.TotalTime > 1f && RenderingStats.ChunksInMeshingQueue == 0)
+        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && Time.TotalTime > 1f && RenderingStats.ChunksInGenerationQueue == 0 && RenderingStats.ChunksInMeshingQueue == 0)
         {
             Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
             Close();

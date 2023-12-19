@@ -62,6 +62,7 @@ public class RenderingWindow : ImGuiWindow
         ImGui.Text($"Loaded Chunks = {loadedChunks.ToString("#,0", _numberFormat)}");
         ImGui.Text($"Loaded Columns = {RenderingStats.LoadedColumnCount}");
         ImGui.Text($"Cached chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
+        ImGui.Text($"Chunks in generation queue = {RenderingStats.ChunksInGenerationQueue}");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");
         ImGui.Text($"Meshing time = {RenderingStats.MeshingTime:F1}ms");
         ImGui.Text($"Average chunk meshing time = {RenderingStats.AverageChunkMeshingTime:F1}ms");

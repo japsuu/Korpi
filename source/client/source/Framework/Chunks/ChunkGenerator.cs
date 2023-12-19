@@ -1,4 +1,5 @@
-﻿using BlockEngine.Client.Framework.ECS.Entities;
+﻿using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Registries;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
@@ -39,6 +40,7 @@ public static class ChunkGenerator
 
     public static void ProcessGenerationQueue()
     {
+        RenderingStats.ChunksInGenerationQueue = (ulong)ChunkGenerationQueue.Count;
         int chunksGenerated = 0;
         while (chunksGenerated < MAX_CHUNKS_GENERATED_PER_FRAME && ChunkGenerationQueue.Count > 0)
         {
