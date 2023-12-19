@@ -1,6 +1,7 @@
 ﻿using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Registries;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
@@ -8,26 +9,24 @@ using OpenTK.Mathematics;
 namespace BlockEngine.Client.Framework.Meshing;
 
 
-public class ChunkMesher
+public static class ChunkMesher
 {
     private const int MAX_CHUNKS_MESHED_PER_FRAME = 8;
-
-    private readonly ChunkManager _chunkManager;
     
     /// <summary>
     /// Priority queue of chunks to mesh.
     /// Chunks are prioritized by their distance to the camera.
     /// </summary>
-    private readonly PriorityQueue<Vector3i, float> _chunkMeshingQueue;
-    private readonly HashSet<Vector3i> _queuedChunks;
+    private static readonly PriorityQueue<Vector3i, float> ChunkMeshingQueue = new();
+    private static readonly HashSet<Vector3i> QueuedChunks = new();
 
     /// <summary>
     /// Data of the chunk currently being meshed.
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
-    private readonly MeshingDataCache _meshingDataCache = new(Constants.CHUNK_SIZE);
-    private readonly MeshingBuffer _meshingBuffer = new();
-    private readonly BlockState[] _blockStateNeighbourhood = new BlockState[27];   // 27 = 3x3x3
+    private static readonly MeshingDataCache MeshingDataCache = new(Constants.CHUNK_SIZE);
+    private static readonly MeshingBuffer MeshingBuffer = new();
+    private static readonly BlockState[] BlockStateNeighbourhood = new BlockState[27];   // 27 = 3x3x3
     
     private static readonly Vector3i[] NeighbourOffsets =
     {
@@ -40,25 +39,17 @@ public class ChunkMesher
     };
 
 
-    public ChunkMesher(ChunkManager chunkManager)
+    public static void ProcessMeshingQueue()
     {
-        _chunkManager = chunkManager;
-        _chunkMeshingQueue = new PriorityQueue<Vector3i, float>();
-        _queuedChunks = new HashSet<Vector3i>();
-    }
-
-
-    public void ProcessMeshingQueue()
-    {
-        RenderingStats.ChunksInMeshingQueue = (ulong)_chunkMeshingQueue.Count;
+        RenderingStats.ChunksInMeshingQueue = (ulong)ChunkMeshingQueue.Count;
         RenderingStats.StartMeshing();
         
         int chunksMeshed = 0;
-        while (chunksMeshed < MAX_CHUNKS_MESHED_PER_FRAME && _chunkMeshingQueue.Count > 0)
+        while (chunksMeshed < MAX_CHUNKS_MESHED_PER_FRAME && ChunkMeshingQueue.Count > 0)
         {
-            Vector3i chunkPos = _chunkMeshingQueue.Dequeue();
-            _queuedChunks.Remove(chunkPos);
-            if (!_chunkManager.IsChunkLoaded(chunkPos))
+            Vector3i chunkPos = ChunkMeshingQueue.Dequeue();
+            QueuedChunks.Remove(chunkPos);
+            if (!World.CurrentWorld.ChunkManager.IsChunkLoaded(chunkPos))
                 continue;
             RenderingStats.StartChunkMeshing();
             ChunkRenderer mesh = GenerateMesh(chunkPos);
@@ -71,23 +62,23 @@ public class ChunkMesher
     }
 
 
-    public void EnqueueChunkForInitialMeshing(Vector3i chunkOriginPos, Vector3 cameraPos)
+    public static void EnqueueChunkForInitialMeshing(Vector3i chunkOriginPos)
     {
-        if (_queuedChunks.Contains(chunkOriginPos))
+        if (QueuedChunks.Contains(chunkOriginPos))
             throw new InvalidOperationException($"Tried to mesh chunk at {chunkOriginPos} that is already queued!");
 
         if (ChunkRendererStorage.ContainsRenderer(chunkOriginPos))
             throw new InvalidOperationException($"Tried to mesh chunk at {chunkOriginPos} that is already meshed!");
 
-        float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
-        _chunkMeshingQueue.Enqueue(chunkOriginPos, distanceToCamera);
-        _queuedChunks.Add(chunkOriginPos);
+        float distanceToPlayer = (chunkOriginPos - PlayerEntity.LocalPlayerEntity.Transform.LocalPosition).LengthSquared;
+        ChunkMeshingQueue.Enqueue(chunkOriginPos, distanceToPlayer);
+        QueuedChunks.Add(chunkOriginPos);
     }
 
 
-    public void EnqueueChunkForMeshing(Vector3i chunkOriginPos, Vector3 cameraPos)
+    public static void EnqueueChunkForMeshing(Vector3i chunkOriginPos)
     {
-        if (_queuedChunks.Contains(chunkOriginPos))
+        if (QueuedChunks.Contains(chunkOriginPos))
             return;
 
         if (ChunkRendererStorage.ContainsRenderer(chunkOriginPos))
@@ -96,17 +87,17 @@ public class ChunkMesher
             ChunkRendererStorage.RemoveRenderer(chunkOriginPos);
         }
         
-        float distanceToCamera = (chunkOriginPos - cameraPos).LengthSquared;
-        _chunkMeshingQueue.Enqueue(chunkOriginPos, distanceToCamera);
-        _queuedChunks.Add(chunkOriginPos);
+        float distanceToCamera = (chunkOriginPos - PlayerEntity.LocalPlayerEntity.Transform.LocalPosition).LengthSquared;
+        ChunkMeshingQueue.Enqueue(chunkOriginPos, distanceToCamera);
+        QueuedChunks.Add(chunkOriginPos);
     }
 
 
-    private ChunkRenderer GenerateMesh(Vector3i chunkOriginPos)
+    private static ChunkRenderer GenerateMesh(Vector3i chunkOriginPos)
     {
-        Chunk chunk = _chunkManager.FillMeshingCache(chunkOriginPos, _meshingDataCache);
+        Chunk chunk = World.CurrentWorld.ChunkManager.GetChunkAndFillMeshingCache(chunkOriginPos, MeshingDataCache);
         
-        _meshingBuffer.Clear();
+        MeshingBuffer.Clear();
         
         // Mesh the chunk based on the data cache, using _meshingBuffer.AddFace(blockPos, faceNormal, textureIndex, lighting) to add faces to the buffer.
         // Exploit the meshing cache's spatial locality by iterating over the blocks in the order they are stored in the cache.
@@ -116,7 +107,7 @@ public class ChunkMesher
             {
                 for (int x = 1; x <= Constants.CHUNK_SIZE; x++)
                 {
-                    BlockState blockState = _meshingDataCache.GetData(x, y, z);
+                    BlockState blockState = MeshingDataCache.GetData(x, y, z);
                     
                     // If the block is invisible, skip it
                     if (blockState.RenderType == BlockRenderType.None)
@@ -129,8 +120,8 @@ public class ChunkMesher
                         {
                             for (int neighbourX = 0; neighbourX < 3; neighbourX++)
                             {
-                                BlockState neighbour = _meshingDataCache.GetData(x + neighbourX - 1, y + neighbourY - 1, z + neighbourZ - 1);
-                                _blockStateNeighbourhood[neighbourX + neighbourY * 3 + neighbourZ * 9] = neighbour;
+                                BlockState neighbour = MeshingDataCache.GetData(x + neighbourX - 1, y + neighbourY - 1, z + neighbourZ - 1);
+                                BlockStateNeighbourhood[neighbourX + neighbourY * 3 + neighbourZ * 9] = neighbour;
                             }
                         }
                     }
@@ -139,7 +130,7 @@ public class ChunkMesher
                     for (int face = 0; face < 6; face++)
                     {
                         Vector3i neighbourOffset = NeighbourOffsets[face];
-                        BlockState neighbour = _blockStateNeighbourhood[neighbourOffset.X + neighbourOffset.Y * 3 + neighbourOffset.Z * 9];
+                        BlockState neighbour = BlockStateNeighbourhood[neighbourOffset.X + neighbourOffset.Y * 3 + neighbourOffset.Z * 9];
 
                         // If the neighbour is opaque, skip this face.
                         // If the neighbour is empty or transparent, we need to mesh this face.
@@ -156,16 +147,15 @@ public class ChunkMesher
                         
                         // Add the face to the meshing buffer
                         Vector3i blockPos = new(x - 1, y - 1, z - 1);
-                        _meshingBuffer.AddFace(_blockStateNeighbourhood, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
+                        MeshingBuffer.AddFace(BlockStateNeighbourhood, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
                     }
                 }
             }
         }
         
-        chunk.IsMeshDirty = false;
-        chunk.IsMeshed = true;
+        chunk.OnMeshed();
 
-        return _meshingBuffer.CreateMesh(chunkOriginPos);
+        return MeshingBuffer.CreateMesh(chunkOriginPos);
     }
 
 

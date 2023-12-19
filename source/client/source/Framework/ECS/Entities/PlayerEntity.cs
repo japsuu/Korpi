@@ -27,7 +27,13 @@ public class PlayerEntity : TransformEntity
     /// <summary>
     /// The forward vector of the playerEntity's view.
     /// </summary>
-    public Vector3 Forward => _camera.Forward;
+    public Vector3 ViewPosition => _camera.Position;
+    // public Vector3 ViewPosition => _isExternalCameraEnabled ? _externalCamera!.Position : _camera.Position;
+    
+    /// <summary>
+    /// The forward vector of the playerEntity's view.
+    /// </summary>
+    public Vector3 ViewForward => _camera.Forward;
     
 
     /// <summary>

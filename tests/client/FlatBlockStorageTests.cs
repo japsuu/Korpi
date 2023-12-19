@@ -14,7 +14,7 @@ public class FlatBlockStorageTests
         BlockState block = BlockRegistry.Air.GetDefaultState();
 
         // Act
-        storage.SetBlock(1, 1, 1, block);
+        storage.SetBlock(1, 1, 1, block, out BlockState oldBlock);
 
         // Assert
         Assert.That(storage.GetBlock(1, 1, 1), Is.EqualTo(block));
@@ -26,7 +26,7 @@ public class FlatBlockStorageTests
         // Arrange
         FlatBlockStorage storage = new();
         BlockState block = BlockRegistry.Air.GetDefaultState();
-        storage.SetBlock(1, 1, 1, block);
+        storage.SetBlock(1, 1, 1, block, out BlockState oldBlock);
 
         // Act
         BlockState result = storage.GetBlock(1, 1, 1);
@@ -56,6 +56,6 @@ public class FlatBlockStorageTests
         BlockState block = new();
 
         // Act & Assert
-        Assert.Throws<IndexOutOfRangeException>(() => storage.SetBlock(100, 100, 100, block));
+        Assert.Throws<IndexOutOfRangeException>(() => storage.SetBlock(100, 100, 100, block, out BlockState oldBlock));
     }
 }

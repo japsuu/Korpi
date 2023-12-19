@@ -21,6 +21,7 @@ public static class Constants
     // World generation
     public const int CHUNK_SIZE = 32;
     public const int CHUNK_SIZE_BITMASK = CHUNK_SIZE - 1;
+    public const int CHUNK_SIZE_DOUBLED = CHUNK_SIZE * CHUNK_SIZE;
     public const int CHUNK_SIZE_CUBED = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
     public const int CHUNK_SIZE_LOG2 = 5;
     public const int CHUNK_SIZE_LOG2_DOUBLED = 10;
