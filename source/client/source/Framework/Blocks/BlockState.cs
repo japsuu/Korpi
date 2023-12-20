@@ -96,7 +96,7 @@ public struct BlockState
 
     public override bool Equals(object? obj)
     {
-        return obj is BlockState other && Equals(other);
+        return obj is BlockState other && EqualsNonAlloc(this, other);
     }
 
 

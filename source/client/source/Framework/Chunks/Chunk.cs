@@ -56,11 +56,13 @@ public class Chunk
     
     
     private readonly IBlockStorage _blockStorage = new FlatBlockStorage();
+    
 
+    private bool ContainsRenderedBlocks { get; set; }
+    
     public readonly Vector3i Position;
-    public bool ContainsRenderedBlocks { get; private set; }
-    public ChunkGenerationState GenerationState { get; set; }
-    public ChunkMeshState MeshState { get; set; }
+    public ChunkGenerationState GenerationState { get; private set; }
+    public ChunkMeshState MeshState { get; private set; }
 
 
     public Chunk(Vector3i position)
