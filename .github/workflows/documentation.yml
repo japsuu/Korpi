@@ -4,8 +4,6 @@ name: documentation
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 env:
   DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
