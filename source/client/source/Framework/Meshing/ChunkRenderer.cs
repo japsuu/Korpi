@@ -17,10 +17,11 @@ public class ChunkRenderer : IDisposable
     public readonly int VerticesCount;
     public readonly int IndicesCount;
 
-    public ChunkRenderer(uint[] vertexData, uint[] indexData, Vector3i chunkPos)
+    
+    public ChunkRenderer(uint[] vertexData, int verticesCount, uint[] indexData, int indicesCount, Vector3i chunkPos)
     {
-        VerticesCount = vertexData.Length;
-        IndicesCount = indexData.Length;
+        VerticesCount = verticesCount;
+        IndicesCount = indicesCount;
         _modelMatrix = Matrix4.CreateTranslation(chunkPos);
 
         _meshVBO = GL.GenBuffer();

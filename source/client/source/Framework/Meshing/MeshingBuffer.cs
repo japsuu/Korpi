@@ -26,9 +26,9 @@ public class MeshingBuffer
     private readonly uint[] _vertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK];
     private readonly uint[] _indices = new uint[MAX_INDICES_PER_CHUNK];
     
-    public uint AddedVertexDataCount { get; private set; }
-    public uint AddedIndicesCount { get; private set; }
-    public uint AddedFacesCount { get; private set; }
+    public int AddedVertexDataCount { get; private set; }
+    public int AddedIndicesCount { get; private set; }
+    public int AddedFacesCount { get; private set; }
 
 
     /// <summary>
@@ -199,7 +199,7 @@ public class MeshingBuffer
     
     private void AddIndices()
     {
-        uint offset = 4 * AddedFacesCount;
+        uint offset = 4 * (uint)AddedFacesCount;
         _indices[AddedIndicesCount] = offset + 0;
         _indices[AddedIndicesCount + 1] = offset + 1;
         _indices[AddedIndicesCount + 2] = offset + 2;
@@ -212,7 +212,12 @@ public class MeshingBuffer
 
     public ChunkRenderer CreateMesh(Vector3i chunkPos)
     {
-        return new ChunkRenderer(_vertexData, _indices, chunkPos);
+        uint[] vertexData = new uint[AddedVertexDataCount];
+        uint[] indices = new uint[AddedIndicesCount];
+        Array.Copy(_vertexData, vertexData, AddedVertexDataCount);
+        Array.Copy(_indices, indices, AddedIndicesCount);
+        
+        return new ChunkRenderer(_vertexData, AddedVertexDataCount, _indices, AddedIndicesCount, chunkPos);
     }
 
 
