@@ -89,7 +89,7 @@ public class Chunk
             if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
             {
                 _generationState = ChunkGenerationState.MESHING;
-                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+                ChunkMesher.Enqueue(Position);
             }
         }
     }
@@ -116,7 +116,7 @@ public class Chunk
             if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
             {
                 _generationState = ChunkGenerationState.MESHING;
-                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+                ChunkMesher.Enqueue(Position);
             }
             else
             {
@@ -176,7 +176,7 @@ public class Chunk
     public void SetMeshDirty()
     {
         _meshState = ChunkMeshState.DIRTY;
-        ChunkMesher.EnqueueChunkForMeshing(Position);
+        ChunkMesher.Enqueue(Position);
     }
 
 
@@ -215,17 +215,19 @@ public class Chunk
 
 
     public void CacheMeshingData(MeshingDataCache meshingDataCache)
-    {   // TODO: Optimize with block copy.
-        // TODO: Add locking
-        for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+    {   // TODO: Optimize with block copy if possible.
+        lock (_blockStorageLock)
         {
-            for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+            for (int z = 0; z < Constants.CHUNK_SIZE; z++)
             {
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
                 {
-                    BlockState state = GetBlockState(x, y, z);
-                    // Offset by one block in each direction to account for the border
-                    meshingDataCache.SetData(x + 1, y + 1, z + 1, state);
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        BlockState state = GetBlockState(x, y, z);
+                        // Offset by one block in each direction to account for the border
+                        meshingDataCache.SetData(x + 1, y + 1, z + 1, state);
+                    }
                 }
             }
         }

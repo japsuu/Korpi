@@ -39,7 +39,7 @@ public class World : IDisposable
     {
         ChunkManager.Tick();
         ChunkGenerator.ProcessQueues();
-        ChunkMesher.ProcessMeshingQueue();
+        ChunkMesher.ProcessQueues();
         RenderingStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         _entityManager.Update();
         CameraStats.RaycastResult = RaycastWorld(PlayerEntity.LocalPlayerEntity.ViewPosition, PlayerEntity.LocalPlayerEntity.ViewForward, 10);

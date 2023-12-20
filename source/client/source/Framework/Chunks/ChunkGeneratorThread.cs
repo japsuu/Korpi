@@ -1,52 +1,22 @@
-﻿using System.Collections.Concurrent;
-using BlockEngine.Client.Framework.Registries;
+﻿using BlockEngine.Client.Framework.Registries;
 using BlockEngine.Client.Utils;
-using ConcurrentCollections;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Chunks;
 
-public class ChunkGeneratorThread : IDisposable
+public class ChunkGeneratorThread : ChunkProcessorThread
 {
-    private volatile bool _shouldStop;
-    private readonly Thread _thread;
     private readonly FastNoiseLite _noise;   // FNL seems to be thread safe, as long as you don't change the seed/other settings while generating.
-    private readonly ConcurrentHashSet<Vector3i> _queuedChunks;
-    private readonly ConcurrentQueue<Vector3i> _inputQueue;
 
 
-    public ChunkGeneratorThread(ConcurrentHashSet<Vector3i> queuedChunks, ConcurrentQueue<Vector3i> inputQueue)
+    public ChunkGeneratorThread()
     {
-        _queuedChunks = queuedChunks;
-        _inputQueue = inputQueue;
-        
         _noise = new FastNoiseLite();
         _noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        
-        _thread = new Thread(GenerateChunks);
-        _thread.Start();
     }
 
 
-    private void GenerateChunks()
-    {
-        
-        while (!_shouldStop)
-        {
-            if (_inputQueue.TryDequeue(out Vector3i chunkPos))
-            {
-                Chunk? chunk = World.CurrentWorld.ChunkManager.GetChunkAt(chunkPos);
-                if (chunk == null)
-                    continue;
-                
-                GenerateChunk(chunk);
-                _queuedChunks.TryRemove(chunkPos);
-            }
-        }
-    }
-    
-    
-    private void GenerateChunk(Chunk chunk)
+    protected override void ProcessChunk(Chunk chunk)
     {
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         {
@@ -60,8 +30,6 @@ public class ChunkGeneratorThread : IDisposable
                 }
             }
         }
-        
-        chunk.OnGenerated();
     }
     
     
@@ -84,25 +52,5 @@ public class ChunkGeneratorThread : IDisposable
             return 2;
         
         return 1;
-    }
-
-
-    private void ReleaseUnmanagedResources()
-    {
-        _shouldStop = true;
-        _thread.Join();
-    }
-
-
-    public void Dispose()
-    {
-        ReleaseUnmanagedResources();
-        GC.SuppressFinalize(this);
-    }
-
-
-    ~ChunkGeneratorThread()
-    {
-        ReleaseUnmanagedResources();
     }
 }

@@ -16,15 +16,15 @@ public class MeshingBuffer
     private const int INDICES_PER_FACE = 6;
     // Since we cull internal faces, the worst case is half of the faces (every other block needs to be meshed).
     private const int MAX_VISIBLE_FACES = Constants.CHUNK_SIZE_CUBED * FACES_PER_BLOCK / 2;
-    private const int MAX_VERTS_PER_CHUNK = MAX_VISIBLE_FACES * VERTS_PER_FACE;
+    private const int MAX_VERTICES_PER_CHUNK = MAX_VISIBLE_FACES * VERTS_PER_FACE;
     private const int MAX_INDICES_PER_CHUNK = MAX_VISIBLE_FACES * INDICES_PER_FACE;
-    private const int MAX_VERTEX_DATA_PER_CHUNK = MAX_VERTS_PER_CHUNK * ELEMENTS_PER_VERTEX;
+    private const int MAX_VERTEX_DATA_PER_CHUNK = MAX_VERTICES_PER_CHUNK * ELEMENTS_PER_VERTEX;
     
     /// <summary>
     /// Array of bytes containing the vertex data. 2 uints (64 bits) per vertex.
     /// </summary>
-    private readonly uint[] _vertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK];
-    private readonly uint[] _indices = new uint[MAX_INDICES_PER_CHUNK];
+    private readonly uint[] _vertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK];  // ~3.1 MB
+    private readonly uint[] _indices = new uint[MAX_INDICES_PER_CHUNK];         // ~2.4 MB
     
     public int AddedVertexDataCount { get; private set; }
     public int AddedIndicesCount { get; private set; }

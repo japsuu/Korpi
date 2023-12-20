@@ -186,11 +186,12 @@ public class ChunkManager
     /// <summary>
     /// Fills the given array with data of the chunk at the given position.
     /// The array also contains 1 block wide slices of the neighbouring chunks.
+    /// Thread safe.
     /// </summary>
     /// <param name="chunkOriginPos">Position of the center chunk</param>
     /// <param name="cache">Array to fill with BlockState data</param>
     /// <returns>If the center chunk has been generated.</returns>
-    public Chunk GetChunkAndFillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache)
+    public void GetChunkAndFillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache)
     {
         Chunk? loadedChunk = GetChunkAt(chunkOriginPos);
 
@@ -217,8 +218,6 @@ public class ChunkManager
             // Copy the slice of block data from the neighbour chunk
             neighbourChunk.CacheMeshingData(cache, position);
         }
-
-        return loadedChunk;
     }
 
 

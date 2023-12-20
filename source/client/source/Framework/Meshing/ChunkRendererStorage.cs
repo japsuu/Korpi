@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using BlockEngine.Client.Utils;
+using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Meshing;
 
@@ -17,6 +18,13 @@ public static class ChunkRendererStorage
     {
         GeneratedRenderers.Add(chunkPos, renderer);
         GeneratedRendererCount++;
+    }
+    
+    
+    public static void InvalidateRenderer(Vector3i chunkPos)
+    {
+        RemoveRenderer(chunkPos);
+        Logger.LogWarning($"Removed renderer for chunk at {chunkPos}. TODO: Use glBufferSubdata to replace/update the allocated buffer/memory, rather than allocating new memory.");
     }
     
     
