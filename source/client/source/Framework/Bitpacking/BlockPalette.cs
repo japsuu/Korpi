@@ -33,9 +33,6 @@ public class BlockPalette : IBlockStorage
     private BitBuffer _data;
     
     public int RenderedBlockCount { get; private set; }
-    
-    
-    public int GetPaletteSize() => _palette.Length;
 
 
     public BlockPalette()
@@ -57,7 +54,7 @@ public class BlockPalette : IBlockStorage
     {
         int index = GetIndex(x, y, z);
         if (index < 0 || index >= _size)
-            throw new ArgumentOutOfRangeException(nameof(index), "Tried to set blocks outside of a palette");
+            throw new IndexOutOfRangeException("Tried to set blocks outside of a palette");
         
         uint paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
         
