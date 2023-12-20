@@ -57,11 +57,12 @@ public class RenderingWindow : ImGuiWindow
 
         ImGui.Separator();
         
-        ulong loadedChunks = RenderingStats.LoadedColumnCount * Constants.CHUNK_COLUMN_HEIGHT;
+        uint loadedChunks = (uint)RenderingStats.LoadedColumnCount * Constants.CHUNK_COLUMN_HEIGHT;
         ImGui.Text($"Loaded Blocks = {(loadedChunks * Constants.CHUNK_SIZE_CUBED).ToString("#,0", _numberFormat)}");
         ImGui.Text($"Loaded Chunks = {loadedChunks.ToString("#,0", _numberFormat)}");
         ImGui.Text($"Loaded Columns = {RenderingStats.LoadedColumnCount}");
         ImGui.Text($"Cached chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
+        ImGui.Text($"Chunks in generation queue = {RenderingStats.ChunksInGenerationQueue}");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");
         ImGui.Text($"Meshing time = {RenderingStats.MeshingTime:F1}ms");
         ImGui.Text($"Average chunk meshing time = {RenderingStats.AverageChunkMeshingTime:F1}ms");

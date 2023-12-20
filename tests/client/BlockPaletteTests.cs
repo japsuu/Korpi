@@ -19,7 +19,7 @@ public class BlockPaletteTests
     {
         BlockState blockState = new();
 
-        _blockPalette.SetBlock(1, 1, 1, blockState);
+        _blockPalette.SetBlock(1, 1, 1, blockState, out BlockState oldBlock);
 
         Assert.That(_blockPalette.GetBlock(1, 1, 1), Is.EqualTo(blockState));
     }
@@ -29,14 +29,14 @@ public class BlockPaletteTests
     {
         BlockState blockState = new();
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => _blockPalette.SetBlock(-1, -1, -1, blockState));
+        Assert.Throws<ArgumentOutOfRangeException>(() => _blockPalette.SetBlock(-1, -1, -1, blockState, out BlockState oldBlock));
     }
 
     [Test]
     public void GetBlock_ValidCoordinates_ReturnsBlockState()
     {
         BlockState blockState = new();
-        _blockPalette.SetBlock(1, 1, 1, blockState);
+        _blockPalette.SetBlock(1, 1, 1, blockState, out BlockState oldBlock);
 
         BlockState result = _blockPalette.GetBlock(1, 1, 1);
 

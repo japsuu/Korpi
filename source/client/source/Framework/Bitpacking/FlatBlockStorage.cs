@@ -6,10 +6,23 @@ public class FlatBlockStorage : IBlockStorage
 {
     private readonly BlockState[] _blocks = new BlockState[Constants.CHUNK_SIZE_CUBED];
     
+    public int RenderedBlockCount { get; private set; }
     
-    public void SetBlock(int x, int y, int z, BlockState block)
+    
+    public void SetBlock(int x, int y, int z, BlockState block, out BlockState oldBlock)
     {
-        _blocks[GetIndex(x, y, z)] = block;
+        int index = GetIndex(x, y, z);
+
+        oldBlock = _blocks[index];
+        
+        bool wasRendered = oldBlock.IsRendered;
+        bool willBeRendered = block.IsRendered;
+        if (wasRendered && !willBeRendered)
+            RenderedBlockCount--;
+        else if (!wasRendered && willBeRendered)
+            RenderedBlockCount++;
+
+        _blocks[index] = block;
     }
 
 

@@ -6,7 +6,8 @@ public static class RenderingStats
 {
     public const int AVERAGE_CHUNK_MESHING_TIME_SAMPLES = 32;
         
-    public static ulong LoadedColumnCount;
+    public static int LoadedColumnCount;
+    public static ulong ChunksInGenerationQueue;
     public static ulong ChunksInMeshingQueue;
     public static float MeshingTime { get; private set; }
     public static float AverageChunkMeshingTime { get; private set; }

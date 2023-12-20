@@ -81,4 +81,10 @@ public static class MathUtils
             }
         }
     }
+
+
+    public static float Lerp(float min, float max, float factor)
+    {
+        return min + (max - min) * factor;
+    }
 }

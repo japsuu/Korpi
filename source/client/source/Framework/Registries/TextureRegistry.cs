@@ -19,7 +19,7 @@ public static class TextureRegistry
         arrayTextureBuilder = new ArrayTextureBuilder();
         
         Debug.Assert(arrayTextureBuilder != null, nameof(arrayTextureBuilder) + " != null");
-        arrayTextureBuilder.AddTexture(IoUtils.GetMissingTexturePath());
+        arrayTextureBuilder.AddTexture(IoUtils.GetTexturePath("missing.png"));
     }
     
     

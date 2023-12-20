@@ -31,8 +31,9 @@ public struct BlockState
     
     
     public bool IsAir => Id == 0;
-    
-    
+    public bool IsRendered => RenderType != BlockRenderType.None;
+
+
     public BlockState(Block block)
     {
         Id = block.Id;
@@ -87,15 +88,15 @@ public struct BlockState
     }
 
 
-    public bool Equals(BlockState other)
+    public static bool EqualsNonAlloc(BlockState b1, BlockState b2)
     {
-        return RenderType == other.RenderType && Id == other.Id && Data == other.Data && NeighbourMask == other.NeighbourMask;
+        return b1.RenderType == b2.RenderType && b1.Id == b2.Id && b1.Data == b2.Data && b1.NeighbourMask == b2.NeighbourMask;
     }
 
 
     public override bool Equals(object? obj)
     {
-        return obj is BlockState other && Equals(other);
+        return obj is BlockState other && EqualsNonAlloc(this, other);
     }
 
 

@@ -7,10 +7,121 @@ namespace BlockEngine.Client.Framework.Chunks;
 
 public class Chunk
 {
-    private readonly IBlockStorage _blockStorage = new FlatBlockStorage();
+    /// <summary>
+    /// Represents the state of the chunk.
+    /// </summary>
+    public enum ChunkGenerationState    //TODO: Add "Decorating" state
+    {
+        /// <summary>
+        /// The chunk has not been generated yet.
+        /// </summary>
+        GENERATING = 0,
+        
+        /// <summary>
+        /// The chunk has been generated and is waiting for neighbouring chunks to be generated.
+        /// </summary>
+        WAITING_FOR_NEIGHBOURS = 1,
+        
+        /// <summary>
+        /// The chunk has been generated and is being meshed.
+        /// </summary>
+        MESHING = 2,
+        
+        /// <summary>
+        /// The chunk has been loaded and is ready to be used.
+        /// </summary>
+        READY = 3
+    }
 
-    public bool IsMeshDirty;
-    public bool IsMeshed;
+    /// <summary>
+    /// Represents the state of the chunk mesh.
+    /// </summary>
+    public enum ChunkMeshState
+    {
+        /// <summary>
+        /// The chunk has not been meshed.
+        /// </summary>
+        NONE = 0,
+        
+        /// <summary>
+        /// The chunk has been meshed.
+        /// </summary>
+        MESHED = 1,
+        
+        /// <summary>
+        /// The chunk has been meshed but requires a remesh.
+        /// </summary>
+        DIRTY = 2
+    }
+    
+    
+    private readonly IBlockStorage _blockStorage = new FlatBlockStorage();
+    
+
+    private bool ContainsRenderedBlocks { get; set; }
+    
+    public readonly Vector3i Position;
+    public ChunkGenerationState GenerationState { get; private set; }
+    public ChunkMeshState MeshState { get; private set; }
+
+
+    public Chunk(Vector3i position)
+    {
+        Position = position;
+        ContainsRenderedBlocks = false;
+        GenerationState = ChunkGenerationState.GENERATING;
+        MeshState = ChunkMeshState.NONE;
+    }
+
+
+    public void Tick()
+    {
+        if (GenerationState == ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
+        {
+            if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
+            {
+                GenerationState = ChunkGenerationState.MESHING;
+                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+            }
+        }
+    }
+
+
+    public void OnGenerated()
+    {
+        MeshState = ChunkMeshState.NONE;
+        if (ContainsRenderedBlocks)
+        {
+            // Check if the chunk neighbours are loaded (required for meshing)
+            if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
+            {
+                GenerationState = ChunkGenerationState.MESHING;
+                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+            }
+            else
+            {
+                GenerationState = ChunkGenerationState.WAITING_FOR_NEIGHBOURS;
+            }
+        }
+        else
+        {
+            OnReady();
+        }
+    }
+    
+    
+    public void OnMeshed()
+    {
+        MeshState = ChunkMeshState.MESHED;
+        
+        OnReady();
+    }
+
+
+    private void OnReady()
+    {
+        GenerationState = ChunkGenerationState.READY;
+    }
 
 
     /// <summary>
@@ -23,9 +134,23 @@ public class Chunk
     /// </summary>
     public void SetBlockState(Vector3i position, BlockState block)
     {
-        _blockStorage.SetBlock(position.X, position.Y, position.Z, block);
-        IsMeshDirty = true;
         //TODO: If border block, dirty neighbouring chunk(s) too.
+        _blockStorage.SetBlock(position.X, position.Y, position.Z, block, out BlockState oldBlock);
+        
+        // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
+        if (GenerationState == ChunkGenerationState.READY && MeshState != ChunkMeshState.DIRTY && (oldBlock.IsRendered || block.IsRendered))
+        {
+            SetMeshDirty();
+        }
+        
+        ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+    }
+
+
+    public void SetMeshDirty()
+    {
+        MeshState = ChunkMeshState.DIRTY;
+        ChunkMesher.EnqueueChunkForMeshing(Position);
     }
 
 
@@ -54,11 +179,6 @@ public class Chunk
     public BlockState GetBlockState(Vector3i position)
     {
         return _blockStorage.GetBlock(position.X, position.Y, position.Z);
-    }
-
-
-    public void Tick()
-    {
     }
 
 

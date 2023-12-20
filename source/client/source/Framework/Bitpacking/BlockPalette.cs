@@ -25,13 +25,14 @@ public class BlockPalette : IBlockStorage
     /// The palette of different blocks.
     /// </summary>
     private PaletteEntry[] _palette;
-
-
+    
     /// <summary>
     /// The data buffer.
     /// Holds the indices of the blocks in the palette.
     /// </summary>
     private BitBuffer _data;
+    
+    public int RenderedBlockCount { get; private set; }
     
     
     public int GetPaletteSize() => _palette.Length;
@@ -52,12 +53,22 @@ public class BlockPalette : IBlockStorage
     }
 
 
-    public void SetBlock(int x, int y, int z, BlockState block)
+    public void SetBlock(int x, int y, int z, BlockState block, out BlockState oldBlock)
     {
         int index = GetIndex(x, y, z);
         if (index < 0 || index >= _size)
             throw new ArgumentOutOfRangeException(nameof(index), "Tried to set blocks outside of a palette");
+        
         uint paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
+        
+        oldBlock = _palette[paletteIndex].BlockState ?? BlockRegistry.Air.GetDefaultState();
+        
+        bool wasRendered = oldBlock.IsRendered;
+        bool willBeRendered = block.IsRendered;
+        if (wasRendered && !willBeRendered)
+            RenderedBlockCount--;
+        else if (!wasRendered && willBeRendered)
+            RenderedBlockCount++;
     
         // Reduce the refcount of the current block-type, as it will be overwritten.
         _palette[paletteIndex].RefCount -= 1;
@@ -65,12 +76,15 @@ public class BlockPalette : IBlockStorage
         // See if we can use an existing palette entry.
         for(uint existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
         {
-            if (!_palette[existingPaletteIndex].BlockState.Equals(block))
+            PaletteEntry entry = _palette[existingPaletteIndex];
+            if(entry.RefCount <= 0)
+                continue;
+            if (!BlockState.EqualsNonAlloc(entry.BlockState!.Value, block))
                 continue;
             
             // Use the existing palette entry and increase it's refcount.
             _data.Set(index * _indicesLength, _indicesLength, existingPaletteIndex);
-            _palette[existingPaletteIndex].RefCount += 1;
+            entry.RefCount += 1;
             return;
         }
     

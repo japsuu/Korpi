@@ -8,40 +8,40 @@ blocks:
   face_textures:
     front:
       textures:
-      - stone.png
+      - textures/stone.png
     back:
       textures:
-      - stone.png
+      - textures/stone.png
     left:
       textures:
-      - stone.png
+      - textures/stone.png
     right:
       textures:
-      - stone.png
+      - textures/stone.png
     top:
       textures:
-      - stone.png
+      - textures/stone.png
     bottom:
       textures:
-      - stone.png
+      - textures/stone.png
 - name: Dirt
   render_type: Normal
   face_textures:
     front:
       textures:
-        - dirt.png
+        - textures/dirt_side.png
     back:
       textures:
-        - dirt.png
+        - textures/dirt_side.png
     left:
       textures:
-        - dirt.png
+        - textures/dirt_side.png
     right:
       textures:
-        - dirt.png
+        - textures/dirt_side.png
     top:
       textures:
-        - dirt.png
+        - textures/dirt_top.png
     bottom:
       textures:
-        - dirt.png
+        - textures/dirt.png

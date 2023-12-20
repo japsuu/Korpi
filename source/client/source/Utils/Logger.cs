@@ -23,6 +23,16 @@ namespace BlockEngine.Client.Utils
         }
         
         
+        [Conditional("DEBUG")]
+        public static void LogOpenGl(string message)
+        {
+            ConsoleColor originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            WriteLine($"[OpenGL]: {message}");
+            Console.ForegroundColor = originalColor;
+        }
+        
+        
         public static void LogWarning(string message)
         {
             ConsoleColor originalColor = Console.ForegroundColor;

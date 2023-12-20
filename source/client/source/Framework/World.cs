@@ -3,6 +3,7 @@ using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.ECS.Entities;
+using BlockEngine.Client.Framework.Meshing;
 using BlockEngine.Client.Framework.Physics;
 using BlockEngine.Client.Framework.Rendering.Shaders;
 using BlockEngine.Client.Utils;
@@ -36,9 +37,12 @@ public class World
     
     public void Tick()
     {
-        ChunkManager.Tick(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
+        ChunkManager.Tick();
+        ChunkGenerator.ProcessGenerationQueue();
+        ChunkMesher.ProcessMeshingQueue();
+        RenderingStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         _entityManager.Update();
-        CameraStats.RaycastResult = RaycastWorld(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition, PlayerEntity.LocalPlayerEntity.Forward, 10);
+        CameraStats.RaycastResult = RaycastWorld(PlayerEntity.LocalPlayerEntity.ViewPosition, PlayerEntity.LocalPlayerEntity.ViewForward, 10);
     }
     
     

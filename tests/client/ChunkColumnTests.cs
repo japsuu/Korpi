@@ -41,21 +41,11 @@ public class ChunkColumnTests
 
         Assert.IsNull(chunkColumn.GetChunk(0));
     }
-
-    [Test]
-    public void ChunkColumn_Tick_DoesNotSetMeshDirtyWhenNoChunksAreDirty()
-    {
-        ChunkColumn chunkColumn = new(Vector2i.Zero);
-
-        chunkColumn.Tick();
-
-        Assert.IsFalse(chunkColumn.IsMeshDirty);
-    }
     
     [Test]
     public void Chunk_GetBlockState_ReturnsCorrectBlockState()
     {
-        Chunk chunk = new();
+        Chunk chunk = new(new Vector3i(0, 0, 0));
         Block block = new Block(1, "test", BlockRenderType.None, null);
         BlockState blockState = block.GetDefaultState();
 

@@ -1,4 +1,5 @@
-﻿using BlockEngine.Client.Framework;
+﻿using System.Runtime.InteropServices;
+using BlockEngine.Client.Framework;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.ECS.Entities;
@@ -24,26 +25,32 @@ public class GameClient : GameWindow
     /// Called before <see cref="OnLoad"/> is exited.
     /// </summary>
     public static event Action? ClientLoad;
+
     /// <summary>
     /// Called before <see cref="OnUnload"/> is exited.
     /// </summary>
     public static event Action? ClientUnload;
+
     /// <summary>
     /// Called when the game client is resized.
     /// </summary>
     public static event Action? ClientResized;
-    
+
     public static int WindowWidth { get; private set; }
     public static int WindowHeight { get; private set; }
     public static float WindowAspectRatio { get; private set; }
     public static bool IsPlayerInGui { get; set; }
-    
+
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
     private Skybox _skybox = null!;
     private World _world = null!;
     private Crosshair _crosshair = null!;
     private PlayerEntity _playerEntity = null!;
+
+#if DEBUG
+    private static readonly DebugProc DebugMessageDelegate = OnDebugMessage;
+#endif
 
 
     public GameClient() : base(
@@ -55,36 +62,47 @@ public class GameClient : GameWindow
         {
             Size = (ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
             Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}",
-            NumberOfSamples = 8
-        }) { }
-    
-    
+            NumberOfSamples = 8,
+#if DEBUG
+            Flags = ContextFlags.Debug
+#endif
+        })
+    {
+    }
+
+
     protected override void OnLoad()
     {
         base.OnLoad();
         Logger.Log($"Starting v{Constants.ENGINE_VERSION}...");
-        
+
         WindowWidth = ClientSize.X;
         WindowHeight = ClientSize.Y;
         WindowAspectRatio = ClientSize.X / (float)ClientSize.Y;
-        
-        GL.Enable(EnableCap.DepthTest);     // Enable depth testing.
-        GL.Enable(EnableCap.Multisample);   // Enable multisampling.
-        GL.Enable(EnableCap.Blend);         // Enable blending for transparent textures.
+
+#if DEBUG
+        GL.DebugMessageCallback(DebugMessageDelegate, IntPtr.Zero);
+        GL.Enable(EnableCap.DebugOutput);
+        GL.Enable(EnableCap.DebugOutputSynchronous);
+#endif
+
+        GL.Enable(EnableCap.DepthTest); // Enable depth testing.
+        GL.Enable(EnableCap.Multisample); // Enable multisampling.
+        GL.Enable(EnableCap.Blend); // Enable blending for transparent textures.
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        
+
         // Resource initialization.
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
         _shaderManager = new ShaderManager();
-        
+
         // World initialization.
         GameTime.Initialize();
         _world = new World("World1");
         _skybox = new Skybox(false);
-        
+
         // PlayerEntity initialization.
         _playerEntity = new PlayerEntity(new Vector3(0, 256, 0), 0, 0);
 #if DEBUG
@@ -92,7 +110,7 @@ public class GameClient : GameWindow
             PhotoModeCamera.Create(new Vector3(0, 256, 48), -30, -100);
 #endif
         CursorState = CursorState.Grabbed;
-        
+
         // UI initialization.
         _crosshair = new Crosshair();
         _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
@@ -106,7 +124,7 @@ public class GameClient : GameWindow
     protected override void OnUnload()
     {
         base.OnUnload();
-        
+
         _shaderManager.Dispose();
         _skybox.Dispose();
         TextureRegistry.BlockArrayTexture.Dispose();
@@ -117,20 +135,21 @@ public class GameClient : GameWindow
     protected override void OnUpdateFrame(FrameEventArgs args)
     {
         base.OnUpdateFrame(args);
-        
+
         Time.Update(args.Time);
         GameTime.Update();
-        
+
         Input.Update(KeyboardState, MouseState);
 
         // Emulate the cursor being fixed to center of the screen, as OpenTK doesn't fix the cursor position when it's grabbed.
         Vector2 mousePos = Input.MouseState.Position;
         if (CursorState == CursorState.Grabbed)
             mousePos = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
+
         // MousePosition = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
 
         _imGuiController.Update(this, (float)args.Time, mousePos);
-        
+
         ImGuiWindowManager.UpdateAllWindows();
 
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
@@ -139,18 +158,19 @@ public class GameClient : GameWindow
         _world.Tick();
     }
 
-    
+
     protected override void OnRenderFrame(FrameEventArgs args)
     {
         base.OnRenderFrame(args);
-        
+
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-        
+
 #if DEBUG
+
         // Set the polygon mode to wireframe if the debug setting is enabled.
         GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.DebugModeConfig.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
 #endif
-        
+
         // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
         Matrix4 cameraViewMatrix = Camera.RenderingCamera.ViewMatrix;
@@ -164,33 +184,31 @@ public class GameClient : GameWindow
         // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
         ShaderManager.UpdateViewMatrix(cameraViewMatrix);
         ShaderManager.UpdateProjectionMatrix(Camera.RenderingCamera.ProjectionMatrix);
-        
+
         DrawWorld();
 
 #if DEBUG
         if (ClientConfig.DebugModeConfig.RenderSkybox)
 #endif
-        _skybox.Draw();
+            _skybox.Draw();
 
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && Time.TotalTime > 1f && RenderingStats.ChunksInMeshingQueue == 0)
+        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && Time.TotalTime > 1f && RenderingStats.ChunksInGenerationQueue == 0 && RenderingStats.ChunksInMeshingQueue == 0)
         {
             Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
             Close();
             return;
         }
-        
+
         DebugDrawer.Draw();
 #endif
-        
+
         _crosshair.Draw();
 
         DrawImGui();
 
         if (Input.KeyboardState.IsKeyPressed(Keys.F2))
-        {
             Screenshotter.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
-        }
 
         SwapBuffers();
     }
@@ -230,19 +248,19 @@ public class GameClient : GameWindow
         ClientResized?.Invoke();
     }
 
-    
+
     protected override void OnTextInput(TextInputEventArgs e)
     {
         base.OnTextInput(e);
-        
+
         _imGuiController.PressChar((char)e.Unicode);
     }
 
-    
+
     protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         base.OnMouseWheel(e);
-            
+
         _imGuiController.MouseScroll(e.Offset);
     }
 
@@ -253,7 +271,7 @@ public class GameClient : GameWindow
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
             return;
 #endif
-        
+
         if (CursorState == CursorState.Grabbed)
         {
             CursorState = CursorState.Normal;
@@ -265,4 +283,30 @@ public class GameClient : GameWindow
             IsPlayerInGui = false;
         }
     }
+
+
+#if DEBUG
+    private static void OnDebugMessage(
+        DebugSource source, // Source of the debugging message.
+        DebugType type, // Type of the debugging message.
+        int id, // ID associated with the message.
+        DebugSeverity severity, // Severity of the message.
+        int length, // Length of the string in pMessage.
+        IntPtr pMessage, // Pointer to message string.
+        IntPtr pUserParam)
+    {
+        // In order to access the string pointed to by pMessage, you can use Marshal
+        // class to copy its contents to a C# string without unsafe code. You can
+        // also use the new function Marshal.PtrToStringUTF8 since .NET Core 1.1.
+        string message = Marshal.PtrToStringAnsi(pMessage, length);
+
+        if (severity == DebugSeverity.DebugSeverityNotification)
+            return;
+        
+        Logger.LogOpenGl($"[{severity} source={source} type={type} id={id}] {message}");
+
+        if (type == DebugType.DebugTypeError)
+            throw new Exception(message);
+    }
+#endif
 }

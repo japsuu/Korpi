@@ -7,10 +7,10 @@ namespace ClientTests;
 public class ChunkTests
 {
     [Test]
-    public void SetBlockState_UpdatesBlockStateAndSetsMeshDirty()
+    public void SetBlockState_NewChunkDoesNotSetMeshDirty()
     {
         // Arrange
-        Chunk chunk = new();
+        Chunk chunk = new(new Vector3i(0, 0, 0));
         Vector3i position = new(1, 1, 1);
         BlockState blockState = new();
 
@@ -18,14 +18,14 @@ public class ChunkTests
         chunk.SetBlockState(position, blockState);
 
         // Assert
-        Assert.IsTrue(chunk.IsMeshDirty);
+        Assert.That(chunk.MeshState, Is.EqualTo(Chunk.ChunkMeshState.NONE));
     }
 
     [Test]
     public void GetBlockState_ReturnsCorrectBlockState()
     {
         // Arrange
-        Chunk chunk = new();
+        Chunk chunk = new(new Vector3i(0, 0, 0));
         Vector3i position = new(1, 1, 1);
         BlockState blockState = new();
         chunk.SetBlockState(position, blockState);
