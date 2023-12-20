@@ -74,9 +74,13 @@ public class LayeredBlockStorage : IBlockStorage
         {
             layer = new BlockLayer(block);
             _layers[y] = layer;
+            oldBlock = BlockRegistry.Air.GetDefaultState();
+        }
+        else
+        {
+            oldBlock = layer.GetBlock(x, z);
         }
         
-        oldBlock = layer.GetBlock(x, z);
         bool wasRendered = oldBlock.IsRendered;
         bool willBeRendered = block.IsRendered;
         if (wasRendered && !willBeRendered)

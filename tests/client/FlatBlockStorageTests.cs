@@ -7,7 +7,7 @@ namespace ClientTests;
 public class FlatBlockStorageTests
 {
     [Test]
-    public void SetBlock_WithValidCoordinates_SetsBlockCorrectly()
+    public void SetBlock_WithValidCoordinates_SetsCorrectBlock()
     {
         // Arrange
         FlatBlockStorage storage = new();
@@ -21,7 +21,7 @@ public class FlatBlockStorageTests
     }
 
     [Test]
-    public void GetBlock_WithValidCoordinates_ReturnsCorrectBlock()
+    public void GetBlock_WithValidCoordinates_GetsCorrectBlock()
     {
         // Arrange
         FlatBlockStorage storage = new();
