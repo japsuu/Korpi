@@ -49,8 +49,11 @@ public static class ChunkMesher
         {
             Vector3i chunkPos = ChunkMeshingQueue.Dequeue();
             QueuedChunks.Remove(chunkPos);
+            
+            // Check if the chunk is still loaded
             if (!World.CurrentWorld.ChunkManager.IsChunkLoaded(chunkPos))
                 continue;
+            
             RenderingStats.StartChunkMeshing();
             ChunkRenderer mesh = GenerateMesh(chunkPos);
             ChunkRendererStorage.AddRenderer(chunkPos, mesh);

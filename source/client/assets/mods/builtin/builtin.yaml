@@ -29,19 +29,19 @@ blocks:
   face_textures:
     front:
       textures:
-        - textures/dirt.png
+        - textures/dirt_side.png
     back:
       textures:
-        - textures/dirt.png
+        - textures/dirt_side.png
     left:
       textures:
-        - textures/dirt.png
+        - textures/dirt_side.png
     right:
       textures:
-        - textures/dirt.png
+        - textures/dirt_side.png
     top:
       textures:
-        - textures/dirt.png
+        - textures/dirt_top.png
     bottom:
       textures:
         - textures/dirt.png

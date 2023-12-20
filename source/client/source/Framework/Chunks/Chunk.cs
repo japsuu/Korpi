@@ -1,7 +1,6 @@
 ﻿using BlockEngine.Client.Framework.Bitpacking;
 using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Meshing;
-using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Chunks;
@@ -11,22 +10,27 @@ public class Chunk
     /// <summary>
     /// Represents the state of the chunk.
     /// </summary>
-    public enum ChunkGenerationState
+    public enum ChunkGenerationState    //TODO: Add "Decorating" state
     {
         /// <summary>
         /// The chunk has not been generated yet.
         /// </summary>
-        Generating = 0,
+        GENERATING = 0,
+        
+        /// <summary>
+        /// The chunk has been generated and is waiting for neighbouring chunks to be generated.
+        /// </summary>
+        WAITING_FOR_NEIGHBOURS = 1,
         
         /// <summary>
         /// The chunk has been generated and is being meshed.
         /// </summary>
-        Meshing = 1,
+        MESHING = 2,
         
         /// <summary>
         /// The chunk has been loaded and is ready to be used.
         /// </summary>
-        Ready = 2
+        READY = 3
     }
 
     /// <summary>
@@ -37,17 +41,17 @@ public class Chunk
         /// <summary>
         /// The chunk has not been meshed.
         /// </summary>
-        None = 0,
+        NONE = 0,
         
         /// <summary>
         /// The chunk has been meshed.
         /// </summary>
-        Meshed = 1,
+        MESHED = 1,
         
         /// <summary>
         /// The chunk has been meshed but requires a remesh.
         /// </summary>
-        Dirty = 2
+        DIRTY = 2
     }
     
     
@@ -63,23 +67,39 @@ public class Chunk
     {
         Position = position;
         ContainsRenderedBlocks = false;
-        GenerationState = ChunkGenerationState.Generating;
-        MeshState = ChunkMeshState.None;
+        GenerationState = ChunkGenerationState.GENERATING;
+        MeshState = ChunkMeshState.NONE;
     }
 
 
     public void Tick()
     {
+        if (GenerationState == ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
+        {
+            if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
+            {
+                GenerationState = ChunkGenerationState.MESHING;
+                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+            }
+        }
     }
 
 
     public void OnGenerated()
     {
-        MeshState = ChunkMeshState.None;
+        MeshState = ChunkMeshState.NONE;
         if (ContainsRenderedBlocks)
         {
-            GenerationState = ChunkGenerationState.Meshing;
-            ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+            // Check if the chunk neighbours are loaded (required for meshing)
+            if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
+            {
+                GenerationState = ChunkGenerationState.MESHING;
+                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+            }
+            else
+            {
+                GenerationState = ChunkGenerationState.WAITING_FOR_NEIGHBOURS;
+            }
         }
         else
         {
@@ -90,7 +110,7 @@ public class Chunk
     
     public void OnMeshed()
     {
-        MeshState = ChunkMeshState.Meshed;
+        MeshState = ChunkMeshState.MESHED;
         
         OnReady();
     }
@@ -98,7 +118,7 @@ public class Chunk
 
     private void OnReady()
     {
-        GenerationState = ChunkGenerationState.Ready;
+        GenerationState = ChunkGenerationState.READY;
     }
 
 
@@ -116,7 +136,7 @@ public class Chunk
         _blockStorage.SetBlock(position.X, position.Y, position.Z, block, out BlockState oldBlock);
         
         // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
-        if (GenerationState == ChunkGenerationState.Ready && MeshState != ChunkMeshState.Dirty && (oldBlock.IsRendered || block.IsRendered))
+        if (GenerationState == ChunkGenerationState.READY && MeshState != ChunkMeshState.DIRTY && (oldBlock.IsRendered || block.IsRendered))
         {
             SetMeshDirty();
         }
@@ -127,7 +147,7 @@ public class Chunk
 
     public void SetMeshDirty()
     {
-        MeshState = ChunkMeshState.Dirty;
+        MeshState = ChunkMeshState.DIRTY;
         ChunkMesher.EnqueueChunkForMeshing(Position);
     }
 

@@ -18,7 +18,7 @@ public class ChunkTests
         chunk.SetBlockState(position, blockState);
 
         // Assert
-        Assert.That(chunk.MeshState, Is.EqualTo(Chunk.ChunkMeshState.None));
+        Assert.That(chunk.MeshState, Is.EqualTo(Chunk.ChunkMeshState.NONE));
     }
 
     [Test]
