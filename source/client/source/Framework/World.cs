@@ -11,7 +11,7 @@ using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework;
 
-public class World
+public class World : IDisposable
 {
     public static World CurrentWorld { get; private set; } = null!;
     
@@ -38,7 +38,7 @@ public class World
     public void Tick()
     {
         ChunkManager.Tick();
-        ChunkGenerator.ProcessGenerationQueue();
+        ChunkGenerator.ProcessQueues();
         ChunkMesher.ProcessMeshingQueue();
         RenderingStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         _entityManager.Update();
@@ -73,5 +73,11 @@ public class World
     public override string ToString()
     {
         return $"World '{_name}'";
+    }
+    
+    
+    public void Dispose()
+    {
+        ChunkGenerator.Dispose();
     }
 }

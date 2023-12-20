@@ -125,6 +125,7 @@ public class GameClient : GameWindow
     {
         base.OnUnload();
 
+        _world.Dispose();
         _shaderManager.Dispose();
         _skybox.Dispose();
         TextureRegistry.BlockArrayTexture.Dispose();

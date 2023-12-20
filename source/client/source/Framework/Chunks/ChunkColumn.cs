@@ -48,7 +48,7 @@ public class ChunkColumn
         for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
         {
             Chunk chunk = new Chunk(new Vector3i(Position.X, i * Constants.CHUNK_SIZE, Position.Y));
-            ChunkGenerator.QueueChunkGeneration(chunk.Position);
+            ChunkGenerator.Queue(chunk.Position);
             _chunks[i] = chunk;
         }
     }
@@ -56,5 +56,10 @@ public class ChunkColumn
         
     public void Unload()
     {
+        for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
+        {
+            Chunk chunk = new Chunk(new Vector3i(Position.X, i * Constants.CHUNK_SIZE, Position.Y));
+            chunk.Unload();
+        }
     }
 }

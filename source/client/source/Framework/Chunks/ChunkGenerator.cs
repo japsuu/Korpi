@@ -1,99 +1,75 @@
-﻿using BlockEngine.Client.Framework.Debugging;
+﻿using System.Collections.Concurrent;
+using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.ECS.Entities;
-using BlockEngine.Client.Framework.Registries;
-using BlockEngine.Client.Utils;
+using ConcurrentCollections;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Chunks;
 
 public static class ChunkGenerator
 {
-    private const int MAX_CHUNKS_GENERATED_PER_FRAME = 8;
-    
-    private static readonly FastNoiseLite Noise;
+    private const int MAX_CHUNKS_QUEUED_PER_FRAME = 64;
     
     /// <summary>
-    /// Priority queue of chunks to generate.
+    /// Priority queue from which chunks get distributed to the generator thread.
     /// Chunks are prioritized by their distance to the camera.
     /// </summary>
-    private static readonly PriorityQueue<Vector3i, float> ChunkGenerationQueue = new();
-    private static readonly HashSet<Vector3i> QueuedChunks = new();
-
-
+    private static readonly PriorityQueue<Vector3i, float> PreGenerationQueue;
+    private static readonly ConcurrentHashSet<Vector3i> QueuedChunks;
+    private static readonly ConcurrentQueue<Vector3i> GenerationQueue;
+    private static readonly ChunkGeneratorThread GeneratorThread;
+    
+    
     static ChunkGenerator()
     {
-        Noise = new FastNoiseLite();
-        Noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        PreGenerationQueue = new PriorityQueue<Vector3i, float>();
+        QueuedChunks = new ConcurrentHashSet<Vector3i>();
+        GenerationQueue = new ConcurrentQueue<Vector3i>();
+        GeneratorThread = new ChunkGeneratorThread(QueuedChunks, GenerationQueue);
     }
     
     
-    public static void QueueChunkGeneration(Vector3i chunkPos)
+    /// <summary>
+    /// Adds a chunk to be generated later.
+    /// </summary>
+    /// <param name="chunkPos">Position of the chunk to generate</param>
+    public static void Queue(Vector3i chunkPos)
     {
         if (QueuedChunks.Contains(chunkPos))
             return;
         
         float distanceToPlayer = (chunkPos - PlayerEntity.LocalPlayerEntity.ViewPosition).LengthSquared;
-        ChunkGenerationQueue.Enqueue(chunkPos, distanceToPlayer);
+        PreGenerationQueue.Enqueue(chunkPos, distanceToPlayer);
         QueuedChunks.Add(chunkPos);
     }
 
 
-    public static void ProcessGenerationQueue()
+    public static void ProcessQueues()
     {
-        RenderingStats.ChunksInGenerationQueue = (ulong)ChunkGenerationQueue.Count;
-        int chunksGenerated = 0;
-        while (chunksGenerated < MAX_CHUNKS_GENERATED_PER_FRAME && ChunkGenerationQueue.Count > 0)
+#if DEBUG
+        RenderingStats.ChunksInGenerationQueue = (ulong)GenerationQueue.Count;
+#endif
+        int chunksQueued = 0;
+        while (chunksQueued < MAX_CHUNKS_QUEUED_PER_FRAME && PreGenerationQueue.Count > 0)
         {
-            Vector3i chunkPos = ChunkGenerationQueue.Dequeue();
-            QueuedChunks.Remove(chunkPos);
+            Vector3i chunkPos = PreGenerationQueue.Dequeue();
+            
             Chunk? chunk = World.CurrentWorld.ChunkManager.GetChunkAt(chunkPos);
             if (chunk == null)
-                continue;
-            
-            GenerateChunk(chunk);
-            
-            chunksGenerated++;
-        }
-    }
-    
-    
-    private static void GenerateChunk(Chunk chunk)
-    {
-        for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-        {
-            for (int y = 0; y < Constants.CHUNK_SIZE; y++)
             {
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
-                    ushort id = GetBlockIdAtPosition(new Vector3i(x + chunk.Position.X, y + chunk.Position.Y, z + chunk.Position.Z));
-                    
-                    chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(id).GetDefaultState());
-                }
+                QueuedChunks.TryRemove(chunkPos);
+                continue;
             }
+            
+            GenerationQueue.Enqueue(chunkPos);
+            
+            chunksQueued++;
         }
-        
-        chunk.OnGenerated();
     }
     
     
-    private static ushort GetBlockIdAtPosition(Vector3i blockPosition)
+    public static void Dispose()
     {
-        const int seaLevel = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 4;
-        const int terrainHeightMin = seaLevel - 16;
-        const int terrainHeightMax = seaLevel + 16;
-        
-        float noise = Noise.GetNoise(blockPosition.X, blockPosition.Z);
-        float height = noise * 0.5f + 0.5f;
-        
-        height = Math.Clamp(height, 0, 1);
-        height = MathUtils.Lerp(terrainHeightMin, terrainHeightMax, height);
-        
-        if (blockPosition.Y > height)
-            return 0;
-        
-        if (blockPosition.Y > height - 2)
-            return 2;
-        
-        return 1;
+        GeneratorThread.Dispose();
     }
 }

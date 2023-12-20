@@ -1,4 +1,5 @@
-﻿using BlockEngine.Client.Framework.Blocks;
+﻿using System.Collections.Concurrent;
+using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.ECS.Entities;
@@ -74,7 +75,7 @@ public class ChunkManager
 
     private readonly Vector3i[] _precomputedNeighbouringChunkOffsets = new Vector3i[26];
     private readonly Vector2i[] _precomputedNeighbouringColumnOffsets = new Vector2i[8];
-    private readonly Dictionary<Vector2i, ChunkColumn> _loadedColumns = new();
+    private readonly ConcurrentDictionary<Vector2i, ChunkColumn> _loadedColumns = new();
     private readonly List<Vector2i> _columnsToLoad = new();
     private readonly List<Vector2i> _columnsToUnload = new();
 
@@ -268,9 +269,10 @@ public class ChunkManager
     {
         foreach (Vector2i columnPos in _columnsToUnload)
         {
-            ChunkColumn column = _loadedColumns[columnPos];
-            _loadedColumns[columnPos].Unload();
-            _loadedColumns.Remove(columnPos);
+            if (!_loadedColumns.TryRemove(columnPos, out ChunkColumn? column))
+                continue;
+            
+            column.Unload();
             for (int y = 0; y < Constants.CHUNK_COLUMN_HEIGHT; y++)
             {
                 Chunk? chunk = column.GetChunk(y);
@@ -314,19 +316,23 @@ public class ChunkManager
         {
             ChunkColumn column = new(columnPos);
             column.Load();
-            _loadedColumns.Add(columnPos, column);
+            if (!_loadedColumns.TryAdd(columnPos, column))
+                Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");
 
             // Logger.Log($"Loaded chunk column at {columnPos}.");
         }
     }
 
-
+    
+    /// <summary>
+    /// Thread safe.
+    /// </summary>
+    /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
     public Chunk? GetChunkAt(Vector3i position)
     {
         Vector2i chunkColumnPos = CoordinateConversions.GetContainingColumnPos(position);
 
         if (!_loadedColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
-
             //Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
             return null;
 
