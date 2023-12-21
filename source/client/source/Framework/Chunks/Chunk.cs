@@ -179,7 +179,7 @@ public class Chunk
     /// </code>
     /// Thread safe.
     /// </summary>
-    public void SetBlockState(Vector3i position, BlockState block)
+    public BlockState SetBlockState(Vector3i position, BlockState block)
     {
         lock (_blockStorageLock)
         {
@@ -193,6 +193,8 @@ public class Chunk
             }
         
             _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+        
+            return oldBlock;
         }
     }
 

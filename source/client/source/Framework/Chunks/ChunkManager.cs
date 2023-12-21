@@ -273,6 +273,17 @@ public class ChunkManager
         Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
         return chunk.GetBlockState(chunkRelativePos);
     }
+    
+    
+    public BlockState SetBlockStateAt(Vector3i position, BlockState blockState)
+    {
+        Chunk? chunk = GetChunkAt(position);
+        if (chunk == null)
+            return BlockRegistry.Air.GetDefaultState();
+
+        Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
+        return chunk.SetBlockState(chunkRelativePos, blockState);
+    }
 
 
     private void FindColumnsToUnload(Vector3 playerPos)

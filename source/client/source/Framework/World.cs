@@ -6,10 +6,13 @@ using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Meshing;
 using BlockEngine.Client.Framework.Physics;
+using BlockEngine.Client.Framework.Registries;
+using BlockEngine.Client.Framework.Rendering.Cameras;
 using BlockEngine.Client.Framework.Rendering.Shaders;
 using BlockEngine.Client.Framework.WorldGeneration;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace BlockEngine.Client.Framework;
 
@@ -17,9 +20,9 @@ public class World : IDisposable
 {
     public static World CurrentWorld { get; private set; } = null!;
     
-    public readonly ChunkManager ChunkManager;
-    public readonly ChunkGenerator ChunkGenerator;
-    public readonly ChunkMesher ChunkMesher;
+    public readonly ChunkManager ChunkManager;      // TODO: Make private, and wrap around a function
+    public readonly ChunkGenerator ChunkGenerator;  // TODO: Make private, and wrap around a function
+    public readonly ChunkMesher ChunkMesher;        // TODO: Make private, and wrap around a function
 
     private readonly string _name;
     private readonly EntityManager _entityManager;
@@ -48,7 +51,7 @@ public class World : IDisposable
         ChunkMesher.ProcessQueues();
         RenderingStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         _entityManager.Update();
-        CameraStats.RaycastResult = RaycastWorld(PlayerEntity.LocalPlayerEntity.ViewPosition, PlayerEntity.LocalPlayerEntity.ViewForward, 10);
+        CameraStats.RaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
     }
     
     
@@ -63,6 +66,21 @@ public class World : IDisposable
     {
         Ray ray = new Ray(start, direction);
         RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
+
+        if (Input.MouseState.IsButtonPressed(MouseButton.Left))
+        {
+            if (raycastResult.Hit)
+            {
+                ChunkManager.SetBlockStateAt(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
+            }
+        }
+        else if (Input.MouseState.IsButtonPressed(MouseButton.Right))
+        {
+            if (raycastResult.Hit)
+            {
+                ChunkManager.SetBlockStateAt(raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(), BlockRegistry.GetBlock(1).GetDefaultState());
+            }
+        }
 
 #if DEBUG
         if (ClientConfig.DebugModeConfig.RenderRaycastHit)
