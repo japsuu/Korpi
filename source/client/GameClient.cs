@@ -2,6 +2,7 @@
 using BlockEngine.Client.Framework;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Modding;
 using BlockEngine.Client.Framework.Registries;
@@ -125,6 +126,7 @@ public class GameClient : GameWindow
     {
         base.OnUnload();
 
+        _world.Dispose();
         _shaderManager.Dispose();
         _skybox.Dispose();
         TextureRegistry.BlockArrayTexture.Dispose();

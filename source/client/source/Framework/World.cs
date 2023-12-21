@@ -2,20 +2,24 @@
 using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Meshing;
 using BlockEngine.Client.Framework.Physics;
 using BlockEngine.Client.Framework.Rendering.Shaders;
+using BlockEngine.Client.Framework.WorldGeneration;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework;
 
-public class World
+public class World : IDisposable
 {
     public static World CurrentWorld { get; private set; } = null!;
     
     public readonly ChunkManager ChunkManager;
+    public readonly ChunkGenerator ChunkGenerator;
+    public readonly ChunkMesher ChunkMesher;
 
     private readonly string _name;
     private readonly EntityManager _entityManager;
@@ -25,6 +29,8 @@ public class World
     {
         _name = name;
         ChunkManager = new ChunkManager();
+        ChunkGenerator = new ChunkGenerator();
+        ChunkMesher = new ChunkMesher();
         _entityManager = new EntityManager();
         
         if (CurrentWorld != null)
@@ -38,8 +44,8 @@ public class World
     public void Tick()
     {
         ChunkManager.Tick();
-        ChunkGenerator.ProcessGenerationQueue();
-        ChunkMesher.ProcessMeshingQueue();
+        ChunkGenerator.ProcessQueues();
+        ChunkMesher.ProcessQueues();
         RenderingStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         _entityManager.Update();
         CameraStats.RaycastResult = RaycastWorld(PlayerEntity.LocalPlayerEntity.ViewPosition, PlayerEntity.LocalPlayerEntity.ViewForward, 10);
@@ -48,7 +54,7 @@ public class World
     
     public void Draw()
     {
-        ChunkManager.Draw(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition, ShaderManager.ChunkShader);
+        ChunkManager.Draw(ShaderManager.ChunkShader);
         _entityManager.Draw();
     }
     
@@ -73,5 +79,12 @@ public class World
     public override string ToString()
     {
         return $"World '{_name}'";
+    }
+    
+    
+    public void Dispose()
+    {
+        ChunkGenerator.Dispose();
+        ChunkMesher.Dispose();
     }
 }

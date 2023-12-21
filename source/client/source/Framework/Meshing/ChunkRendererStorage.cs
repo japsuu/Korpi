@@ -13,14 +13,21 @@ public static class ChunkRendererStorage
     public static int GeneratedRendererCount { get; private set; }
     
     
-    public static void AddRenderer(Vector3i chunkPos, ChunkRenderer renderer)
+    public static void AddOrUpdateChunkMesh(ChunkMesh mesh)
     {
-        GeneratedRenderers.Add(chunkPos, renderer);
-        GeneratedRendererCount++;
+        if (GeneratedRenderers.TryGetValue(mesh.ChunkPos, out ChunkRenderer? renderer))
+        {
+            renderer.UpdateMesh(mesh);
+        }
+        else
+        {
+            renderer = new ChunkRenderer(mesh);
+            GeneratedRenderers.Add(mesh.ChunkPos, renderer);
+        }
     }
     
     
-    public static void RemoveRenderer(Vector3i chunkPos)
+    public static void RemoveChunkMesh(Vector3i chunkPos)
     {
         GeneratedRenderers.Remove(chunkPos, out ChunkRenderer? renderer);
         if (renderer is not null)

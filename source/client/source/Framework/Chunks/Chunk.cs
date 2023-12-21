@@ -1,5 +1,6 @@
 ﻿using BlockEngine.Client.Framework.Bitpacking;
 using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.Meshing;
 using OpenTK.Mathematics;
 
@@ -56,9 +57,10 @@ public class Chunk
     
     
     private readonly IBlockStorage _blockStorage = new FlatBlockStorage();
-    
+    private readonly object _blockStorageLock = new();
 
-    private bool ContainsRenderedBlocks { get; set; }
+    private bool _containsRenderedBlocks;
+    private bool _isLoaded;
     
     public readonly Vector3i Position;
     public ChunkGenerationState GenerationState { get; private set; }
@@ -68,35 +70,69 @@ public class Chunk
     public Chunk(Vector3i position)
     {
         Position = position;
-        ContainsRenderedBlocks = false;
+        _containsRenderedBlocks = false;
         GenerationState = ChunkGenerationState.GENERATING;
         MeshState = ChunkMeshState.NONE;
+        Load();
     }
 
 
     public void Tick()
     {
+        if (!_isLoaded)
+            throw new InvalidOperationException("Tried to tick an unloaded chunk!");
+        
         if (GenerationState == ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
         {
             if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
             {
                 GenerationState = ChunkGenerationState.MESHING;
-                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+                World.CurrentWorld.ChunkMesher.Enqueue(Position);
             }
         }
+
+        const float halfAChunk = Constants.CHUNK_SIZE / 2f;
+        Vector3 centerOffset = new Vector3(halfAChunk, 0, halfAChunk);
+        switch (MeshState)
+        {
+            case ChunkMeshState.NONE:
+                DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Red);
+                break;
+            case ChunkMeshState.MESHED:
+                DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
+                break;
+            case ChunkMeshState.DIRTY:
+                DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Yellow);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
+    
+    private void Load()
+    {
+        _isLoaded = true;
+        World.CurrentWorld.ChunkGenerator.Enqueue(Position);
+    }
+
+
+    public void Unload()
+    {
+        _isLoaded = false;
     }
 
 
     public void OnGenerated()
     {
         MeshState = ChunkMeshState.NONE;
-        if (ContainsRenderedBlocks)
+        if (_containsRenderedBlocks)
         {
             // Check if the chunk neighbours are loaded (required for meshing)
             if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
             {
                 GenerationState = ChunkGenerationState.MESHING;
-                ChunkMesher.EnqueueChunkForInitialMeshing(Position);
+                World.CurrentWorld.ChunkMesher.Enqueue(Position);
             }
             else
             {
@@ -127,30 +163,36 @@ public class Chunk
     /// <summary>
     /// Indexes to the block at the given position.
     /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+    /// <code>
     /// for z in range:
-    ///    for y in range:
-    ///       for x in range:
-    ///          block = BlockMap[x, y, z]
+    ///     for y in range:
+    ///         for x in range:
+    ///             block = BlockMap[x, y, z].
+    /// </code>
+    /// Thread safe.
     /// </summary>
     public void SetBlockState(Vector3i position, BlockState block)
     {
-        //TODO: If border block, dirty neighbouring chunk(s) too.
-        _blockStorage.SetBlock(position.X, position.Y, position.Z, block, out BlockState oldBlock);
-        
-        // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
-        if (GenerationState == ChunkGenerationState.READY && MeshState != ChunkMeshState.DIRTY && (oldBlock.IsRendered || block.IsRendered))
+        lock (_blockStorageLock)
         {
-            SetMeshDirty();
-        }
+            //TODO: If border block, dirty neighbouring chunk(s) too.
+            _blockStorage.SetBlock(position.X, position.Y, position.Z, block, out BlockState oldBlock);
         
-        ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+            // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
+            if (GenerationState == ChunkGenerationState.READY && MeshState != ChunkMeshState.DIRTY && (oldBlock.IsRendered || block.IsRendered))
+            {
+                SetMeshDirty();
+            }
+        
+            _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+        }
     }
 
 
     public void SetMeshDirty()
     {
         MeshState = ChunkMeshState.DIRTY;
-        ChunkMesher.EnqueueChunkForMeshing(Position);
+        World.CurrentWorld.ChunkMesher.Enqueue(Position);
     }
 
 
@@ -164,7 +206,10 @@ public class Chunk
     /// </summary>
     public BlockState GetBlockState(int x, int y, int z)
     {
-        return _blockStorage.GetBlock(x, y, z);
+        lock (_blockStorageLock)
+        {
+            return _blockStorage.GetBlock(x, y, z);
+        }
     }
 
 
@@ -178,21 +223,27 @@ public class Chunk
     /// </summary>
     public BlockState GetBlockState(Vector3i position)
     {
-        return _blockStorage.GetBlock(position.X, position.Y, position.Z);
+        lock (_blockStorageLock)
+        {
+            return _blockStorage.GetBlock(position.X, position.Y, position.Z);
+        }
     }
 
 
     public void CacheMeshingData(MeshingDataCache meshingDataCache)
-    {   // TODO: Optimize with block copy.
-        for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+    {   // TODO: Optimize with block copy if possible.
+        lock (_blockStorageLock)
         {
-            for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+            for (int z = 0; z < Constants.CHUNK_SIZE; z++)
             {
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
                 {
-                    BlockState state = GetBlockState(x, y, z);
-                    // Offset by one block in each direction to account for the border
-                    meshingDataCache.SetData(x + 1, y + 1, z + 1, state);
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        BlockState state = GetBlockState(x, y, z);
+                        // Offset by one block in each direction to account for the border
+                        meshingDataCache.SetData(x + 1, y + 1, z + 1, state);
+                    }
                 }
             }
         }
