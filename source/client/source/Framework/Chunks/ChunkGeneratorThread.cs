@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Chunks;
 
-public class ChunkGeneratorThread : ChunkProcessorThread
+public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
 {
     private readonly FastNoiseLite _noise;   // FNL seems to be thread safe, as long as you don't change the seed/other settings while generating.
 
@@ -16,7 +16,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread
     }
 
 
-    protected override void ProcessChunk(Chunk chunk)
+    protected override Vector3i ProcessChunk(Chunk chunk)
     {
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         {
@@ -30,6 +30,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread
                 }
             }
         }
+        return chunk.Position;
     }
     
     

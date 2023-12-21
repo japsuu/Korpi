@@ -89,7 +89,7 @@ public class Chunk
             if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
             {
                 _generationState = ChunkGenerationState.MESHING;
-                ChunkMesher.Enqueue(Position);
+                World.CurrentWorld.ChunkMesher.Enqueue(Position);
             }
         }
     }
@@ -98,6 +98,7 @@ public class Chunk
     private void Load()
     {
         IsLoaded = true;
+        World.CurrentWorld.ChunkGenerator.Enqueue(Position);
     }
 
 
@@ -116,7 +117,7 @@ public class Chunk
             if (World.CurrentWorld.ChunkManager.AreChunkNeighboursGenerated(Position))
             {
                 _generationState = ChunkGenerationState.MESHING;
-                ChunkMesher.Enqueue(Position);
+                World.CurrentWorld.ChunkMesher.Enqueue(Position);
             }
             else
             {
@@ -176,7 +177,7 @@ public class Chunk
     public void SetMeshDirty()
     {
         _meshState = ChunkMeshState.DIRTY;
-        ChunkMesher.Enqueue(Position);
+        World.CurrentWorld.ChunkMesher.Enqueue(Position);
     }
 
 

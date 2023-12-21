@@ -75,7 +75,7 @@ public class ChunkManager
 
     private readonly Vector3i[] _precomputedNeighbouringChunkOffsets = new Vector3i[26];
     private readonly Vector2i[] _precomputedNeighbouringColumnOffsets = new Vector2i[8];
-    private readonly ConcurrentDictionary<Vector2i, ChunkColumn> _loadedColumns = new();
+    private readonly ConcurrentDictionary<Vector2i, ChunkColumn> _existingColumns = new();
     private readonly List<Vector2i> _columnsToLoad = new();
     private readonly List<Vector2i> _columnsToUnload = new();
 
@@ -83,7 +83,7 @@ public class ChunkManager
     // The spiral is centered around the origin.
     private List<Vector2i> _columnLoadSpiral = null!;
     
-    public int LoadedColumnsCount => _loadedColumns.Count;
+    public int LoadedColumnsCount => _existingColumns.Count;
 
 
     public ChunkManager()
@@ -102,7 +102,7 @@ public class ChunkManager
         LoadColumns();
 
         // Tick all columns
-        foreach (ChunkColumn column in _loadedColumns.Values)
+        foreach (ChunkColumn column in _existingColumns.Values)
         {
             column.Tick();
         }
@@ -111,7 +111,8 @@ public class ChunkManager
 
     public void Draw(Vector3 cameraPos, Shader chunkShader)
     {
-        foreach (ChunkColumn column in _loadedColumns.Values)
+        foreach (ChunkColumn column in _existingColumns.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        {
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
                 Chunk? chunk = column.GetChunk(i);
@@ -120,6 +121,7 @@ public class ChunkManager
 
                 DrawChunkAt(chunk.Position, chunkShader);
             }
+        }
 
 #if DEBUG
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
@@ -139,14 +141,37 @@ public class ChunkManager
     }
 
 
-    public bool IsChunkLoaded(Vector3i chunkPos)
+    /// <summary>
+    /// Checks if a chunk exists at the given position.
+    /// The chunk is not guaranteed to be loaded.
+    /// Thread safe.
+    /// </summary>
+    /// <returns>Returns true if a chunk exists at the given position, false otherwise</returns>
+    public bool ChunkExistsAt(Vector3i chunkPos)
     {
         Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
         
-        if (!_loadedColumns.TryGetValue(columnPos, out ChunkColumn? column))
+        if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? column))
             return false;
 
-        return column.GetChunkAtHeight(chunkPos.Y) != null;
+        return column.HasChunkAtHeight(chunkPos.Y);
+    }
+
+    
+    /// <summary>
+    /// Gets the chunk at the given position.
+    /// Thread safe.
+    /// </summary>
+    /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
+    public Chunk? GetChunkAt(Vector3i position)
+    {
+        Vector2i chunkColumnPos = CoordinateConversions.GetContainingColumnPos(position);
+
+        if (!_existingColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
+            //Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
+            return null;
+
+        return column.GetChunkAtHeight(position.Y);
     }
 
 
@@ -154,7 +179,7 @@ public class ChunkManager
     {
         Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
 
-        ChunkColumn? column = _loadedColumns[columnPos];
+        ChunkColumn? column = _existingColumns[columnPos];
             
         if (column.GetChunkAtHeight(chunkPos.Y + 1)?.GenerationState < Chunk.ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
             return false;
@@ -166,7 +191,7 @@ public class ChunkManager
         {
             Vector2i neighbourPos = columnPos + neighbourOffset;
             
-            if (!_loadedColumns.TryGetValue(neighbourPos, out column))
+            if (!_existingColumns.TryGetValue(neighbourPos, out column))
                 return false;
             
             if (column.GetChunkAtHeight(chunkPos.Y)?.GenerationState < Chunk.ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
@@ -190,8 +215,7 @@ public class ChunkManager
     /// </summary>
     /// <param name="chunkOriginPos">Position of the center chunk</param>
     /// <param name="cache">Array to fill with BlockState data</param>
-    /// <returns>If the center chunk has been generated.</returns>
-    public void GetChunkAndFillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache)
+    public void FillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache)
     {
         Chunk? loadedChunk = GetChunkAt(chunkOriginPos);
 
@@ -223,7 +247,7 @@ public class ChunkManager
 
     public void ReloadAllChunks()
     {
-        foreach (ChunkColumn column in _loadedColumns.Values)
+        foreach (ChunkColumn column in _existingColumns.Values)
         {
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
@@ -250,7 +274,7 @@ public class ChunkManager
     {
         _columnsToUnload.Clear();
         Vector2i originColumnPos = CoordinateConversions.GetContainingColumnPos(playerPos);
-        foreach (KeyValuePair<Vector2i, ChunkColumn> pair in _loadedColumns)
+        foreach (KeyValuePair<Vector2i, ChunkColumn> pair in _existingColumns)
         {
             Vector2i normalizedColumnPos = (pair.Key - originColumnPos) / Constants.CHUNK_SIZE;
             bool inRange = normalizedColumnPos.X * normalizedColumnPos.X + normalizedColumnPos.Y * normalizedColumnPos.Y <=
@@ -268,7 +292,7 @@ public class ChunkManager
     {
         foreach (Vector2i columnPos in _columnsToUnload)
         {
-            if (!_loadedColumns.TryRemove(columnPos, out ChunkColumn? column))
+            if (!_existingColumns.TryRemove(columnPos, out ChunkColumn? column))
                 continue;
             
             column.Unload();
@@ -279,7 +303,7 @@ public class ChunkManager
                     continue;
 
                 Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y);
-                ChunkRendererStorage.RemoveRenderer(chunkPos);
+                ChunkRendererStorage.RemoveChunkMesh(chunkPos);
             }
 
             // Logger.Log($"Unloaded chunk column at {columnPos}.");
@@ -301,7 +325,7 @@ public class ChunkManager
         foreach (Vector2i spiralPos in _columnLoadSpiral)
         {
             Vector2i columnPos = originColumnPos + spiralPos;
-            if (_loadedColumns.ContainsKey(columnPos))
+            if (_existingColumns.ContainsKey(columnPos))
                 continue;
 
             _columnsToLoad.Add(columnPos);
@@ -315,27 +339,11 @@ public class ChunkManager
         {
             ChunkColumn column = new(columnPos);
             column.Load();
-            if (!_loadedColumns.TryAdd(columnPos, column))
+            if (!_existingColumns.TryAdd(columnPos, column))
                 Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");
 
             // Logger.Log($"Loaded chunk column at {columnPos}.");
         }
-    }
-
-    
-    /// <summary>
-    /// Thread safe.
-    /// </summary>
-    /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
-    public Chunk? GetChunkAt(Vector3i position)
-    {
-        Vector2i chunkColumnPos = CoordinateConversions.GetContainingColumnPos(position);
-
-        if (!_loadedColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
-            //Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
-            return null;
-
-        return column.GetChunkAtHeight(position.Y);
     }
 
 

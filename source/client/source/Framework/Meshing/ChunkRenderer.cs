@@ -44,7 +44,7 @@ public class ChunkRenderer : IDisposable
     }
     
     
-    public void ChangeRenderedMesh(ChunkMesh mesh)
+    public void UpdateMesh(ChunkMesh mesh)
     {
         VerticesCount = mesh.VerticesCount;
         IndicesCount = mesh.IndicesCount;

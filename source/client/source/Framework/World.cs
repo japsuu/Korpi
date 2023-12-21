@@ -16,6 +16,8 @@ public class World : IDisposable
     public static World CurrentWorld { get; private set; } = null!;
     
     public readonly ChunkManager ChunkManager;
+    public readonly ChunkGenerator ChunkGenerator;
+    public readonly ChunkMesher ChunkMesher;
 
     private readonly string _name;
     private readonly EntityManager _entityManager;
@@ -25,6 +27,8 @@ public class World : IDisposable
     {
         _name = name;
         ChunkManager = new ChunkManager();
+        ChunkGenerator = new ChunkGenerator();
+        ChunkMesher = new ChunkMesher();
         _entityManager = new EntityManager();
         
         if (CurrentWorld != null)

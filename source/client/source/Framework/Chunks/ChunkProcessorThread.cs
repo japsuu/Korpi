@@ -4,14 +4,18 @@ using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Chunks;
 
-public abstract class ChunkProcessorThread : IDisposable
+/// <summary>
+/// Base class for a thread that processes chunks and provides some kind of output.
+/// </summary>
+/// <typeparam name="T">The type of data to output. MUST BE THREAD SAFE!</typeparam>
+public abstract class ChunkProcessorThread<T> : IDisposable
 {
     private volatile bool _shouldStop;
     
     private readonly Thread _thread;
     private ConcurrentHashSet<Vector3i>? _inputQueueLookup;
     private ConcurrentQueue<Vector3i>? _inputQueue;
-    private ConcurrentQueue<Vector3i>? _outputQueue;
+    private ConcurrentQueue<T>? _outputQueue;
 
 
     protected ChunkProcessorThread()
@@ -20,7 +24,7 @@ public abstract class ChunkProcessorThread : IDisposable
     }
 
 
-    public void StartProcessQueues(ConcurrentHashSet<Vector3i> inputQueueLookup, ConcurrentQueue<Vector3i> inputQueue, ConcurrentQueue<Vector3i> outputQueue)
+    public void StartProcessQueues(ConcurrentHashSet<Vector3i> inputQueueLookup, ConcurrentQueue<Vector3i> inputQueue, ConcurrentQueue<T> outputQueue)
     {
         _inputQueueLookup = inputQueueLookup;
         _inputQueue = inputQueue;
@@ -33,7 +37,7 @@ public abstract class ChunkProcessorThread : IDisposable
     private void ProcessQueues()
     {
         if (_inputQueueLookup == null || _inputQueue == null || _outputQueue == null)
-            throw new InvalidOperationException($"{nameof(ChunkProcessorThread)} was not bound to queues when started!");
+            throw new InvalidOperationException($"{GetType().FullName} was not bound to queues when started!");
         
         while (!_shouldStop)
         {
@@ -44,14 +48,14 @@ public abstract class ChunkProcessorThread : IDisposable
             if (chunk == null)
                 continue;
                 
-            ProcessChunk(chunk);
+            T output = ProcessChunk(chunk);
             _inputQueueLookup.TryRemove(chunkPos);
-            _outputQueue.Enqueue(chunkPos);
+            _outputQueue.Enqueue(output);
         }
     }
 
 
-    protected abstract void ProcessChunk(Chunk chunk);
+    protected abstract T ProcessChunk(Chunk chunk);
 
 
     private void ReleaseUnmanagedResources()

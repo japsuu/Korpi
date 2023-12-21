@@ -28,6 +28,15 @@ public class ChunkColumn
     }
         
     
+    public bool HasChunkAtHeight(int y)
+    {
+        if (y < 0 || y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
+            return false;
+        int arrayIndex = y / Constants.CHUNK_SIZE;
+        return _chunks[arrayIndex] != null;
+    }
+        
+    
     public Chunk? GetChunk(int i)
     {
         return _chunks[i];
@@ -48,7 +57,6 @@ public class ChunkColumn
         for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
         {
             Chunk chunk = new Chunk(new Vector3i(Position.X, i * Constants.CHUNK_SIZE, Position.Y));
-            ChunkGenerator.Enqueue(chunk.Position);
             _chunks[i] = chunk;
         }
     }

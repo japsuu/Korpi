@@ -1,20 +1,34 @@
 ﻿using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Registries;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Meshing;
 
-public class ChunkMesherThread : ChunkProcessorThread
+public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
 {
     /// <summary>
-    /// Data of the chunk currently being meshed.
+    /// Cache in tyo which the data of the chunk currently being meshed is copied into.
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
     private readonly MeshingDataCache _meshingDataCache;
+    
+    /// <summary>
+    /// Buffer into which the meshing thread writes the mesh data.
+    /// </summary>
     private readonly MeshingBuffer _meshingBuffer;
+    
+    /// <summary>
+    /// Array containing the block states of the 3x3x3 neighbourhood of the block currently being meshed.
+    /// Used to for example calculate the AO of the block faces.
+    /// </summary>
     private readonly BlockState[] _blockStateNeighbourhood;
     
+    /// <summary>
+    /// Offsets of the 6 neighbours of a block.
+    /// Used to quickly fetch the block state of a neighbour based on the face normal.
+    /// </summary>
     private static readonly Vector3i[] BlockNeighbourOffsets =
     {
         new(2, 1, 1),
@@ -34,9 +48,10 @@ public class ChunkMesherThread : ChunkProcessorThread
     }
 
 
-    protected override void ProcessChunk(Chunk chunk)
+    protected override ChunkMesh ProcessChunk(Chunk chunk)
     {
-        World.CurrentWorld.ChunkManager.GetChunkAndFillMeshingCache(chunkOriginPos, _meshingDataCache);
+        RenderingStats.StartChunkMeshing();
+        World.CurrentWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
         _meshingBuffer.Clear();
         
@@ -94,9 +109,9 @@ public class ChunkMesherThread : ChunkProcessorThread
             }
         }
         
-        chunk.OnMeshed();
+        RenderingStats.StopChunkMeshing();
 
-        return _meshingBuffer.CreateMesh(chunkOriginPos);
+        return _meshingBuffer.CreateMesh(chunk.Position);
     }
 
 

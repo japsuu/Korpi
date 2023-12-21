@@ -9,24 +9,30 @@ public static class RenderingStats
     public static int LoadedColumnCount;
     public static ulong ChunksInGenerationQueue;
     public static ulong ChunksInMeshingQueue;
-    public static float MeshingTime { get; private set; }
-    public static float AverageChunkMeshingTime { get; private set; }
-        
-    private static readonly Stopwatch MeshingTimer = new();
+    public static float MeshingQueueProcessingTime;
+
+    public static float AverageChunkMeshingTime
+    {
+        get => averageChunkMeshingTime;
+        private set => averageChunkMeshingTime = value;
+    }
+
+    private static readonly Stopwatch MeshingQueueTimer = new();
     private static readonly Stopwatch ChunkMeshingTimer = new();
     private static readonly Queue<float> ChunkMeshingTimes = new();
-        
-        
-    public static void StartMeshing()
+    private static volatile float averageChunkMeshingTime;
+
+
+    public static void StartProcessMeshingQueues()
     {
-        MeshingTimer.Restart();
+        MeshingQueueTimer.Restart();
     }
         
         
-    public static void StopMeshing(int chunksMeshed)
+    public static void StopProcessMeshingQueues()
     {
-        MeshingTimer.Stop();
-        MeshingTime = MeshingTimer.ElapsedMilliseconds / (float)chunksMeshed;
+        MeshingQueueTimer.Stop();
+        MeshingQueueProcessingTime = MeshingQueueTimer.ElapsedMilliseconds;
     }
     
     

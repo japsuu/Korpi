@@ -210,14 +210,14 @@ public class MeshingBuffer
     }
 
 
-    public ChunkRenderer CreateMesh(Vector3i chunkPos)
+    public ChunkMesh CreateMesh(Vector3i chunkPos)
     {
         uint[] vertexData = new uint[AddedVertexDataCount];
         uint[] indices = new uint[AddedIndicesCount];
         Array.Copy(_vertexData, vertexData, AddedVertexDataCount);
         Array.Copy(_indices, indices, AddedIndicesCount);
         
-        return new ChunkRenderer(_vertexData, AddedVertexDataCount, _indices, AddedIndicesCount, chunkPos);
+        return new ChunkMesh(chunkPos, _vertexData, AddedVertexDataCount, _indices, AddedIndicesCount);
     }
 
 
