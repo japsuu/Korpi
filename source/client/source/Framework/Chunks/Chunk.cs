@@ -73,7 +73,6 @@ public class Chunk
         _containsRenderedBlocks = false;
         GenerationState = ChunkGenerationState.GENERATING;
         MeshState = ChunkMeshState.NONE;
-        Load();
     }
 
 
@@ -110,7 +109,7 @@ public class Chunk
     }
     
     
-    private void Load()
+    public void Load()
     {
         _isLoaded = true;
         World.CurrentWorld.ChunkGenerator.Enqueue(Position);
