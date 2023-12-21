@@ -25,8 +25,8 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
 
     protected override Vector3i ProcessChunk(Chunk chunk)
     {
-        // if (chunk.Bottom > TERRAIN_HEIGHT_MAX || chunk.Top < TERRAIN_HEIGHT_MIN)
-        //     return chunk.Position;
+        if (chunk.Bottom > TERRAIN_HEIGHT_MAX)  // Skip chunks above the terrain.
+            return chunk.Position;
         
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         {
