@@ -56,20 +56,26 @@ public class Chunk
     }
     
     
-    private readonly IBlockStorage _blockStorage = new FlatBlockStorage();
+    private readonly IBlockStorage _blockStorage = new BlockPalette();
     private readonly object _blockStorageLock = new();
 
     private bool _containsRenderedBlocks;
     private bool _isLoaded;
     
     public readonly Vector3i Position;
+    public readonly int Top;
+    public readonly int Bottom;
+    
     public ChunkGenerationState GenerationState { get; private set; }
     public ChunkMeshState MeshState { get; private set; }
+    public bool ShouldBeRendered => GenerationState == ChunkGenerationState.READY && MeshState == ChunkMeshState.MESHED;
 
 
     public Chunk(Vector3i position)
     {
         Position = position;
+        Top = position.Y + Constants.CHUNK_SIZE - 1;
+        Bottom = position.Y;
         _containsRenderedBlocks = false;
         GenerationState = ChunkGenerationState.GENERATING;
         MeshState = ChunkMeshState.NONE;
@@ -90,22 +96,25 @@ public class Chunk
             }
         }
 
-        const float halfAChunk = Constants.CHUNK_SIZE / 2f;
-        Vector3 centerOffset = new Vector3(halfAChunk, 0, halfAChunk);
-        switch (MeshState)
+#if DEBUG
+        if (Configuration.ClientConfig.DebugModeConfig.RenderChunkMeshState)
         {
-            case ChunkMeshState.NONE:
-                DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Red);
-                break;
-            case ChunkMeshState.MESHED:
-                DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
-                break;
-            case ChunkMeshState.DIRTY:
-                DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Yellow);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            const float halfAChunk = Constants.CHUNK_SIZE / 2f;
+            Vector3 centerOffset = new Vector3(halfAChunk, 0, halfAChunk);
+            switch (MeshState)
+            {
+                // case ChunkMeshState.NONE:
+                //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Red);
+                //     break;
+                case ChunkMeshState.MESHED:
+                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
+                    break;
+                case ChunkMeshState.DIRTY:
+                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Yellow);
+                    break;
+            }
         }
+#endif
     }
     
     
@@ -258,165 +267,168 @@ public class Chunk
     /// <param name="myPosition">Position of this chunk relative to the requesting chunk</param>
     public void CacheMeshingData(MeshingDataCache cache, NeighbouringChunkPosition myPosition)
     {
-        switch (myPosition)
+        lock (_blockStorageLock)
         {
-            // Corners
-            case NeighbouringChunkPosition.CornerNorthEastUp:
-                cache.SetData(cache.BorderBlockIndex, cache.BorderBlockIndex, cache.BorderBlockIndex, GetBlockState(0, 0, 0));
-                break;
-            case NeighbouringChunkPosition.CornerSouthEastUp:
-                cache.SetData(0, cache.BorderBlockIndex, cache.BorderBlockIndex, GetBlockState(Constants.CHUNK_SIZE_BITMASK, 0, 0));
-                break;
-            case NeighbouringChunkPosition.CornerSouthWestUp:
-                cache.SetData(0, cache.BorderBlockIndex, 0, GetBlockState(Constants.CHUNK_SIZE_BITMASK, 0, Constants.CHUNK_SIZE_BITMASK));
-                break;
-            case NeighbouringChunkPosition.CornerNorthWestUp:
-                cache.SetData(cache.BorderBlockIndex, cache.BorderBlockIndex, 0, GetBlockState(0, 0, Constants.CHUNK_SIZE_BITMASK));
-                break;
-            case NeighbouringChunkPosition.CornerNorthEastDown:
-                cache.SetData(cache.BorderBlockIndex, 0, cache.BorderBlockIndex, GetBlockState(0, Constants.CHUNK_SIZE_BITMASK, 0));
-                break;
-            case NeighbouringChunkPosition.CornerSouthEastDown:
-                cache.SetData(0, 0, cache.BorderBlockIndex, GetBlockState(Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK, 0));
-                break;
-            case NeighbouringChunkPosition.CornerSouthWestDown:
-                cache.SetData(0, 0, 0, GetBlockState(Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK));
-                break;
-            case NeighbouringChunkPosition.CornerNorthWestDown:
-                cache.SetData(cache.BorderBlockIndex, 0, 0, GetBlockState(0, Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK));
-                break;
+            switch (myPosition)
+            {
+                // Corners
+                case NeighbouringChunkPosition.CornerNorthEastUp:
+                    cache.SetData(cache.BorderBlockIndex, cache.BorderBlockIndex, cache.BorderBlockIndex, GetBlockState(0, 0, 0));
+                    break;
+                case NeighbouringChunkPosition.CornerSouthEastUp:
+                    cache.SetData(0, cache.BorderBlockIndex, cache.BorderBlockIndex, GetBlockState(Constants.CHUNK_SIZE_BITMASK, 0, 0));
+                    break;
+                case NeighbouringChunkPosition.CornerSouthWestUp:
+                    cache.SetData(0, cache.BorderBlockIndex, 0, GetBlockState(Constants.CHUNK_SIZE_BITMASK, 0, Constants.CHUNK_SIZE_BITMASK));
+                    break;
+                case NeighbouringChunkPosition.CornerNorthWestUp:
+                    cache.SetData(cache.BorderBlockIndex, cache.BorderBlockIndex, 0, GetBlockState(0, 0, Constants.CHUNK_SIZE_BITMASK));
+                    break;
+                case NeighbouringChunkPosition.CornerNorthEastDown:
+                    cache.SetData(cache.BorderBlockIndex, 0, cache.BorderBlockIndex, GetBlockState(0, Constants.CHUNK_SIZE_BITMASK, 0));
+                    break;
+                case NeighbouringChunkPosition.CornerSouthEastDown:
+                    cache.SetData(0, 0, cache.BorderBlockIndex, GetBlockState(Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK, 0));
+                    break;
+                case NeighbouringChunkPosition.CornerSouthWestDown:
+                    cache.SetData(0, 0, 0, GetBlockState(Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK));
+                    break;
+                case NeighbouringChunkPosition.CornerNorthWestDown:
+                    cache.SetData(cache.BorderBlockIndex, 0, 0, GetBlockState(0, Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK));
+                    break;
             
-            // Edges
-            case NeighbouringChunkPosition.EdgeNorthUp:
-                for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-                {
-                    cache.SetData(cache.BorderBlockIndex, cache.BorderBlockIndex, z + 1, GetBlockState(0, 0, z));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeEastUp:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
-                    cache.SetData(x + 1, cache.BorderBlockIndex, cache.BorderBlockIndex, GetBlockState(x, 0, 0));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeSouthUp:
-                for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-                {
-                    cache.SetData(0, cache.BorderBlockIndex, z + 1, GetBlockState(Constants.CHUNK_SIZE_BITMASK, 0, z));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeWestUp:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
-                    cache.SetData(x + 1, cache.BorderBlockIndex, 0, GetBlockState(x, 0, Constants.CHUNK_SIZE_BITMASK));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeNorthDown:
-                for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-                {
-                    cache.SetData(cache.BorderBlockIndex, 0, z + 1, GetBlockState(0, Constants.CHUNK_SIZE_BITMASK, z));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeEastDown:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
-                    cache.SetData(x + 1, 0, cache.BorderBlockIndex, GetBlockState(x, Constants.CHUNK_SIZE_BITMASK, 0));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeSouthDown:
-                for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-                {
-                    cache.SetData(0, 0, z + 1, GetBlockState(Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK, z));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeWestDown:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
-                    cache.SetData(x + 1, 0, 0, GetBlockState(x, Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeNorthEast:
-                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                {
-                    cache.SetData(cache.BorderBlockIndex, y + 1, cache.BorderBlockIndex, GetBlockState(0, y, 0));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeSouthEast:
-                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                {
-                    cache.SetData(0, y + 1, cache.BorderBlockIndex, GetBlockState(Constants.CHUNK_SIZE_BITMASK, y, 0));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeSouthWest:
-                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                {
-                    cache.SetData(0, y + 1, 0, GetBlockState(Constants.CHUNK_SIZE_BITMASK, y, Constants.CHUNK_SIZE_BITMASK));
-                }
-                break;
-            case NeighbouringChunkPosition.EdgeNorthWest:
-                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                {
-                    cache.SetData(cache.BorderBlockIndex, y + 1, 0, GetBlockState(0, y, Constants.CHUNK_SIZE_BITMASK));
-                }
-                break;
-            
-            // Faces
-            case NeighbouringChunkPosition.FaceNorth:
-                for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-                {
-                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                    {
-                        cache.SetData(cache.BorderBlockIndex, y + 1, z + 1, GetBlockState(0, y, z));
-                    }
-                }
-                break;
-            case NeighbouringChunkPosition.FaceEast:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
-                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                    {
-                        cache.SetData(x + 1, y + 1, cache.BorderBlockIndex, GetBlockState(x, y, 0));
-                    }
-                }
-                break;
-            case NeighbouringChunkPosition.FaceSouth:
-                for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-                {
-                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                    {
-                        cache.SetData(0, y + 1, z + 1, GetBlockState(Constants.CHUNK_SIZE_BITMASK, y, z));
-                    }
-                }
-                break;
-            case NeighbouringChunkPosition.FaceWest:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
-                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
-                    {
-                        cache.SetData(x + 1, y + 1, 0, GetBlockState(x, y, Constants.CHUNK_SIZE_BITMASK));
-                    }
-                }
-                break;
-            case NeighbouringChunkPosition.FaceUp:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
+                // Edges
+                case NeighbouringChunkPosition.EdgeNorthUp:
                     for (int z = 0; z < Constants.CHUNK_SIZE; z++)
                     {
-                        cache.SetData(x + 1, cache.BorderBlockIndex, z + 1, GetBlockState(x, 0, z));
+                        cache.SetData(cache.BorderBlockIndex, cache.BorderBlockIndex, z + 1, GetBlockState(0, 0, z));
                     }
-                }
-                break;
-            case NeighbouringChunkPosition.FaceDown:
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
-                {
+                    break;
+                case NeighbouringChunkPosition.EdgeEastUp:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        cache.SetData(x + 1, cache.BorderBlockIndex, cache.BorderBlockIndex, GetBlockState(x, 0, 0));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeSouthUp:
                     for (int z = 0; z < Constants.CHUNK_SIZE; z++)
                     {
-                        cache.SetData(x + 1, 0, z + 1, GetBlockState(x, Constants.CHUNK_SIZE_BITMASK, z));
+                        cache.SetData(0, cache.BorderBlockIndex, z + 1, GetBlockState(Constants.CHUNK_SIZE_BITMASK, 0, z));
                     }
-                }
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(myPosition), myPosition, null);
+                    break;
+                case NeighbouringChunkPosition.EdgeWestUp:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        cache.SetData(x + 1, cache.BorderBlockIndex, 0, GetBlockState(x, 0, Constants.CHUNK_SIZE_BITMASK));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeNorthDown:
+                    for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+                    {
+                        cache.SetData(cache.BorderBlockIndex, 0, z + 1, GetBlockState(0, Constants.CHUNK_SIZE_BITMASK, z));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeEastDown:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        cache.SetData(x + 1, 0, cache.BorderBlockIndex, GetBlockState(x, Constants.CHUNK_SIZE_BITMASK, 0));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeSouthDown:
+                    for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+                    {
+                        cache.SetData(0, 0, z + 1, GetBlockState(Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK, z));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeWestDown:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        cache.SetData(x + 1, 0, 0, GetBlockState(x, Constants.CHUNK_SIZE_BITMASK, Constants.CHUNK_SIZE_BITMASK));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeNorthEast:
+                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                    {
+                        cache.SetData(cache.BorderBlockIndex, y + 1, cache.BorderBlockIndex, GetBlockState(0, y, 0));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeSouthEast:
+                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                    {
+                        cache.SetData(0, y + 1, cache.BorderBlockIndex, GetBlockState(Constants.CHUNK_SIZE_BITMASK, y, 0));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeSouthWest:
+                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                    {
+                        cache.SetData(0, y + 1, 0, GetBlockState(Constants.CHUNK_SIZE_BITMASK, y, Constants.CHUNK_SIZE_BITMASK));
+                    }
+                    break;
+                case NeighbouringChunkPosition.EdgeNorthWest:
+                    for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                    {
+                        cache.SetData(cache.BorderBlockIndex, y + 1, 0, GetBlockState(0, y, Constants.CHUNK_SIZE_BITMASK));
+                    }
+                    break;
+            
+                // Faces
+                case NeighbouringChunkPosition.FaceNorth:
+                    for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+                    {
+                        for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                        {
+                            cache.SetData(cache.BorderBlockIndex, y + 1, z + 1, GetBlockState(0, y, z));
+                        }
+                    }
+                    break;
+                case NeighbouringChunkPosition.FaceEast:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                        {
+                            cache.SetData(x + 1, y + 1, cache.BorderBlockIndex, GetBlockState(x, y, 0));
+                        }
+                    }
+                    break;
+                case NeighbouringChunkPosition.FaceSouth:
+                    for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+                    {
+                        for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                        {
+                            cache.SetData(0, y + 1, z + 1, GetBlockState(Constants.CHUNK_SIZE_BITMASK, y, z));
+                        }
+                    }
+                    break;
+                case NeighbouringChunkPosition.FaceWest:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                        {
+                            cache.SetData(x + 1, y + 1, 0, GetBlockState(x, y, Constants.CHUNK_SIZE_BITMASK));
+                        }
+                    }
+                    break;
+                case NeighbouringChunkPosition.FaceUp:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+                        {
+                            cache.SetData(x + 1, cache.BorderBlockIndex, z + 1, GetBlockState(x, 0, z));
+                        }
+                    }
+                    break;
+                case NeighbouringChunkPosition.FaceDown:
+                    for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                    {
+                        for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+                        {
+                            cache.SetData(x + 1, 0, z + 1, GetBlockState(x, Constants.CHUNK_SIZE_BITMASK, z));
+                        }
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(myPosition), myPosition, null);
+            }
         }
     }
 }

@@ -25,8 +25,6 @@ public class RenderingWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        ImGui.Checkbox("Wireframe rendering", ref ClientConfig.DebugModeConfig.RenderWireframe);
-
         if (ImGui.Checkbox("Draw chunk borders", ref ClientConfig.DebugModeConfig.RenderChunkBorders))
         {
             if (ClientConfig.DebugModeConfig.RenderChunkBorders)
@@ -42,13 +40,19 @@ public class RenderingWindow : ImGuiWindow
             else
                 DebugChunkDrawer.Dispose();
         }
+        
+        ImGui.Checkbox("Draw chunk mesh state", ref ClientConfig.DebugModeConfig.RenderChunkMeshState);
+
+        ImGui.Separator();
+        
+        ImGui.Checkbox("Enable Wireframe", ref ClientConfig.DebugModeConfig.RenderWireframe);
 
         if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.DebugModeConfig.EnableAmbientOcclusion))
         {
             World.CurrentWorld.ChunkManager.ReloadAllChunks();
         }
         
-        ImGui.Checkbox("Draw skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
+        ImGui.Checkbox("Enable skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
 
         ImGui.Separator();
         

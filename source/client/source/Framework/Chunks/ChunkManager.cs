@@ -118,7 +118,10 @@ public class ChunkManager
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
                 Chunk? chunk = column.GetChunk(i);
-                if (chunk?.MeshState != Chunk.ChunkMeshState.MESHED)
+                if (chunk == null)
+                    continue;
+                
+                if (!chunk.ShouldBeRendered)
                     continue;
 
                 DrawChunkAt(chunk.Position, chunkShader);
