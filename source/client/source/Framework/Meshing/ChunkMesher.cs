@@ -30,7 +30,7 @@ public static class ChunkMesher : ChunkProcessorThreadManager<ChunkMesherThread>
             throw new InvalidOperationException($"Tried to mesh chunk at {chunkOriginPos} that is already queued!");
 
         if (ChunkRendererStorage.ContainsRenderer(chunkOriginPos))
-            ChunkRendererStorage.InvalidateRenderer(chunkOriginPos);
+            ChunkRendererStorage.InvalidateRenderer(chunkOriginPos);    // TODO: Cancel, use the existing renderer instead of generating a new one
 
         float distanceToPlayer = (chunkOriginPos - PlayerEntity.LocalPlayerEntity.Transform.LocalPosition).LengthSquared;
         ChunkMeshingQueue.Enqueue(chunkOriginPos, distanceToPlayer);
