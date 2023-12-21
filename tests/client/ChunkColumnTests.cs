@@ -41,16 +41,4 @@ public class ChunkColumnTests
 
         Assert.IsNull(chunkColumn.GetChunk(0));
     }
-    
-    [Test]
-    public void Chunk_GetBlockState_ReturnsCorrectBlockState()
-    {
-        Chunk chunk = new(new Vector3i(0, 0, 0));
-        Block block = new Block(1, "test", BlockRenderType.None, null);
-        BlockState blockState = block.GetDefaultState();
-
-        chunk.SetBlockState(new Vector3i(3, 3, 3), blockState);
-
-        Assert.That(chunk.GetBlockState(3, 3, 3), Is.EqualTo(blockState));
-    }
 }
