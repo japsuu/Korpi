@@ -217,7 +217,7 @@ public class MeshingBuffer
         Array.Copy(_vertexData, vertexData, AddedVertexDataCount);
         Array.Copy(_indices, indices, AddedIndicesCount);
         
-        return new ChunkMesh(chunkPos, _vertexData, AddedVertexDataCount, _indices, AddedIndicesCount);
+        return new ChunkMesh(chunkPos, vertexData, AddedVertexDataCount, indices, AddedIndicesCount);
     }
 
 

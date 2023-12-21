@@ -2,6 +2,7 @@
 using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Registries;
+using BlockEngine.Client.Framework.WorldGeneration;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Meshing;
@@ -12,18 +13,18 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
     /// Cache in tyo which the data of the chunk currently being meshed is copied into.
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
-    private readonly MeshingDataCache _meshingDataCache;
+    private MeshingDataCache _meshingDataCache = null!;
     
     /// <summary>
     /// Buffer into which the meshing thread writes the mesh data.
     /// </summary>
-    private readonly MeshingBuffer _meshingBuffer;
+    private MeshingBuffer _meshingBuffer = null!;
     
     /// <summary>
     /// Array containing the block states of the 3x3x3 neighbourhood of the block currently being meshed.
     /// Used to for example calculate the AO of the block faces.
     /// </summary>
-    private readonly BlockState[] _blockStateNeighbourhood;
+    private BlockState[] _blockStateNeighbourhood = null!;
     
     /// <summary>
     /// Offsets of the 6 neighbours of a block.
@@ -40,8 +41,10 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
     };
 
 
-    public ChunkMesherThread()
+    protected override void InitializeThread()
     {
+        base.InitializeThread();
+        
         _meshingDataCache = new MeshingDataCache(Constants.CHUNK_SIZE);
         _meshingBuffer = new MeshingBuffer();
         _blockStateNeighbourhood = new BlockState[27];   // 27 = 3x3x3
@@ -102,7 +105,7 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
                         Color9 lightColor = Color9.White;
                         
                         // Add the face to the meshing buffer
-                        Vector3i blockPos = new(x - 1, y - 1, z - 1);
+                        Vector3i blockPos = new(x - 1, y - 1, z - 1);   // -1 because we started the iteration at 1, since the cache has a border.
                         _meshingBuffer.AddFace(_blockStateNeighbourhood, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
                     }
                 }

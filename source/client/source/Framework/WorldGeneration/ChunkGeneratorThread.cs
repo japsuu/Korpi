@@ -1,16 +1,19 @@
-﻿using BlockEngine.Client.Framework.Registries;
+﻿using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.Framework.Registries;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Framework.Chunks;
+namespace BlockEngine.Client.Framework.WorldGeneration;
 
 public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
 {
-    private readonly FastNoiseLite _noise;   // FNL seems to be thread safe, as long as you don't change the seed/other settings while generating.
+    private FastNoiseLite _noise = null!;   // FNL seems to be thread safe, as long as you don't change the seed/other settings while generating.
 
 
-    public ChunkGeneratorThread()
+    protected override void InitializeThread()
     {
+        base.InitializeThread();
+        
         _noise = new FastNoiseLite();
         _noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
     }
@@ -40,6 +43,8 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
         const int terrainHeightMin = seaLevel - 16;
         const int terrainHeightMax = seaLevel + 16;
         
+        return blockPosition.Y > seaLevel ? (ushort)0 : (ushort)1;
+
         float noise = _noise.GetNoise(blockPosition.X, blockPosition.Z);
         float height = noise * 0.5f + 0.5f;
         

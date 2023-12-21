@@ -2,10 +2,12 @@
 using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Meshing;
 using BlockEngine.Client.Framework.Physics;
 using BlockEngine.Client.Framework.Registries;
+using BlockEngine.Client.Framework.Rendering.Cameras;
 using BlockEngine.Client.Framework.Rendering.Shaders;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
@@ -109,7 +111,7 @@ public class ChunkManager
     }
 
 
-    public void Draw(Vector3 cameraPos, Shader chunkShader)
+    public void Draw(Shader chunkShader)
     {
         foreach (ChunkColumn column in _existingColumns.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
@@ -127,14 +129,14 @@ public class ChunkManager
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(cameraPos);
+            Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(Camera.RenderingCamera.Position);
             DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
         if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(cameraPos);
+            Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(Camera.RenderingCamera.Position);
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
 #endif

@@ -2,6 +2,7 @@
 using System.Globalization;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.Meshing;
 using ImGuiNET;
 

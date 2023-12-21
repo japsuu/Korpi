@@ -1,8 +1,9 @@
 ﻿using System.Collections.Concurrent;
+using BlockEngine.Client.Framework.Chunks;
 using ConcurrentCollections;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Framework.Chunks;
+namespace BlockEngine.Client.Framework.WorldGeneration;
 
 /// <summary>
 /// Base class for a thread that processes chunks and provides some kind of output.
@@ -39,6 +40,8 @@ public abstract class ChunkProcessorThread<T> : IDisposable
         if (_inputQueueLookup == null || _inputQueue == null || _outputQueue == null)
             throw new InvalidOperationException($"{GetType().FullName} was not bound to queues when started!");
         
+        InitializeThread();
+        
         while (!_shouldStop)
         {
             if (!_inputQueue.TryDequeue(out Vector3i chunkPos))
@@ -53,6 +56,9 @@ public abstract class ChunkProcessorThread<T> : IDisposable
             _outputQueue.Enqueue(output);
         }
     }
+    
+    
+    protected virtual void InitializeThread() { }
 
 
     protected abstract T ProcessChunk(Chunk chunk);

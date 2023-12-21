@@ -2,7 +2,7 @@
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Framework.Debugging;
+namespace BlockEngine.Client.Framework.Debugging.Drawing;
 
 public static class DebugChunkDrawer
 {
@@ -102,6 +102,14 @@ public static class DebugChunkDrawer
         GL.DeleteBuffer(chunkVBO);
         GL.DeleteBuffer(chunkEBO);
         GL.DeleteVertexArray(chunkVAO);
+        GL.DeleteBuffer(columnVBO);
+        GL.DeleteBuffer(columnEBO);
+        GL.DeleteVertexArray(columnVAO);
+        
+        chunkVertices = null!;
+        chunkIndices = null!;
+        columnVertices = null!;
+        columnIndices = null!;
     }
 
 

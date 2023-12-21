@@ -3,7 +3,7 @@ using BlockEngine.Client.Framework.ECS.Entities;
 using ConcurrentCollections;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Framework.Chunks;
+namespace BlockEngine.Client.Framework.WorldGeneration;
 
 /// <summary>
 /// Base class for a wrapper (manager) of a <see cref="ChunkProcessorThread{T}"/> classes.

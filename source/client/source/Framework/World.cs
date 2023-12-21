@@ -2,10 +2,12 @@
 using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Configuration;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Meshing;
 using BlockEngine.Client.Framework.Physics;
 using BlockEngine.Client.Framework.Rendering.Shaders;
+using BlockEngine.Client.Framework.WorldGeneration;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
@@ -52,7 +54,7 @@ public class World : IDisposable
     
     public void Draw()
     {
-        ChunkManager.Draw(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition, ShaderManager.ChunkShader);
+        ChunkManager.Draw(ShaderManager.ChunkShader);
         _entityManager.Draw();
     }
     
@@ -83,5 +85,6 @@ public class World : IDisposable
     public void Dispose()
     {
         ChunkGenerator.Dispose();
+        ChunkMesher.Dispose();
     }
 }

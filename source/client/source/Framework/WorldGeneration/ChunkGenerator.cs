@@ -1,7 +1,8 @@
-﻿using BlockEngine.Client.Framework.Debugging;
+﻿using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.Framework.Debugging;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Framework.Chunks;
+namespace BlockEngine.Client.Framework.WorldGeneration;
 
 public class ChunkGenerator : ChunkProcessorThreadManager<ChunkGeneratorThread, Vector3i>
 {

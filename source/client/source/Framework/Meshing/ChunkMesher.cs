@@ -1,12 +1,11 @@
 ﻿using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Debugging;
+using BlockEngine.Client.Framework.WorldGeneration;
 
 namespace BlockEngine.Client.Framework.Meshing;
 
 public class ChunkMesher : ChunkProcessorThreadManager<ChunkMesherThread, ChunkMesh>
 {
-
-
     public ChunkMesher() : base(new ChunkMesherThread(), 64)
     {
     }
