@@ -32,5 +32,8 @@ public class CameraWindow : ImGuiWindow
         ImGui.Separator();
         ImGui.Text($"Time: {GameTime.GetFormattedTime()}");
         ImGui.Text($"Date: {GameTime.GetFormattedDate()}");
+        float fps = ImGui.GetIO().Framerate;
+        float frameTime = 1000f / fps;
+        ImGui.Text($"{fps:F1} fps ({frameTime:F1} ms/frame)");
     }
 }

@@ -5,7 +5,9 @@ namespace BlockEngine.Client.Framework.Bitpacking;
 public struct PaletteEntry
 {
     public int RefCount;
-    public BlockState? BlockState;     // WARN: Changing the state / data of a block can have unintended consequences! Find out if it's better to store just the block's ID/type instead.
+    public BlockState? BlockState;
+    
+    public bool IsEmpty => BlockState == null || RefCount <= 0;
 
 
     public PaletteEntry(int refCount, BlockState? blockState)

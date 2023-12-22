@@ -9,57 +9,60 @@ public class BlockPalette : IBlockStorage
     /// How many blocks can this palette hold?
     /// Usually CHUNK_SIZE^3.
     /// </summary>
-    private readonly int _size;
+    private readonly int _sizeInBlocks;
     
     /// <summary>
-    /// How many different blocks are in this palette?
+    /// How many different (unique) blocks are in the <see cref="_palette"/>.
     /// </summary>
-    private int _paletteCount;
+    private int _uniqueEntriesCount;
     
     /// <summary>
     /// How many indices are stored in the data buffer?
     /// </summary>
-    private int _indicesLength;
+    private int _indexLengthInBits;
     
     /// <summary>
     /// The palette of different blocks.
+    /// Contains one entry for each unique block in the chunk.
     /// </summary>
     private PaletteEntry[] _palette;
     
     /// <summary>
     /// The data buffer.
-    /// Holds the indices of the blocks in the palette.
+    /// Holds the indices of the blocks in <see cref="_palette"/>.
     /// </summary>
-    private BitBuffer _data;
+    private BitBuffer _indices;
     
     public int RenderedBlockCount { get; private set; }
 
 
     public BlockPalette()
     {
-        _size = Constants.CHUNK_SIZE_CUBED;
-        // Initialize with some power of 2 value
+        _sizeInBlocks = Constants.CHUNK_SIZE_CUBED;
         _palette = new PaletteEntry[]
         {
-            new(_size, BlockRegistry.Air.GetDefaultState()),
-            new (0, BlockRegistry.Air.GetDefaultState())
+            new(_sizeInBlocks, BlockRegistry.Air.GetDefaultState()),
+            new(0, null)
         };
-        _indicesLength = 1;
-        _paletteCount = 0;
-        _data = new BitBuffer(_size * _indicesLength);    // The length is in bits, not bytes!
+        _indexLengthInBits = 1;
+        _uniqueEntriesCount = 1;
+        _indices = new BitBuffer(_sizeInBlocks * _indexLengthInBits);    // The length is in bits, not bytes!
     }
 
 
     public void SetBlock(int x, int y, int z, BlockState block, out BlockState oldBlock)
     {
         int index = GetIndex(x, y, z);
-        if (index < 0 || index >= _size)
+        if (index < 0 || index >= _sizeInBlocks)
             throw new IndexOutOfRangeException("Tried to set blocks outside of a palette");
         
-        uint paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
-        
-        oldBlock = _palette[paletteIndex].BlockState ?? BlockRegistry.Air.GetDefaultState();
-        
+        uint paletteIndex = _indices.Get(index * _indexLengthInBits, _indexLengthInBits);
+
+        if (_palette[paletteIndex].IsEmpty)
+            oldBlock = BlockRegistry.Air.GetDefaultState();
+        else
+            oldBlock = _palette[paletteIndex].BlockState!.Value;
+
         bool wasRendered = oldBlock.IsRendered;
         bool willBeRendered = block.IsRendered;
         if (wasRendered && !willBeRendered)
@@ -67,60 +70,50 @@ public class BlockPalette : IBlockStorage
         else if (!wasRendered && willBeRendered)
             RenderedBlockCount++;
     
-        // Reduce the refcount of the current block-type, as it will be overwritten.
+        // Reduce the refcount of the current block-type, as an index referencing it will be overwritten.
         _palette[paletteIndex].RefCount -= 1;
     
-        // See if we can use an existing palette entry.
+        // See if palette has this block already, se we can use it's index.
         for(uint existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
         {
-            PaletteEntry entry = _palette[existingPaletteIndex];
-            if(entry.RefCount <= 0)
+            if(_palette[existingPaletteIndex].IsEmpty)
                 continue;
-            if (!BlockState.EqualsNonAlloc(entry.BlockState!.Value, block))
+            if (!BlockState.EqualsNonAlloc(_palette[existingPaletteIndex].BlockState!.Value, block))
                 continue;
             
-            // Use the existing palette entry and increase it's refcount.
-            _data.Set(index * _indicesLength, _indicesLength, existingPaletteIndex);
-            entry.RefCount += 1;
-            return;
-        }
-    
-        // See if we can overwrite the current palette entry?
-        if(_palette[paletteIndex].RefCount <= 0)
-        {
-            // YES, we can!
-            _palette[paletteIndex].BlockState = block;
-            _palette[paletteIndex].RefCount = 1;
+            // The block is in the palette already. Use the existing entry and increase it's refcount.
+            _palette[existingPaletteIndex].RefCount += 1;
+            
+            // Write the index to the BitBuffer.
+            _indices.Set(index * _indexLengthInBits, _indexLengthInBits, existingPaletteIndex);
             return;
         }
     
         // A new palette entry is needed!
-        
         // Get the first free palette entry, possibly growing the palette!
         uint newPaletteIndex = GetNextPaletteEntry();
     
-        _palette[newPaletteIndex].RefCount = 1;
+        // Overwrite the palette entry with the new block.
         _palette[newPaletteIndex].BlockState = block;
-        _data.Set(index * _indicesLength, _indicesLength, newPaletteIndex);
-        _paletteCount += 1;
+        _palette[newPaletteIndex].RefCount = 1;
+        
+        // Write the index to the BitBuffer.
+        _indices.Set(index * _indexLengthInBits, _indexLengthInBits, newPaletteIndex);
+        
+        // As the entry was not previously in the palette, increase the unique entries count.
+        _uniqueEntriesCount += 1;
     }
     
     
     public BlockState GetBlock(int x, int y, int z)
     {
         int index = GetIndex(x, y, z);
-        uint paletteIndex = _data.Get(index * _indicesLength, _indicesLength);
-        PaletteEntry entry = _palette[paletteIndex];
-        if (entry.RefCount <= 0)
+        uint paletteIndex = _indices.Get(index * _indexLengthInBits, _indexLengthInBits);
+        
+        if (_palette[paletteIndex].IsEmpty)
             throw new InvalidOperationException("Tried to get a block from an empty palette entry");
         
-        return entry.BlockState ?? BlockRegistry.Air.GetDefaultState();
-    }
-    
-    
-    public void TriggerGrowPalette()
-    {
-        GrowPalette();
+        return _palette[paletteIndex].BlockState!.Value;
     }
 
 
@@ -128,41 +121,57 @@ public class BlockPalette : IBlockStorage
     {
         while (true)
         {
-            // See if we can use an existing palette entry.
+            // See if there exist any palette entries that are empty.
             for (uint existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
             {
-                if (_palette[existingPaletteIndex].RefCount <= 0 || _palette[existingPaletteIndex].BlockState == null)
+                // If the entry is empty, return it's index so we can reuse it.
+                if (_palette[existingPaletteIndex].IsEmpty)
                     return existingPaletteIndex;
             }
 
-            // No free entries - grow the palette, and thus the BitBuffer.
+            // No free palette-entries - grow the palette.
             GrowPalette();
         }
     }
 
 
+    /// <summary>
+    /// Grows the <see cref="_palette"/> and <see cref="_indices"/> by doubling their size.
+    /// </summary>
     private void GrowPalette()
     {
-        // Decode the indices from the BitBuffer.
-        uint[] indices = new uint[_size];
+        // Check that we are not already at the maximum amount of unique entries.
+        if (_palette.Length >= _sizeInBlocks)
+            throw new InvalidOperationException("Tried to grow the palette beyond the maximum amount of unique entries");
+        
+        // Get the indices from the BitBuffer.
+        ushort[] indices = new ushort[_sizeInBlocks];
         for(int i = 0; i < indices.Length; i++)
         {
-            indices[i] = _data.Get(i * _indicesLength, _indicesLength);
+            indices[i] = (ushort)_indices.Get(i * _indexLengthInBits, _indexLengthInBits);
         }
     
-        // Create new palette, doubling it in size.
-        _indicesLength <<= 1;
-        PaletteEntry[] newPalette = new PaletteEntry[(int)Math.Ceiling(Math.Pow(2, _indicesLength))];
-        Array.Copy(_palette, newPalette, _paletteCount);
+        _indexLengthInBits <<= 1;   // Double the amount of bits used to represent an index.
+        int maxUniqueEntries = (int)Math.Pow(2, _indexLengthInBits);    // Calculate the new maximum amount of unique entries that can be stored in the palette.
+        
+        // Now because the theoretical maximum of unique entries in a chunk is CHUNK_SIZE_CUBED, we limit the maximum amount of unique entries to that.
+        // This means that there COULD be indices that go outside of the palette, if not using a chunk size that is a power of two.
+        // This is why we throw an exception early (before writing to the BitBuffer) if an index is outside of the possible range.
+        if (maxUniqueEntries > _sizeInBlocks)
+            maxUniqueEntries = _sizeInBlocks;
+        
+        // Create a new palette, and copy the old one into it.
+        PaletteEntry[] newPalette = new PaletteEntry[maxUniqueEntries];
+        Array.Copy(_palette, newPalette, _uniqueEntriesCount);
         _palette = newPalette;
     
         // Allocate new BitBuffer.
-        _data = new BitBuffer(_size * _indicesLength);
+        _indices = new BitBuffer(_sizeInBlocks * _indexLengthInBits);
     
-        // Encode the indices into the new BitBuffer.
+        // Add the old indices into the new BitBuffer.
         for(int i = 0; i < indices.Length; i++)
         {
-            _data.Set(i * _indicesLength, _indicesLength, indices[i]);
+            _indices.Set(i * _indexLengthInBits, _indexLengthInBits, indices[i]);
         }
     }
     
@@ -174,56 +183,56 @@ public class BlockPalette : IBlockStorage
     }
 
 
-    // Shrink the palette (and thus the BitBuffer) every now and then.
-    // You may need to apply heuristics to determine when to do this.
-    [Obsolete("May not work as intended")]
-    public void TriggerTrimExcess()
-    {
-        // Remove old entries...
-        for (int i = 0; i < _palette.Length; i++)
-        {
-            if (_palette[i].RefCount <= 0)
-            {
-                _paletteCount -= 1;
-            }
-        }
-
-        // Is the _paletteCount less than or equal to half of its closest power-of-two?
-        if (_paletteCount > Math.Pow(2, _paletteCount) / 2)
-            // NO: The palette cannot be shrunk!
-            return;
-
-        // Decode all indices
-        uint[] indices = new uint[_size];
-        for (int i = 0; i < indices.Length; i++)
-            indices[i] = _data.Get(i * _indicesLength, _indicesLength);
-
-        // Create new palette, halving it in size
-        _indicesLength >>= 1;
-        PaletteEntry[] newPalette = new PaletteEntry[(int)Math.Ceiling(Math.Pow(2, _indicesLength))];
-
-        // We gotta compress the palette entries!
-        uint paletteCounter = 0;
-        for (int i = 0; i < _palette.Length; i++, paletteCounter++)
-        {
-            PaletteEntry entry = newPalette[paletteCounter] = _palette[i];
-
-            // Re-encode the indices (find and replace; with limit)
-            for (int j = 0, fc = 0; j < indices.Length && fc < entry.RefCount; j++)
-            {
-                if (i != indices[j])
-                    continue;
-                
-                indices[j] = paletteCounter;
-                fc += 1;
-            }
-        }
-
-        // Allocate new BitBuffer
-        _data = new BitBuffer(_size * _indicesLength);
-
-        // Encode the indices
-        for (int i = 0; i < indices.Length; i++)
-            _data.Set(i * _indicesLength, _indicesLength, indices[i]);
-    }
+    // // Shrink the palette (and thus the BitBuffer) every now and then.
+    // // You may need to apply heuristics to determine when to do this.
+    // [Obsolete("May not work as intended")]
+    // public void TriggerTrimExcess()
+    // {
+    //     // Remove old entries...
+    //     for (int i = 0; i < _palette.Length; i++)
+    //     {
+    //         if (_palette[i].RefCount <= 0)
+    //         {
+    //             _uniqueEntriesCount -= 1;
+    //         }
+    //     }
+    //
+    //     // Is the _uniqueEntriesCount less than or equal to half of its closest power-of-two?
+    //     if (_uniqueEntriesCount > Math.Pow(2, _uniqueEntriesCount) / 2)
+    //         // NO: The palette cannot be shrunk!
+    //         return;
+    //
+    //     // Decode all indices
+    //     uint[] indices = new uint[_sizeInBlocks];
+    //     for (int i = 0; i < indices.Length; i++)
+    //         indices[i] = _indices.Get(i * _indexLengthInBits, _indexLengthInBits);
+    //
+    //     // Create new palette, halving it in size
+    //     _indexLengthInBits >>= 1;
+    //     PaletteEntry[] newPalette = new PaletteEntry[(int)Math.Ceiling(Math.Pow(2, _indexLengthInBits))];
+    //
+    //     // We gotta compress the palette entries!
+    //     uint paletteCounter = 0;
+    //     for (int i = 0; i < _palette.Length; i++, paletteCounter++)
+    //     {
+    //         PaletteEntry entry = newPalette[paletteCounter] = _palette[i];
+    //
+    //         // Re-encode the indices (find and replace; with limit)
+    //         for (int j = 0, fc = 0; j < indices.Length && fc < entry.RefCount; j++)
+    //         {
+    //             if (i != indices[j])
+    //                 continue;
+    //             
+    //             indices[j] = paletteCounter;
+    //             fc += 1;
+    //         }
+    //     }
+    //
+    //     // Allocate new BitBuffer
+    //     _indices = new BitBuffer(_sizeInBlocks * _indexLengthInBits);
+    //
+    //     // Encode the indices
+    //     for (int i = 0; i < indices.Length; i++)
+    //         _indices.Set(i * _indexLengthInBits, _indexLengthInBits, indices[i]);
+    // }
 }

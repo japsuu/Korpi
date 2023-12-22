@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.Framework.Blocks;
+using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Meshing;
 using OpenTK.Mathematics;
 
