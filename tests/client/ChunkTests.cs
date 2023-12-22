@@ -15,7 +15,7 @@ public class ChunkTests
         BlockState blockState = new();
 
         // Act
-        chunk.SetBlockState(position, blockState);
+        chunk.SetBlockState(position, blockState, out _);
 
         // Assert
         Assert.That(chunk.MeshState, Is.EqualTo(Chunk.ChunkMeshState.NONE));
@@ -28,7 +28,7 @@ public class ChunkTests
         Chunk chunk = new(new Vector3i(0, 0, 0));
         Vector3i position = new(1, 1, 1);
         BlockState blockState = new();
-        chunk.SetBlockState(position, blockState);
+        chunk.SetBlockState(position, blockState, out _);
 
         // Act
         BlockState result = chunk.GetBlockState(position.X, position.Y, position.Z);

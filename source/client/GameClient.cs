@@ -229,7 +229,6 @@ public class GameClient : GameWindow
 
     private void DrawImGui()
     {
-        ImGui.ShowMetricsWindow();
         _imGuiController.Render();
         ImGuiController.CheckGlError("End of frame");
     }

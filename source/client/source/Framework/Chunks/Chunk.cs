@@ -179,22 +179,21 @@ public class Chunk
     /// </code>
     /// Thread safe.
     /// </summary>
-    public BlockState SetBlockState(Vector3i position, BlockState block)
+    public bool SetBlockState(Vector3i position, BlockState block, out BlockState oldBlock)
     {
         lock (_blockStorageLock)
         {
-            //TODO: If border block, dirty neighbouring chunk(s) too.
-            _blockStorage.SetBlock(position.X, position.Y, position.Z, block, out BlockState oldBlock);
+            _blockStorage.SetBlock(position.X, position.Y, position.Z, block, out oldBlock);
         
             // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
-            if (GenerationState == ChunkGenerationState.READY && MeshState != ChunkMeshState.DIRTY && (oldBlock.IsRendered || block.IsRendered))
-            {
+            bool shouldDirtyMesh = GenerationState == ChunkGenerationState.READY && MeshState != ChunkMeshState.DIRTY && (oldBlock.IsRendered || block.IsRendered);
+            
+            if (shouldDirtyMesh)
                 SetMeshDirty();
-            }
         
             _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
         
-            return oldBlock;
+            return shouldDirtyMesh;
         }
     }
 

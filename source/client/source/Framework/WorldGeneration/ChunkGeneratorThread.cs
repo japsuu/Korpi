@@ -36,7 +36,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
                 {
                     ushort id = GetBlockIdAtPosition(new Vector3i(x + chunk.Position.X, y + chunk.Position.Y, z + chunk.Position.Z));
                     
-                    chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(id).GetDefaultState());
+                    chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(id).GetDefaultState(), out _);
                 }
             }
         }

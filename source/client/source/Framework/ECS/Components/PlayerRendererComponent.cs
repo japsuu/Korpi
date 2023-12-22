@@ -91,9 +91,7 @@ public class PlayerRendererComponent : Component
         _shader.SetMatrix4("model", _playerEntity.Transform.GetModelMatrix());
         GL.BindVertexArray(_vao);
         GL.CullFace(CullFaceMode.Front);
-        GL.Enable(EnableCap.CullFace);
         GL.DrawArrays(PrimitiveType.Triangles, 0, Vertices.Length);
-        GL.Disable(EnableCap.CullFace);
         GL.CullFace(CullFaceMode.Back);
         GL.BindVertexArray(0);
     }

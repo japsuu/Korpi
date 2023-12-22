@@ -282,7 +282,27 @@ public class ChunkManager
             return BlockRegistry.Air.GetDefaultState();
 
         Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
-        return chunk.SetBlockState(chunkRelativePos, blockState);
+        bool wasSetDirty = chunk.SetBlockState(chunkRelativePos, blockState, out BlockState oldBlockState);
+        
+        if (wasSetDirty)
+        {
+            if(chunkRelativePos.X == 0)
+                GetChunkAt(position + new Vector3i(-1, 0, 0))?.SetMeshDirty();
+            else if(chunkRelativePos.X == Constants.CHUNK_SIZE - 1)
+                GetChunkAt(position + new Vector3i(1, 0, 0))?.SetMeshDirty();
+            
+            if(chunkRelativePos.Y == 0)
+                GetChunkAt(position + new Vector3i(0, -1, 0))?.SetMeshDirty();
+            else if(chunkRelativePos.Y == Constants.CHUNK_SIZE - 1)
+                GetChunkAt(position + new Vector3i(0, 1, 0))?.SetMeshDirty();
+            
+            if(chunkRelativePos.Z == 0)
+                GetChunkAt(position + new Vector3i(0, 0, -1))?.SetMeshDirty();
+            else if(chunkRelativePos.Z == Constants.CHUNK_SIZE - 1)
+                GetChunkAt(position + new Vector3i(0, 0, 1))?.SetMeshDirty();
+        }
+        
+        return oldBlockState;
     }
 
 
