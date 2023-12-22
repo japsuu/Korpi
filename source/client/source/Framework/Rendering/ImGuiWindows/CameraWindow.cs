@@ -8,7 +8,12 @@ namespace BlockEngine.Client.Framework.Rendering.ImGuiWindows;
 
 public class CameraWindow : ImGuiWindow
 {
+    private const int CALCULATE_MIN_MAX_FPS_AFTER_FRAMES = 1000;
+    
     public override string Title => "Main Camera";
+
+    private float _minFps = float.MaxValue;
+    private float _maxFps = float.MinValue;
 
 
     public CameraWindow()
@@ -32,8 +37,21 @@ public class CameraWindow : ImGuiWindow
         ImGui.Separator();
         ImGui.Text($"Time: {GameTime.GetFormattedTime()}");
         ImGui.Text($"Date: {GameTime.GetFormattedDate()}");
-        float fps = ImGui.GetIO().Framerate;
-        float frameTime = 1000f / fps;
-        ImGui.Text($"{fps:F1} fps ({frameTime:F1} ms/frame)");
+        
+        float averageFps = ImGui.GetIO().Framerate;
+        
+        float frameTime = 1000f / averageFps;
+        ImGui.Text($"{averageFps:F1} fps ({frameTime:F1} ms/frame)");
+        
+        if (Time.FrameCount > CALCULATE_MIN_MAX_FPS_AFTER_FRAMES)
+        {
+            if (averageFps < _minFps)
+                _minFps = averageFps;
+            if (averageFps > _maxFps)
+                _maxFps = averageFps;
+            
+            ImGui.Text($"Min: {_minFps:F1} fps");
+            ImGui.Text($"Max: {_maxFps:F1} fps");
+        }
     }
 }
