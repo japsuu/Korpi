@@ -23,6 +23,7 @@ public static class ChunkRendererStorage
         {
             renderer = new ChunkRenderer(mesh);
             GeneratedRenderers.Add(mesh.ChunkPos, renderer);
+            GeneratedRendererCount++;
         }
     }
     

@@ -8,7 +8,7 @@ namespace BlockEngine.Client.Framework.WorldGeneration;
 
 public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
 {
-    private const int SEA_LEVEL = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 4;
+    private const int SEA_LEVEL = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 4 + 16;
     private const int TERRAIN_HEIGHT_MIN = SEA_LEVEL - 16;
     private const int TERRAIN_HEIGHT_MAX = SEA_LEVEL + 16;
     
@@ -47,7 +47,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
     
     private ushort GetBlockIdAtPosition(Vector3i blockPosition)
     {
-        // return blockPosition.Y > SEA_LEVEL ? (ushort)0 : (ushort)1;
+        return blockPosition.Y > SEA_LEVEL ? (ushort)0 : (ushort)1;
 
         float noise = _noise.GetNoise(blockPosition.X, blockPosition.Z);
         float height = noise * 0.5f + 0.5f;
