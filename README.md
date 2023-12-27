@@ -17,6 +17,7 @@ This project is still searching for its own identity :)
 - [Input](#input)
 - [Voxel engine vs BlockEngine](#voxel-engine-vs-block-engine)
 - [Credits](#credits)
+- [Contributing](CONTRIBUTING.md)
 
 ## Project goals
 
