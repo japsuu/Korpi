@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Configuration;
-using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.ECS.Entities;
 using BlockEngine.Client.Framework.Meshing;
@@ -180,32 +179,94 @@ public class ChunkManager
     }
 
 
-    public bool AreChunkNeighboursGenerated(Vector3i chunkPos)
+    /// <summary>
+    /// Checks if all neighbouring chunks of the chunk at the given position are generated.
+    /// </summary>
+    /// <param name="chunkPos">Position of the chunk whose neighbours we want to check</param>
+    /// <param name="excludeMissingChunks">If true, chunks that are not loaded are excluded from neighbourhood checks</param>
+    /// <returns>True if all neighbouring chunks are generated, false otherwise</returns>
+    public bool AreChunkNeighboursGenerated(Vector3i chunkPos, bool excludeMissingChunks)
     {
         Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
-
-        ChunkColumn? column = _existingColumns[columnPos];
-            
-        if (column.GetChunkAtHeight(chunkPos.Y + 1)?.GenerationState < Chunk.ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
-            return false;
-            
-        if (column.GetChunkAtHeight(chunkPos.Y - 1)?.GenerationState < Chunk.ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
-            return false;
         
         foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
         {
             Vector2i neighbourPos = columnPos + neighbourOffset;
             
-            if (!_existingColumns.TryGetValue(neighbourPos, out column))
+            if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
+            {
+                if (excludeMissingChunks)
+                    continue;
+                
                 return false;
+            }
+
+            Chunk? chunk = column.GetChunkAtHeight(chunkPos.Y);
+            if (chunk == null)
+            {
+                if (!excludeMissingChunks)
+                    return false;
+            }
+            else
+            {
+                if (!chunk.IsGenerated)
+                    return false;
+            }
+
+            chunk = column.GetChunkAtHeight(chunkPos.Y + 1);
+            if (chunk == null)
+            {
+                if (!excludeMissingChunks)
+                    return false;
+            }
+            else
+            {
+                if (!chunk.IsGenerated)
+                    return false;
+            }
+
+            chunk = column.GetChunkAtHeight(chunkPos.Y - 1);
+            if (chunk == null)
+            {
+                if (!excludeMissingChunks)
+                    return false;
+            }
+            else
+            {
+                if (!chunk.IsGenerated)
+                    return false;
+            }
+        }
             
-            if (column.GetChunkAtHeight(chunkPos.Y)?.GenerationState < Chunk.ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
+        if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? centerColumn))
+        {
+            if (excludeMissingChunks)
+                return true;
+                
+            return false;
+        }
+
+        Chunk? sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y + 1);
+        if (sisterChunk == null)
+        {
+            if (!excludeMissingChunks)
                 return false;
-            
-            if (column.GetChunkAtHeight(chunkPos.Y + 1)?.GenerationState < Chunk.ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
+        }
+        else
+        {
+            if (!sisterChunk.IsGenerated)
                 return false;
-            
-            if (column.GetChunkAtHeight(chunkPos.Y - 1)?.GenerationState < Chunk.ChunkGenerationState.WAITING_FOR_NEIGHBOURS)
+        }
+
+        sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y - 1);
+        if (sisterChunk == null)
+        {
+            if (!excludeMissingChunks)
+                return false;
+        }
+        else
+        {
+            if (!sisterChunk.IsGenerated)
                 return false;
         }
 
@@ -258,7 +319,7 @@ public class ChunkManager
             {
                 Chunk? chunk = column.GetChunk(i);
 
-                chunk?.SetMeshDirty();
+                chunk?.EnqueueForMeshing();
             }
         }
     }
@@ -287,22 +348,68 @@ public class ChunkManager
         if (wasSetDirty)
         {
             if(chunkRelativePos.X == 0)
-                GetChunkAt(position + new Vector3i(-1, 0, 0))?.SetMeshDirty();
+                GetChunkAt(position + new Vector3i(-1, 0, 0))?.EnqueueForMeshing();
             else if(chunkRelativePos.X == Constants.CHUNK_SIZE - 1)
-                GetChunkAt(position + new Vector3i(1, 0, 0))?.SetMeshDirty();
+                GetChunkAt(position + new Vector3i(1, 0, 0))?.EnqueueForMeshing();
             
             if(chunkRelativePos.Y == 0)
-                GetChunkAt(position + new Vector3i(0, -1, 0))?.SetMeshDirty();
+                GetChunkAt(position + new Vector3i(0, -1, 0))?.EnqueueForMeshing();
             else if(chunkRelativePos.Y == Constants.CHUNK_SIZE - 1)
-                GetChunkAt(position + new Vector3i(0, 1, 0))?.SetMeshDirty();
+                GetChunkAt(position + new Vector3i(0, 1, 0))?.EnqueueForMeshing();
             
             if(chunkRelativePos.Z == 0)
-                GetChunkAt(position + new Vector3i(0, 0, -1))?.SetMeshDirty();
+                GetChunkAt(position + new Vector3i(0, 0, -1))?.EnqueueForMeshing();
             else if(chunkRelativePos.Z == Constants.CHUNK_SIZE - 1)
-                GetChunkAt(position + new Vector3i(0, 0, 1))?.SetMeshDirty();
+                GetChunkAt(position + new Vector3i(0, 0, 1))?.EnqueueForMeshing();
         }
         
         return oldBlockState;
+    }
+    
+    
+    private void RemeshNeighbouringColumns(Vector2i columnPos)
+    {
+        foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
+        {
+            Vector2i neighbourPos = columnPos + neighbourOffset;
+            
+            if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
+                continue;
+
+            column.RemeshAllChunks();
+        }
+    }
+    
+    
+    private void RemeshNeighbouringChunks(Vector3i chunkPos)
+    {
+        Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
+        
+        foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
+        {
+            Vector2i neighbourPos = columnPos + neighbourOffset;
+            
+            if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
+                continue;
+
+            Chunk? chunk = column.GetChunkAtHeight(chunkPos.Y);
+            chunk?.EnqueueForMeshing();
+
+            chunk = column.GetChunkAtHeight(chunkPos.Y - 1);
+            chunk?.EnqueueForMeshing();
+
+            chunk = column.GetChunkAtHeight(chunkPos.Y + 1);
+            chunk?.EnqueueForMeshing();
+        }
+            
+        if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? centerColumn))
+            return;
+
+        Chunk? sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y + 1);
+        sisterChunk?.EnqueueForMeshing();
+
+        sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y - 1);
+        sisterChunk?.EnqueueForMeshing();
     }
 
 
@@ -378,7 +485,7 @@ public class ChunkManager
             if (!_existingColumns.TryAdd(columnPos, column))
                 Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");
 
-            // Logger.Log($"Loaded chunk column at {columnPos}.");
+            RemeshNeighbouringColumns(columnPos);
         }
     }
 

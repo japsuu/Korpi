@@ -1,6 +1,6 @@
 ﻿using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Debugging;
-using BlockEngine.Client.Framework.WorldGeneration;
+using BlockEngine.Client.Framework.Threading;
 
 namespace BlockEngine.Client.Framework.Meshing;
 

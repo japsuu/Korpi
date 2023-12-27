@@ -2,7 +2,8 @@
 using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Registries;
-using BlockEngine.Client.Framework.WorldGeneration;
+using BlockEngine.Client.Framework.Threading;
+using JetBrains.Profiler.Api;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Meshing;
@@ -45,7 +46,7 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
     {
         base.InitializeThread();
         
-        _meshingDataCache = new MeshingDataCache(Constants.CHUNK_SIZE);
+        _meshingDataCache = new MeshingDataCache();
         _meshingBuffer = new MeshingBuffer();
         _blockStateNeighbourhood = new BlockState[27];   // 27 = 3x3x3
     }
@@ -53,6 +54,8 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
 
     protected override ChunkMesh ProcessChunk(Chunk chunk)
     {
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
+            MeasureProfiler.StartCollectingData();
         RenderingStats.StartChunkMeshing();
         World.CurrentWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
@@ -68,53 +71,69 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
                 {
                     BlockState blockState = _meshingDataCache.GetData(x, y, z);
                     
-                    // If the block is invisible, skip it
-                    if (blockState.RenderType == BlockRenderType.None)
+                    if (!blockState.ShouldRender())
                         continue;
 
                     // Gather neighbourhood data
-                    for (int neighbourZ = 0; neighbourZ < 3; neighbourZ++)
-                    {
-                        for (int neighbourY = 0; neighbourY < 3; neighbourY++)
-                        {
-                            for (int neighbourX = 0; neighbourX < 3; neighbourX++)
-                            {
-                                BlockState neighbour = _meshingDataCache.GetData(x + neighbourX - 1, y + neighbourY - 1, z + neighbourZ - 1);
-                                _blockStateNeighbourhood[neighbourX + neighbourY * 3 + neighbourZ * 9] = neighbour;
-                            }
-                        }
-                    }
+                    GatherNeighbourhood(x, y, z);
                     
-                    // Iterate over all 6 faces of the block
-                    for (int face = 0; face < 6; face++)
-                    {
-                        Vector3i neighbourOffset = BlockNeighbourOffsets[face];
-                        BlockState neighbour = _blockStateNeighbourhood[neighbourOffset.X + neighbourOffset.Y * 3 + neighbourOffset.Z * 9];
-
-                        // If the neighbour is opaque, skip this face.
-                        // If the neighbour is empty or transparent, we need to mesh this face.
-                        if (neighbour.RenderType == BlockRenderType.Normal)
-                            continue;
-
-                        // Get the texture index of the block face
-                        ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);
-                        
-                        // Get the lighting of the block face
-                        const int lightLevel = Constants.MAX_LIGHT_LEVEL;
-                        const int skyLightLevel = Constants.MAX_LIGHT_LEVEL;
-                        Color9 lightColor = Color9.White;
-                        
-                        // Add the face to the meshing buffer
-                        Vector3i blockPos = new(x - 1, y - 1, z - 1);   // -1 because we started the iteration at 1, since the cache has a border.
-                        _meshingBuffer.AddFace(_blockStateNeighbourhood, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
-                    }
+                    AddFaces(blockState, x, y, z);
                 }
             }
         }
         
         RenderingStats.StopChunkMeshing();
+        
+        ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
+        
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
+            MeasureProfiler.SaveData();
 
-        return _meshingBuffer.CreateMesh(chunk.Position);
+        return mesh;
+    }
+
+
+    private void GatherNeighbourhood(int x, int y, int z)
+    {
+        for (int neighbourZ = 0; neighbourZ < 3; neighbourZ++)
+        {
+            for (int neighbourY = 0; neighbourY < 3; neighbourY++)
+            {
+                for (int neighbourX = 0; neighbourX < 3; neighbourX++)
+                {
+                    BlockState neighbour = _meshingDataCache.GetData(x + neighbourX - 1, y + neighbourY - 1, z + neighbourZ - 1);
+                    _blockStateNeighbourhood[neighbourX + neighbourY * 3 + neighbourZ * 9] = neighbour;
+                }
+            }
+        }
+    }
+
+
+    private void AddFaces(BlockState blockState, int x, int y, int z)
+    {
+        // Iterate over all 6 faces of the block
+        for (int face = 0; face < 6; face++)
+        {
+            Vector3i neighbourOffset = BlockNeighbourOffsets[face];
+            BlockState neighbour = _blockStateNeighbourhood[neighbourOffset.X + neighbourOffset.Y * 3 + neighbourOffset.Z * 9];
+
+            // If the neighbour is opaque, skip this face.
+            // If the neighbour is empty or transparent, we need to mesh this face.
+            if (neighbour.RenderType == BlockRenderType.Normal)
+                continue;
+
+            // Get the texture index of the block face
+            ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);
+                        
+            // Get the lighting of the block face
+            const int lightLevel = Constants.MAX_LIGHT_LEVEL;
+            const int skyLightLevel = Constants.MAX_LIGHT_LEVEL;
+            Color9 lightColor = Color9.White;
+                        
+            // Add the face to the meshing buffer
+            Vector3i blockPos = new(x - 1, y - 1, z - 1);   // -1 because we started the iteration at 1, since the cache has a border.
+            _meshingBuffer.AddFace(_blockStateNeighbourhood, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
+        }
     }
 
 

@@ -4,7 +4,7 @@ namespace BlockEngine.Client.Framework.Debugging;
 
 public static class RenderingStats
 {
-    public const int AVERAGE_CHUNK_MESHING_TIME_SAMPLES = 32;
+    private const int AVERAGE_CHUNK_MESHING_TIME_SAMPLES = 64;
         
     public static int LoadedColumnCount;
     public static ulong ChunksInGenerationQueue;

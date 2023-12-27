@@ -1,9 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using BlockEngine.Client.Framework.Chunks;
 using ConcurrentCollections;
+using JetBrains.Profiler.Api;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Framework.WorldGeneration;
+namespace BlockEngine.Client.Framework.Threading;
 
 /// <summary>
 /// Base class for a thread that processes chunks and provides some kind of output.
@@ -22,6 +23,7 @@ public abstract class ChunkProcessorThread<T> : IDisposable
     protected ChunkProcessorThread()
     {
         _thread = new Thread(ProcessQueues);
+        _thread.Name = GetType().FullName;
     }
 
 

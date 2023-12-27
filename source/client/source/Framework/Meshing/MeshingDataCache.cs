@@ -12,12 +12,19 @@ public class MeshingDataCache
     public readonly int BorderBlockIndex;
 
 
-    public MeshingDataCache(int size)
+    public MeshingDataCache()
     {
-        Size = size + 2;
+        Size = Constants.CHUNK_SIZE + 2;
         BorderBlockIndex = Size - 1;
         
         Data = new BlockState[Size * Size * Size];
+    }
+    
+    
+    public BlockState this[int index]
+    {
+        get => Data[index];
+        set => Data[index] = value;
     }
 
 

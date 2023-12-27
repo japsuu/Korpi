@@ -41,6 +41,15 @@ public class ChunkColumn
     {
         return _chunks[i];
     }
+    
+    
+    public void RemeshAllChunks()
+    {
+        foreach (Chunk? chunk in _chunks)
+        {
+            chunk?.EnqueueForMeshing();
+        }
+    }
         
         
     public void Tick()
@@ -56,6 +65,8 @@ public class ChunkColumn
     {
         for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
         {
+            // if (Position != Vector2i.Zero)
+            //     continue;
             Chunk chunk = new Chunk(new Vector3i(Position.X, i * Constants.CHUNK_SIZE, Position.Y));
             chunk.Load();
             _chunks[i] = chunk;
@@ -65,10 +76,9 @@ public class ChunkColumn
         
     public void Unload()
     {
-        for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
+        foreach (Chunk? chunk in _chunks)
         {
-            Chunk chunk = new Chunk(new Vector3i(Position.X, i * Constants.CHUNK_SIZE, Position.Y));
-            chunk.Unload();
+            chunk?.Unload();
         }
     }
 }
