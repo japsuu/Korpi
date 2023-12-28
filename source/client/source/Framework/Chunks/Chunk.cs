@@ -2,6 +2,7 @@
 using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Debugging.Drawing;
 using BlockEngine.Client.Framework.Meshing;
+using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework.Chunks;
@@ -51,7 +52,7 @@ public class Chunk
     }
     
     
-    private readonly IBlockStorage _blockStorage = new FlatBlockStorage();
+    private readonly IBlockStorage _blockStorage = new BlockPalette();
     private readonly object _blockStorageLock = new();
 
     private bool _containsRenderedBlocks;
@@ -97,20 +98,29 @@ public class Chunk
         {
             const float halfAChunk = Constants.CHUNK_SIZE / 2f;
             Vector3 centerOffset = new Vector3(halfAChunk, 0, halfAChunk);
+            // if (_containsRenderedBlocks)
+            // {
+            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
+            // }
+            // else
+            // {
+            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Red);
+            // }
+            // return;
             switch (_meshState)
             {
                 case ChunkMeshState.NONE:
                     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Red);
                     break;
                 case ChunkMeshState.WAITING_FOR_NEIGHBOURS_TO_GENERATE:
-                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Orange);
+                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Blue);
                     break;
                 case ChunkMeshState.MESHING:
                     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Yellow);
                     break;
-                case ChunkMeshState.READY:
-                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
-                    break;
+                // case ChunkMeshState.READY:
+                //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
+                //     break;
             }
         }
 #endif
@@ -148,6 +158,8 @@ public class Chunk
         else
         {
             OnReady();
+            if (Position == new Vector3i(0, 256, 0))
+                Logger.Debug($"Chunk at {Position} has no rendered blocks, skipping meshing.");
         }
     }
     
@@ -155,8 +167,26 @@ public class Chunk
     public void OnMeshed()
     {
         _meshState = ChunkMeshState.READY;
+        if (Position == new Vector3i(0, 256, 0))
+            Logger.Debug($"Chunk at {Position} has been meshed.");
         
         OnReady();
+    }
+
+
+    public void SetMeshDirty()
+    {
+        if (!_containsRenderedBlocks)
+            return;
+        
+        if (CanBeMeshed())
+        {
+            EnqueueForMeshing();
+        }
+        else
+        {
+            _meshState = ChunkMeshState.WAITING_FOR_NEIGHBOURS_TO_GENERATE;
+        }
     }
 
 
@@ -176,10 +206,12 @@ public class Chunk
     }
 
 
-    public void EnqueueForMeshing()
+    private void EnqueueForMeshing()
     {
         _meshState = ChunkMeshState.MESHING;
         World.CurrentWorld.ChunkMesher.Enqueue(Position);
+        if (Position == new Vector3i(0, 256, 0))
+            Logger.Debug($"Chunk at {Position} has been enqueued.");
     }
 
 

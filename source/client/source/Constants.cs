@@ -37,8 +37,8 @@ public static class Constants
     public const int REAL_SECONDS_PER_GAME_DAY = 1200;
     public const int DAYS_PER_MONTH = 30;
     public const int MONTHS_PER_YEAR = 12;
-    public const int STARTING_YEAR = 1;
-    public const int STARTING_MONTH = 1;
+    public const int STARTING_YEAR = 700;
+    public const int STARTING_MONTH = 5;
     public const int STARTING_DAY = 1;
     public const int STARTING_HOUR = 12;
     public const int SUNRISE_START_HOUR = 6;

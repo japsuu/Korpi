@@ -31,7 +31,6 @@ public struct BlockState
     
     public bool IsAir => Id == 0;
     public bool IsRendered => RenderType != BlockRenderType.None;
-    public bool IsFullyOpaque => RenderType == BlockRenderType.Normal;
 
 
     public BlockState(Block block)

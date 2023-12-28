@@ -311,16 +311,11 @@ public class ChunkManager
     }
 
 
-    public void ReloadAllChunks()
+    public void RemeshAllColumns()
     {
         foreach (ChunkColumn column in _existingColumns.Values)
         {
-            for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
-            {
-                Chunk? chunk = column.GetChunk(i);
-
-                chunk?.EnqueueForMeshing();
-            }
+            column.RemeshAllChunks();
         }
     }
 
@@ -344,25 +339,25 @@ public class ChunkManager
 
         Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
         bool wasSetDirty = chunk.SetBlockState(chunkRelativePos, blockState, out BlockState oldBlockState);
+
+        if (!wasSetDirty)
+            return oldBlockState;
         
-        if (wasSetDirty)
-        {
-            if(chunkRelativePos.X == 0)
-                GetChunkAt(position + new Vector3i(-1, 0, 0))?.EnqueueForMeshing();
-            else if(chunkRelativePos.X == Constants.CHUNK_SIZE - 1)
-                GetChunkAt(position + new Vector3i(1, 0, 0))?.EnqueueForMeshing();
+        if(chunkRelativePos.X == 0)
+            GetChunkAt(position + new Vector3i(-1, 0, 0))?.SetMeshDirty();
+        else if(chunkRelativePos.X == Constants.CHUNK_SIZE - 1)
+            GetChunkAt(position + new Vector3i(1, 0, 0))?.SetMeshDirty();
             
-            if(chunkRelativePos.Y == 0)
-                GetChunkAt(position + new Vector3i(0, -1, 0))?.EnqueueForMeshing();
-            else if(chunkRelativePos.Y == Constants.CHUNK_SIZE - 1)
-                GetChunkAt(position + new Vector3i(0, 1, 0))?.EnqueueForMeshing();
+        if(chunkRelativePos.Y == 0)
+            GetChunkAt(position + new Vector3i(0, -1, 0))?.SetMeshDirty();
+        else if(chunkRelativePos.Y == Constants.CHUNK_SIZE - 1)
+            GetChunkAt(position + new Vector3i(0, 1, 0))?.SetMeshDirty();
             
-            if(chunkRelativePos.Z == 0)
-                GetChunkAt(position + new Vector3i(0, 0, -1))?.EnqueueForMeshing();
-            else if(chunkRelativePos.Z == Constants.CHUNK_SIZE - 1)
-                GetChunkAt(position + new Vector3i(0, 0, 1))?.EnqueueForMeshing();
-        }
-        
+        if(chunkRelativePos.Z == 0)
+            GetChunkAt(position + new Vector3i(0, 0, -1))?.SetMeshDirty();
+        else if(chunkRelativePos.Z == Constants.CHUNK_SIZE - 1)
+            GetChunkAt(position + new Vector3i(0, 0, 1))?.SetMeshDirty();
+
         return oldBlockState;
     }
     
@@ -393,23 +388,23 @@ public class ChunkManager
                 continue;
 
             Chunk? chunk = column.GetChunkAtHeight(chunkPos.Y);
-            chunk?.EnqueueForMeshing();
+            chunk?.SetMeshDirty();
 
             chunk = column.GetChunkAtHeight(chunkPos.Y - 1);
-            chunk?.EnqueueForMeshing();
+            chunk?.SetMeshDirty();
 
             chunk = column.GetChunkAtHeight(chunkPos.Y + 1);
-            chunk?.EnqueueForMeshing();
+            chunk?.SetMeshDirty();
         }
             
         if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? centerColumn))
             return;
 
         Chunk? sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y + 1);
-        sisterChunk?.EnqueueForMeshing();
+        sisterChunk?.SetMeshDirty();
 
         sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y - 1);
-        sisterChunk?.EnqueueForMeshing();
+        sisterChunk?.SetMeshDirty();
     }
 
 
@@ -535,8 +530,8 @@ public class ChunkManager
             bool inRange = pos.X * pos.X + pos.Y * pos.Y <= Constants.CHUNK_COLUMN_LOAD_RADIUS_SQUARED;
 
             // Ensure that the position is inside the load radius
-            if (!inRange)
-                continue;
+            //if (!inRange)
+            //    continue;
             _columnLoadSpiral.Add(pos * Constants.CHUNK_SIZE);
         }
 

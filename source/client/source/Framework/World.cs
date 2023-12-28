@@ -49,8 +49,8 @@ public class World : IDisposable
         ChunkManager.Tick();
         ChunkGenerator.ProcessQueues();
         ChunkMesher.ProcessQueues();
-        RenderingStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         _entityManager.Update();
+        RenderingStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         CameraStats.RaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
     }
     

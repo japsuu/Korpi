@@ -47,7 +47,7 @@ public class ChunkColumn
     {
         foreach (Chunk? chunk in _chunks)
         {
-            chunk?.EnqueueForMeshing();
+            chunk?.SetMeshDirty();
         }
     }
         

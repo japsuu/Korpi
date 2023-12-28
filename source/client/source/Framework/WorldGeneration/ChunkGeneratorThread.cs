@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Registries;
 using BlockEngine.Client.Framework.Threading;
 using BlockEngine.Client.Utils;
@@ -26,6 +27,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
 
     protected override Vector3i ProcessChunk(Chunk chunk)
     {
+        RenderingStats.StartChunkGeneration();
         if (chunk.Bottom > TERRAIN_HEIGHT_MAX)  // Skip chunks above the terrain.
             return chunk.Position;
         
@@ -41,6 +43,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
                 }
             }
         }
+        RenderingStats.StopChunkGeneration();
         return chunk.Position;
     }
     

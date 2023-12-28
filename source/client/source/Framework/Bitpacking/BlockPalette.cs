@@ -62,6 +62,10 @@ public class BlockPalette : IBlockStorage
             oldBlock = BlockRegistry.Air.GetDefaultState();
         else
             oldBlock = _palette[paletteIndex].BlockState!.Value;
+        
+        // Skip if the block is the same as the old one.
+        if (BlockState.EqualsNonAlloc(oldBlock, block))
+            return;
 
         bool wasRendered = oldBlock.IsRendered;
         bool willBeRendered = block.IsRendered;
