@@ -15,66 +15,6 @@ namespace BlockEngine.Client.Framework.Chunks;
 
 public class ChunkManager
 {
-    /// <summary>
-    /// Contains all 26 neighbouring chunk offsets.
-    /// </summary>
-    private static readonly Vector3i[] NeighbouringChunkOffsets =
-    {
-        // 8 Corners
-        new(1, 1, 1),
-        new(-1, 1, 1),
-        new(-1, 1, -1),
-        new(1, 1, -1),
-        new(1, -1, 1),
-        new(-1, -1, 1),
-        new(-1, -1, -1),
-        new(1, -1, -1),
-
-        // 12 Edges
-        new(1, 1, 0),
-        new(0, 1, 1),
-        new(-1, 1, 0),
-        new(0, 1, -1),
-        new(1, -1, 0),
-        new(0, -1, 1),
-        new(-1, -1, 0),
-        new(0, -1, -1),
-        new(1, 0, 1),
-        new(-1, 0, 1),
-        new(-1, 0, -1),
-        new(1, 0, -1),
-
-        // 6 Faces
-        new(1, 0, 0),
-        new(0, 0, 1),
-        new(-1, 0, 0),
-        new(0, 0, -1),
-        new(0, 1, 0),
-        new(0, -1, 0)
-    };
-    
-    /// <summary>
-    /// Contains all 8 neighbouring column offsets.
-    /// </summary>
-    private static readonly Vector2i[] NeighbouringColumnOffsets =
-    {
-        // 4 Corners
-        new(1, 1),
-        new(-1, 1),
-        new(-1, -1),
-        new(1, -1),
-
-        // 4 Faces
-        new(1, 0),
-        new(0, 1),
-        new(-1, 0),
-        new(0, -1),
-    };
-
-    private static readonly NeighbouringChunkPosition[] NeighbouringChunkPositionOrder =
-        Enum.GetValues(typeof(NeighbouringChunkPosition)).Cast<NeighbouringChunkPosition>().ToArray();
-
-    private readonly Vector3i[] _precomputedNeighbouringChunkOffsets = new Vector3i[26];
     private readonly Vector2i[] _precomputedNeighbouringColumnOffsets = new Vector2i[8];
     private readonly ConcurrentDictionary<Vector2i, ChunkColumn> _existingColumns = new();
     private readonly List<Vector2i> _columnsToLoad = new();
@@ -83,14 +23,12 @@ public class ChunkManager
     // Precomputed spiral of chunk column positions to load.
     // The spiral is centered around the origin.
     private List<Vector2i> _columnLoadSpiral = null!;
-    
+
     public int LoadedColumnsCount => _existingColumns.Count;
 
 
     public ChunkManager()
     {
-        PrecomputeNeighbouringChunkOffsets();
-        PrecomputeNeighbouringColumnOffsets();
         PrecomputeColumnLoadSpiral();
     }
 
@@ -131,14 +69,14 @@ public class ChunkManager
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector3i chunkPos = CoordinateConversions.GetContainingChunkPos(Camera.RenderingCamera.Position);
+            Vector3i chunkPos = CoordinateConversions.WorldToChunk(Camera.RenderingCamera.Position);
             DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
         if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector2i columnPos = CoordinateConversions.GetContainingColumnPos(Camera.RenderingCamera.Position);
+            Vector2i columnPos = CoordinateConversions.WorldToColumn(Camera.RenderingCamera.Position);
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
 #endif
@@ -169,7 +107,7 @@ public class ChunkManager
     /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
     public Chunk? GetChunkAt(Vector3i position)
     {
-        Vector2i chunkColumnPos = CoordinateConversions.GetContainingColumnPos(position);
+        Vector2i chunkColumnPos = CoordinateConversions.WorldToColumn(position);
 
         if (!_existingColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
             //Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
@@ -187,90 +125,109 @@ public class ChunkManager
     /// <returns>True if all neighbouring chunks are generated, false otherwise</returns>
     public bool AreChunkNeighboursGenerated(Vector3i chunkPos, bool excludeMissingChunks)
     {
-        Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
+        foreach (Vector3i chunkOffset in ChunkHelper.ChunkNeighbourOffsets)
+        {
+            Vector3i neighbourPos = chunkPos + chunkOffset;
+            Chunk? neighbourChunk = GetChunkAt(neighbourPos);
+
+            if (neighbourChunk == null)
+            {
+                if (!excludeMissingChunks)
+                    return false;
+            }
+            else
+            {
+                if (!neighbourChunk.IsGenerated)
+                    return false;
+            }
+        }
         
-        foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
-        {
-            Vector2i neighbourPos = columnPos + neighbourOffset;
-            
-            if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
-            {
-                if (excludeMissingChunks)
-                    continue;
-                
-                return false;
-            }
-
-            Chunk? chunk = column.GetChunkAtHeight(chunkPos.Y);
-            if (chunk == null)
-            {
-                if (!excludeMissingChunks)
-                    return false;
-            }
-            else
-            {
-                if (!chunk.IsGenerated)
-                    return false;
-            }
-
-            chunk = column.GetChunkAtHeight(chunkPos.Y + 1);
-            if (chunk == null)
-            {
-                if (!excludeMissingChunks)
-                    return false;
-            }
-            else
-            {
-                if (!chunk.IsGenerated)
-                    return false;
-            }
-
-            chunk = column.GetChunkAtHeight(chunkPos.Y - 1);
-            if (chunk == null)
-            {
-                if (!excludeMissingChunks)
-                    return false;
-            }
-            else
-            {
-                if (!chunk.IsGenerated)
-                    return false;
-            }
-        }
-            
-        if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? centerColumn))
-        {
-            if (excludeMissingChunks)
-                return true;
-                
-            return false;
-        }
-
-        Chunk? sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y + 1);
-        if (sisterChunk == null)
-        {
-            if (!excludeMissingChunks)
-                return false;
-        }
-        else
-        {
-            if (!sisterChunk.IsGenerated)
-                return false;
-        }
-
-        sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y - 1);
-        if (sisterChunk == null)
-        {
-            if (!excludeMissingChunks)
-                return false;
-        }
-        else
-        {
-            if (!sisterChunk.IsGenerated)
-                return false;
-        }
-
         return true;
+        
+        // Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
+        // 
+        // foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
+        // {
+        //     Vector2i neighbourPos = columnPos + neighbourOffset;
+        //     
+        //     if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
+        //     {
+        //         if (excludeMissingChunks)
+        //             continue;
+        //         
+        //         return false;
+        //     }
+        //
+        //     Chunk? chunk = column.GetChunkAtHeight(chunkPos.Y);
+        //     if (chunk == null)
+        //     {
+        //         if (!excludeMissingChunks)
+        //             return false;
+        //     }
+        //     else
+        //     {
+        //         if (!chunk.IsGenerated)
+        //             return false;
+        //     }
+        //
+        //     chunk = column.GetChunkAtHeight(chunkPos.Y + 1);
+        //     if (chunk == null)
+        //     {
+        //         if (!excludeMissingChunks)
+        //             return false;
+        //     }
+        //     else
+        //     {
+        //         if (!chunk.IsGenerated)
+        //             return false;
+        //     }
+        //
+        //     chunk = column.GetChunkAtHeight(chunkPos.Y - 1);
+        //     if (chunk == null)
+        //     {
+        //         if (!excludeMissingChunks)
+        //             return false;
+        //     }
+        //     else
+        //     {
+        //         if (!chunk.IsGenerated)
+        //             return false;
+        //     }
+        // }
+        //     
+        // if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? centerColumn))
+        // {
+        //     if (excludeMissingChunks)
+        //         return true;
+        //         
+        //     return false;
+        // }
+        //
+        // Chunk? sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y + 1);
+        // if (sisterChunk == null)
+        // {
+        //     if (!excludeMissingChunks)
+        //         return false;
+        // }
+        // else
+        // {
+        //     if (!sisterChunk.IsGenerated)
+        //         return false;
+        // }
+        //
+        // sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y - 1);
+        // if (sisterChunk == null)
+        // {
+        //     if (!excludeMissingChunks)
+        //         return false;
+        // }
+        // else
+        // {
+        //     if (!sisterChunk.IsGenerated)
+        //         return false;
+        // }
+        //
+        // return true;
     }
 
 
@@ -288,26 +245,10 @@ public class ChunkManager
         if (loadedChunk == null)
             throw new InvalidOperationException($"Tried to fill meshing cache at {chunkOriginPos}, but the chunk was not loaded!");
 
-        Array.Fill(cache.Data, BlockRegistry.Air.GetDefaultState());
+        cache.Clear();
 
         // Copy the block data of the center chunk
-        loadedChunk.CacheMeshingData(cache);
-
-        // Copy the block data of the chunks surrounding the center chunk, but call GetChunk only once for each neighbouring chunk
-        for (int i = 0; i < _precomputedNeighbouringChunkOffsets.Length; i++)
-        {
-            Vector3i neighbourOffset = _precomputedNeighbouringChunkOffsets[i];
-            Vector3i neighbourPos = chunkOriginPos + neighbourOffset;
-            Chunk? neighbourChunk = GetChunkAt(neighbourPos);
-
-            if (neighbourChunk == null)
-                continue;
-
-            NeighbouringChunkPosition position = NeighbouringChunkPositionOrder[i];
-
-            // Copy the slice of block data from the neighbour chunk
-            neighbourChunk.CacheMeshingData(cache, position);
-        }
+        cache.SetCenterChunk(loadedChunk);
     }
 
 
@@ -326,7 +267,7 @@ public class ChunkManager
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
-        Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
+        Vector3i chunkRelativePos = CoordinateConversions.WorldToChunkRelative(position);
         return chunk.GetBlockState(chunkRelativePos);
     }
     
@@ -337,7 +278,7 @@ public class ChunkManager
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
-        Vector3i chunkRelativePos = CoordinateConversions.GetChunkRelativePos(position);
+        Vector3i chunkRelativePos = CoordinateConversions.WorldToChunkRelative(position);
         bool wasSetDirty = chunk.SetBlockState(chunkRelativePos, blockState, out BlockState oldBlockState);
 
         if (!wasSetDirty)
@@ -374,44 +315,12 @@ public class ChunkManager
             column.RemeshAllChunks();
         }
     }
-    
-    
-    private void RemeshNeighbouringChunks(Vector3i chunkPos)
-    {
-        Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
-        
-        foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
-        {
-            Vector2i neighbourPos = columnPos + neighbourOffset;
-            
-            if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
-                continue;
-
-            Chunk? chunk = column.GetChunkAtHeight(chunkPos.Y);
-            chunk?.SetMeshDirty();
-
-            chunk = column.GetChunkAtHeight(chunkPos.Y - 1);
-            chunk?.SetMeshDirty();
-
-            chunk = column.GetChunkAtHeight(chunkPos.Y + 1);
-            chunk?.SetMeshDirty();
-        }
-            
-        if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? centerColumn))
-            return;
-
-        Chunk? sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y + 1);
-        sisterChunk?.SetMeshDirty();
-
-        sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y - 1);
-        sisterChunk?.SetMeshDirty();
-    }
 
 
     private void FindColumnsToUnload(Vector3 playerPos)
     {
         _columnsToUnload.Clear();
-        Vector2i originColumnPos = CoordinateConversions.GetContainingColumnPos(playerPos);
+        Vector2i originColumnPos = CoordinateConversions.WorldToColumn(playerPos);
         foreach (KeyValuePair<Vector2i, ChunkColumn> pair in _existingColumns)
         {
             Vector2i normalizedColumnPos = (pair.Key - originColumnPos) / Constants.CHUNK_SIZE;
@@ -457,7 +366,7 @@ public class ChunkManager
         _columnsToLoad.Clear();
 
         // Get the column position where the loading should start
-        Vector2i originColumnPos = CoordinateConversions.GetContainingColumnPos(playerPos);
+        Vector2i originColumnPos = CoordinateConversions.WorldToColumn(playerPos);
 
         // Load columns in a square around the origin column in a spiral pattern.
         foreach (Vector2i spiralPos in _columnLoadSpiral)
@@ -492,31 +401,6 @@ public class ChunkManager
     }
 
 
-    private void PrecomputeNeighbouringChunkOffsets()
-    {
-        for (int i = 0; i < NeighbouringChunkOffsets.Length; i++)
-        {
-            Vector3i offset = NeighbouringChunkOffsets[i];
-            NeighbouringChunkPosition position = NeighbouringChunkPositionOrder[i];
-            _precomputedNeighbouringChunkOffsets[(int)position] = offset * Constants.CHUNK_SIZE;
-        }
-
-        Logger.Log($"Precomputed chunk offsets for {_precomputedNeighbouringChunkOffsets.Length} neighbouring chunks.");
-    }
-
-
-    private void PrecomputeNeighbouringColumnOffsets()
-    {
-        for (int i = 0; i < NeighbouringColumnOffsets.Length; i++)
-        {
-            Vector2i offset = NeighbouringColumnOffsets[i];
-            _precomputedNeighbouringColumnOffsets[i] = offset * Constants.CHUNK_SIZE;
-        }
-
-        Logger.Log($"Precomputed column offsets for {_precomputedNeighbouringColumnOffsets.Length} neighbouring columns.");
-    }
-
-
     private void PrecomputeColumnLoadSpiral()
     {
         const int size = Constants.CHUNK_COLUMN_LOAD_RADIUS * 2 + 1;
@@ -527,11 +411,14 @@ public class ChunkManager
 
         foreach (Vector2i pos in EnumerateSpiral(size * size - 1))
         {
-            bool inRange = pos.X * pos.X + pos.Y * pos.Y <= Constants.CHUNK_COLUMN_LOAD_RADIUS_SQUARED;
-
-            // Ensure that the position is inside the load radius
-            //if (!inRange)
-            //    continue;
+            if (false)
+            {
+                bool inRange = pos.X * pos.X + pos.Y * pos.Y <= Constants.CHUNK_COLUMN_LOAD_RADIUS_SQUARED;
+                
+                // Ensure that the position is inside the load radius
+                if (!inRange)
+                    continue;
+            }
             _columnLoadSpiral.Add(pos * Constants.CHUNK_SIZE);
         }
 

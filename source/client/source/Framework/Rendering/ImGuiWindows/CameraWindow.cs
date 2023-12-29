@@ -26,7 +26,7 @@ public class CameraWindow : ImGuiWindow
     {
         Vector3 camPos = Camera.RenderingCamera.Position;
         ImGui.Text($"Pos: {camPos:F1}");
-        ImGui.Text($"Chunk Pos: {CoordinateConversions.GetContainingChunkPos(camPos):F0}");
+        ImGui.Text($"Chunk Pos: {CoordinateConversions.WorldToChunk(camPos):F0}");
         ImGui.Text($"PitchDegrees: {Camera.RenderingCamera.PitchDegrees:F1}");
         ImGui.Text($"YawDegrees: {Camera.RenderingCamera.YawDegrees:F1}");
         ImGui.Text($"FovDegrees: {Camera.RenderingCamera.FovDegrees:F1}");

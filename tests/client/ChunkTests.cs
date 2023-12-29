@@ -16,7 +16,7 @@ public class ChunkTests
         chunk.SetBlockState(position, blockState, out _);
 
         // Act
-        BlockState result = chunk.GetBlockState(position.X, position.Y, position.Z);
+        BlockState result = chunk.GetBlockState((position.X, position.Y, position.Z));
 
         // Assert
         Assert.That(result, Is.EqualTo(blockState));

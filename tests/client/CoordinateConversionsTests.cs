@@ -13,7 +13,7 @@ public class CoordinateConversionsTests
         Vector3 position = new(36, 74, 5);
 
         // Act
-        Vector3i result = CoordinateConversions.GetContainingChunkPos(position);
+        Vector3i result = CoordinateConversions.WorldToChunk(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector3i(32, 64, 0)));
@@ -27,7 +27,7 @@ public class CoordinateConversionsTests
         Vector3 position = new(-36, -74, -5);
 
         // Act
-        Vector3i result = CoordinateConversions.GetContainingChunkPos(position);
+        Vector3i result = CoordinateConversions.WorldToChunk(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector3i(-64, -96, -32)));
@@ -41,7 +41,7 @@ public class CoordinateConversionsTests
         Vector3i position = new(36, 74, 5);
 
         // Act
-        Vector3i result = CoordinateConversions.GetContainingChunkPos(position);
+        Vector3i result = CoordinateConversions.WorldToChunk(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector3i(32, 64, 0)));
@@ -55,7 +55,7 @@ public class CoordinateConversionsTests
         Vector3 position = new(36, 74, 5);
 
         // Act
-        Vector2i result = CoordinateConversions.GetContainingColumnPos(position);
+        Vector2i result = CoordinateConversions.WorldToColumn(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector2i(32, 0)));
@@ -69,7 +69,7 @@ public class CoordinateConversionsTests
         Vector3i position = new(36, 74, 5);
 
         // Act
-        Vector2i result = CoordinateConversions.GetContainingColumnPos(position);
+        Vector2i result = CoordinateConversions.WorldToColumn(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector2i(32, 0)));
@@ -83,7 +83,7 @@ public class CoordinateConversionsTests
         Vector3i position = new(36, 74, 5);
 
         // Act
-        Vector3i result = CoordinateConversions.GetChunkRelativePos(position);
+        Vector3i result = CoordinateConversions.WorldToChunkRelative(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector3i(4, 10, 5)));

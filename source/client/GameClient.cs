@@ -296,13 +296,13 @@ public class GameClient : GameWindow
         IntPtr pMessage, // Pointer to message string.
         IntPtr pUserParam)
     {
+        if (severity == DebugSeverity.DebugSeverityNotification)
+            return;
+        
         // In order to access the string pointed to by pMessage, you can use Marshal
         // class to copy its contents to a C# string without unsafe code. You can
         // also use the new function Marshal.PtrToStringUTF8 since .NET Core 1.1.
         string message = Marshal.PtrToStringAnsi(pMessage, length);
-
-        if (severity == DebugSeverity.DebugSeverityNotification)
-            return;
         
         Logger.LogOpenGl($"[{severity} source={source} type={type} id={id}] {message}");
 

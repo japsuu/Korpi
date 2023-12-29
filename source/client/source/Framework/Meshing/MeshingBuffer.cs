@@ -34,15 +34,16 @@ public class MeshingBuffer
     /// <summary>
     /// Adds a block face to the mesh.
     /// </summary>
-    /// <param name="neighbourhood">Array of 27 block states, containing the block neighbourhood.</param>
+    /// <param name="dataCache">Array of 27 block states, containing the block neighbourhood.</param>
     /// <param name="blockPos">Position of the block in the chunk (0-31 on all axis)</param>
     /// <param name="face">Which face we are adding</param>
     /// <param name="textureIndex">Index to the texture of this face (0-4095)</param>
     /// <param name="lightColor">Color of the light hitting this face</param>
     /// <param name="lightLevel">Amount of light that hits this face (0-31)</param>
     /// <param name="skyLightLevel">Amount of skylight hitting this face (0-31)</param>
-    public void AddFace(BlockState[] neighbourhood, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
+    public void AddFace(MeshingDataCache dataCache, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
     {
+        // Just to be clear, I'm not proud of this unmaintainable mess... - Japsu
         Vector3i vertPos1;
         Vector3i vertPos2;
         Vector3i vertPos3;
@@ -60,10 +61,10 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
 
-                ao1 = CalculateAoIndex(neighbourhood[11], neighbourhood[23], neighbourhood[20]);
-                ao2 = CalculateAoIndex(neighbourhood[5], neighbourhood[11], neighbourhood[2]);
-                ao3 = CalculateAoIndex(neighbourhood[17], neighbourhood[5], neighbourhood[8]);
-                ao4 = CalculateAoIndex(neighbourhood[23], neighbourhood[17], neighbourhood[26]);
+                ao1 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y + -1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  0, blockPos.Z +  1),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z +  1));
+                ao2 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y +  0,    blockPos.Z + -1),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z +  0),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z + -1));
+                ao3 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y +  1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  0, blockPos.Z + -1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z + -1));
+                ao4 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y +  0,    blockPos.Z +  1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z +  0),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z +  1));
                 break;
             case BlockFace.YPositive:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
@@ -71,10 +72,10 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
 
-                ao1 = CalculateAoIndex(neighbourhood[17], neighbourhood[25], neighbourhood[26]);
-                ao2 = CalculateAoIndex(neighbourhood[7], neighbourhood[17], neighbourhood[8]);
-                ao3 = CalculateAoIndex(neighbourhood[15], neighbourhood[7], neighbourhood[6]);
-                ao4 = CalculateAoIndex(neighbourhood[25], neighbourhood[15], neighbourhood[24]);
+                ao1 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y +  1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X +  0, blockPos.Y +  1, blockPos.Z +  1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z +  1));
+                ao2 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y +  1,    blockPos.Z + -1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z +  0),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z + -1));
+                ao3 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y +  1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X +  0, blockPos.Y +  1, blockPos.Z + -1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z + -1));
+                ao4 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y +  1,    blockPos.Z +  1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z +  0),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z +  1));
                 break;
             case BlockFace.ZPositive:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
@@ -82,10 +83,10 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
 
-                ao1 = CalculateAoIndex(neighbourhood[19], neighbourhood[21], neighbourhood[18]);
-                ao2 = CalculateAoIndex(neighbourhood[23], neighbourhood[19], neighbourhood[20]);
-                ao3 = CalculateAoIndex(neighbourhood[25], neighbourhood[23], neighbourhood[26]);
-                ao4 = CalculateAoIndex(neighbourhood[21], neighbourhood[25], neighbourhood[24]);
+                ao1 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y + -1,    blockPos.Z +  1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  0, blockPos.Z +  1),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z +  1));
+                ao2 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y +  0,    blockPos.Z +  1),   dataCache.GetData(blockPos.X +  0, blockPos.Y + -1, blockPos.Z +  1),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z +  1));
+                ao3 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y +  1,    blockPos.Z +  1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  0, blockPos.Z +  1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z +  1));
+                ao4 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y +  0,    blockPos.Z +  1),   dataCache.GetData(blockPos.X +  0, blockPos.Y +  1, blockPos.Z +  1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z +  1));
                 break;
             case BlockFace.XNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
@@ -93,10 +94,10 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
 
-                ao1 = CalculateAoIndex(neighbourhood[9], neighbourhood[3], neighbourhood[0]);
-                ao2 = CalculateAoIndex(neighbourhood[21], neighbourhood[9], neighbourhood[18]);
-                ao3 = CalculateAoIndex(neighbourhood[15], neighbourhood[21], neighbourhood[24]);
-                ao4 = CalculateAoIndex(neighbourhood[3], neighbourhood[15], neighbourhood[6]);
+                ao1 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y + -1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  0, blockPos.Z + -1),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z + -1));
+                ao2 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y +  0,    blockPos.Z +  1),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z +  0),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z +  1));
+                ao3 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y +  1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  0, blockPos.Z +  1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z +  1));
+                ao4 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y +  0,    blockPos.Z + -1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z +  0),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z + -1));
                 break;
             case BlockFace.YNegative:
                 vertPos1 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z);
@@ -104,10 +105,10 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z + 1);
                 vertPos4 = new Vector3i(blockPos.X, blockPos.Y, blockPos.Z + 1);
 
-                ao1 = CalculateAoIndex(neighbourhood[1], neighbourhood[9], neighbourhood[0]);
-                ao2 = CalculateAoIndex(neighbourhood[11], neighbourhood[1], neighbourhood[2]);
-                ao3 = CalculateAoIndex(neighbourhood[19], neighbourhood[11], neighbourhood[20]);
-                ao4 = CalculateAoIndex(neighbourhood[9], neighbourhood[19], neighbourhood[18]);
+                ao1 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y + -1,    blockPos.Z + -1),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z +  0),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z + -1));
+                ao2 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y + -1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X +  0, blockPos.Y + -1, blockPos.Z + -1),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z + -1));
+                ao3 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y + -1,    blockPos.Z +  1),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z +  0),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z +  1));
+                ao4 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y + -1,    blockPos.Z +  0),   dataCache.GetData(blockPos.X +  0, blockPos.Y + -1, blockPos.Z +  1),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z +  1));
                 break;
             case BlockFace.ZNegative:
                 vertPos1 = new Vector3i(blockPos.X + 1, blockPos.Y, blockPos.Z);
@@ -115,10 +116,10 @@ public class MeshingBuffer
                 vertPos3 = new Vector3i(blockPos.X, blockPos.Y + 1, blockPos.Z);
                 vertPos4 = new Vector3i(blockPos.X + 1, blockPos.Y + 1, blockPos.Z);
 
-                ao1 = CalculateAoIndex(neighbourhood[1], neighbourhood[5], neighbourhood[2]);
-                ao2 = CalculateAoIndex(neighbourhood[3], neighbourhood[1], neighbourhood[0]);
-                ao3 = CalculateAoIndex(neighbourhood[7], neighbourhood[3], neighbourhood[6]);
-                ao4 = CalculateAoIndex(neighbourhood[5], neighbourhood[7], neighbourhood[8]);
+                ao1 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y + -1,    blockPos.Z + -1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  0, blockPos.Z + -1),   dataCache.GetData(blockPos.X +  1, blockPos.Y + -1, blockPos.Z + -1));
+                ao2 = CalculateAoIndex(dataCache.GetData(blockPos.X + -1,  blockPos.Y +  0,    blockPos.Z + -1),   dataCache.GetData(blockPos.X +  0, blockPos.Y + -1, blockPos.Z + -1),   dataCache.GetData(blockPos.X + -1, blockPos.Y + -1, blockPos.Z + -1));
+                ao3 = CalculateAoIndex(dataCache.GetData(blockPos.X +  0,  blockPos.Y +  1,    blockPos.Z + -1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  0, blockPos.Z + -1),   dataCache.GetData(blockPos.X + -1, blockPos.Y +  1, blockPos.Z + -1));
+                ao4 = CalculateAoIndex(dataCache.GetData(blockPos.X +  1,  blockPos.Y +  0,    blockPos.Z + -1),   dataCache.GetData(blockPos.X +  0, blockPos.Y +  1, blockPos.Z + -1),   dataCache.GetData(blockPos.X +  1, blockPos.Y +  1, blockPos.Z + -1));
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(face), face, "What face is THAT?!");
