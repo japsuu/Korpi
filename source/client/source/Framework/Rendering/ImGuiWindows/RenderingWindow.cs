@@ -40,37 +40,35 @@ public class RenderingWindow : ImGuiWindow
             else
                 DebugChunkDrawer.Dispose();
         }
-        
         ImGui.Checkbox("Draw chunk mesh state", ref ClientConfig.DebugModeConfig.RenderChunkMeshState);
 
         ImGui.Separator();
-        
         ImGui.Checkbox("Enable Wireframe", ref ClientConfig.DebugModeConfig.RenderWireframe);
-
         if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.DebugModeConfig.EnableAmbientOcclusion))
-        {
-            World.CurrentWorld.ChunkManager.ReloadAllChunks();
-        }
-        
+            World.CurrentWorld.ChunkManager.RemeshAllColumns();
         ImGui.Checkbox("Enable skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
 
         ImGui.Separator();
-        
         ImGui.Checkbox("Draw raycast path", ref ClientConfig.DebugModeConfig.RenderRaycastPath);
         ImGui.Checkbox("Draw raycast hit", ref ClientConfig.DebugModeConfig.RenderRaycastHit);
         ImGui.Checkbox("Draw raycast hit block", ref ClientConfig.DebugModeConfig.RenderRaycastHitBlock);
 
         ImGui.Separator();
-        
         uint loadedChunks = (uint)RenderingStats.LoadedColumnCount * Constants.CHUNK_COLUMN_HEIGHT;
         ImGui.Text($"Loaded Blocks = {(loadedChunks * Constants.CHUNK_SIZE_CUBED).ToString("#,0", _numberFormat)}");
         ImGui.Text($"Loaded Chunks = {loadedChunks.ToString("#,0", _numberFormat)}");
         ImGui.Text($"Loaded Columns = {RenderingStats.LoadedColumnCount}");
-        ImGui.Text($"Cached chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
+
+        ImGui.Separator();
+        ImGui.Text("Chunk Generation");
         ImGui.Text($"Chunks in generation queue = {RenderingStats.ChunksInGenerationQueue}");
+        ImGui.Text($"Average chunk generation time = {RenderingStats.AverageChunkGenerationTime:F1}ms");
+
+        ImGui.Separator();
+        ImGui.Text("Chunk Meshing");
         ImGui.Text($"Chunks in meshing queue = {RenderingStats.ChunksInMeshingQueue}");
-        ImGui.Text($"Meshing queue processing time = {RenderingStats.MeshingQueueProcessingTime:F1}ms");
         ImGui.Text($"Average chunk meshing time = {RenderingStats.AverageChunkMeshingTime:F1}ms");
+        ImGui.Text($"Active chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
     }
 }
 #endif

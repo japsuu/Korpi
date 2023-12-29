@@ -4,11 +4,34 @@ namespace BlockEngine.Client.Framework.Meshing;
 
 public enum BlockFace
 {
+    /// <summary>
+    /// North.
+    /// </summary>
     XPositive = 0,
+    
+    /// <summary>
+    /// Up.
+    /// </summary>
     YPositive = 1,
+    
+    /// <summary>
+    /// East.
+    /// </summary>
     ZPositive = 2,
+    
+    /// <summary>
+    /// South.
+    /// </summary>
     XNegative = 3,
+    
+    /// <summary>
+    /// Down.
+    /// </summary>
     YNegative = 4,
+    
+    /// <summary>
+    /// West.
+    /// </summary>
     ZNegative = 5
 }
 

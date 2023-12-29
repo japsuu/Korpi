@@ -14,7 +14,7 @@ public class DebugModeConfig
     public bool RenderSkybox = true;
     public bool RenderRaycastPath;
     public bool RenderRaycastHit;
-    public bool RenderRaycastHitBlock;
+    public bool RenderRaycastHitBlock = true;
     public bool EnableAmbientOcclusion = true;
 
 

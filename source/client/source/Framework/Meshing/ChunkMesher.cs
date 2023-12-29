@@ -1,6 +1,6 @@
 ﻿using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Debugging;
-using BlockEngine.Client.Framework.WorldGeneration;
+using BlockEngine.Client.Framework.Threading;
 
 namespace BlockEngine.Client.Framework.Meshing;
 
@@ -14,11 +14,8 @@ public class ChunkMesher : ChunkProcessorThreadManager<ChunkMesherThread, ChunkM
     public override void ProcessQueues()
     {
         RenderingStats.ChunksInMeshingQueue = (ulong)InputQueue.Count;
-        RenderingStats.StartProcessMeshingQueues();
         
         base.ProcessQueues();
-        
-        RenderingStats.StopProcessMeshingQueues();
     }
 
 

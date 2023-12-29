@@ -10,7 +10,7 @@ public static class ChunkRendererStorage
     private static readonly Dictionary<Vector3i, ChunkRenderer> GeneratedRenderers = new();
 
 
-    public static int GeneratedRendererCount { get; private set; }
+    public static int GeneratedRendererCount => GeneratedRenderers.Count;
     
     
     public static void AddOrUpdateChunkMesh(ChunkMesh mesh)
@@ -33,7 +33,6 @@ public static class ChunkRendererStorage
         if (renderer is not null)
         {
             renderer.Dispose();
-            GeneratedRendererCount--;
         }
     }
     
