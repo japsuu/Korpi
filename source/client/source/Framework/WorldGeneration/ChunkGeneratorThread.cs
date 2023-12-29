@@ -31,39 +31,53 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
         if (chunk.Bottom > TERRAIN_HEIGHT_MAX)  // Skip chunks above the terrain.
             return chunk.Position;
         
+        bool isBelowSurface = chunk.Top < TERRAIN_HEIGHT_MIN;
+
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+        for (int x = 0; x < Constants.CHUNK_SIZE; x++)
         {
+            if (isBelowSurface)
+            {
+                // Fill the chunk with stone.
+                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                    chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(1).GetDefaultState(), out _);
+                continue;
+            }
+
+            int height = GetHeightmapAtPosition(new Vector2i(x + chunk.Position.X, z + chunk.Position.Z));
+
             for (int y = 0; y < Constants.CHUNK_SIZE; y++)
             {
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                int worldY = chunk.Position.Y + y;
+                ushort blockId = 0; // Default to air.
+
+                if (worldY == height)
                 {
-                    ushort id = GetBlockIdAtPosition(new Vector3i(x + chunk.Position.X, y + chunk.Position.Y, z + chunk.Position.Z));
-                    
-                    chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(id).GetDefaultState(), out _);
+                    blockId = 2;
                 }
+                else if (worldY < height)
+                {
+                     blockId = 1;
+                }
+                chunk.SetBlockState(new Vector3i(x, y, z), BlockRegistry.GetBlock(blockId).GetDefaultState(), out _);
             }
         }
+
         RenderingStats.StopChunkGeneration();
         return chunk.Position;
     }
     
     
-    private ushort GetBlockIdAtPosition(Vector3i blockPosition)
+    private int GetHeightmapAtPosition(Vector2i blockPosition)
     {
-        return blockPosition.Y > SEA_LEVEL ? (ushort)0 : (ushort)1;
-
-        float noise = _noise.GetNoise(blockPosition.X, blockPosition.Z);
+        // Obtain a noise value between 0 and 1.
+        float noise = _noise.GetNoise(blockPosition.X, blockPosition.Y);
         float height = noise * 0.5f + 0.5f;
-        
         height = Math.Clamp(height, 0, 1);
+        
+        // Scale the noise value to the terrain height range.
         height = MathUtils.Lerp(TERRAIN_HEIGHT_MIN, TERRAIN_HEIGHT_MAX, height);
         
-        if (blockPosition.Y > height)
-            return 0;
-        
-        if (blockPosition.Y > height - 2)
-            return 2;
-        
-        return 1;
+        return (int)height;
     }
 }

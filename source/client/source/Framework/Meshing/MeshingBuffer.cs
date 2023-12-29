@@ -162,14 +162,14 @@ public class MeshingBuffer
         int positionIndex = (vertexPos.X << 12) | (vertexPos.Y << 6) | vertexPos.Z;
         int lightColorValue = lightColor.Value;
         
-        Debug.Assert(positionIndex is >= 0 and <= 133152);
-        Debug.Assert(lightColorValue is >= 0 and <= 511);
-        Debug.Assert(lightLevel is >= 0 and <= 31);
-        Debug.Assert(skyLightLevel is >= 0 and <= 31);
-        Debug.Assert(normal is >= 0 and <= 5);
-        Debug.Assert(textureUvIndex is >= 0 and <= 3);
-        Debug.Assert(aoIndex is >= 0 and <= 3);
-        Debug.Assert(textureIndex is >= 0 and <= 4095);
+        Debug.Assert(positionIndex is >= 0 and <= 133152, $"Position index {positionIndex} ({vertexPos}) != 0-133152");
+        Debug.Assert(lightColorValue is >= 0 and <= 511, $"Light color value {lightColorValue} != 0-511");
+        Debug.Assert(lightLevel is >= 0 and <= 31, $"Light level {lightLevel} != 0-31");
+        Debug.Assert(skyLightLevel is >= 0 and <= 31, $"Skylight level {skyLightLevel} != 0-31");
+        Debug.Assert(normal is >= 0 and <= 5, $"Normal {normal} != 0-5");
+        Debug.Assert(textureUvIndex is >= 0 and <= 3, $"Texture UV index {textureUvIndex} != 0-3");
+        Debug.Assert(aoIndex is >= 0 and <= 3, $"AO index {aoIndex} != 0-3");
+        Debug.Assert(textureIndex is >= 0 and <= 4095, $"Texture index {textureIndex} != 0-4095");
 
         // NOTE: According to the OpenGL spec, vertex data should be 4-byte aligned. This means that since we cannot fit our vertex in 4 bytes, we use the full 8 bytes.
         // Compress all data to two 32-bit uints...
