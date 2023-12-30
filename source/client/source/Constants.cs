@@ -34,7 +34,7 @@ public static class Constants
     public const int CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED = CHUNK_COLUMN_UNLOAD_RADIUS * CHUNK_COLUMN_UNLOAD_RADIUS;
 
     // Time
-    public const int REAL_SECONDS_PER_GAME_DAY = 1200;
+    public const int REAL_SECONDS_PER_GAME_DAY = 1200/40;
     public const int DAYS_PER_MONTH = 30;
     public const int MONTHS_PER_YEAR = 12;
     public const int STARTING_YEAR = 700;
