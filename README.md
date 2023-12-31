@@ -16,6 +16,7 @@ This project is still searching for its own identity :)
 - [Documentation](#documentation)
 - [Input](#input)
 - [Voxel engine vs BlockEngine](#voxel-engine-vs-block-engine)
+- [Lessons learned](#lessons-learned)
 - [Credits](#credits)
 - [Contributing](CONTRIBUTING.md)
 
@@ -40,7 +41,7 @@ A non-exhaustive list of currently implemented features. Updated every once in a
   - Ambient occlusion
   - Block face shading
   - ImGui integration
-  - Animated skybox
+  - Dynamic skybox
 - [Data management](#data-management)
   - [Palette-based block compression](#palette-compression)
   - [World Chunking](#world-chunking)
@@ -124,6 +125,17 @@ The current solution supports also collision face detection.
 Truth be told, this engine is not a "true" voxel engine.
 This engine uses [voxel data representation](https://en.wikipedia.org/wiki/Voxel) but does not use voxel volume rendering techniques ([like volume marching](https://en.wikipedia.org/wiki/Volume_ray_casting)), but instead opts for traditional polygonal rendering.
 When referring to voxels, I mean blocks ;)
+
+## Lessons learned
+
+- I can do it! :)
+- Don't be afraid to try out new things (looking at you, shader development)
+- Trying to keep hundreds of millions of voxels in memory at the same time is troublesome
+- Vertex compression is fun.
+- Writing unit tests is usually worth the extra effort
+- Multithreading isn't as hard as people claim it to be
+- Premature optimization is the root of all evil. Rather ship an unoptimized game than no game at all.
+- Engine development is really fun!
 
 ## Credits
 
