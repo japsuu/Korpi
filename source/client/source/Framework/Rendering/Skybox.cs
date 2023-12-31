@@ -8,8 +8,6 @@ namespace BlockEngine.Client.Framework.Rendering;
 
 public class Skybox : IDisposable
 {
-    private const TextureUnit SKYBOX_TEXTURE_UNIT = TextureUnit.Texture1;
-    
     private readonly float[] _skyboxVertices = {
         // Z- face
         -1.0f,  1.0f, -1.0f,
@@ -60,14 +58,16 @@ public class Skybox : IDisposable
         1.0f, -1.0f,  1.0f
     };
     
-    private readonly CubemapTexture _skyboxTexture;
+    private readonly Sun _sun;
+    private readonly CubemapTexture _daySkyboxTexture;
+    private readonly CubemapTexture _nightSkyboxTexture;
     private readonly int _skyboxVAO;
-    private readonly bool _enableRotation;
+    private readonly bool _enableStarsRotation;
 
 
-    public Skybox(bool enableRotation)
+    public Skybox(bool enableStarsRotation)
     {
-        _enableRotation = enableRotation;
+        _enableStarsRotation = enableStarsRotation;
         
         // Generate the VAO and VBO.
         _skyboxVAO = GL.GenVertexArray();
@@ -78,18 +78,36 @@ public class Skybox : IDisposable
         GL.EnableVertexAttribArray(0);
         GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
         
-        // Load the skybox texture.
-        _skyboxTexture = CubemapTexture.LoadFromFile(new[]
+        // Load the skybox textures.
+        _daySkyboxTexture = CubemapTexture.LoadFromFile(new[]
         {
-            IoUtils.GetSkyboxTexturePath("x_neg.png"),
-            IoUtils.GetSkyboxTexturePath("x_pos.png"),
-            IoUtils.GetSkyboxTexturePath("y_neg.png"),
-            IoUtils.GetSkyboxTexturePath("y_pos.png"),
-            IoUtils.GetSkyboxTexturePath("z_pos.png"),
-            IoUtils.GetSkyboxTexturePath("z_neg.png"),
-        }, "Skybox");
+            IoUtils.GetSkyboxTexturePath("day_x_neg.png"),
+            IoUtils.GetSkyboxTexturePath("day_x_pos.png"),
+            IoUtils.GetSkyboxTexturePath("day_y_neg.png"),
+            IoUtils.GetSkyboxTexturePath("day_y_pos.png"),
+            IoUtils.GetSkyboxTexturePath("day_z_neg.png"),
+            IoUtils.GetSkyboxTexturePath("day_z_pos.png"),
+        }, "Skybox Day");
         
-        _skyboxTexture.BindStatic(SKYBOX_TEXTURE_UNIT);
+        // Load the skybox textures.
+        _nightSkyboxTexture = CubemapTexture.LoadFromFile(new[]
+        {
+            IoUtils.GetSkyboxTexturePath("night_x_neg.png"),
+            IoUtils.GetSkyboxTexturePath("night_x_pos.png"),
+            IoUtils.GetSkyboxTexturePath("night_y_neg.png"),
+            IoUtils.GetSkyboxTexturePath("night_y_pos.png"),
+            IoUtils.GetSkyboxTexturePath("night_z_neg.png"),
+            IoUtils.GetSkyboxTexturePath("night_z_pos.png"),
+        }, "Skybox Night");
+        
+        _daySkyboxTexture.BindStatic(TextureUnit.Texture1);
+        _nightSkyboxTexture.BindStatic(TextureUnit.Texture2);
+        
+        ShaderManager.SkyboxShader.Use();
+        ShaderManager.SkyboxShader.SetInt("skyboxDayTexture", 1);
+        ShaderManager.SkyboxShader.SetInt("skyboxNightTexture", 2);
+        
+        _sun = new Sun(true);
     }
 
 
@@ -97,23 +115,27 @@ public class Skybox : IDisposable
     {
         // Update the skybox view matrix.
         Matrix4 skyboxViewMatrix = new(new Matrix3(ShaderManager.ViewMatrix)); // Remove translation from the view matrix
-        if (_enableRotation)
+        Matrix4 modelMatrix = Matrix4.Identity;
+        if (_enableStarsRotation)
         {
-            Matrix4 modelMatrix = Matrix4.Identity *
-                                  Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * Time.TotalTime)) *
-                                  Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * Time.TotalTime));
+            modelMatrix *= Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * Time.TotalTime)) *
+                           Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * Time.TotalTime));
             skyboxViewMatrix = modelMatrix * skyboxViewMatrix;
         }
-        ShaderManager.UpdateSkyboxViewMatrix(skyboxViewMatrix);
+        ShaderManager.SkyboxShader.Use();
+        ShaderManager.SkyboxShader.SetMatrix4("model", modelMatrix);
+        ShaderManager.SkyboxShader.SetMatrix4("view", skyboxViewMatrix);
+        ShaderManager.SkyboxShader.SetVector3("sunDirection", GameTime.SunDirection);
+        ShaderManager.SkyboxShader.SetFloat("skyboxLerpProgress", GameTime.SkyboxLerpProgress);
         
         // Draw the skybox.
         GL.DepthFunc(DepthFunction.Lequal);  // Change depth function so depth test passes when values are equal to depth buffer's content
         
-        ShaderManager.SkyboxShader.Use();
-        
         GL.BindVertexArray(_skyboxVAO);
         GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
         GL.BindVertexArray(0);
+        
+        _sun.Render();
         
         GL.DepthFunc(DepthFunction.Less); // set depth function back to default
     }
@@ -121,8 +143,10 @@ public class Skybox : IDisposable
 
     private void ReleaseUnmanagedResources()
     {
-        _skyboxTexture.Dispose();
+        _daySkyboxTexture.Dispose();
+        _nightSkyboxTexture.Dispose();
         GL.DeleteVertexArray(_skyboxVAO);
+        _sun.Dispose();
     }
 
 

@@ -34,16 +34,16 @@ public static class Constants
     public const int CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED = CHUNK_COLUMN_UNLOAD_RADIUS * CHUNK_COLUMN_UNLOAD_RADIUS;
 
     // Time
-    public const int REAL_SECONDS_PER_GAME_DAY = 1200;
+    public const int REAL_SECONDS_PER_GAME_DAY = 1200/40;
     public const int DAYS_PER_MONTH = 30;
     public const int MONTHS_PER_YEAR = 12;
     public const int STARTING_YEAR = 700;
     public const int STARTING_MONTH = 5;
     public const int STARTING_DAY = 1;
     public const int STARTING_HOUR = 12;
-    public const int SUNRISE_START_HOUR = 6;
-    public const int SUNRISE_END_HOUR = 8;
-    public const int SUNSET_START_HOUR = 18;
+    public const int SUNRISE_START_HOUR = 4;
+    public const int SUNRISE_END_HOUR = 7;
+    public const int SUNSET_START_HOUR = 17;
     public const int SUNSET_END_HOUR = 20;
     
     

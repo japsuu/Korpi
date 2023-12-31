@@ -44,7 +44,7 @@ public class Crosshair
         GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
         
         _shader.Use();
-        _crosshairTexture.BindStatic(TextureUnit.Texture2);
+        _crosshairTexture.BindStatic(TextureUnit.Texture3);
         
         GameClient.ClientUnload += OnClientUnload;
     }

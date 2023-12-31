@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.Utils;
+using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Framework;
 
@@ -8,8 +9,10 @@ public static class GameTime
     public static event Action? MonthPassed;
     public static event Action? YearPassed;
     
-    public static event Action? SunriseStarting;
-    public static event Action? SunsetStarting;
+    private static float sunriseStartProgress;
+    private static float sunriseEndProgress;
+    private static float sunsetStartProgress;
+    private static float sunsetEndProgress;
     
     public static int CurrentYear { get; private set; }
     public static int CurrentMonth { get; private set; }
@@ -18,10 +21,21 @@ public static class GameTime
     public static int CurrentMinute { get; private set; }
     public static int CurrentSecond { get; private set; }
     
+    /// <summary>
+    /// Progress of the current day, from 0.0 to 1.0.
+    /// 0.0 is midnight, 0.5 is noon, and 1.0 is midnight again.
+    /// </summary>
     public static float DayProgress { get; private set; }
     
-    public static string GetFormattedTime() => $"{CurrentHour:00}:{CurrentMinute:00}:{CurrentSecond:00}";
+    /// <summary>
+    /// Progress of the lerp between the day- and night skyboxes, from 0.0 to 1.0.
+    /// 0.0 is the night skybox, 1.0 is the day skybox, and anything in between is a lerp.
+    /// </summary>
+    public static float SkyboxLerpProgress { get; private set; }
     
+    public static Vector3 SunDirection { get; private set; }
+    
+    public static string GetFormattedTime() => $"{CurrentHour:00}:{CurrentMinute:00}:{CurrentSecond:00}";
     public static string GetFormattedDate() => $"{CurrentDay:00}/{CurrentMonth:00}/{CurrentYear:0000}";
     
     
@@ -34,6 +48,11 @@ public static class GameTime
         CurrentMinute = 0;
         CurrentSecond = 0;
         DayProgress = CurrentHour / 24.0f;
+        
+        sunriseStartProgress = Constants.SUNRISE_START_HOUR / 24.0f;
+        sunriseEndProgress = Constants.SUNRISE_END_HOUR / 24.0f;
+        sunsetStartProgress = Constants.SUNSET_START_HOUR / 24.0f;
+        sunsetEndProgress = Constants.SUNSET_END_HOUR / 24.0f;
     }
 
 
@@ -54,17 +73,35 @@ public static class GameTime
         CurrentHour = (int)Math.Floor(totalSeconds / 3600);
         CurrentMinute = (int)Math.Floor(totalSeconds % 3600 / 60);
         CurrentSecond = (int)Math.Floor(totalSeconds % 60);
-
-        // Check if sunrise or sunset is starting.
-        switch (CurrentHour)
+        
+        
+        // Update the day-night lerp progress.
+        if (DayProgress >= sunriseStartProgress && DayProgress < sunriseEndProgress)
         {
-            case Constants.SUNRISE_START_HOUR:
-                SunriseStarting?.Invoke();
-                break;
-            case Constants.SUNSET_START_HOUR:
-                SunsetStarting?.Invoke();
-                break;
+            // We're in the sunrise period.
+            float sunriseProgress = (DayProgress - sunriseStartProgress) / (sunriseEndProgress - sunriseStartProgress);
+            SkyboxLerpProgress = sunriseProgress;
         }
+        else if (DayProgress >= sunsetStartProgress && DayProgress < sunsetEndProgress)
+        {
+            // We're in the sunset period.
+            float sunsetProgress = (DayProgress - sunsetStartProgress) / (sunsetEndProgress - sunsetStartProgress);
+            SkyboxLerpProgress = 1.0f - sunsetProgress;
+        }
+        else if (DayProgress >= sunsetEndProgress || DayProgress < sunriseStartProgress)
+        {
+            // It's nighttime.
+            SkyboxLerpProgress = 0.0f;
+        }
+        else
+        {
+            // It's daytime.
+            SkyboxLerpProgress = 1.0f;
+        }
+        
+        // Update the sun direction.
+        float sunAngle = MathHelper.DegreesToRadians(DayProgress * 360.0f - 90);
+        SunDirection = new Vector3((float)Math.Cos(sunAngle), (float)Math.Sin(sunAngle), 0.0f);
     }
 
     

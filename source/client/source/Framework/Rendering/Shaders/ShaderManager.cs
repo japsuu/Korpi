@@ -9,6 +9,7 @@ public class ShaderManager : IDisposable
     public static Shader DebugShader { get; private set; } = null!;
     public static Shader ChunkShader { get; private set; } = null!;
     public static Shader SkyboxShader { get; private set; } = null!;
+    public static Shader SunShader { get; private set; } = null!;
     
     public static Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
     public static Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
@@ -27,6 +28,9 @@ public class ShaderManager : IDisposable
         
         SkyboxShader = new Shader(IoUtils.GetShaderPath("shader_skybox.vert"), IoUtils.GetShaderPath("shader_skybox.frag"));
         SkyboxShader.Use();
+        
+        SunShader = new Shader(IoUtils.GetShaderPath("shader_sun.vert"), IoUtils.GetShaderPath("shader_sun.frag"));
+        SunShader.Use();
     }
     
     
@@ -45,6 +49,9 @@ public class ShaderManager : IDisposable
         
         SkyboxShader.Use();
         SkyboxShader.SetMatrix4("projection", projectionMatrix);
+        
+        SunShader.Use();
+        SunShader.SetMatrix4("projection", projectionMatrix);
     }
     
     
@@ -60,13 +67,6 @@ public class ShaderManager : IDisposable
         
         ChunkShader.Use();
         ChunkShader.SetMatrix4("view", viewMatrix);
-    }
-    
-    
-    public static void UpdateSkyboxViewMatrix(Matrix4 skyboxViewMatrix)
-    {
-        SkyboxShader.Use();
-        SkyboxShader.SetMatrix4("view", skyboxViewMatrix);
     }
     
     
@@ -98,6 +98,7 @@ public class ShaderManager : IDisposable
         DebugShader.Dispose();
         ChunkShader.Dispose();
         SkyboxShader.Dispose();
+        SunShader.Dispose();
         
         GC.SuppressFinalize(this);
     }
