@@ -41,9 +41,9 @@ public static class Constants
     public const int STARTING_MONTH = 5;
     public const int STARTING_DAY = 1;
     public const int STARTING_HOUR = 12;
-    public const int SUNRISE_START_HOUR = 6;
-    public const int SUNRISE_END_HOUR = 8;
-    public const int SUNSET_START_HOUR = 18;
+    public const int SUNRISE_START_HOUR = 4;
+    public const int SUNRISE_END_HOUR = 7;
+    public const int SUNSET_START_HOUR = 17;
     public const int SUNSET_END_HOUR = 20;
     
     

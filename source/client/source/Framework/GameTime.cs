@@ -102,7 +102,6 @@ public static class GameTime
         // Update the sun direction.
         float sunAngle = MathHelper.DegreesToRadians(DayProgress * 360.0f - 90);
         SunDirection = new Vector3((float)Math.Cos(sunAngle), (float)Math.Sin(sunAngle), 0.0f);
-        Logger.Debug($"Sun direction: {SunDirection}");
     }
 
     

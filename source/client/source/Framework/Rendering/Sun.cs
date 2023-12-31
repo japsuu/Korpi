@@ -100,12 +100,12 @@ public class Sun : SkyboxFeature, IDisposable
     {
         ShaderManager.SunShader.Use();
 
-        Vector3 position = GameTime.SunDirection;
+        Vector3 position = GameTime.SunDirection * 800;
         
         Matrix4 modelMatrix = Matrix4.Identity;
         modelMatrix *= Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(1f * Time.TotalTime));
         modelMatrix *= Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(0.01f * Time.TotalTime));
-        modelMatrix *= Matrix4.CreateScale(0.1f);
+        modelMatrix *= Matrix4.CreateScale(10f);
         modelMatrix *= Matrix4.CreateTranslation(position.X, position.Y, position.Z);
         
         Matrix4 skyboxViewMatrix = new(new Matrix3(ShaderManager.ViewMatrix)); // Remove translation from the view matrix
