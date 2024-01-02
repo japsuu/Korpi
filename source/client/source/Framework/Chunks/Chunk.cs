@@ -163,8 +163,6 @@ public class Chunk
         else
         {
             OnReady();
-            if (Position == new Vector3i(0, 256, 0))
-                Logger.Debug($"Chunk at {Position} has no rendered blocks, skipping meshing.");
         }
     }
     
@@ -172,8 +170,6 @@ public class Chunk
     public void OnMeshed()
     {
         _meshState = ChunkMeshState.READY;
-        if (Position == new Vector3i(0, 256, 0))
-            Logger.Debug($"Chunk at {Position} has been meshed.");
         
         OnReady();
     }
