@@ -1,4 +1,5 @@
-﻿using BlockEngine.Client.Framework.Configuration;
+﻿using BlockEngine.Client.Configuration;
+using BlockEngine.Client.Window;
 
 namespace BlockEngine.Client
 {

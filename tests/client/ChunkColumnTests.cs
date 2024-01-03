@@ -1,7 +1,6 @@
 ﻿using BlockEngine;
 using BlockEngine.Client;
-using BlockEngine.Client.Framework.Blocks;
-using BlockEngine.Client.Framework.Chunks;
+using BlockEngine.Client.World.Chunks;
 using OpenTK.Mathematics;
 
 namespace ClientTests;

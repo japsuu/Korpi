@@ -1,4 +1,4 @@
-﻿using BlockEngine.Client.Framework.Bitpacking;
+﻿using BlockEngine.Client.World.Chunks.BlockStorage;
 
 namespace ClientTests.BlockStorageTests;
 

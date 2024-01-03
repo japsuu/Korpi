@@ -1,6 +1,6 @@
-﻿using BlockEngine.Client.Framework.Bitpacking;
-using BlockEngine.Client.Framework.Blocks;
-using BlockEngine.Client.Framework.Registries;
+﻿using BlockEngine.Client.Registries;
+using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Chunks.BlockStorage;
 
 namespace ClientTests.BlockStorageTests;
 
