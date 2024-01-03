@@ -256,7 +256,7 @@ public class MeshingBuffer
         // 8 bits leftover.
 
         int positionIndex = (vertexPosX << 12) | (vertexPosY << 6) | vertexPosZ;
-        int lightColorValue = lightColor.Value;
+        int lightColorValue = lightColor.Packed;
 
         Debug.Assert(positionIndex is >= 0 and <= 133152, $"Position index {positionIndex} ({vertexPosX}, {vertexPosY}, {vertexPosZ}) != 0-133152");
         Debug.Assert(lightColorValue is >= 0 and <= 511, $"Light color value {lightColorValue} != 0-511");
