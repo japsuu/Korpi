@@ -116,10 +116,11 @@ The current solution supports also collision face detection.
 ## Input
 
 - Movement: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
-- Up: <kbd>Space</kbd>
-- Down: <kbd>LShift</kbd>
+  - Up: <kbd>Space</kbd>
+  - Down: <kbd>LShift</kbd>
 - Release cursor: <kbd>Esc</kbd>
-- Screenshot: <kbd>F2</kbd>
+- Toggle freecam: <kbd>F5</kbd>
+- Capture screenshot: <kbd>F2</kbd>
 
 ## Voxel engine vs block engine
 Truth be told, this engine is not a "true" voxel engine.
@@ -140,3 +141,5 @@ When referring to voxels, I mean blocks ;)
 ## Credits
 
 - xMrVizzy ([Faithful 32x](https://www.curseforge.com/minecraft/texture-packs/faithful-32x) texture pack, used as programmer-art)
+- Westbeam ([Space Skybox](https://opengameart.org/content/space-skybox-0) cc0, used as programmer-art for the night skybox)
+- Spiney ([Cloudy Skyboxes](https://opengameart.org/content/cloudy-skyboxes) cc-by 3.0, used as programmer-art for the day skybox)
