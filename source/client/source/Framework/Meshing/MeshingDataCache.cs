@@ -14,9 +14,6 @@ public class MeshingDataCache
     private Chunk _centerChunk = null!;
 
 
-    public int HighestBlockY => _centerChunk.HighestRenderedBlockY;
-
-
     public void SetCenterChunk(Chunk chunk)
     {
         _centerChunk = chunk;
