@@ -1,4 +1,5 @@
-﻿using BlockEngine.Client.Framework.Blocks;
+﻿using System.Diagnostics;
+using BlockEngine.Client.Framework.Blocks;
 using BlockEngine.Client.Framework.Chunks;
 using BlockEngine.Client.Framework.Debugging;
 using BlockEngine.Client.Framework.Registries;
@@ -55,8 +56,8 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
 
     protected override ChunkMesh ProcessChunk(Chunk chunk)
     {
-        if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIZE, 0))
-        //if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
+        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIZE, 0))
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
             MeasureProfiler.StartCollectingData();
         RenderingStats.StartChunkMeshing();
         World.CurrentWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
@@ -66,7 +67,7 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
         // Mesh the chunk based on the data cache.
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         {
-            for (int y = 0; y < _meshingDataCache.HighestBlockY + 1; y++)
+            for (int y = 0; y < Constants.CHUNK_SIZE; y++)
             {
                 for (int x = 0; x < Constants.CHUNK_SIZE; x++)
                 {
@@ -84,8 +85,8 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
         
         ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
         
-        if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIZE, 0))
-        //if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
+        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIZE, 0))
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
             MeasureProfiler.SaveData();
 
         return mesh;
@@ -94,6 +95,9 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
 
     private void AddFaces(BlockState blockState, int x, int y, int z)
     {
+        Debug.Assert(x >= 0 && x < Constants.CHUNK_SIZE, "0 <= x < CHUNK_SIZE");
+        Debug.Assert(y >= 0 && y < Constants.CHUNK_SIZE, "0 <= y < CHUNK_SIZE");
+        Debug.Assert(z >= 0 && z < Constants.CHUNK_SIZE, "0 <= z < CHUNK_SIZE");
         // Iterate over all 6 faces of the block
         for (int face = 0; face < 6; face++)
         {

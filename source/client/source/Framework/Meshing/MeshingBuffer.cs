@@ -25,6 +25,7 @@ public class MeshingBuffer
     /// Array of bytes containing the vertex data. 2 uints (64 bits) per vertex.
     /// </summary>
     private readonly uint[] _vertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK]; // ~3.1 MB
+
     private readonly uint[] _indexData = new uint[MAX_INDICES_PER_CHUNK]; // ~2.4 MB
 
     public int AddedVertexDataCount { get; private set; }
@@ -45,22 +46,31 @@ public class MeshingBuffer
     public void AddFace(MeshingDataCache dataCache, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
     {
         // NOTE: Just to be clear, I'm not proud of this unmaintainable mess... - Japsu
+        
+        // Vertex positions of the face.
         Vector3i vertexPos0;
         Vector3i vertexPos1;
         Vector3i vertexPos2;
         Vector3i vertexPos3;
-        BlockState left0;
-        BlockState right0;
-        BlockState middle0;
-        BlockState left1;
-        BlockState right1;
-        BlockState middle1;
-        BlockState left2;
-        BlockState right2;
-        BlockState middle2;
-        BlockState left3;
-        BlockState right3;
-        BlockState middle3;
+        
+        // Ambient occlusion neighbours for each vertex. Will be removed later, as when lighting is implemented we get free AO.
+        // Vertex 0
+        Vector3i aoLeft0;
+        Vector3i aoRight0;
+        Vector3i aoMiddle0;
+        // Vertex 1
+        Vector3i aoLeft1;
+        Vector3i aoRight1;
+        Vector3i aoMiddle1;
+        // Vertex 2
+        Vector3i aoLeft2;
+        Vector3i aoRight2;
+        Vector3i aoMiddle2;
+        // Vertex 3
+        Vector3i aoLeft3;
+        Vector3i aoRight3;
+        Vector3i aoMiddle3;
+        
         int normal = (int)face;
         int blockX = blockPos.X;
         int blockY = blockPos.Y;
@@ -70,7 +80,7 @@ public class MeshingBuffer
         int zPosNeighbour = blockZ + 1;
         int xNegNeighbour = blockX + -1;
         int yNegNeighbour = blockY + -1;
-        int zNegNeighbour = blockZ + -1;    //TODO: Optimize by merging similar checks and only passing positions to the ao check method.
+        int zNegNeighbour = blockZ + -1;
         switch (face)
         {
             case BlockFace.XPositive:
@@ -79,18 +89,18 @@ public class MeshingBuffer
                 vertexPos2 = new Vector3i(xPosNeighbour, yPosNeighbour, blockZ);
                 vertexPos3 = new Vector3i(xPosNeighbour, yPosNeighbour, zPosNeighbour);
 
-                left0 = dataCache.GetData(xPosNeighbour, yNegNeighbour, blockZ);
-                right0 = dataCache.GetData(xPosNeighbour, blockY, zPosNeighbour);
-                middle0 = dataCache.GetData(xPosNeighbour, yNegNeighbour, zPosNeighbour);
-                left1 = dataCache.GetData(xPosNeighbour, blockY, zNegNeighbour);
-                right1 = dataCache.GetData(xPosNeighbour, yNegNeighbour, blockZ);
-                middle1 = dataCache.GetData(xPosNeighbour, yNegNeighbour, zNegNeighbour);
-                left2 = dataCache.GetData(xPosNeighbour, yPosNeighbour, blockZ);
-                right2 = dataCache.GetData(xPosNeighbour, blockY, zNegNeighbour);
-                middle2 = dataCache.GetData(xPosNeighbour, yPosNeighbour, zNegNeighbour);
-                left3 = dataCache.GetData(xPosNeighbour, blockY, zPosNeighbour);
-                right3 = dataCache.GetData(xPosNeighbour, yPosNeighbour, blockZ);
-                middle3 = dataCache.GetData(xPosNeighbour, yPosNeighbour, zPosNeighbour);
+                aoLeft0 = new Vector3i(xPosNeighbour, yNegNeighbour, blockZ);
+                aoRight0 = new Vector3i(xPosNeighbour, blockY, zPosNeighbour);
+                aoMiddle0 = new Vector3i(xPosNeighbour, yNegNeighbour, zPosNeighbour);
+                aoLeft1 = new Vector3i(xPosNeighbour, blockY, zNegNeighbour);
+                aoRight1 = new Vector3i(xPosNeighbour, yNegNeighbour, blockZ);
+                aoMiddle1 = new Vector3i(xPosNeighbour, yNegNeighbour, zNegNeighbour);
+                aoLeft2 = new Vector3i(xPosNeighbour, yPosNeighbour, blockZ);
+                aoRight2 = new Vector3i(xPosNeighbour, blockY, zNegNeighbour);
+                aoMiddle2 = new Vector3i(xPosNeighbour, yPosNeighbour, zNegNeighbour);
+                aoLeft3 = new Vector3i(xPosNeighbour, blockY, zPosNeighbour);
+                aoRight3 = new Vector3i(xPosNeighbour, yPosNeighbour, blockZ);
+                aoMiddle3 = new Vector3i(xPosNeighbour, yPosNeighbour, zPosNeighbour);
                 break;
             case BlockFace.YPositive:
                 vertexPos0 = new Vector3i(xPosNeighbour, yPosNeighbour, zPosNeighbour);
@@ -98,18 +108,18 @@ public class MeshingBuffer
                 vertexPos2 = new Vector3i(blockX, yPosNeighbour, blockZ);
                 vertexPos3 = new Vector3i(blockX, yPosNeighbour, zPosNeighbour);
 
-                left0 = dataCache.GetData(xPosNeighbour, yPosNeighbour, blockZ);
-                right0 = dataCache.GetData(blockX, yPosNeighbour, zPosNeighbour);
-                middle0 = dataCache.GetData(xPosNeighbour, yPosNeighbour, zPosNeighbour);
-                left1 = dataCache.GetData(blockX, yPosNeighbour, zNegNeighbour);
-                right1 = dataCache.GetData(xPosNeighbour, yPosNeighbour, blockZ);
-                middle1 = dataCache.GetData(xPosNeighbour, yPosNeighbour, zNegNeighbour);
-                left2 = dataCache.GetData(xNegNeighbour, yPosNeighbour, blockZ);
-                right2 = dataCache.GetData(blockX, yPosNeighbour, zNegNeighbour);
-                middle2 = dataCache.GetData(xNegNeighbour, yPosNeighbour, zNegNeighbour);
-                left3 = dataCache.GetData(blockX, yPosNeighbour, zPosNeighbour);
-                right3 = dataCache.GetData(xNegNeighbour, yPosNeighbour, blockZ);
-                middle3 = dataCache.GetData(xNegNeighbour, yPosNeighbour, zPosNeighbour);
+                aoLeft0 = new Vector3i(xPosNeighbour, yPosNeighbour, blockZ);
+                aoRight0 = new Vector3i(blockX, yPosNeighbour, zPosNeighbour);
+                aoMiddle0 = new Vector3i(xPosNeighbour, yPosNeighbour, zPosNeighbour);
+                aoLeft1 = new Vector3i(blockX, yPosNeighbour, zNegNeighbour);
+                aoRight1 = new Vector3i(xPosNeighbour, yPosNeighbour, blockZ);
+                aoMiddle1 = new Vector3i(xPosNeighbour, yPosNeighbour, zNegNeighbour);
+                aoLeft2 = new Vector3i(xNegNeighbour, yPosNeighbour, blockZ);
+                aoRight2 = new Vector3i(blockX, yPosNeighbour, zNegNeighbour);
+                aoMiddle2 = new Vector3i(xNegNeighbour, yPosNeighbour, zNegNeighbour);
+                aoLeft3 = new Vector3i(blockX, yPosNeighbour, zPosNeighbour);
+                aoRight3 = new Vector3i(xNegNeighbour, yPosNeighbour, blockZ);
+                aoMiddle3 = new Vector3i(xNegNeighbour, yPosNeighbour, zPosNeighbour);
                 break;
             case BlockFace.ZPositive:
                 vertexPos0 = new Vector3i(blockX, blockY, zPosNeighbour);
@@ -117,18 +127,18 @@ public class MeshingBuffer
                 vertexPos2 = new Vector3i(xPosNeighbour, yPosNeighbour, zPosNeighbour);
                 vertexPos3 = new Vector3i(blockX, yPosNeighbour, zPosNeighbour);
 
-                left0 = dataCache.GetData(blockX, yNegNeighbour, zPosNeighbour);
-                right0 = dataCache.GetData(xNegNeighbour, blockY, zPosNeighbour);
-                middle0 = dataCache.GetData(xNegNeighbour, yNegNeighbour, zPosNeighbour);
-                left1 = dataCache.GetData(xPosNeighbour, blockY, zPosNeighbour);
-                right1 = dataCache.GetData(blockX, yNegNeighbour, zPosNeighbour);
-                middle1 = dataCache.GetData(xPosNeighbour, yNegNeighbour, zPosNeighbour);
-                left2 = dataCache.GetData(blockX, yPosNeighbour, zPosNeighbour);
-                right2 = dataCache.GetData(xPosNeighbour, blockY, zPosNeighbour);
-                middle2 = dataCache.GetData(xPosNeighbour, yPosNeighbour, zPosNeighbour);
-                left3 = dataCache.GetData(xNegNeighbour, blockY, zPosNeighbour);
-                right3 = dataCache.GetData(blockX, yPosNeighbour, zPosNeighbour);
-                middle3 = dataCache.GetData(xNegNeighbour, yPosNeighbour, zPosNeighbour);
+                aoLeft0 = new Vector3i(blockX, yNegNeighbour, zPosNeighbour);
+                aoRight0 = new Vector3i(xNegNeighbour, blockY, zPosNeighbour);
+                aoMiddle0 = new Vector3i(xNegNeighbour, yNegNeighbour, zPosNeighbour);
+                aoLeft1 = new Vector3i(xPosNeighbour, blockY, zPosNeighbour);
+                aoRight1 = new Vector3i(blockX, yNegNeighbour, zPosNeighbour);
+                aoMiddle1 = new Vector3i(xPosNeighbour, yNegNeighbour, zPosNeighbour);
+                aoLeft2 = new Vector3i(blockX, yPosNeighbour, zPosNeighbour);
+                aoRight2 = new Vector3i(xPosNeighbour, blockY, zPosNeighbour);
+                aoMiddle2 = new Vector3i(xPosNeighbour, yPosNeighbour, zPosNeighbour);
+                aoLeft3 = new Vector3i(xNegNeighbour, blockY, zPosNeighbour);
+                aoRight3 = new Vector3i(blockX, yPosNeighbour, zPosNeighbour);
+                aoMiddle3 = new Vector3i(xNegNeighbour, yPosNeighbour, zPosNeighbour);
                 break;
             case BlockFace.XNegative:
                 vertexPos0 = new Vector3i(blockX, blockY, blockZ);
@@ -136,18 +146,18 @@ public class MeshingBuffer
                 vertexPos2 = new Vector3i(blockX, yPosNeighbour, zPosNeighbour);
                 vertexPos3 = new Vector3i(blockX, yPosNeighbour, blockZ);
 
-                left0 = dataCache.GetData(xNegNeighbour, yNegNeighbour, blockZ);
-                right0 = dataCache.GetData(xNegNeighbour, blockY, zNegNeighbour);
-                middle0 = dataCache.GetData(xNegNeighbour, yNegNeighbour, zNegNeighbour);
-                left1 = dataCache.GetData(xNegNeighbour, blockY, zPosNeighbour);
-                right1 = dataCache.GetData(xNegNeighbour, yNegNeighbour, blockZ);
-                middle1 = dataCache.GetData(xNegNeighbour, yNegNeighbour, zPosNeighbour);
-                left2 = dataCache.GetData(xNegNeighbour, yPosNeighbour, blockZ);
-                right2 = dataCache.GetData(xNegNeighbour, blockY, zPosNeighbour);
-                middle2 = dataCache.GetData(xNegNeighbour, yPosNeighbour, zPosNeighbour);
-                left3 = dataCache.GetData(xNegNeighbour, blockY, zNegNeighbour);
-                right3 = dataCache.GetData(xNegNeighbour, yPosNeighbour, blockZ);
-                middle3 = dataCache.GetData(xNegNeighbour, yPosNeighbour, zNegNeighbour);
+                aoLeft0 = new Vector3i(xNegNeighbour, yNegNeighbour, blockZ);
+                aoRight0 = new Vector3i(xNegNeighbour, blockY, zNegNeighbour);
+                aoMiddle0 = new Vector3i(xNegNeighbour, yNegNeighbour, zNegNeighbour);
+                aoLeft1 = new Vector3i(xNegNeighbour, blockY, zPosNeighbour);
+                aoRight1 = new Vector3i(xNegNeighbour, yNegNeighbour, blockZ);
+                aoMiddle1 = new Vector3i(xNegNeighbour, yNegNeighbour, zPosNeighbour);
+                aoLeft2 = new Vector3i(xNegNeighbour, yPosNeighbour, blockZ);
+                aoRight2 = new Vector3i(xNegNeighbour, blockY, zPosNeighbour);
+                aoMiddle2 = new Vector3i(xNegNeighbour, yPosNeighbour, zPosNeighbour);
+                aoLeft3 = new Vector3i(xNegNeighbour, blockY, zNegNeighbour);
+                aoRight3 = new Vector3i(xNegNeighbour, yPosNeighbour, blockZ);
+                aoMiddle3 = new Vector3i(xNegNeighbour, yPosNeighbour, zNegNeighbour);
                 break;
             case BlockFace.YNegative:
                 vertexPos0 = new Vector3i(blockX, blockY, blockZ);
@@ -155,18 +165,18 @@ public class MeshingBuffer
                 vertexPos2 = new Vector3i(xPosNeighbour, blockY, zPosNeighbour);
                 vertexPos3 = new Vector3i(blockX, blockY, zPosNeighbour);
 
-                left0 = dataCache.GetData(blockX, yNegNeighbour, zNegNeighbour);
-                right0 = dataCache.GetData(xNegNeighbour, yNegNeighbour, blockZ);
-                middle0 = dataCache.GetData(xNegNeighbour, yNegNeighbour, zNegNeighbour);
-                left1 = dataCache.GetData(xPosNeighbour, yNegNeighbour, blockZ);
-                right1 = dataCache.GetData(blockX, yNegNeighbour, zNegNeighbour);
-                middle1 = dataCache.GetData(xPosNeighbour, yNegNeighbour, zNegNeighbour);
-                left2 = dataCache.GetData(blockX, yNegNeighbour, zPosNeighbour);
-                right2 = dataCache.GetData(xPosNeighbour, yNegNeighbour, blockZ);
-                middle2 = dataCache.GetData(xPosNeighbour, yNegNeighbour, zPosNeighbour);
-                left3 = dataCache.GetData(xNegNeighbour, yNegNeighbour, blockZ);
-                right3 = dataCache.GetData(blockX, yNegNeighbour, zPosNeighbour);
-                middle3 = dataCache.GetData(xNegNeighbour, yNegNeighbour, zPosNeighbour);
+                aoLeft0 = new Vector3i(blockX, yNegNeighbour, zNegNeighbour);
+                aoRight0 = new Vector3i(xNegNeighbour, yNegNeighbour, blockZ);
+                aoMiddle0 = new Vector3i(xNegNeighbour, yNegNeighbour, zNegNeighbour);
+                aoLeft1 = new Vector3i(xPosNeighbour, yNegNeighbour, blockZ);
+                aoRight1 = new Vector3i(blockX, yNegNeighbour, zNegNeighbour);
+                aoMiddle1 = new Vector3i(xPosNeighbour, yNegNeighbour, zNegNeighbour);
+                aoLeft2 = new Vector3i(blockX, yNegNeighbour, zPosNeighbour);
+                aoRight2 = new Vector3i(xPosNeighbour, yNegNeighbour, blockZ);
+                aoMiddle2 = new Vector3i(xPosNeighbour, yNegNeighbour, zPosNeighbour);
+                aoLeft3 = new Vector3i(xNegNeighbour, yNegNeighbour, blockZ);
+                aoRight3 = new Vector3i(blockX, yNegNeighbour, zPosNeighbour);
+                aoMiddle3 = new Vector3i(xNegNeighbour, yNegNeighbour, zPosNeighbour);
                 break;
             case BlockFace.ZNegative:
                 vertexPos0 = new Vector3i(xPosNeighbour, blockY, blockZ);
@@ -174,43 +184,56 @@ public class MeshingBuffer
                 vertexPos2 = new Vector3i(blockX, yPosNeighbour, blockZ);
                 vertexPos3 = new Vector3i(xPosNeighbour, yPosNeighbour, blockZ);
 
-                left0 = dataCache.GetData(blockX, yNegNeighbour, zNegNeighbour);
-                right0 = dataCache.GetData(xPosNeighbour, blockY, zNegNeighbour);
-                middle0 = dataCache.GetData(xPosNeighbour, yNegNeighbour, zNegNeighbour);
-                left1 = dataCache.GetData(xNegNeighbour, blockY, zNegNeighbour);
-                right1 = dataCache.GetData(blockX, yNegNeighbour, zNegNeighbour);
-                middle1 = dataCache.GetData(xNegNeighbour, yNegNeighbour, zNegNeighbour);
-                left2 = dataCache.GetData(blockX, yPosNeighbour, zNegNeighbour);
-                right2 = dataCache.GetData(xNegNeighbour, blockY, zNegNeighbour);
-                middle2 = dataCache.GetData(xNegNeighbour, yPosNeighbour, zNegNeighbour);
-                left3 = dataCache.GetData(xPosNeighbour, blockY, zNegNeighbour);
-                right3 = dataCache.GetData(blockX, yPosNeighbour, zNegNeighbour);
-                middle3 = dataCache.GetData(xPosNeighbour, yPosNeighbour, zNegNeighbour);
+                aoLeft0 = new Vector3i(blockX, yNegNeighbour, zNegNeighbour);
+                aoRight0 = new Vector3i(xPosNeighbour, blockY, zNegNeighbour);
+                aoMiddle0 = new Vector3i(xPosNeighbour, yNegNeighbour, zNegNeighbour);
+                aoLeft1 = new Vector3i(xNegNeighbour, blockY, zNegNeighbour);
+                aoRight1 = new Vector3i(blockX, yNegNeighbour, zNegNeighbour);
+                aoMiddle1 = new Vector3i(xNegNeighbour, yNegNeighbour, zNegNeighbour);
+                aoLeft2 = new Vector3i(blockX, yPosNeighbour, zNegNeighbour);
+                aoRight2 = new Vector3i(xNegNeighbour, blockY, zNegNeighbour);
+                aoMiddle2 = new Vector3i(xNegNeighbour, yPosNeighbour, zNegNeighbour);
+                aoLeft3 = new Vector3i(xPosNeighbour, blockY, zNegNeighbour);
+                aoRight3 = new Vector3i(blockX, yPosNeighbour, zNegNeighbour);
+                aoMiddle3 = new Vector3i(xPosNeighbour, yPosNeighbour, zNegNeighbour);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(face), face, "What face is THAT?!");
         }
 
-        int ao0 = CalculateAoIndex(left0, right0, middle0);
-        int ao1 = CalculateAoIndex(left1, right1, middle1);
-        int ao2 = CalculateAoIndex(left2, right2, middle2);
-        int ao3 = CalculateAoIndex(left3, right3, middle3);
-        AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, ao0, textureIndex, lightColor, lightLevel, skyLightLevel);
-        AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, ao1, textureIndex, lightColor, lightLevel, skyLightLevel);
-        AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, ao2, textureIndex, lightColor, lightLevel, skyLightLevel);
-        AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, ao3, textureIndex, lightColor, lightLevel, skyLightLevel);
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.EnableAmbientOcclusion)
+        {
+#endif
+            int ao0 = CalculateAoIndex(dataCache, aoLeft0, aoRight0, aoMiddle0);
+            int ao1 = CalculateAoIndex(dataCache, aoLeft1, aoRight1, aoMiddle1);
+            int ao2 = CalculateAoIndex(dataCache, aoLeft2, aoRight2, aoMiddle2);
+            int ao3 = CalculateAoIndex(dataCache, aoLeft3, aoRight3, aoMiddle3);
+            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, ao0, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, ao1, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, ao2, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, ao3, textureIndex, lightColor, lightLevel, skyLightLevel);
+#if DEBUG
+        }
+        else
+        {
+            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+        }
+#endif
+
         AddIndices();
         AddedFacesCount++;
     }
 
 
-    private static int CalculateAoIndex(BlockState left, BlockState right, BlockState corner)
+    private static int CalculateAoIndex(MeshingDataCache dataCache, Vector3i leftPos, Vector3i rightPos, Vector3i cornerPos)
     {
-#if DEBUG
-        if (!ClientConfig.DebugModeConfig.EnableAmbientOcclusion)
-            return 3;
-#endif
-
+        BlockState left = dataCache.GetData(leftPos.X, leftPos.Y, leftPos.Z);
+        BlockState right = dataCache.GetData(rightPos.X, rightPos.Y, rightPos.Z);
+        BlockState corner = dataCache.GetData(cornerPos.X, cornerPos.Y, cornerPos.Z);
         if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal)
             return 0;
 
