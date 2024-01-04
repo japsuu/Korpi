@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.Utils;
+using BlockEngine.Client.Window;
 
 namespace ClientTests;
 
@@ -8,18 +9,18 @@ public class TimeTests
     [SetUp]
     public void SetUp()
     {
-        Time.Reset();
+        GameTime.Reset();
     }
 
     [Test]
     public void Update_WithPositiveDeltaTime_IncreasesTotalTime()
     {
-        double initialTotalTime = Time.TotalTime;
+        double initialTotalTime = GameTime.TotalTime;
         double deltaTime = 1.0;
 
-        Time.Update(deltaTime);
+        GameTime.Update(deltaTime);
 
-        Assert.That(Time.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
+        Assert.That(GameTime.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
     }
 
     [Test]
@@ -27,38 +28,38 @@ public class TimeTests
     {
         double deltaTime = 1.0;
 
-        Time.Update(deltaTime);
+        GameTime.Update(deltaTime);
 
-        Assert.That(Time.DeltaTime, Is.EqualTo(deltaTime));
+        Assert.That(GameTime.DeltaTime, Is.EqualTo(deltaTime));
     }
 
     [Test]
     public void Update_WithZeroDeltaTime_KeepsTotalTimeSame()
     {
-        double initialTotalTime = Time.TotalTime;
+        double initialTotalTime = GameTime.TotalTime;
 
-        Time.Update(0);
+        GameTime.Update(0);
 
-        Assert.That(Time.TotalTime, Is.EqualTo(initialTotalTime));
+        Assert.That(GameTime.TotalTime, Is.EqualTo(initialTotalTime));
     }
 
     [Test]
     public void Update_WithZeroDeltaTime_SetsDeltaTimeToZero()
     {
-        Time.Update(0);
+        GameTime.Update(0);
 
-        Assert.That(Time.DeltaTime, Is.EqualTo(0));
+        Assert.That(GameTime.DeltaTime, Is.EqualTo(0));
     }
 
     [Test]
     public void Update_WithNegativeDeltaTime_DecreasesTotalTime()
     {
-        double initialTotalTime = Time.TotalTime;
+        double initialTotalTime = GameTime.TotalTime;
         const double deltaTime = -1.0;
 
-        Time.Update(deltaTime);
+        GameTime.Update(deltaTime);
 
-        Assert.That(Time.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
+        Assert.That(GameTime.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
     }
 
     [Test]
@@ -66,8 +67,8 @@ public class TimeTests
     {
         const double deltaTime = -1.0;
 
-        Time.Update(deltaTime);
+        GameTime.Update(deltaTime);
 
-        Assert.That(Time.DeltaTime, Is.EqualTo(deltaTime));
+        Assert.That(GameTime.DeltaTime, Is.EqualTo(deltaTime));
     }
 }

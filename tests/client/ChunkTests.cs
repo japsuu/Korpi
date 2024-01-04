@@ -1,5 +1,5 @@
-﻿using BlockEngine.Client.Framework.Blocks;
-using BlockEngine.Client.Framework.Chunks;
+﻿using BlockEngine.Client.World.Regions.Chunks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace ClientTests;
