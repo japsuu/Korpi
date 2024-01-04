@@ -16,7 +16,7 @@ public class ChunkGenerator : ChunkProcessorThreadManager<ChunkGeneratorThread, 
     public override void ProcessQueues()
     {
 #if DEBUG
-        RenderingWindowData.ChunksInGenerationQueue = (ulong)InputQueue.Count;
+        DebugStats.ChunksInGenerationQueue = (ulong)InputQueue.Count;
 #endif
         base.ProcessQueues();
     }

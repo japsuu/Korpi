@@ -59,7 +59,7 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
         // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIZE, 0))
         if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
             MeasureProfiler.StartCollectingData();
-        RenderingWindowData.StartChunkMeshing();
+        DebugStats.StartChunkMeshing();
         GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
         _meshingBuffer.Clear();
@@ -81,7 +81,7 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
             }
         }
         
-        RenderingWindowData.StopChunkMeshing();
+        DebugStats.StopChunkMeshing();
         
         ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
         

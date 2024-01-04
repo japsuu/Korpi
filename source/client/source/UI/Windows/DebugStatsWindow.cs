@@ -56,13 +56,17 @@ public class DebugStatsWindow : ImGuiWindow
 
         ImGui.Separator();
         ImGui.Text("Chunk Generation");
-        ImGui.Text($"Chunks in generation queue = {DebugStats.ChunksInGenerationQueue}");
-        ImGui.Text($"Average chunk generation time = {DebugStats.AverageChunkGenerationTime:F1}ms");
+        ImGui.Text($"Queued = {DebugStats.ChunksInGenerationQueue}");
+        ImGui.Text($"Average gen time = {DebugStats.AverageChunkGenerationTime:F1}ms");
+        ImGui.Text($"Median gen time = {DebugStats.MedianChunkGenerationTime:F1}ms");
+        ImGui.Text($"Min/Max gen time = {DebugStats.MinChunkGenerationTime:F1}/{DebugStats.MaxChunkGenerationTime:F1}ms");
 
         ImGui.Separator();
         ImGui.Text("Chunk Meshing");
-        ImGui.Text($"Chunks in meshing queue = {DebugStats.ChunksInMeshingQueue}");
-        ImGui.Text($"Average chunk meshing time = {DebugStats.AverageChunkMeshingTime:F1}ms");
-        ImGui.Text($"Active chunk meshes = {ChunkRendererStorage.GeneratedRendererCount}");
+        ImGui.Text($"Queued = {DebugStats.ChunksInMeshingQueue}");
+        ImGui.Text($"Average mesh time = {DebugStats.AverageChunkMeshingTime:F1}ms");
+        ImGui.Text($"Median mesh time = {DebugStats.MedianChunkMeshingTime:F1}ms");
+        ImGui.Text($"Min/Max mesh time = {DebugStats.MinChunkMeshingTime:F1}/{DebugStats.MaxChunkMeshingTime:F1}ms");
+        ImGui.Text($"Active meshes = {ChunkRendererStorage.GeneratedRendererCount}");
     }
 }

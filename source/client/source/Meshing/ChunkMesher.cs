@@ -15,7 +15,7 @@ public class ChunkMesher : ChunkProcessorThreadManager<ChunkMesherThread, ChunkM
     
     public override void ProcessQueues()
     {
-        RenderingWindowData.ChunksInMeshingQueue = (ulong)InputQueue.Count;
+        DebugStats.ChunksInMeshingQueue = (ulong)InputQueue.Count;
         
         base.ProcessQueues();
     }

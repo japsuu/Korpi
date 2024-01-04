@@ -50,7 +50,7 @@ public class GameWorld : IDisposable
         ChunkGenerator.ProcessQueues();
         ChunkMesher.ProcessQueues();
         _entityManager.Update();
-        RenderingWindowData.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
+        DebugStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
         CameraWindowData.LastRaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
     }
     

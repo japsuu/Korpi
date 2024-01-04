@@ -29,7 +29,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
 
     protected override Vector3i ProcessChunk(Chunk chunk)
     {
-        RenderingWindowData.StartChunkGeneration();
+        DebugStats.StartChunkGeneration();
         if (chunk.Bottom > TERRAIN_HEIGHT_MAX)  // Skip chunks above the terrain.
             return chunk.Position;
         
@@ -71,7 +71,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
             }
         }
 
-        RenderingWindowData.StopChunkGeneration();
+        DebugStats.StopChunkGeneration();
         return chunk.Position;
     }
     
