@@ -66,7 +66,6 @@ public class Chunk
     
     public bool IsGenerated => _generationState == ChunkGenerationState.READY;
     public bool ShouldBeRendered => IsGenerated && _meshState >= ChunkMeshState.MESHING;
-    public int HighestRenderedBlockY => Constants.CHUNK_SIZE;   //TODO: Implement
 
 
     public Chunk(Vector3i position)

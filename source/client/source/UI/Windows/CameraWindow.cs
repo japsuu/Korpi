@@ -1,5 +1,5 @@
-﻿using BlockEngine.Client.Configuration;
-using BlockEngine.Client.Debugging;
+﻿using BlockEngine.Client.Debugging;
+using BlockEngine.Client.ECS.Entities;
 using BlockEngine.Client.Math;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
@@ -31,7 +31,7 @@ public class CameraWindow : ImGuiWindow
         if (Camera.RenderingCamera is NoclipCamera noclipCamera)
             ImGui.Text($"Fly spd: {noclipCamera.GetFlySpeedFormatted()}");
         ImGui.Separator();
-        ImGui.Text($"Selected block: {BlockRegistry.GetBlock(ClientConfig.DebugModeConfig.SelectedBlockType)}");
+        ImGui.Text($"Selected block: {BlockRegistry.GetBlock(PlayerEntity.SelectedBlockType)}");
         ImGui.Text($"Raycast result: {CameraWindowData.LastRaycastResult}");
         ImGui.Separator();
         ImGui.Text($"Time: {GameTime.GetFormattedTime()}");

@@ -67,18 +67,23 @@ public class GameWorld : IDisposable
         Ray ray = new Ray(start, direction);
         RaycastResult raycastResult = RegionManager.RaycastBlocks(ray, maxDistance);
 
-        if (Input.MouseState.IsButtonPressed(MouseButton.Left))
+        if (!GameClient.IsPlayerInGui)
         {
-            if (raycastResult.Hit)
+            if (Input.MouseState.IsButtonPressed(MouseButton.Left))
             {
-                RegionManager.SetBlockStateAt(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
+                if (raycastResult.Hit)
+                {
+                    RegionManager.SetBlockStateAt(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
+                }
             }
-        }
-        else if (Input.MouseState.IsButtonPressed(MouseButton.Right))
-        {
-            if (raycastResult.Hit)
+            else if (Input.MouseState.IsButtonPressed(MouseButton.Right))
             {
-                RegionManager.SetBlockStateAt(raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(), BlockRegistry.GetBlock(ClientConfig.DebugModeConfig.SelectedBlockType).GetDefaultState());
+                if (raycastResult.Hit)
+                {
+                    RegionManager.SetBlockStateAt(
+                        raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(),
+                        BlockRegistry.GetBlock(PlayerEntity.SelectedBlockType).GetDefaultState());
+                }
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.ECS.Components;
+using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
 using BlockEngine.Client.Window;
 using OpenTK.Mathematics;
@@ -23,6 +24,8 @@ public class PlayerEntity : TransformEntity
     /// Only one local playerEntity can exist at a time.
     /// </summary>
     public static PlayerEntity LocalPlayerEntity { get; private set; } = null!;
+    
+    public static ushort SelectedBlockType = 1;
     
     /// <summary>
     /// The forward vector of the playerEntity's view.
@@ -126,6 +129,15 @@ public class PlayerEntity : TransformEntity
             Transform.WorldPosition += positionDelta;
             _camera.SetPosition(Transform.WorldPosition + CameraOffset);
             _camera.UpdateRotation();
+            
+            // Update the SelectedBlockType
+            if (Input.MouseState.ScrollDelta.Y > 0)
+                SelectedBlockType++;
+            else if (Input.MouseState.ScrollDelta.Y < 0)
+                SelectedBlockType--;
+        
+            // Clamp between 0 and the number of blocks.
+            SelectedBlockType = (ushort)System.Math.Clamp(SelectedBlockType, 1, BlockRegistry.GetBlockCount() - 1);
         }
         Transform.WorldRotation = new Vector3(0, -_camera.YawRadians, 0);
     }

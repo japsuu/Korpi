@@ -15,10 +15,10 @@ public static class ImGuiWindowManager
         MemoryProfilerWindow unused = new();
 #if DEBUG
         RenderingWindow unused1 = new();
+#endif
         CameraWindow unused2 = new();
         DebugTextWindow unused3 = new();
         DebugStatsWindow unused4 = new();
-#endif
     }
 
 

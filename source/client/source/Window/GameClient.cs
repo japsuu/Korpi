@@ -263,15 +263,6 @@ public class GameClient : GameWindow
         base.OnMouseWheel(e);
 
         _imGuiController.MouseScroll(e.Offset);
-        
-        // Update the DebugModeConfig.SelectedBlockType
-        if (e.Offset.Y > 0)
-            ClientConfig.DebugModeConfig.SelectedBlockType++;
-        else if (e.Offset.Y < 0)
-            ClientConfig.DebugModeConfig.SelectedBlockType--;
-        
-        // Clamp between 0 and the number of blocks.
-        ClientConfig.DebugModeConfig.SelectedBlockType = (ushort)System.Math.Clamp(ClientConfig.DebugModeConfig.SelectedBlockType, 1, BlockRegistry.GetBlockCount() - 1);
     }
 
 

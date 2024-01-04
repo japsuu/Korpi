@@ -16,7 +16,6 @@ public class DebugModeConfig
     public bool RenderRaycastHit;
     public bool RenderRaycastHitBlock = true;
     public bool EnableAmbientOcclusion = true;
-    public ushort SelectedBlockType = 1;
 
 
     public DebugModeConfig(bool isPhotoModeEnabled, string photoModeScreenshotPath)
