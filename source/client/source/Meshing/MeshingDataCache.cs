@@ -1,7 +1,7 @@
 ﻿using BlockEngine.Client.Registries;
 using BlockEngine.Client.World;
-using BlockEngine.Client.World.Chunks;
-using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Meshing;
@@ -24,7 +24,7 @@ public class MeshingDataCache
         foreach (Vector3i position in ChunkOffsets.ChunkNeighbourOffsets)
         {
             Vector3i neighbourPosition = chunk.Position + position;
-            Chunk? neighbour = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(neighbourPosition);
+            Chunk? neighbour = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPosition);
             if (neighbour == null)
                 continue;
             _neighbourChunks.Add(position, neighbour);

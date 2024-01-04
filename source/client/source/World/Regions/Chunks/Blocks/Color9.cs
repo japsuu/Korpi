@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using BlockEngine.Client.Utils;
 
-namespace BlockEngine.Client.World.Chunks.Blocks;
+namespace BlockEngine.Client.World.Regions.Chunks.Blocks;
 
 /// <summary>
 /// 9-bit RGB333 color value.

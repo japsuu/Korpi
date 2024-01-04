@@ -27,9 +27,9 @@ public class RenderingWindow : ImGuiWindow
                 DebugChunkDrawer.Dispose();
         }
 
-        if (ImGui.Checkbox("Draw column borders", ref ClientConfig.DebugModeConfig.RenderChunkColumnBorders))
+        if (ImGui.Checkbox("Draw region borders", ref ClientConfig.DebugModeConfig.RenderRegionBorders))
         {
-            if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
+            if (ClientConfig.DebugModeConfig.RenderRegionBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();
@@ -39,7 +39,7 @@ public class RenderingWindow : ImGuiWindow
         ImGui.Separator();
         ImGui.Checkbox("Enable Wireframe", ref ClientConfig.DebugModeConfig.RenderWireframe);
         if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.DebugModeConfig.EnableAmbientOcclusion))
-            GameWorld.CurrentGameWorld.ChunkManager.RemeshAllColumns();
+            GameWorld.CurrentGameWorld.RegionManager.RemeshAllColumns();
         ImGui.Checkbox("Enable skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
 
         ImGui.Separator();

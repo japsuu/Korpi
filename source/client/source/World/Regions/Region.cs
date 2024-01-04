@@ -1,15 +1,19 @@
-﻿using OpenTK.Mathematics;
+﻿using BlockEngine.Client.World.Regions.Chunks;
+using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World.Chunks;
+namespace BlockEngine.Client.World.Regions;
 
-public class ChunkColumn
+/// <summary>
+/// Vertical column of chunks.
+/// </summary>
+public class Region
 {
     private readonly Chunk?[] _chunks;
 
     public readonly Vector2i Position;
         
         
-    public ChunkColumn(Vector2i position)
+    public Region(Vector2i position)
     {
         Position = position;
         _chunks = new Chunk[Constants.CHUNK_COLUMN_HEIGHT];

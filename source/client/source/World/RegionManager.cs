@@ -10,50 +10,55 @@ using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
 using BlockEngine.Client.Rendering.Chunks;
 using BlockEngine.Client.Rendering.Shaders;
-using BlockEngine.Client.World.Chunks;
-using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Regions;
+using BlockEngine.Client.World.Regions.Chunks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.World;
 
-public class ChunkManager
+/// <summary>
+/// Manages all loaded <see cref="Chunk"/>s and chunk columns (<see cref="Region"/>s).
+/// </summary>
+public class RegionManager
 {
-    private readonly Vector2i[] _precomputedNeighbouringColumnOffsets = new Vector2i[8];
-    private readonly ConcurrentDictionary<Vector2i, ChunkColumn> _existingColumns = new();
-    private readonly List<Vector2i> _columnsToLoad = new();
-    private readonly List<Vector2i> _columnsToUnload = new();
+    private readonly ConcurrentDictionary<Vector2i, Region> _existingRegions = new();
+    private readonly List<Vector2i> _regionsToLoad = new();
+    private readonly List<Vector2i> _regionsToUnload = new();
 
-    // Precomputed spiral of chunk column positions to load.
-    // The spiral is centered around the origin.
-    private List<Vector2i> _columnLoadSpiral = null!;
+    /// <summary>
+    /// Precomputed spiral of chunk column positions to load.
+    /// The spiral is centered around the world origin, so manual offsetting is required.
+    /// </summary>
+    private List<Vector2i> _regionLoadSpiral = null!;
 
-    public int LoadedColumnsCount => _existingColumns.Count;
+    public int LoadedRegionsCount => _existingRegions.Count;
 
 
-    public ChunkManager()
+    public RegionManager()
     {
-        PrecomputeColumnLoadSpiral();
+        PrecomputeRegionLoadSpiral();
     }
 
 
     public void Tick()
     {
-        FindColumnsToUnload(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
-        UnloadColumns();
-        FindColumnsToLoad(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
-        LoadColumns();
+        FindRegionsToUnload(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
+        UnloadRegions();
+        FindRegionsToLoad(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
+        LoadRegions();
 
-        // Tick all columns
-        foreach (ChunkColumn column in _existingColumns.Values)
+        // Tick all loaded columns
+        foreach (Region region in _existingRegions.Values)
         {
-            column.Tick();
+            region.Tick();
         }
     }
 
 
     public void Draw(Shader chunkShader)
     {
-        foreach (ChunkColumn column in _existingColumns.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        foreach (Region column in _existingRegions.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
             for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
             {
@@ -76,7 +81,7 @@ public class ChunkManager
             DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
-        if (ClientConfig.DebugModeConfig.RenderChunkColumnBorders)
+        if (ClientConfig.DebugModeConfig.RenderRegionBorders)
         {
             // Get the chunk the playerEntity is currently in
             Vector2i columnPos = CoordinateUtils.WorldToColumn(Camera.RenderingCamera.Position);
@@ -96,7 +101,7 @@ public class ChunkManager
     {
         Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
         
-        if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? column))
+        if (!_existingRegions.TryGetValue(columnPos, out Region? column))
             return false;
 
         return column.HasChunkAtHeight(chunkPos.Y);
@@ -112,8 +117,8 @@ public class ChunkManager
     {
         Vector2i chunkColumnPos = CoordinateUtils.WorldToColumn(position);
 
-        if (!_existingColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
-            //Logger.LogWarning($"Tried to get unloaded ChunkColumn at {position} ({chunkColumnPos})!");
+        if (!_existingRegions.TryGetValue(chunkColumnPos, out Region? column))
+            //Logger.LogWarning($"Tried to get unloaded Region at {position} ({chunkColumnPos})!");
             return null;
 
         return column.GetChunkAtHeight(position.Y);
@@ -149,11 +154,11 @@ public class ChunkManager
         
         // Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
         // 
-        // foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
+        // foreach (Vector2i neighbourOffset in _precomputedNeighbouringRegionOffsets)
         // {
         //     Vector2i neighbourPos = columnPos + neighbourOffset;
         //     
-        //     if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
+        //     if (!_existingRegions.TryGetValue(neighbourPos, out Region? column))
         //     {
         //         if (excludeMissingChunks)
         //             continue;
@@ -198,7 +203,7 @@ public class ChunkManager
         //     }
         // }
         //     
-        // if (!_existingColumns.TryGetValue(columnPos, out ChunkColumn? centerColumn))
+        // if (!_existingRegions.TryGetValue(columnPos, out Region? centerColumn))
         // {
         //     if (excludeMissingChunks)
         //         return true;
@@ -257,7 +262,7 @@ public class ChunkManager
 
     public void RemeshAllColumns()
     {
-        foreach (ChunkColumn column in _existingColumns.Values)
+        foreach (Region column in _existingRegions.Values)
         {
             column.RemeshAllChunks();
         }
@@ -308,11 +313,11 @@ public class ChunkManager
     
     private void RemeshNeighbouringColumns(Vector2i columnPos)
     {
-        foreach (Vector2i neighbourOffset in _precomputedNeighbouringColumnOffsets)
+        foreach (Vector2i neighbourOffset in ChunkOffsets.RegionNeighbourOffsets)
         {
             Vector2i neighbourPos = columnPos + neighbourOffset;
             
-            if (!_existingColumns.TryGetValue(neighbourPos, out ChunkColumn? column))
+            if (!_existingRegions.TryGetValue(neighbourPos, out Region? column))
                 continue;
 
             column.RemeshAllChunks();
@@ -320,29 +325,29 @@ public class ChunkManager
     }
 
 
-    private void FindColumnsToUnload(Vector3 playerPos)
+    private void FindRegionsToUnload(Vector3 playerPos)
     {
-        _columnsToUnload.Clear();
+        _regionsToUnload.Clear();
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
-        foreach (KeyValuePair<Vector2i, ChunkColumn> pair in _existingColumns)
+        foreach (KeyValuePair<Vector2i, Region> pair in _existingRegions)
         {
             Vector2i normalizedColumnPos = (pair.Key - originColumnPos) / Constants.CHUNK_SIZE;
             bool inRange = normalizedColumnPos.X * normalizedColumnPos.X + normalizedColumnPos.Y * normalizedColumnPos.Y <=
                            Constants.CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED;
             if (inRange)
                 continue;
-            ChunkColumn column = pair.Value;
+            Region column = pair.Value;
             if (column.ReadyToUnload())
-                _columnsToUnload.Add(pair.Key);
+                _regionsToUnload.Add(pair.Key);
         }
     }
 
 
-    private void UnloadColumns()
+    private void UnloadRegions()
     {
-        foreach (Vector2i columnPos in _columnsToUnload)
+        foreach (Vector2i columnPos in _regionsToUnload)
         {
-            if (!_existingColumns.TryRemove(columnPos, out ChunkColumn? column))
+            if (!_existingRegions.TryRemove(columnPos, out Region? column))
                 continue;
             
             column.Unload();
@@ -359,37 +364,37 @@ public class ChunkManager
             // Logger.Log($"Unloaded chunk column at {columnPos}.");
         }
 
-        // if (_columnsToUnload.Count > 0)
-        //     Logger.Log($"Unloaded {_columnsToUnload.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
+        // if (_regionsToUnload.Count > 0)
+        //     Logger.Log($"Unloaded {_regionsToUnload.Count * Constants.CHUNK_COLUMN_HEIGHT} chunks.");
     }
 
 
-    private void FindColumnsToLoad(Vector3 playerPos)
+    private void FindRegionsToLoad(Vector3 playerPos)
     {
-        _columnsToLoad.Clear();
+        _regionsToLoad.Clear();
 
         // Get the column position where the loading should start
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
 
         // Load columns in a square around the origin column in a spiral pattern.
-        foreach (Vector2i spiralPos in _columnLoadSpiral)
+        foreach (Vector2i spiralPos in _regionLoadSpiral)
         {
             Vector2i columnPos = originColumnPos + spiralPos;
-            if (_existingColumns.ContainsKey(columnPos))
+            if (_existingRegions.ContainsKey(columnPos))
                 continue;
 
-            _columnsToLoad.Add(columnPos);
+            _regionsToLoad.Add(columnPos);
         }
     }
 
 
-    private void LoadColumns()
+    private void LoadRegions()
     {
-        foreach (Vector2i columnPos in _columnsToLoad)
+        foreach (Vector2i columnPos in _regionsToLoad)
         {
-            ChunkColumn column = new(columnPos);
+            Region column = new(columnPos);
             column.Load();
-            if (!_existingColumns.TryAdd(columnPos, column))
+            if (!_existingRegions.TryAdd(columnPos, column))
                 Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");
 
             RemeshNeighbouringColumns(columnPos);
@@ -404,10 +409,10 @@ public class ChunkManager
     }
 
 
-    private void PrecomputeColumnLoadSpiral()
+    private void PrecomputeRegionLoadSpiral()
     {
         const int size = Constants.CHUNK_COLUMN_LOAD_RADIUS * 2 + 1;
-        _columnLoadSpiral = new List<Vector2i>
+        _regionLoadSpiral = new List<Vector2i>
         {
             new(0, 0)
         };
@@ -422,10 +427,10 @@ public class ChunkManager
                 if (!inRange)
                     continue;
             }
-            _columnLoadSpiral.Add(pos * Constants.CHUNK_SIZE);
+            _regionLoadSpiral.Add(pos * Constants.CHUNK_SIZE);
         }
 
-        Logger.Log($"Precomputed column load spiral for render distance {Constants.CHUNK_COLUMN_LOAD_RADIUS}, for {_columnLoadSpiral.Count} columns.");
+        Logger.Log($"Precomputed column load spiral for render distance {Constants.CHUNK_COLUMN_LOAD_RADIUS}, for {_regionLoadSpiral.Count} columns.");
     }
 
 

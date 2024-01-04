@@ -1,8 +1,8 @@
 ﻿using BlockEngine.Client.Bitpacking;
 using BlockEngine.Client.Registries;
-using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 
-namespace BlockEngine.Client.World.Chunks.BlockStorage;
+namespace BlockEngine.Client.World.Regions.Chunks.BlockStorage;
 
 public class BlockPalette : IBlockStorage
 {

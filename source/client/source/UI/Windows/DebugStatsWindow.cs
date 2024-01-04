@@ -28,7 +28,7 @@ public class DebugStatsWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        uint loadedChunksApprox = (uint)DebugStats.LoadedColumnCount * Constants.CHUNK_COLUMN_HEIGHT;
+        uint loadedChunksApprox = (uint)DebugStats.LoadedRegionCount * Constants.CHUNK_COLUMN_HEIGHT;
         uint loadedBlocksApprox = loadedChunksApprox * Constants.CHUNK_SIZE_CUBED;
         
         string loadedBlocksApproxFormatted = loadedBlocksApprox.ToString("#,0", _largeNumberFormat);
@@ -50,9 +50,9 @@ public class DebugStatsWindow : ImGuiWindow
             ImGui.Text($"Max: {_maxFps:F1} fps");
         }
 
-        ImGui.Text($"Loaded Blocks (approx) = {loadedBlocksApproxFormatted}");
-        ImGui.Text($"Loaded Chunks (approx) = {loadedChunksApproxFormatted}");
-        ImGui.Text($"Loaded Columns = {DebugStats.LoadedColumnCount}");
+        ImGui.Text($"Loaded blocks (approx) = {loadedBlocksApproxFormatted}");
+        ImGui.Text($"Loaded chunks (approx) = {loadedChunksApproxFormatted}");
+        ImGui.Text($"Loaded regions = {DebugStats.LoadedRegionCount}");
 
         ImGui.Separator();
         ImGui.Text("Chunk Generation");

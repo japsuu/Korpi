@@ -3,8 +3,8 @@ using BlockEngine.Client.Math;
 using BlockEngine.Client.Math.Noise;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Threading;
-using BlockEngine.Client.World.Chunks;
-using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Generation;

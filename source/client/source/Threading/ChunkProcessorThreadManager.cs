@@ -84,7 +84,7 @@ public abstract class ChunkProcessorThreadManager<TThread, TThreadOutput> : IDis
         {
             Vector3i chunkPos = PreProcessQueue.Dequeue();
 
-            if (!GameWorld.CurrentGameWorld.ChunkManager.ChunkExistsAt(chunkPos))
+            if (!GameWorld.CurrentGameWorld.RegionManager.ChunkExistsAt(chunkPos))
             {
                 InputQueueLookup.TryRemove(chunkPos);
                 continue;

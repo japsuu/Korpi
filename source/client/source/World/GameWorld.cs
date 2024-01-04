@@ -10,7 +10,7 @@ using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
 using BlockEngine.Client.Rendering.Shaders;
 using BlockEngine.Client.Window;
-using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -20,7 +20,7 @@ public class GameWorld : IDisposable
 {
     public static GameWorld CurrentGameWorld { get; private set; } = null!;
     
-    public readonly ChunkManager ChunkManager;      // TODO: Make private, and wrap around a function
+    public readonly RegionManager RegionManager;      // TODO: Make private, and wrap around a function
     public readonly ChunkGenerator ChunkGenerator;  // TODO: Make private, and wrap around a function
     public readonly ChunkMesher ChunkMesher;        // TODO: Make private, and wrap around a function
 
@@ -31,7 +31,7 @@ public class GameWorld : IDisposable
     public GameWorld(string name)
     {
         _name = name;
-        ChunkManager = new ChunkManager();
+        RegionManager = new RegionManager();
         ChunkGenerator = new ChunkGenerator();
         ChunkMesher = new ChunkMesher();
         _entityManager = new EntityManager();
@@ -46,18 +46,18 @@ public class GameWorld : IDisposable
     
     public void Tick()
     {
-        ChunkManager.Tick();
+        RegionManager.Tick();
         ChunkGenerator.ProcessQueues();
         ChunkMesher.ProcessQueues();
         _entityManager.Update();
-        DebugStats.LoadedColumnCount = ChunkManager.LoadedColumnsCount;
+        DebugStats.LoadedRegionCount = RegionManager.LoadedRegionsCount;
         CameraWindowData.LastRaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
     }
     
     
     public void Draw()
     {
-        ChunkManager.Draw(ShaderManager.ChunkShader);
+        RegionManager.Draw(ShaderManager.ChunkShader);
         _entityManager.Draw();
     }
     
@@ -65,20 +65,20 @@ public class GameWorld : IDisposable
     public BlockState RaycastWorld(Vector3 start, Vector3 direction, float maxDistance)
     {
         Ray ray = new Ray(start, direction);
-        RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
+        RaycastResult raycastResult = RegionManager.RaycastBlocks(ray, maxDistance);
 
         if (Input.MouseState.IsButtonPressed(MouseButton.Left))
         {
             if (raycastResult.Hit)
             {
-                ChunkManager.SetBlockStateAt(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
+                RegionManager.SetBlockStateAt(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
             }
         }
         else if (Input.MouseState.IsButtonPressed(MouseButton.Right))
         {
             if (raycastResult.Hit)
             {
-                ChunkManager.SetBlockStateAt(raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(), BlockRegistry.GetBlock(ClientConfig.DebugModeConfig.SelectedBlockType).GetDefaultState());
+                RegionManager.SetBlockStateAt(raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(), BlockRegistry.GetBlock(ClientConfig.DebugModeConfig.SelectedBlockType).GetDefaultState());
             }
         }
 

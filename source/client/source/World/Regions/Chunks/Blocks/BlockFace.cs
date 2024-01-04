@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World.Chunks.Blocks;
+namespace BlockEngine.Client.World.Regions.Chunks.Blocks;
 
 /// <summary>
 /// Represents a face of a block.

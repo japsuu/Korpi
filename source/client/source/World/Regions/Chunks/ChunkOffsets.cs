@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World.Chunks;
+namespace BlockEngine.Client.World.Regions.Chunks;
 
 public static class ChunkOffsets
 {
@@ -91,7 +91,7 @@ public static class ChunkOffsets
     /// <summary>
     /// Contains the offsets of all 8 neighbouring columns of a column.
     /// </summary>
-    public static readonly Vector2i[] ColumnNeighbourOffsets =
+    public static readonly Vector2i[] RegionNeighbourOffsets =
     {
         // 4 Corners
         new(1 * Constants.CHUNK_SIZE, 1 * Constants.CHUNK_SIZE),

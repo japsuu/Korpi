@@ -3,8 +3,8 @@ using BlockEngine.Client.Debugging;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Threading;
 using BlockEngine.Client.World;
-using BlockEngine.Client.World.Chunks;
-using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using JetBrains.Profiler.Api;
 using OpenTK.Mathematics;
 
@@ -60,7 +60,7 @@ public class ChunkMesherThread : ChunkProcessorThread<ChunkMesh>
         if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
             MeasureProfiler.StartCollectingData();
         DebugStats.StartChunkMeshing();
-        GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
+        GameWorld.CurrentGameWorld.RegionManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
         _meshingBuffer.Clear();
         

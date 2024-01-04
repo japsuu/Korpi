@@ -1,4 +1,4 @@
-﻿using BlockEngine.Client.World.Chunks.Blocks;
+﻿using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using YamlDotNet.Serialization;
 
 namespace BlockEngine.Client.Modding.Blocks;

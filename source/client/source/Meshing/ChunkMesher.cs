@@ -2,7 +2,7 @@
 using BlockEngine.Client.Rendering.Chunks;
 using BlockEngine.Client.Threading;
 using BlockEngine.Client.World;
-using BlockEngine.Client.World.Chunks;
+using BlockEngine.Client.World.Regions.Chunks;
 
 namespace BlockEngine.Client.Meshing;
 
@@ -24,7 +24,7 @@ public class ChunkMesher : ChunkProcessorThreadManager<ChunkMesherThread, ChunkM
     protected override void OnChunkProcessed(ChunkMesh output)
     {
         // Check if the chunk is still loaded
-        Chunk? chunk = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(output.ChunkPos);
+        Chunk? chunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(output.ChunkPos);
         if (chunk == null)
             return;
             

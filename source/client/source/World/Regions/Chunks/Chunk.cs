@@ -1,10 +1,10 @@
 ﻿using BlockEngine.Client.Debugging.Drawing;
 using BlockEngine.Client.Logging;
-using BlockEngine.Client.World.Chunks.Blocks;
-using BlockEngine.Client.World.Chunks.BlockStorage;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks.BlockStorage;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World.Chunks;
+namespace BlockEngine.Client.World.Regions.Chunks;
 
 public class Chunk
 {
@@ -200,7 +200,7 @@ public class Chunk
             throw new InvalidOperationException("Tried to mesh a chunk that is not generated!");
 
         // Check if the chunk neighbours are loaded (required for meshing)
-        return GameWorld.CurrentGameWorld.ChunkManager.AreChunkNeighboursGenerated(Position, true); //TODO: False, to not generate world border faces
+        return GameWorld.CurrentGameWorld.RegionManager.AreChunkNeighboursGenerated(Position, true); //TODO: False, to not generate world border faces
     }
 
 

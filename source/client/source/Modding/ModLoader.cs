@@ -3,7 +3,7 @@ using BlockEngine.Client.Logging;
 using BlockEngine.Client.Modding.Blocks;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Utils;
-using BlockEngine.Client.World.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
 
 namespace BlockEngine.Client.Modding;
 

@@ -1,4 +1,4 @@
-namespace BlockEngine.Client.World.Chunks.Blocks;
+namespace BlockEngine.Client.World.Regions.Chunks.Blocks;
 
 /// <summary>
 /// Type of rendering of a <see cref="Block"/>.

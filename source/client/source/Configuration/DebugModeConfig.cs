@@ -9,7 +9,7 @@ public class DebugModeConfig
 
     public bool RenderWireframe;
     public bool RenderChunkBorders;
-    public bool RenderChunkColumnBorders;
+    public bool RenderRegionBorders;
     public bool RenderChunkMeshState;
     public bool RenderSkybox = true;
     public bool RenderRaycastPath;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using BlockEngine.Client.World;
-using BlockEngine.Client.World.Chunks;
+using BlockEngine.Client.World.Regions.Chunks;
 using ConcurrentCollections;
 using OpenTK.Mathematics;
 
@@ -49,7 +49,7 @@ public abstract class ChunkProcessorThread<T> : IDisposable
             if (!_inputQueue.TryDequeue(out Vector3i chunkPos))
                 continue;
             
-            Chunk? chunk = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(chunkPos);
+            Chunk? chunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(chunkPos);
             if (chunk == null)
                 continue;
                 

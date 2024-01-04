@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace BlockEngine.Client.World.Chunks.Blocks.Textures;
+namespace BlockEngine.Client.World.Regions.Chunks.Blocks.Textures;
 
 /// <summary>
 /// Contains textures for all faces of a <see cref="Block"/>.

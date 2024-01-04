@@ -2,7 +2,7 @@
 using BlockEngine.Client.Modding.Blocks;
 using BlockEngine.Client.Rendering.Textures;
 using BlockEngine.Client.Utils;
-using BlockEngine.Client.World.Chunks.Blocks.Textures;
+using BlockEngine.Client.World.Regions.Chunks.Blocks.Textures;
 using OpenTK.Graphics.OpenGL4;
 
 namespace BlockEngine.Client.Registries;

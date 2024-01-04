@@ -4,8 +4,8 @@ using BlockEngine.Client.Logging;
 using BlockEngine.Client.Modding;
 using BlockEngine.Client.Modding.Blocks;
 using BlockEngine.Client.Utils;
-using BlockEngine.Client.World.Chunks.Blocks;
-using BlockEngine.Client.World.Chunks.Blocks.Textures;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks.Blocks.Textures;
 
 namespace BlockEngine.Client.Registries;
 

@@ -1,7 +1,7 @@
 ﻿using BlockEngine.Client.Debugging;
 using BlockEngine.Client.Threading;
 using BlockEngine.Client.World;
-using BlockEngine.Client.World.Chunks;
+using BlockEngine.Client.World.Regions.Chunks;
 using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Generation;
@@ -24,7 +24,7 @@ public class ChunkGenerator : ChunkProcessorThreadManager<ChunkGeneratorThread, 
 
     protected override void OnChunkProcessed(Vector3i output)
     {
-        Chunk? chunk = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(output);
+        Chunk? chunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(output);
 
         chunk?.OnGenerated();
     }

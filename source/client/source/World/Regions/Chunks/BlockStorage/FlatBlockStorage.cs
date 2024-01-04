@@ -1,6 +1,6 @@
-﻿using BlockEngine.Client.World.Chunks.Blocks;
+﻿using BlockEngine.Client.World.Regions.Chunks.Blocks;
 
-namespace BlockEngine.Client.World.Chunks.BlockStorage;
+namespace BlockEngine.Client.World.Regions.Chunks.BlockStorage;
 
 public class FlatBlockStorage : IBlockStorage
 {

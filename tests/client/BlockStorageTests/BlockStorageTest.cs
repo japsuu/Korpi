@@ -1,6 +1,6 @@
 ﻿using BlockEngine.Client.Registries;
-using BlockEngine.Client.World.Chunks.Blocks;
-using BlockEngine.Client.World.Chunks.BlockStorage;
+using BlockEngine.Client.World.Regions.Chunks.Blocks;
+using BlockEngine.Client.World.Regions.Chunks.BlockStorage;
 
 namespace ClientTests.BlockStorageTests;
 
