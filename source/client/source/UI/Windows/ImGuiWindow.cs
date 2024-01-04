@@ -1,6 +1,6 @@
 ﻿using ImGuiNET;
 
-namespace BlockEngine.Client.UI.ImGui.Windows;
+namespace BlockEngine.Client.UI.Windows;
 
 public abstract class ImGuiWindow
 {
@@ -31,11 +31,11 @@ public abstract class ImGuiWindow
         
         PreUpdate();
 
-        ImGuiNET.ImGui.Begin(Title, Flags);
+        ImGui.Begin(Title, Flags);
 
         UpdateContent();
         
-        ImGuiNET.ImGui.End();
+        ImGui.End();
     }
     
     

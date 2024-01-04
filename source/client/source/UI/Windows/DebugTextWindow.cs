@@ -3,7 +3,7 @@ using BlockEngine.Client.Window;
 using ImGuiNET;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.UI.ImGui.Windows;
+namespace BlockEngine.Client.UI.Windows;
 
 public class DebugTextWindow : ImGuiWindow
 {
@@ -91,8 +91,8 @@ public class DebugTextWindow : ImGuiWindow
 
     protected override void PreUpdate()
     {
-        ImGuiNET.ImGui.SetWindowSize(Title, new System.Numerics.Vector2(GameClient.WindowWidth, GameClient.WindowHeight));
-        ImGuiNET.ImGui.SetWindowPos(Title, new System.Numerics.Vector2(0, 0));
+        ImGui.SetWindowSize(Title, new System.Numerics.Vector2(GameClient.WindowWidth, GameClient.WindowHeight));
+        ImGui.SetWindowPos(Title, new System.Numerics.Vector2(0, 0));
     }
 
 
@@ -109,9 +109,9 @@ public class DebugTextWindow : ImGuiWindow
                     if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
                     {
                         System.Numerics.Vector4 color = index % 2 == 0 ? new System.Numerics.Vector4(0.3f, 0.3f, 0.3f, 1) : new System.Numerics.Vector4(0, 0, 0, 1);
-                        ImGuiNET.ImGui.GetWindowDrawList().AddText(
+                        ImGui.GetWindowDrawList().AddText(
                             new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset * index),
-                            ImGuiNET.ImGui.GetColorU32(color),
+                            ImGui.GetColorU32(color),
                             $"{text.Text}");
                         index++;
                     }
@@ -130,9 +130,9 @@ public class DebugTextWindow : ImGuiWindow
                     if (ShaderManager.WorldPositionToScreenPosition(text.Position, out Vector2 screenPos))
                     {
                         System.Numerics.Vector4 color = index % 2 == 0 ? new System.Numerics.Vector4(0.3f, 0.3f, 0.3f, 1) : new System.Numerics.Vector4(0, 0, 0, 1);
-                        ImGuiNET.ImGui.GetWindowDrawList().AddText(
+                        ImGui.GetWindowDrawList().AddText(
                             new System.Numerics.Vector2(screenPos.X, screenPos.Y + heightOffset * index),
-                            ImGuiNET.ImGui.GetColorU32(color),
+                            ImGui.GetColorU32(color),
                             $"{text.Text}");
                         index++;
                     }

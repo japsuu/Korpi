@@ -2,7 +2,7 @@
 
 namespace BlockEngine.Client.Debugging;
 
-public static class RenderingWindowData
+public static class DebugStats
 {
     private const int AVERAGE_CHUNK_GENERATION_TIME_SAMPLES = 64;
     private const int AVERAGE_CHUNK_MESHING_TIME_SAMPLES = 64;

@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.UI.ImGui.Windows;
+﻿using BlockEngine.Client.UI.Windows;
 using ImGuiNET;
 
-namespace BlockEngine.Client.UI.ImGui;
+namespace BlockEngine.Client.UI;
 
 public static class ImGuiWindowManager
 {
@@ -12,11 +12,12 @@ public static class ImGuiWindowManager
     
     public static void CreateDefaultWindows()
     {
-        MemoryProfilerWindow unused2 = new();
+        MemoryProfilerWindow unused = new();
 #if DEBUG
         RenderingWindow unused1 = new();
+        CameraWindow unused2 = new();
         DebugTextWindow unused3 = new();
-        CameraWindow unused = new();
+        DebugStatsWindow unused4 = new();
 #endif
     }
 
@@ -41,16 +42,16 @@ public static class ImGuiWindowManager
 
     public static void UpdateAllWindows()
     {
-        ImGuiNET.ImGui.Begin("Windows", ImGuiWindowFlags.AlwaysAutoResize);
-        ImGuiNET.ImGui.Checkbox("Draw Windows", ref shouldRenderWindows);
-        ImGuiNET.ImGui.Separator();
+        ImGui.Begin("Windows", ImGuiWindowFlags.AlwaysAutoResize);
+        ImGui.Checkbox("Draw Windows", ref shouldRenderWindows);
+        ImGui.Separator();
         foreach (KeyValuePair<ImGuiWindow, string> kvp in RegisteredWindows)
         {
             bool windowVisible = kvp.Key.IsVisible;
-            if (ImGuiNET.ImGui.Checkbox($"{kvp.Value} -> {kvp.Key.Title}", ref windowVisible))
+            if (ImGui.Checkbox($"{kvp.Value} -> {kvp.Key.Title}", ref windowVisible))
                 kvp.Key.ToggleVisibility();
         }
-        ImGuiNET.ImGui.End();
+        ImGui.End();
         
         if (!shouldRenderWindows)
             return;

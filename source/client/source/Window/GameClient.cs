@@ -9,8 +9,8 @@ using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
 using BlockEngine.Client.Rendering.Shaders;
 using BlockEngine.Client.Rendering.Skybox;
+using BlockEngine.Client.UI;
 using BlockEngine.Client.UI.HUD;
-using BlockEngine.Client.UI.ImGui;
 using BlockEngine.Client.World;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -129,6 +129,7 @@ public class GameClient : GameWindow
         _gameWorld.Dispose();
         _shaderManager.Dispose();
         _skybox.Dispose();
+        _imGuiController.DestroyDeviceObjects();
         TextureRegistry.BlockArrayTexture.Dispose();
         ClientUnload?.Invoke();
     }
@@ -194,7 +195,7 @@ public class GameClient : GameWindow
             _skybox.Draw();
 
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && RenderingWindowData.ChunksInGenerationQueue == 0 && RenderingWindowData.ChunksInMeshingQueue == 0)
+        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && DebugStats.ChunksInGenerationQueue == 0 && DebugStats.ChunksInMeshingQueue == 0)
         {
             ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
             Close();

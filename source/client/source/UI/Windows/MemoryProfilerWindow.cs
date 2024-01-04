@@ -2,7 +2,7 @@
 using BlockEngine.Client.Window;
 using ImGuiNET;
 
-namespace BlockEngine.Client.UI.ImGui.Windows;
+namespace BlockEngine.Client.UI.Windows;
 
 public class MemoryProfilerWindow : ImGuiWindow
 {
@@ -33,26 +33,26 @@ public class MemoryProfilerWindow : ImGuiWindow
         }
 
         // Add hover tooltip
-        ImGuiNET.ImGui.Text($"GC Alloc. Approx.: {GC.GetTotalMemory(false) / BYTES_TO_MEGABYTES} MB");
-        if (ImGuiNET.ImGui.IsItemHovered())
+        ImGui.Text($"GC Alloc. Approx.: {GC.GetTotalMemory(false) / BYTES_TO_MEGABYTES} MB");
+        if (ImGui.IsItemHovered())
         {
-            ImGuiNET.ImGui.BeginTooltip();
-            ImGuiNET.ImGui.Text("The memory currently thought to be allocated by GC.");
-            ImGuiNET.ImGui.EndTooltip();
+            ImGui.BeginTooltip();
+            ImGui.Text("The memory currently thought to be allocated by GC.");
+            ImGui.EndTooltip();
         }
-        ImGuiNET.ImGui.Text($"GC Avail.:         {_gcMemoryInfo.TotalAvailableMemoryBytes / BYTES_TO_MEGABYTES} MB");
-        if (ImGuiNET.ImGui.IsItemHovered())
+        ImGui.Text($"GC Avail.:         {_gcMemoryInfo.TotalAvailableMemoryBytes / BYTES_TO_MEGABYTES} MB");
+        if (ImGui.IsItemHovered())
         {
-            ImGuiNET.ImGui.BeginTooltip();
-            ImGuiNET.ImGui.Text("The total amount of memory available for GC to use.");
-            ImGuiNET.ImGui.EndTooltip();
+            ImGui.BeginTooltip();
+            ImGui.Text("The total amount of memory available for GC to use.");
+            ImGui.EndTooltip();
         }
-        ImGuiNET.ImGui.Text($"Process Alloc.:    {_proc.PrivateMemorySize64 / BYTES_TO_MEGABYTES} MB");
-        if (ImGuiNET.ImGui.IsItemHovered())
+        ImGui.Text($"Process Alloc.:    {_proc.PrivateMemorySize64 / BYTES_TO_MEGABYTES} MB");
+        if (ImGui.IsItemHovered())
         {
-            ImGuiNET.ImGui.BeginTooltip();
-            ImGuiNET.ImGui.Text("The amount of memory allocated for this process.");
-            ImGuiNET.ImGui.EndTooltip();
+            ImGui.BeginTooltip();
+            ImGui.Text("The amount of memory allocated for this process.");
+            ImGui.EndTooltip();
         }
     }
 
