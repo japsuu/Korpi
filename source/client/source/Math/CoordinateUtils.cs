@@ -1,14 +1,16 @@
-﻿using OpenTK.Mathematics;
+﻿using System.Runtime.CompilerServices;
+using OpenTK.Mathematics;
 
 namespace BlockEngine.Client.Math;
 
-public class CoordinateUtils
+public static class CoordinateUtils
 {
     /// <summary>
     /// World position -> chunk position.
     /// Example: (36, 74, -5) -> (32, 64, -32)
     /// </summary>
     /// <returns>A new position that is relative to the chunk grid</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3i WorldToChunk(Vector3 position)
     {
         return new Vector3i(
@@ -24,6 +26,7 @@ public class CoordinateUtils
     /// Example: (36, 74, -5) -> (32, 64, -32)
     /// </summary>
     /// <returns>A new position that is relative to the chunk grid</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3i WorldToChunk(Vector3i position)
     {
         return new Vector3i(
@@ -39,6 +42,7 @@ public class CoordinateUtils
     /// Example: (36, 74, -5) -> (32, -32)
     /// </summary>
     /// <returns>A new position that is relative to the chunk column grid</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2i WorldToColumn(Vector3i position)
     {
         return new Vector2i(
@@ -53,6 +57,7 @@ public class CoordinateUtils
     /// Example: (36, 74, -5) -> (32, -32)
     /// </summary>
     /// <returns>A new position that is relative to the chunk column grid</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2i WorldToColumn(Vector3 position)
     {
         return new Vector2i(
@@ -67,6 +72,7 @@ public class CoordinateUtils
     /// Example: (36, 74, -5) -> (4, 10, 27)
     /// </summary>
     /// <returns>A new position that is relative to the chunk containing <see cref="position"/></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3i WorldToChunkRelative(Vector3i position)
     {
         return new Vector3i(
