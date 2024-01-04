@@ -1,8 +1,8 @@
 # BlockEngine
 
 [![client build](https://github.com/japsuu/BlockEngine/actions/workflows/build_client.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/build_client.yml)
-[![client tests](https://github.com/japsuu/BlockEngine/actions/workflows/test_client.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/test_client.yml)
-[![documentation](https://github.com/japsuu/BlockEngine/actions/workflows/documentation.yml/badge.svg)](https://github.com/japsuu/BlockEngine/actions/workflows/documentation.yml)
+[![client tests](https://github.com/japsuu/BlockEngine/actions/workflows/test_client.yml/badge.svg)](https://github.com/japsuu/BlockEngine/tree/master/tests/client)
+[![documentation](https://github.com/japsuu/BlockEngine/actions/workflows/documentation.yml/badge.svg)](https://japsuu.github.io/BlockEngine/)
 
 ![Latest progress screenshot](https://raw.githubusercontent.com/japsuu/BlockEngine/master/screenshots/latest.png)
 
