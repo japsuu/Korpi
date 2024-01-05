@@ -46,6 +46,17 @@ public abstract class Entity
             component.Update();
         }
     }
+
+
+    public void FixedUpdate()
+    {
+        OnFixedUpdate();
+        
+        foreach (Component component in _components.Values)
+        {
+            component.FixedUpdate();
+        }
+    }
     
     
     public void Draw()
@@ -139,6 +150,12 @@ public abstract class Entity
     /// Called when the Entity is updated.
     /// </summary>
     protected virtual void OnUpdate() { }
+    
+    
+    /// <summary>
+    /// Called when the Entity is updated.
+    /// </summary>
+    protected virtual void OnFixedUpdate() { }
     
     
     /// <summary>

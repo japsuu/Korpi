@@ -9,7 +9,7 @@ public class ConstantsTests
     [Test]
     public void UpdateLoopFrequency_IsNotNegative()
     {
-        Assert.That(Constants.UPDATE_LOOP_FREQUENCY, Is.GreaterThanOrEqualTo(0u));
+        Assert.That(Constants.UPDATE_FRAME_FREQUENCY, Is.GreaterThanOrEqualTo(0u));
     }
 
     [Test]

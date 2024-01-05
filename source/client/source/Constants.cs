@@ -16,7 +16,32 @@ public static class Constants
     public const string YAML_MOD_FILE_EXTENSION = "yaml";
     
     // Game logic
-    public const uint UPDATE_LOOP_FREQUENCY = 0;
+    public const int UPDATE_FRAME_FREQUENCY = 0;
+    public const int FIXED_UPDATE_FRAME_FREQUENCY = 20;
+    public const float FIXED_DELTA_TIME = 1f / FIXED_UPDATE_FRAME_FREQUENCY;
+    
+    /// <summary>
+    /// The threshold at which the engine will warn the user that the fixed update loop is running too slowly.
+    /// Default: 1.25x <see cref="FIXED_DELTA_TIME"/>
+    /// </summary>
+    public const float FIXED_DELTA_TIME_SLOW_THRESHOLD = FIXED_DELTA_TIME * 1.25f;
+    
+    /// <summary>
+    /// An upper limit on the amount of time the engine will report as having passed by the <see cref="BlockEngine.Client.Window.GameTime.FixedDeltaTime"/>.
+    /// Default: 2x <see cref="FIXED_DELTA_TIME"/>
+    /// </summary>
+    public const float MAX_FIXED_DELTA_TIME = FIXED_DELTA_TIME * 2f;
+    
+    /// <summary>
+    /// The threshold at which the engine will warn the user that the update loop is running too slowly.
+    /// Default: 10fps
+    /// </summary>
+    public const float DELTA_TIME_SLOW_THRESHOLD = 0.1f;
+    
+    /// <summary>
+    /// An upper limit on the amount of time the engine will report as having passed by the <see cref="BlockEngine.Client.Window.GameTime.DeltaTime"/>.
+    /// </summary>
+    public const float MAX_DELTA_TIME = 0.5f;
     
     // World generation
     public const int CHUNK_SIZE = 32;

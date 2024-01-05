@@ -40,7 +40,7 @@ public class GameClient : GameWindow
     public static int WindowWidth { get; private set; }
     public static int WindowHeight { get; private set; }
     public static float WindowAspectRatio { get; private set; }
-    public static bool IsPlayerInGui { get; set; }
+    public static bool IsPlayerInGui { get; private set; }
 
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
@@ -48,6 +48,9 @@ public class GameClient : GameWindow
     private GameWorld _gameWorld = null!;
     private Crosshair _crosshair = null!;
     private PlayerEntity _playerEntity = null!;
+
+    private float _previousTimeSeconds;
+    private float _fixedFrameAccumulator;
 
 #if DEBUG
     private static readonly DebugProc DebugMessageDelegate = OnDebugMessage;
@@ -57,7 +60,7 @@ public class GameClient : GameWindow
     public GameClient() : base(
         new GameWindowSettings
         {
-            UpdateFrequency = Constants.UPDATE_LOOP_FREQUENCY
+            UpdateFrequency = Constants.UPDATE_FRAME_FREQUENCY
         },
         new NativeWindowSettings
         {
@@ -138,26 +141,53 @@ public class GameClient : GameWindow
     protected override void OnUpdateFrame(FrameEventArgs args)
     {
         base.OnUpdateFrame(args);
-
-        GameTime.Update(args.Time);
+        
+        if (_previousTimeSeconds == 0)
+        {
+            _previousTimeSeconds = (float)GameTime.TotalTime;
+        }
+ 
+        float now = (float)GameTime.TotalTime;
+        float frameTime = now - _previousTimeSeconds;
+        if (frameTime > Constants.MAX_FIXED_DELTA_TIME)
+        {
+            Logger.LogWarning($"Fixed update loop is running really slow ({frameTime:F2}s)! Fixed delta time was clamped to {Constants.MAX_FIXED_DELTA_TIME:F2} seconds.");
+            frameTime = Constants.MAX_FIXED_DELTA_TIME;
+        }
+        else if (frameTime > Constants.FIXED_DELTA_TIME_SLOW_THRESHOLD)
+        {
+            Logger.LogWarning($"Fixed update loop is running slow ({frameTime:F2}s)!");
+            frameTime = Constants.MAX_FIXED_DELTA_TIME;
+        }
+         
+        _previousTimeSeconds = now;
+        _fixedFrameAccumulator += frameTime;
+ 
+        while (_fixedFrameAccumulator >= Constants.FIXED_DELTA_TIME)
+        {
+            FixedUpdate();
+            _fixedFrameAccumulator -= Constants.FIXED_DELTA_TIME;
+        }
+ 
+        float fixedAlpha = _fixedFrameAccumulator / Constants.FIXED_DELTA_TIME;
+        double deltaTime = args.Time;
+        
+        if (deltaTime > Constants.MAX_DELTA_TIME)
+        {
+            Logger.LogWarning($"Detected large frame hitch ({1f/deltaTime:F2}fps, {deltaTime:F2}s)! Delta time was clamped to {Constants.MAX_DELTA_TIME:F2} seconds.");
+            deltaTime = Constants.MAX_DELTA_TIME;
+        }
+        else if (deltaTime > Constants.DELTA_TIME_SLOW_THRESHOLD)
+        {
+            Logger.LogWarning($"Detected frame hitch ({deltaTime:F2}s)!");
+            deltaTime = Constants.MAX_DELTA_TIME;
+        }
+        
+        GameTime.Update(deltaTime, fixedAlpha);
 
         Input.Update(KeyboardState, MouseState);
 
-        // Emulate the cursor being fixed to center of the screen, as OpenTK doesn't fix the cursor position when it's grabbed.
-        Vector2 mousePos = Input.MouseState.Position;
-        if (CursorState == CursorState.Grabbed)
-            mousePos = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
-
-        // MousePosition = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
-
-        _imGuiController.Update(this, (float)args.Time, mousePos);
-
-        ImGuiWindowManager.UpdateAllWindows();
-
-        if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
-            SwitchCursorState();
-
-        _gameWorld.Tick();
+        Update();
     }
 
 
@@ -213,6 +243,46 @@ public class GameClient : GameWindow
             ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
 
         SwapBuffers();
+    }
+
+
+    /// <summary>
+    /// Fixed update loop.
+    /// Called <see cref="Constants.FIXED_UPDATE_FRAME_FREQUENCY"/> times per second.
+    /// </summary>
+    private void FixedUpdate()
+    {
+        _gameWorld.FixedUpdate();
+    }
+
+
+    /// <summary>
+    /// Regular update loop.
+    /// Called every frame.
+    /// </summary>
+    private void Update()
+    {
+        UpdateGui();
+        
+        _gameWorld.Update();
+    }
+
+
+    private void UpdateGui()
+    {
+        // Emulate the cursor being fixed to center of the screen, as OpenTK doesn't fix the cursor position when it's grabbed.
+        Vector2 mousePos = Input.MouseState.Position;
+        if (CursorState == CursorState.Grabbed)
+            mousePos = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
+
+        // MousePosition = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
+
+        _imGuiController.Update(this, GameTime.DeltaTimeFloat, mousePos);
+
+        ImGuiWindowManager.UpdateAllWindows();
+
+        if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
+            SwitchCursorState();
     }
 
 
