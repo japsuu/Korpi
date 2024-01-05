@@ -24,6 +24,16 @@ public static class GameTime
     public static float DeltaTimeFloat { get; private set; }
     
     /// <summary>
+    /// Time in seconds that has passed since the last fixed frame.
+    /// </summary>
+    public static double FixedDeltaTime => Constants.FIXED_DELTA_TIME;
+
+    /// <summary>
+    /// Time in seconds that has passed since the last fixed frame, as a float.
+    /// </summary>
+    public static float FixedDeltaTimeFloat => Constants.FIXED_DELTA_TIME;
+    
+    /// <summary>
     /// Total time in seconds that has passed since the start of the game.
     /// </summary>
     public static double TotalTime { get; private set; }
@@ -32,6 +42,12 @@ public static class GameTime
     /// Total number of frames that have passed since the start of the game.
     /// </summary>
     public static uint TotalFrameCount { get; private set; }
+
+    /// <summary>
+    /// This value stores how far we are in the current update frame, relative to the fixed update loop.
+    /// For example, when the value of <see cref="FixedAlpha"/> is 0.5, it means we are halfway between the last frame and the next upcoming frame.
+    /// </summary>
+    public static float FixedAlpha { get; private set; }
     
     public static int CurrentYear { get; private set; }
     public static int CurrentMonth { get; private set; }
@@ -75,10 +91,13 @@ public static class GameTime
     }
 
 
-    public static void Update(double deltaTime)
+    public static void Update(double deltaTime, float fixedAlpha)
     {
         DeltaTime = deltaTime;
         DeltaTimeFloat = (float) deltaTime;
+        
+        FixedAlpha = fixedAlpha;
+        
         TotalTime += deltaTime;
         TotalFrameCount++;
         
@@ -97,7 +116,6 @@ public static class GameTime
         CurrentHour = (int)System.Math.Floor(totalSeconds / 3600);
         CurrentMinute = (int)System.Math.Floor(totalSeconds % 3600 / 60);
         CurrentSecond = (int)System.Math.Floor(totalSeconds % 60);
-        
         
         // Update the day-night lerp progress.
         if (DayProgress >= sunriseStartProgress && DayProgress < sunriseEndProgress)

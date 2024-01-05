@@ -20,6 +20,15 @@ public class EntityManager
     }
 
 
+    public void FixedUpdate()
+    {
+        foreach (Entity obj in _entities)
+        {
+            obj.FixedUpdate();
+        }
+    }
+
+
     public void Draw()
     {
         foreach (Entity obj in _entities)

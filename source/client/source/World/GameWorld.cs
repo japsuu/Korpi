@@ -44,14 +44,20 @@ public class GameWorld : IDisposable
     }
     
     
-    public void Tick()
+    public void Update()
+    {
+        _entityManager.Update();
+        CameraWindowData.LastRaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
+    }
+    
+    
+    public void FixedUpdate()
     {
         RegionManager.Tick();
         ChunkGenerator.ProcessQueues();
         ChunkMesher.ProcessQueues();
-        _entityManager.Update();
+        _entityManager.FixedUpdate();
         DebugStats.LoadedRegionCount = RegionManager.LoadedRegionsCount;
-        CameraWindowData.LastRaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
     }
     
     

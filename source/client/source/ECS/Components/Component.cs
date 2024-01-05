@@ -29,6 +29,12 @@ public abstract class Component
     {
         OnUpdate();
     }
+
+
+    public void FixedUpdate()
+    {
+        OnFixedUpdate();
+    }
     
     
     public void Draw()
@@ -53,6 +59,8 @@ public abstract class Component
     protected virtual void OnEnable() { }
     
     protected virtual void OnUpdate() { }
+    
+    protected virtual void OnFixedUpdate() { }
     
     protected virtual void OnDraw() { }
     
