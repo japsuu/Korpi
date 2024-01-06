@@ -1,6 +1,6 @@
 ﻿using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Math;
-using BlockEngine.Client.Math.Noise;
+using BlockEngine.Client.Mathematics;
+using BlockEngine.Client.Mathematics.Noise;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Threading;
 using BlockEngine.Client.World.Regions.Chunks;

@@ -1,6 +1,6 @@
 ﻿using BlockEngine.Client.Debugging;
 using BlockEngine.Client.ECS.Entities;
-using BlockEngine.Client.Math;
+using BlockEngine.Client.Mathematics;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
 using BlockEngine.Client.Window;

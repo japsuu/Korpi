@@ -1,4 +1,4 @@
-using BlockEngine.Client.Math;
+using BlockEngine.Client.Mathematics;
 using BlockEngine.Client.Utils;
 using OpenTK.Mathematics;
 

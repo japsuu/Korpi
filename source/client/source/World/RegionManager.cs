@@ -3,7 +3,7 @@ using BlockEngine.Client.Configuration;
 using BlockEngine.Client.Debugging.Drawing;
 using BlockEngine.Client.ECS.Entities;
 using BlockEngine.Client.Logging;
-using BlockEngine.Client.Math;
+using BlockEngine.Client.Mathematics;
 using BlockEngine.Client.Meshing;
 using BlockEngine.Client.Physics;
 using BlockEngine.Client.Registries;
