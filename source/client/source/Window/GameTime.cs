@@ -47,7 +47,7 @@ public static class GameTime
     /// This value stores how far we are in the current update frame, relative to the fixed update loop.
     /// For example, when the value of <see cref="FixedAlpha"/> is 0.5, it means we are halfway between the last frame and the next upcoming frame.
     /// </summary>
-    public static float FixedAlpha { get; private set; }
+    public static double FixedAlpha { get; private set; }
     
     public static int CurrentYear { get; private set; }
     public static int CurrentMonth { get; private set; }
@@ -91,7 +91,7 @@ public static class GameTime
     }
 
 
-    public static void Update(double deltaTime, float fixedAlpha)
+    public static void Update(double deltaTime, double fixedAlpha)
     {
         DeltaTime = deltaTime;
         DeltaTimeFloat = (float) deltaTime;
@@ -113,9 +113,9 @@ public static class GameTime
 
         // Calculate hours, minutes, and seconds.
         double totalSeconds = DayProgress * 24 * 60 * 60;
-        CurrentHour = (int)System.Math.Floor(totalSeconds / 3600);
-        CurrentMinute = (int)System.Math.Floor(totalSeconds % 3600 / 60);
-        CurrentSecond = (int)System.Math.Floor(totalSeconds % 60);
+        CurrentHour = (int)Math.Floor(totalSeconds / 3600);
+        CurrentMinute = (int)Math.Floor(totalSeconds % 3600 / 60);
+        CurrentSecond = (int)Math.Floor(totalSeconds % 60);
         
         // Update the day-night lerp progress.
         if (DayProgress >= sunriseStartProgress && DayProgress < sunriseEndProgress)
@@ -143,7 +143,7 @@ public static class GameTime
         
         // Update the sun direction.
         float sunAngle = MathHelper.DegreesToRadians(DayProgress * 360.0f - 90);
-        SunDirection = new Vector3((float)System.Math.Cos(sunAngle), (float)System.Math.Sin(sunAngle), 0.0f);
+        SunDirection = new Vector3((float)Math.Cos(sunAngle), (float)Math.Sin(sunAngle), 0.0f);
     }
 
 

@@ -1,6 +1,6 @@
 ﻿using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Math;
-using BlockEngine.Client.Math.Noise;
+using BlockEngine.Client.Mathematics;
+using BlockEngine.Client.Mathematics.Noise;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Threading;
 using BlockEngine.Client.World.Regions.Chunks;
@@ -84,7 +84,7 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
         height = System.Math.Clamp(height, 0, 1);
         
         // Scale the noise value to the terrain height range.
-        height = MathUtils.Lerp(TERRAIN_HEIGHT_MIN, TERRAIN_HEIGHT_MAX, height);
+        height = MathHelper.Lerp(TERRAIN_HEIGHT_MIN, TERRAIN_HEIGHT_MAX, height);
         
         return (int)height;
     }

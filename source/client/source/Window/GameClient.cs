@@ -49,8 +49,7 @@ public class GameClient : GameWindow
     private Crosshair _crosshair = null!;
     private PlayerEntity _playerEntity = null!;
 
-    private float _previousTimeSeconds;
-    private float _fixedFrameAccumulator;
+    private double _fixedFrameAccumulator;
 
 #if DEBUG
     private static readonly DebugProc DebugMessageDelegate = OnDebugMessage;
@@ -134,6 +133,7 @@ public class GameClient : GameWindow
         _skybox.Dispose();
         _imGuiController.DestroyDeviceObjects();
         TextureRegistry.BlockArrayTexture.Dispose();
+        _playerEntity.Disable();
         ClientUnload?.Invoke();
     }
 
@@ -142,26 +142,10 @@ public class GameClient : GameWindow
     {
         base.OnUpdateFrame(args);
         
-        if (_previousTimeSeconds == 0)
-        {
-            _previousTimeSeconds = (float)GameTime.TotalTime;
-        }
- 
-        float now = (float)GameTime.TotalTime;
-        float frameTime = now - _previousTimeSeconds;
-        if (frameTime > Constants.MAX_FIXED_DELTA_TIME)
-        {
-            Logger.LogWarning($"Fixed update loop is running really slow ({frameTime:F2}s)! Fixed delta time was clamped to {Constants.MAX_FIXED_DELTA_TIME:F2} seconds.");
-            frameTime = Constants.MAX_FIXED_DELTA_TIME;
-        }
-        else if (frameTime > Constants.FIXED_DELTA_TIME_SLOW_THRESHOLD)
-        {
-            Logger.LogWarning($"Fixed update loop is running slow ({frameTime:F2}s)!");
-            frameTime = Constants.MAX_FIXED_DELTA_TIME;
-        }
-         
-        _previousTimeSeconds = now;
-        _fixedFrameAccumulator += frameTime;
+        double deltaTime = args.Time;
+        _fixedFrameAccumulator += deltaTime;
+        
+        DynamicPerformance.Update(deltaTime);
  
         while (_fixedFrameAccumulator >= Constants.FIXED_DELTA_TIME)
         {
@@ -169,8 +153,7 @@ public class GameClient : GameWindow
             _fixedFrameAccumulator -= Constants.FIXED_DELTA_TIME;
         }
  
-        float fixedAlpha = _fixedFrameAccumulator / Constants.FIXED_DELTA_TIME;
-        double deltaTime = args.Time;
+        double fixedAlpha = _fixedFrameAccumulator / Constants.FIXED_DELTA_TIME;
         
         if (deltaTime > Constants.MAX_DELTA_TIME)
         {
