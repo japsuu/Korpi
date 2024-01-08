@@ -11,13 +11,13 @@ public class Crosshair
     private static readonly float[] Vertices = 
     {
         // Position     // Texture coords
-        -0.05f,  0.05f,  0.0f, 0.0f,
-         0.05f, -0.05f,  1.0f, 1.0f,
-        -0.05f, -0.05f,  0.0f, 1.0f,
+        -0.025f,  0.025f,  0.0f, 0.0f,
+         0.025f, -0.025f,  1.0f, 1.0f,
+        -0.025f, -0.025f,  0.0f, 1.0f,
         
-        -0.05f,  0.05f,  0.0f, 0.0f,
-         0.05f, -0.05f,  1.0f, 1.0f,
-         0.05f,  0.05f,  1.0f, 0.0f 
+        -0.025f,  0.025f,  0.0f, 0.0f,
+         0.025f, -0.025f,  1.0f, 1.0f,
+         0.025f,  0.025f,  1.0f, 0.0f 
     };
     
     private readonly Texture2D _crosshairTexture;
