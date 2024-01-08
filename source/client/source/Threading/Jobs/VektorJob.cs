@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using BlockEngine.Client.Logging;
+﻿using BlockEngine.Client.Logging;
 using BlockEngine.Client.Threading.Pooling;
 
 namespace BlockEngine.Client.Threading.Jobs;
@@ -9,11 +8,6 @@ namespace BlockEngine.Client.Threading.Jobs;
 /// </summary>
 public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
 {
-    /// <summary>
-    /// Context in which the job was constructed.
-    /// </summary>
-    protected readonly SynchronizationContext Context;
-
     private Action? _continuation;
     private T _result;
 
@@ -30,8 +24,6 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
     /// </summary>
     protected VektorJob()
     {
-        Debug.Assert(SynchronizationContext.Current != null, "SynchronizationContext.Current != null");
-        Context = SynchronizationContext.Current;
         _continuation = null;
         _result = default!;
         CompletionState = JobCompletionState.None;
@@ -75,7 +67,7 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
         CompletionState = completionState;
         Action? continuation = Interlocked.Exchange(ref _continuation, null);
         if (continuation != null)
-            Context.Post(state => { ((Action)state!).Invoke(); }, continuation);
+            DispatchToMain(continuation, QueueType.Default);
     }
 
 
@@ -89,17 +81,7 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
 
 
     /// <summary>
-    /// Dispatches a given action to be executed on the context which created this job.
-    /// </summary>
-    /// <param name="a"></param>
-    protected void DispatchToContext(Action a)
-    {
-        Context.Post(state => { a?.Invoke(); }, null);
-    }
-
-
-    /// <summary>
-    /// Dispatches a given action to be executed on the Unity main thread.
+    /// Dispatches a given action to be executed on the main thread.
     /// </summary>
     protected void DispatchToMain(Action a, QueueType queueType)
     {
@@ -134,14 +116,15 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
     /// </summary>
     public static void WhenAll(IEnumerable<IVektorJob> jobs)
     {
-        bool complete = false;
-        while (!complete)
+        IEnumerable<IVektorJob> vektorJobs = jobs.ToList();
+        bool isComplete = false;
+        while (!isComplete)
         {
-            complete = true;
-            foreach (IVektorJob job in jobs)
+            isComplete = true;
+            foreach (IVektorJob job in vektorJobs)
             {
                 if (job.CompletionState != JobCompletionState.None) continue;
-                complete = false;
+                isComplete = false;
                 break;
             }
         }

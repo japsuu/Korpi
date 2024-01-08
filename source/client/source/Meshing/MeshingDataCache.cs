@@ -126,6 +126,27 @@ public class MeshingDataCache
         TryGetData(blockPosX, blockPosY, blockPosZ, out BlockState blockState);
         return blockState;
     }
+    
+    
+    public void AcquireNeighbourReadLocks()
+    {
+        bool success = true;
+        foreach (Chunk chunk in _neighbourChunks.Values)
+            success &= chunk.ThreadLock.TryEnterReadLock(Constants.JOB_LOCK_TIMEOUT_MS);
+
+        if (!success)
+        {
+            ReleaseNeighbourReadLocks();
+            throw new Exception("Failed to acquire one or more read locks on neighbouring chunks.");
+        }
+    }
+    
+    
+    public void ReleaseNeighbourReadLocks()
+    {
+        foreach (Chunk chunk in _neighbourChunks.Values)
+            chunk.ThreadLock.ExitReadLock();
+    }
 
 
     public void Clear()

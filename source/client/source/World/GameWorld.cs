@@ -22,7 +22,7 @@ public class GameWorld : IDisposable
     
     public readonly RegionManager RegionManager;      // TODO: Make private, and wrap around a function
     public readonly ChunkGenerator ChunkGenerator;  // TODO: Make private, and wrap around a function
-    public readonly ChunkMesher ChunkMesher;        // TODO: Make private, and wrap around a function
+    public readonly ChunkMesherManager ChunkMesherManager;        // TODO: Make private, and wrap around a function
 
     private readonly string _name;
     private readonly EntityManager _entityManager;
@@ -33,7 +33,7 @@ public class GameWorld : IDisposable
         _name = name;
         RegionManager = new RegionManager();
         ChunkGenerator = new ChunkGenerator();
-        ChunkMesher = new ChunkMesher();
+        ChunkMesherManager = new ChunkMesherManager();
         _entityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
@@ -55,7 +55,7 @@ public class GameWorld : IDisposable
     {
         RegionManager.Tick();
         ChunkGenerator.ProcessQueues();
-        ChunkMesher.ProcessQueues();
+        ChunkMesherManager.ProcessQueues();
         _entityManager.FixedUpdate();
         DebugStats.LoadedRegionCount = RegionManager.LoadedRegionsCount;
     }
@@ -114,6 +114,6 @@ public class GameWorld : IDisposable
     public void Dispose()
     {
         ChunkGenerator.Dispose();
-        ChunkMesher.Dispose();
+        ChunkMesherManager.Dispose();
     }
 }

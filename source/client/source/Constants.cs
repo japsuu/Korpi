@@ -69,4 +69,10 @@ public static class Constants
     public const int MAX_SUPPORTED_TEXTURES = 1024;
     public const int BLOCK_TEXTURE_SIZE = 32;
     public const float ANISOTROPIC_FILTERING_LEVEL = 16f;
+    
+    // Threading
+    /// <summary>
+    /// Maximum amount of time (ms) a <see cref="BlockEngine.Client.Threading.Jobs.VektorJob{t}"/> will wait for a lock before aborting.
+    /// </summary>
+    public const int JOB_LOCK_TIMEOUT_MS = 10000;
 }

@@ -18,7 +18,7 @@ public static class GlobalThreadPool
     /// Minimum number of <see cref="mainQueueThrottled"/> invocations executed per tick.
     /// </summary>
     private const int MIN_THROTTLED_UPDATES_PER_TICK = 1;
-    
+
     /// <summary>
     /// Maximum number of <see cref="mainQueueThrottled"/> invocations executed per tick.
     /// </summary>
@@ -29,28 +29,28 @@ public static class GlobalThreadPool
     /// Dynamically adjusted based on performance.
     /// </summary>
     private static int throttledUpdatesPerTick;
-    
+
     /// <summary>
     /// The thread pool.
     /// </summary>
     private static ThreadPool threadPool = null!;
-    
+
     /// <summary>
     /// A queue of actions to be executed on the main thread.
     /// </summary>
     private static ConcurrentQueue<Action> mainQueue = null!;
-    
+
     /// <summary>
     /// A throttled queue of actions to be executed on the main thread.
     /// </summary>
     private static ConcurrentQueue<Action> mainQueueThrottled = null!;
-    
+
     /// <summary>
     /// The number of threads allocated to process the pool.
     /// </summary>
     public static uint ThreadCount { get; private set; }
-    
-    
+
+
     public static void Initialize()
     {
         // Allocate 3/4 of the system's thread count with a minimum of 2.
@@ -58,7 +58,7 @@ public static class GlobalThreadPool
         threadPool = new ThreadPool(ThreadCount, ThreadConfig.Default());
         mainQueue = new ConcurrentQueue<Action>();
         mainQueueThrottled = new ConcurrentQueue<Action>();
-            
+
         Logger.Log($"[Global Thread Pool] Initialized with {ThreadCount} threads.");
     }
 
@@ -86,21 +86,25 @@ public static class GlobalThreadPool
                 break;
         }
     }
-    
-    
+
+
     /// <summary>
     /// Immediately queues the provided job for execution on the pool.
     /// </summary>
-    public static VektorJob<T> DispatchJob<T>(VektorJob<T> item) {
+    public static VektorJob<T> DispatchJob<T>(VektorJob<T> item)
+    {
         threadPool.EnqueueWorkItem(item);
         return item;
     }
-        
+
+
     /// <summary>
     /// Queues a given action to be executed on the main thread.
     /// </summary>
-    public static void DispatchOnMain(Action a, QueueType queue) {
-        switch (queue) {
+    public static void DispatchOnMain(Action a, QueueType queue)
+    {
+        switch (queue)
+        {
             case QueueType.Default:
                 mainQueue.Enqueue(a);
                 break;

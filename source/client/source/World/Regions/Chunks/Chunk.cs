@@ -1,5 +1,7 @@
 ﻿using BlockEngine.Client.Debugging.Drawing;
 using BlockEngine.Client.Logging;
+using BlockEngine.Client.Meshing.Jobs;
+using BlockEngine.Client.Threading.Pooling;
 using BlockEngine.Client.World.Regions.Chunks.Blocks;
 using BlockEngine.Client.World.Regions.Chunks.BlockStorage;
 using OpenTK.Mathematics;
@@ -49,31 +51,40 @@ public class Chunk
         /// </summary>
         READY = 4
     }
-    
-    
+
+
     private readonly IBlockStorage _blockStorage = new BlockPalette();
     private readonly object _blockStorageLock = new();
+    private readonly Action _meshJobCallback;
 
     private bool _containsRenderedBlocks;
     private bool _isLoaded;
-    
-    public readonly Vector3i Position;
-    public readonly int Top;
-    public readonly int Bottom;
-
+    private long _currentJobId;
     private ChunkGenerationState _generationState;
     private ChunkMeshState _meshState;
     
+    public readonly ReaderWriterLockSlim ThreadLock;
+    public readonly Vector3i Position;
+    public readonly int Top;
+    public readonly int Bottom;
+    
     public bool IsGenerated => _generationState == ChunkGenerationState.READY;
     public bool ShouldBeRendered => IsGenerated && _meshState >= ChunkMeshState.MESHING;
+    public long CurrentJobId => Interlocked.Read(ref _currentJobId);
 
 
-    public Chunk(Vector3i position)
+    public Chunk(Vector3i position)     //TODO: Isolate state to a separate class
     {
         Position = position;
         Top = position.Y + Constants.CHUNK_SIZE - 1;
         Bottom = position.Y;
         _containsRenderedBlocks = false;
+        ThreadLock = new ReaderWriterLockSlim();
+        
+        // Set callbacks
+        _meshJobCallback = OnMeshed;
+        
+        // Set state
         _generationState = ChunkGenerationState.GENERATING;
         _meshState = ChunkMeshState.NONE;
     }
@@ -219,8 +230,15 @@ public class Chunk
         {
             Logger.LogWarning("TODO: Chunk is surrounded by blocks, skipping meshing.");
         }
+
+        if (_meshState == ChunkMeshState.MESHING)
+        {
+            Logger.LogWarning("Multiple meshing jobs enqueued for chunk!");
+        }
         _meshState = ChunkMeshState.MESHING;
-        GameWorld.CurrentGameWorld.ChunkMesher.Enqueue(Position);
+        Interlocked.Increment(ref _currentJobId);
+        // GameWorld.CurrentGameWorld.ChunkMesherManager.Enqueue(Position);
+        GlobalThreadPool.DispatchJob(new MeshJob(_currentJobId, this, _meshJobCallback));
     }
 
 
