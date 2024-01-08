@@ -9,6 +9,7 @@ using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
 using BlockEngine.Client.Rendering.Shaders;
 using BlockEngine.Client.Rendering.Skybox;
+using BlockEngine.Client.Threading.Pooling;
 using BlockEngine.Client.UI;
 using BlockEngine.Client.UI.HUD;
 using BlockEngine.Client.World;
@@ -63,15 +64,13 @@ public class GameClient : GameWindow
         },
         new NativeWindowSettings
         {
-            Size = (ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
+            Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
             Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}",
             NumberOfSamples = 8,
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
-        })
-    {
-    }
+        }) { }
 
 
     protected override void OnLoad()
@@ -93,9 +92,10 @@ public class GameClient : GameWindow
         GL.Enable(EnableCap.Multisample); // Enable multisampling.
         GL.Enable(EnableCap.Blend); // Enable blending for transparent textures.
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        GL.ClearColor(1f, 0f, 1f, 1.0f);
 
         // Resource initialization.
+        GlobalThreadPool.Initialize();
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
@@ -127,8 +127,7 @@ public class GameClient : GameWindow
     protected override void OnUnload()
     {
         base.OnUnload();
-
-        _gameWorld.Dispose();
+        Logger.Log("Shutting down...");
         _shaderManager.Dispose();
         _skybox.Dispose();
         _imGuiController.DestroyDeviceObjects();
@@ -167,7 +166,6 @@ public class GameClient : GameWindow
         }
         
         GameTime.Update(deltaTime, fixedAlpha);
-
         Input.Update(KeyboardState, MouseState);
 
         Update();
@@ -235,6 +233,7 @@ public class GameClient : GameWindow
     /// </summary>
     private void FixedUpdate()
     {
+        GlobalThreadPool.FixedUpdate();
         _gameWorld.FixedUpdate();
     }
 
@@ -247,6 +246,7 @@ public class GameClient : GameWindow
     {
         UpdateGui();
         
+        GlobalThreadPool.Update();
         _gameWorld.Update();
     }
 

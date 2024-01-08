@@ -51,6 +51,16 @@ namespace BlockEngine.Client.Logging
         }
 
         
+        public static void LogException(string message, Exception exception)
+        {
+            ConsoleColor originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            WriteLine(message);
+            WriteLine($"EXCEPTION: {exception.Message}");
+            Console.ForegroundColor = originalColor;
+        }
+
+        
         [Conditional("DEBUG")]
         public static void Debug(string message)
         {

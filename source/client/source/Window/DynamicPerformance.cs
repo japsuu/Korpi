@@ -47,9 +47,23 @@ public static class DynamicPerformance
     /// <param name="max">Maximum value.</param>
     /// <param name="allowOvershoot">Whether to allow the value to overshoot <see cref="max"/> (if <see cref="CurrentPerformance"/> is higher than 1).</param>
     /// <returns></returns>
-    public static float GetDynamicFloat(float min, float max, bool allowOvershoot = false)
+    public static float GetDynamic(float min, float max, bool allowOvershoot = false)
     {
         float factor = allowOvershoot ? CurrentPerformance : CurrentPerformanceClamped;
         return MathUtils.LerpUnclamped(min, max, factor);
+    }
+    
+    
+    /// <summary>
+    /// Gets a dynamic int based on the current performance.
+    /// </summary>
+    /// <param name="min">Minimum value (inclusive).</param>
+    /// <param name="max">Maximum value (inclusive).</param>
+    /// <param name="allowOvershoot">Whether to allow the value to overshoot <see cref="max"/> (if <see cref="CurrentPerformance"/> is higher than 1).</param>
+    /// <returns></returns>
+    public static int GetDynamic(int min, int max, bool allowOvershoot = false)
+    {
+        float factor = allowOvershoot ? CurrentPerformance : CurrentPerformanceClamped;
+        return (int)Math.Round(MathUtils.LerpUnclamped(min, max, factor));
     }
 }
