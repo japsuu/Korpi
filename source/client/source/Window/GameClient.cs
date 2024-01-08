@@ -9,6 +9,7 @@ using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
 using BlockEngine.Client.Rendering.Shaders;
 using BlockEngine.Client.Rendering.Skybox;
+using BlockEngine.Client.Threading.Pooling;
 using BlockEngine.Client.UI;
 using BlockEngine.Client.UI.HUD;
 using BlockEngine.Client.World;
@@ -96,6 +97,7 @@ public class GameClient : GameWindow
         GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         // Resource initialization.
+        GlobalThreadPool.Initialize();
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
@@ -167,7 +169,6 @@ public class GameClient : GameWindow
         }
         
         GameTime.Update(deltaTime, fixedAlpha);
-
         Input.Update(KeyboardState, MouseState);
 
         Update();
@@ -235,6 +236,7 @@ public class GameClient : GameWindow
     /// </summary>
     private void FixedUpdate()
     {
+        GlobalThreadPool.FixedUpdate();
         _gameWorld.FixedUpdate();
     }
 
@@ -247,6 +249,7 @@ public class GameClient : GameWindow
     {
         UpdateGui();
         
+        GlobalThreadPool.Update();
         _gameWorld.Update();
     }
 
