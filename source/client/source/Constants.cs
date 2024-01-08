@@ -41,9 +41,11 @@ public static class Constants
     
     public const int CHUNK_COLUMN_HEIGHT = 16;
     public const int CHUNK_COLUMN_HEIGHT_BLOCKS = CHUNK_COLUMN_HEIGHT * CHUNK_SIZE;
-    public const int CHUNK_COLUMN_LOAD_RADIUS = 6;
+    
+    public const bool CIRCULAR_LOAD_REGION = true;
+    public const int CHUNK_COLUMN_LOAD_RADIUS = 8;
     public const int CHUNK_COLUMN_LOAD_RADIUS_SQUARED = CHUNK_COLUMN_LOAD_RADIUS * CHUNK_COLUMN_LOAD_RADIUS;
-    public const int CHUNK_COLUMN_UNLOAD_RADIUS = 9;
+    public const int CHUNK_COLUMN_UNLOAD_RADIUS = CHUNK_COLUMN_LOAD_RADIUS + 3;
     public const int CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED = CHUNK_COLUMN_UNLOAD_RADIUS * CHUNK_COLUMN_UNLOAD_RADIUS;
 
     // Time
@@ -58,7 +60,6 @@ public static class Constants
     public const int SUNRISE_END_HOUR = 7;
     public const int SUNSET_START_HOUR = 17;
     public const int SUNSET_END_HOUR = 20;
-    
     
     // Skybox
     public const float SKYBOX_ROTATION_SPEED_X = 360f / REAL_SECONDS_PER_GAME_DAY;

@@ -332,10 +332,20 @@ public class RegionManager
         foreach (KeyValuePair<Vector2i, Region> pair in _existingRegions)
         {
             Vector2i normalizedColumnPos = (pair.Key - originColumnPos) / Constants.CHUNK_SIZE;
-            bool inRange = normalizedColumnPos.X * normalizedColumnPos.X + normalizedColumnPos.Y * normalizedColumnPos.Y <=
-                           Constants.CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED;
-            if (inRange)
-                continue;
+            if (Constants.CIRCULAR_LOAD_REGION)
+            {
+                bool inRange = normalizedColumnPos.X * normalizedColumnPos.X + normalizedColumnPos.Y * normalizedColumnPos.Y <=
+                               Constants.CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED;
+                if (inRange)
+                    continue;
+            }
+            else
+            {
+                bool inRange = Math.Abs(normalizedColumnPos.X) <= Constants.CHUNK_COLUMN_UNLOAD_RADIUS &&
+                               Math.Abs(normalizedColumnPos.Y) <= Constants.CHUNK_COLUMN_UNLOAD_RADIUS;
+                if (inRange)
+                    continue;
+            }
             Region column = pair.Value;
             if (column.ReadyToUnload())
                 _regionsToUnload.Add(pair.Key);
@@ -419,7 +429,7 @@ public class RegionManager
 
         foreach (Vector2i pos in EnumerateSpiral(size * size - 1))
         {
-            if (false)
+            if (Constants.CIRCULAR_LOAD_REGION)
             {
                 bool inRange = pos.X * pos.X + pos.Y * pos.Y <= Constants.CHUNK_COLUMN_LOAD_RADIUS_SQUARED;
                 
@@ -476,17 +486,17 @@ public class RegionManager
 
     private RaycastResult Raycast(Vector3 startPos, Vector3 direction, float maxDistance)
     {
-        Vector3i step = new(System.Math.Sign(direction.X), System.Math.Sign(direction.Y), System.Math.Sign(direction.Z));
+        Vector3i step = new(Math.Sign(direction.X), Math.Sign(direction.Y), Math.Sign(direction.Z));
 
-        Vector3 directionAbs = new(System.Math.Abs(direction.X), System.Math.Abs(direction.Y), System.Math.Abs(direction.Z));
-        Vector3 posOffset = startPos - new Vector3((float)System.Math.Floor(startPos.X), (float)System.Math.Floor(startPos.Y), (float)System.Math.Floor(startPos.Z)) -
+        Vector3 directionAbs = new(Math.Abs(direction.X), Math.Abs(direction.Y), Math.Abs(direction.Z));
+        Vector3 posOffset = startPos - new Vector3((float)Math.Floor(startPos.X), (float)Math.Floor(startPos.Y), (float)Math.Floor(startPos.Z)) -
                             Vector3.ComponentMax(step, Vector3.Zero);
-        Vector3 posOffsetAbs = new(System.Math.Abs(posOffset.X), System.Math.Abs(posOffset.Y), System.Math.Abs(posOffset.Z));
+        Vector3 posOffsetAbs = new(Math.Abs(posOffset.X), Math.Abs(posOffset.Y), Math.Abs(posOffset.Z));
         Vector3 nextIntersectionDistance = posOffsetAbs / directionAbs; // Distance to the next intersection with a block boundary.
 
         Vector3 intersectionDistanceDelta = Vector3.One / directionAbs; // Change in intersection distance when moving to the next block boundary.
 
-        Vector3i blockPos = new((int)System.Math.Floor(startPos.X), (int)System.Math.Floor(startPos.Y), (int)System.Math.Floor(startPos.Z));
+        Vector3i blockPos = new((int)Math.Floor(startPos.X), (int)Math.Floor(startPos.Y), (int)Math.Floor(startPos.Z));
 
         int itr = 0;
         float travelledDistance = 0;
@@ -521,7 +531,7 @@ public class RegionManager
             BlockState blockState = GetBlockStateAt(blockPos);
             
             // Calculate the intersection point (travelled distance).
-            travelledDistance = System.Math.Min(System.Math.Min(intersectionDistance.X, intersectionDistance.Y), intersectionDistance.Z);
+            travelledDistance = Math.Min(Math.Min(intersectionDistance.X, intersectionDistance.Y), intersectionDistance.Z);
 
             if (blockState.IsAir)
                 continue;
