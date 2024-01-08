@@ -12,7 +12,7 @@ namespace BlockEngine.Client.ECS.Entities;
 /// </summary>
 public class PlayerEntity : TransformEntity
 {
-    private const float PLAYER_MOVEMENT_SPEED = 8f;
+    private const float PLAYER_MOVEMENT_SPEED = 8*4f;
     private static readonly Vector3 CameraOffset = new(0, 1.5f, 0);
     
     private readonly PlayerCamera _camera;

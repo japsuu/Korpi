@@ -7,25 +7,31 @@ using BlockEngine.Client.World.Regions.Chunks;
 
 namespace BlockEngine.Client.Meshing.Jobs;
 
-public class MeshJob : VektorJob
+public class MeshingJob : VektorJob
 {
     private readonly long _id;
     private readonly Chunk _chunk;
     private readonly Action _callback;
 
 
-    public MeshJob(long id, Chunk chunk, Action callback)
+    public MeshingJob(long id, Chunk chunk, Action callback)
     {
         Debug.Assert(callback != null, nameof(callback) + " != null");
         
         _id = id;
         _chunk = chunk;
         _callback = callback;
+#if DEBUG
+        Interlocked.Increment(ref Debugging.DebugStats.ChunksInMeshingQueue);
+#endif
     }
 
 
     public override void Execute()
     {
+#if DEBUG
+        Interlocked.Decrement(ref Debugging.DebugStats.ChunksInMeshingQueue);
+#endif
         // Abort the job if the chunk's job ID does not match the job ID.
         if (_chunk.CurrentJobId != _id)
         {

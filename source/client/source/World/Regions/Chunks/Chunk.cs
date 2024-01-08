@@ -1,4 +1,5 @@
 ﻿using BlockEngine.Client.Debugging.Drawing;
+using BlockEngine.Client.Generation.Jobs;
 using BlockEngine.Client.Logging;
 using BlockEngine.Client.Meshing.Jobs;
 using BlockEngine.Client.Threading.Pooling;
@@ -18,12 +19,17 @@ public class Chunk
         /// <summary>
         /// The chunk has not been generated yet.
         /// </summary>
-        GENERATING = 0,
+        NONE = 0,
+        
+        /// <summary>
+        /// The chunk is queued for generation.
+        /// </summary>
+        GENERATING = 1,
         
         /// <summary>
         /// The chunk has been generated.
         /// </summary>
-        READY = 1
+        READY = 2
     }
 
     /// <summary>
@@ -55,6 +61,7 @@ public class Chunk
 
     private readonly IBlockStorage _blockStorage = new BlockPalette();
     private readonly object _blockStorageLock = new();
+    private readonly Action _generateJobCallback;
     private readonly Action _meshJobCallback;
 
     private bool _containsRenderedBlocks;
@@ -82,10 +89,11 @@ public class Chunk
         ThreadLock = new ReaderWriterLockSlim();
         
         // Set callbacks
+        _generateJobCallback = OnGenerated;
         _meshJobCallback = OnMeshed;
         
         // Set state
-        _generationState = ChunkGenerationState.GENERATING;
+        _generationState = ChunkGenerationState.NONE;
         _meshState = ChunkMeshState.NONE;
     }
 
@@ -141,8 +149,14 @@ public class Chunk
 
     public void Load()
     {
+        if (_generationState == ChunkGenerationState.GENERATING)
+        {
+            Logger.LogWarning("Multiple generation jobs enqueued for chunk!");
+        }
+        _generationState = ChunkGenerationState.GENERATING;
         _isLoaded = true;
-        GameWorld.CurrentGameWorld.ChunkGenerator.Enqueue(Position);
+        Interlocked.Increment(ref _currentJobId);
+        GlobalThreadPool.DispatchJob(new GenerationJob(_currentJobId, this, _generateJobCallback));
     }
 
 
@@ -152,7 +166,7 @@ public class Chunk
     }
 
 
-    public void OnGenerated()
+    private void OnGenerated()
     {
         _meshState = ChunkMeshState.NONE;
         _generationState = ChunkGenerationState.READY;
@@ -172,9 +186,9 @@ public class Chunk
             OnReady();
         }
     }
-    
-    
-    public void OnMeshed()
+
+
+    private void OnMeshed()
     {
         _meshState = ChunkMeshState.READY;
         
@@ -207,7 +221,7 @@ public class Chunk
     private bool CanBeMeshed()
     {
         if (_generationState != ChunkGenerationState.READY)
-            throw new InvalidOperationException("Tried to mesh a chunk that is not generated!");
+            return false;
 
         // Check if the chunk neighbours are loaded (required for meshing)
         return GameWorld.CurrentGameWorld.RegionManager.AreChunkNeighboursGenerated(Position, true); //TODO: False, to not generate world border faces
@@ -237,8 +251,7 @@ public class Chunk
         }
         _meshState = ChunkMeshState.MESHING;
         Interlocked.Increment(ref _currentJobId);
-        // GameWorld.CurrentGameWorld.ChunkMesherManager.Enqueue(Position);
-        GlobalThreadPool.DispatchJob(new MeshJob(_currentJobId, this, _meshJobCallback));
+        GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, _meshJobCallback));
     }
 
 

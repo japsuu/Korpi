@@ -3,8 +3,8 @@ using BlockEngine.Client.Debugging;
 using BlockEngine.Client.Debugging.Drawing;
 using BlockEngine.Client.ECS.Entities;
 using BlockEngine.Client.Generation;
+using BlockEngine.Client.Generation.TerrainGenerators;
 using BlockEngine.Client.Logging;
-using BlockEngine.Client.Meshing;
 using BlockEngine.Client.Physics;
 using BlockEngine.Client.Registries;
 using BlockEngine.Client.Rendering.Cameras;
@@ -16,13 +16,12 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace BlockEngine.Client.World;
 
-public class GameWorld : IDisposable
+public class GameWorld
 {
     public static GameWorld CurrentGameWorld { get; private set; } = null!;
     
     public readonly RegionManager RegionManager;      // TODO: Make private, and wrap around a function
-    public readonly ChunkGenerator ChunkGenerator;  // TODO: Make private, and wrap around a function
-    public readonly ChunkMesherManager ChunkMesherManager;        // TODO: Make private, and wrap around a function
+    public readonly ITerrainGenerator TerrainGenerator;
 
     private readonly string _name;
     private readonly EntityManager _entityManager;
@@ -32,8 +31,7 @@ public class GameWorld : IDisposable
     {
         _name = name;
         RegionManager = new RegionManager();
-        ChunkGenerator = new ChunkGenerator();
-        ChunkMesherManager = new ChunkMesherManager();
+        TerrainGenerator = PerlinTerrainGenerator.Default();
         _entityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
@@ -54,8 +52,6 @@ public class GameWorld : IDisposable
     public void FixedUpdate()
     {
         RegionManager.Tick();
-        ChunkGenerator.ProcessQueues();
-        ChunkMesherManager.ProcessQueues();
         _entityManager.FixedUpdate();
         DebugStats.LoadedRegionCount = RegionManager.LoadedRegionsCount;
     }
@@ -108,12 +104,5 @@ public class GameWorld : IDisposable
     public override string ToString()
     {
         return $"World '{_name}'";
-    }
-    
-    
-    public void Dispose()
-    {
-        ChunkGenerator.Dispose();
-        ChunkMesherManager.Dispose();
     }
 }

@@ -64,15 +64,13 @@ public class GameClient : GameWindow
         },
         new NativeWindowSettings
         {
-            Size = (ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
+            Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
             Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}",
             NumberOfSamples = 8,
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
-        })
-    {
-    }
+        }) { }
 
 
     protected override void OnLoad()
@@ -94,7 +92,7 @@ public class GameClient : GameWindow
         GL.Enable(EnableCap.Multisample); // Enable multisampling.
         GL.Enable(EnableCap.Blend); // Enable blending for transparent textures.
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        GL.ClearColor(1f, 0f, 1f, 1.0f);
 
         // Resource initialization.
         GlobalThreadPool.Initialize();
@@ -129,8 +127,7 @@ public class GameClient : GameWindow
     protected override void OnUnload()
     {
         base.OnUnload();
-
-        _gameWorld.Dispose();
+        Logger.Log("Shutting down...");
         _shaderManager.Dispose();
         _skybox.Dispose();
         _imGuiController.DestroyDeviceObjects();
