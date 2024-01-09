@@ -1,4 +1,6 @@
-﻿namespace BlockEngine.Client;
+﻿using BlockEngine.Client.Threading.Jobs;
+
+namespace BlockEngine.Client;
 
 public static class Constants
 {
@@ -73,7 +75,7 @@ public static class Constants
     
     // Threading
     /// <summary>
-    /// Maximum amount of time (ms) a <see cref="BlockEngine.Client.Threading.Jobs.VektorJob{t}"/> will wait for a lock before aborting.
+    /// Maximum amount of time (ms) a <see cref="KorpiJob{T}"/> will wait for a lock before aborting.
     /// </summary>
     public const int JOB_LOCK_TIMEOUT_MS = 10000;
 }

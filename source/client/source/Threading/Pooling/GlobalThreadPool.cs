@@ -53,7 +53,7 @@ public static class GlobalThreadPool
 
     public static void Initialize()
     {
-        // Allocate 3/4 of the system's thread count with a minimum of 2.
+        // Since we're CPU-bound (most of the threads will be waiting in a loop), allocate only 3/4 of the system's logical processor count with a minimum of 2.
         ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount * 3 / 4, 2);
         threadPool = new ThreadPool(ThreadCount, ThreadConfig.Default());
         mainQueue = new ConcurrentQueue<Action>();
@@ -94,9 +94,9 @@ public static class GlobalThreadPool
     /// <summary>
     /// Immediately queues the provided job for execution on the pool.
     /// </summary>
-    public static VektorJob<T> DispatchJob<T>(VektorJob<T> item)
+    public static KorpiJob<T> DispatchJob<T>(KorpiJob<T> item, WorkItemPriority priority)
     {
-        threadPool.EnqueueWorkItem(item);
+        threadPool.EnqueueWorkItem(item, priority);
         return item;
     }
 

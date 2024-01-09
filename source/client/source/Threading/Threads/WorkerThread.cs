@@ -1,12 +1,12 @@
-﻿using System.Collections.Concurrent;
-using BlockEngine.Client.Logging;
+﻿using BlockEngine.Client.Logging;
 using BlockEngine.Client.Threading.Jobs;
+using BlockEngine.Client.Threading.Pooling;
 
 namespace BlockEngine.Client.Threading.Threads;
 
 public sealed class WorkerThread
 {
-    private readonly BlockingCollection<IVektorJob> _workQueue;
+    private readonly PriorityWorkQueue<IKorpiJob> _workQueue;
     private readonly ThreadConfig _config;
     private readonly Thread _thread;
     private readonly CancellationTokenSource _cts;
@@ -31,7 +31,7 @@ public sealed class WorkerThread
     public Exception? LastException { get; private set; }
 
 
-    public WorkerThread(BlockingCollection<IVektorJob> workQueue, ThreadConfig config)
+    public WorkerThread(PriorityWorkQueue<IKorpiJob> workQueue, ThreadConfig config)
     {
         _workQueue = workQueue;
         _config = config;
@@ -41,6 +41,7 @@ public sealed class WorkerThread
         {
             IsBackground = true
         };
+        _thread.Name = $"Pool Worker Thread #{_thread.ManagedThreadId}";
         _thread.Start(_cts.Token);
 
         _cycleCounter = 0;
@@ -90,7 +91,7 @@ public sealed class WorkerThread
             }
 
             // Check for work.
-            bool hasWork = _workQueue.TryTake(out IVektorJob? job);
+            bool hasWork = _workQueue.TryTakeFromAny(out IKorpiJob? job);
 
             if (hasWork && job == null)
             {

@@ -6,7 +6,7 @@ namespace BlockEngine.Client.Threading.Jobs;
 /// <summary>
 /// A job for the <see cref="Pooling.ThreadPool"/> with a generic result type.
 /// </summary>
-public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
+public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
 {
     private Action? _continuation;
     private T _result;
@@ -18,11 +18,11 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
 
 
     /// <summary>
-    /// Create a new VektorJob instance.
+    /// Create a new KorpiJob instance.
     /// The context of the constructing thread is stored for async/await.
     /// Make sure you construct your job on the same thread that will await the result.
     /// </summary>
-    protected VektorJob()
+    protected KorpiJob()
     {
         _continuation = null;
         _result = default!;
@@ -74,9 +74,9 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
     /// <summary>
     /// Dispatches the job to be executed by the thread-pool.
     /// </summary>
-    public VektorJob<T> Dispatch()
+    public KorpiJob<T> Dispatch(WorkItemPriority priority)
     {
-        return GlobalThreadPool.DispatchJob(this);
+        return GlobalThreadPool.DispatchJob(this, priority);
     }
 
 
@@ -114,14 +114,14 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
     /// <summary>
     /// Blocks the caller until all specified jobs have completed.
     /// </summary>
-    public static void WhenAll(IEnumerable<IVektorJob> jobs)
+    public static void WhenAll(IEnumerable<IKorpiJob> jobs)
     {
-        IEnumerable<IVektorJob> vektorJobs = jobs.ToList();
+        IEnumerable<IKorpiJob> korpiJobs = jobs.ToList();
         bool isComplete = false;
         while (!isComplete)
         {
             isComplete = true;
-            foreach (IVektorJob job in vektorJobs)
+            foreach (IKorpiJob job in korpiJobs)
             {
                 if (job.CompletionState != JobCompletionState.None) continue;
                 isComplete = false;
@@ -132,9 +132,9 @@ public abstract class VektorJob<T> : IVektorJob, IAwaitable<T>
 }
 
 /// <summary>
-/// Basic implementation of a VektorJob who's result is just the completion state.
+/// Basic implementation of a KorpiJob who's result is just the completion state.
 /// </summary>
-public abstract class VektorJob : VektorJob<JobCompletionState>
+public abstract class KorpiJob : KorpiJob<JobCompletionState>
 {
     public override JobCompletionState GetResult()
     {

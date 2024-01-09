@@ -156,7 +156,7 @@ public class Chunk
         _generationState = ChunkGenerationState.GENERATING;
         _isLoaded = true;
         Interlocked.Increment(ref _currentJobId);
-        GlobalThreadPool.DispatchJob(new GenerationJob(_currentJobId, this, _generateJobCallback));
+        GlobalThreadPool.DispatchJob(new GenerationJob(_currentJobId, this, _generateJobCallback), WorkItemPriority.Normal);
     }
 
 
@@ -251,7 +251,7 @@ public class Chunk
         }
         _meshState = ChunkMeshState.MESHING;
         Interlocked.Increment(ref _currentJobId);
-        GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, _meshJobCallback));
+        GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, _meshJobCallback), WorkItemPriority.High);
     }
 
 

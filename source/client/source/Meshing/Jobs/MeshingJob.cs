@@ -8,7 +8,7 @@ using BlockEngine.Client.World.Regions.Chunks;
 
 namespace BlockEngine.Client.Meshing.Jobs;
 
-public class MeshingJob : VektorJob
+public class MeshingJob : KorpiJob
 {
     private readonly long _id;
     private readonly Chunk _chunk;

@@ -36,5 +36,6 @@ public class CameraWindow : ImGuiWindow
         ImGui.Separator();
         ImGui.Text($"Time: {GameTime.GetFormattedTime()}");
         ImGui.Text($"Date: {GameTime.GetFormattedDate()}");
+        ImGui.Text($"TTime (s): {GameTime.TotalTime:F1}");
     }
 }
