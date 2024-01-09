@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using BlockEngine.Client.Debugging;
 using BlockEngine.Client.Rendering.Chunks;
+using BlockEngine.Client.Threading.Pooling;
 using BlockEngine.Client.Window;
 using ImGuiNET;
 
@@ -53,6 +54,13 @@ public class DebugStatsWindow : ImGuiWindow
         ImGui.Text($"Loaded blocks (approx) = {loadedBlocksApproxFormatted}");
         ImGui.Text($"Loaded chunks (approx) = {loadedChunksApproxFormatted}");
         ImGui.Text($"Loaded regions = {DebugStats.LoadedRegionCount}");
+
+        ImGui.Separator();
+        ImGui.Text("Global Thread Pool");
+        ImGui.Text($"Threads = {GlobalThreadPool.ThreadCount}");
+        ImGui.Text($"In queue = {DebugStats.ItemsInMainThreadQueue}");
+        ImGui.Text($"In queue (throttled) = {DebugStats.ItemsInMainThreadThrottledQueue}");
+        ImGui.Text($"Throttled items per tick = {DebugStats.MainThreadThrottledQueueItemsPerTick}");
 
         ImGui.Separator();
         ImGui.Text("Chunk Generation");

@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using BlockEngine.Client.Logging;
+﻿using BlockEngine.Client.Logging;
 using BlockEngine.Client.Threading.Jobs;
 using BlockEngine.Client.Threading.Threads;
 
@@ -11,8 +9,8 @@ namespace BlockEngine.Client.Threading.Pooling;
 /// </summary>
 public sealed class ThreadPool
 {
-    private readonly BlockingCollection<IVektorJob> _workQueue;
     private readonly List<WorkerThread> _workers;
+    private readonly PriorityWorkQueue<IKorpiJob> _workQueue;
 
 
     /// <summary>
@@ -25,7 +23,7 @@ public sealed class ThreadPool
         if (threadCount == 0)
             throw new ArgumentException("Thread count must be greater than zero!");
 
-        _workQueue = new BlockingCollection<IVektorJob>(new ConcurrentQueue<IVektorJob>());
+        _workQueue = new PriorityWorkQueue<IKorpiJob>();
         _workers = new List<WorkerThread>();
 
         for (int i = 0; i < threadCount; i++)
@@ -33,12 +31,12 @@ public sealed class ThreadPool
     }
 
 
-    public void EnqueueWorkItem(IVektorJob vektorJob)
+    public void EnqueueWorkItem(IKorpiJob korpiJob, WorkItemPriority priority)
     {
         if (_workQueue.IsAddingCompleted)
             throw new InvalidOperationException("Cannot queue a work item if the pool is shutting down.");
 
-        _workQueue.Add(vektorJob);
+        _workQueue.Add(korpiJob, priority);
     }
 
 

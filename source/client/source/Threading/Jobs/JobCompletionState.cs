@@ -1,7 +1,7 @@
 ﻿namespace BlockEngine.Client.Threading.Jobs;
 
 /// <summary>
-/// Represents the completion state of a <see cref="IVektorJob"/>.
+/// Represents the completion state of a <see cref="IKorpiJob"/>.
 /// </summary>
 public enum JobCompletionState
 {

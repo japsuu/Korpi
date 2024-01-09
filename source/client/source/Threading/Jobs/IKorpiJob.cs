@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a job that can be executed by a <see cref="ThreadPool"/>.
 /// </summary>
-public interface IVektorJob
+public interface IKorpiJob
 {
     /// <summary>
     /// The current completion state of the job.

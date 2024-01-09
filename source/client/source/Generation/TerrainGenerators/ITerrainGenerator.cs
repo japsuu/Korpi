@@ -1,6 +1,6 @@
 ﻿using BlockEngine.Client.World.Regions.Chunks;
 
-namespace BlockEngine.Client.Generation;
+namespace BlockEngine.Client.Generation.TerrainGenerators;
 
 /// <summary>
 /// Represents an object that can populate a <see cref="Chunk"/> with voxel data.

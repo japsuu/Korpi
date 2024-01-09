@@ -6,7 +6,7 @@ using BlockEngine.Client.World.Regions.Chunks;
 
 namespace BlockEngine.Client.Generation.Jobs;
 
-public class GenerationJob : VektorJob
+public class GenerationJob : KorpiJob
 {
     private readonly long _id;
     private readonly Chunk _chunk;

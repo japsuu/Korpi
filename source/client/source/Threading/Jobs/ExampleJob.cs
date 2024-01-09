@@ -3,7 +3,7 @@
 /// <summary>
 /// Test job with an integer result equal to the product of 7 and 6.
 /// </summary>
-public class ExampleJob : VektorJob<int>
+public class ExampleJob : KorpiJob<int>
 {
     public override void Execute()
     {

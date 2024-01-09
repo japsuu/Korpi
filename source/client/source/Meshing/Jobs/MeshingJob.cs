@@ -3,11 +3,12 @@ using BlockEngine.Client.Logging;
 using BlockEngine.Client.Rendering.Chunks;
 using BlockEngine.Client.Threading.Jobs;
 using BlockEngine.Client.Threading.Pooling;
+using BlockEngine.Client.World;
 using BlockEngine.Client.World.Regions.Chunks;
 
 namespace BlockEngine.Client.Meshing.Jobs;
 
-public class MeshingJob : VektorJob
+public class MeshingJob : KorpiJob
 {
     private readonly long _id;
     private readonly Chunk _chunk;
@@ -36,6 +37,13 @@ public class MeshingJob : VektorJob
         if (_chunk.CurrentJobId != _id)
         {
             Logger.LogWarning($"Aborting orphaned job with ID: {_id}");
+            SignalCompletion(JobCompletionState.Aborted);
+            return;
+        }
+
+        if (!GameWorld.CurrentGameWorld.RegionManager.ChunkExistsAt(_chunk.Position))
+        {
+            Logger.LogWarning($"Aborting meshing job with ID {_id} because chunk at position {_chunk.Position} no longer exists.");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }

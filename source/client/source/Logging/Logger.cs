@@ -56,7 +56,7 @@ namespace BlockEngine.Client.Logging
             ConsoleColor originalColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
             WriteLine(message);
-            WriteLine($"EXCEPTION: {exception.Message}");
+            WriteLine($"EXCEPTION: {exception}");
             Console.ForegroundColor = originalColor;
         }
 

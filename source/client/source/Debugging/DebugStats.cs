@@ -10,6 +10,9 @@ public static class DebugStats
     public static int LoadedRegionCount;
     public static ulong ChunksInGenerationQueue;
     public static ulong ChunksInMeshingQueue;
+    public static ulong ItemsInMainThreadQueue;
+    public static ulong ItemsInMainThreadThrottledQueue;
+    public static ulong MainThreadThrottledQueueItemsPerTick;
 
     public static float AverageChunkGenerationTime;
     public static float AverageChunkMeshingTime;
