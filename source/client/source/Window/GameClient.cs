@@ -67,6 +67,7 @@ public class GameClient : GameWindow
             Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
             NumberOfSamples = 8,
+            Location = new Vector2i(0, 0),
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
@@ -107,7 +108,7 @@ public class GameClient : GameWindow
         _skybox = new Skybox(false);
 
         // PlayerEntity initialization.
-        _playerEntity = new PlayerEntity(new Vector3(0, 256, 0), 0, 0);
+        _playerEntity = new PlayerEntity(new Vector3(0, 165, 0), 0, 0);
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
             PhotoModeCamera.Create(new Vector3(0, 256, 48), -30, -100);
