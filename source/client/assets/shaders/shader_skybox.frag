@@ -10,11 +10,16 @@ uniform samplerCube skyboxNightTexture;
 // Tint color for sunset/sunrise
 const vec3 sunsetTintColor = vec3(1.0, 0.6, 0.0);
 
-const vec3 sunBloomColor = vec3(1.0, 0.86, 0.64);
+const vec3 sunBloomColor = vec3(1.0, 0.96, 0.84);
+const vec3 moonBloomColor = vec3(0.9, 0.9, 1.0);
 
 // Range of the bloom in the range 0-1.
 const float sunBloomRange = 0.01;
 const float sunBloomStrength = 0.7;
+
+// Range of the bloom in the range 0-1.
+const float moonBloomRange = 0.01;
+const float moonBloomStrength = 0.7;
 
 out vec4 FragColor;
 
@@ -29,11 +34,12 @@ vec4 sampleSkybox()
 
 void main()
 {
-	float sunriseSunsetProgress = pow(SkyboxLerpProgress, 0.2);
+	float sunriseSunsetProgress = pow(SkyboxLerpProgress, 0.5);
 	
 	// Calculate the sunDirectionFactor, which is a value between 0 and 1
 	float sunDirectionFactor = dot(normalize(SunDirection), normalize(TexCoords));
-	sunDirectionFactor = 1 - ((sunDirectionFactor + 1.0) / 2.0);
+	float moonDirectionFactor = ((sunDirectionFactor + 1.0) / 2.0);
+	sunDirectionFactor = 1 - moonDirectionFactor;
 	
 	// Sample the skybox
 	vec4 skyboxColor = sampleSkybox();
@@ -54,13 +60,17 @@ void main()
 	vec3 final = skyboxColor.rgb * tint;
 	
 	// Add some bloom around the sun
-	float bloomFactor = smoothstep(1.0 - sunBloomRange, 1.0, sunDirectionFactor) * sunBloomStrength;
+	float sunBloomFactor = smoothstep(1.0 - sunBloomRange, 1.0, sunDirectionFactor) * sunBloomStrength;
+	
+	// Add some bloom around the moon
+	float moonBloomFactor = smoothstep(1.0 - moonBloomRange, 1.0, moonDirectionFactor) * moonBloomStrength;
 
-	// Only show the bloom when sun is visible
-	bloomFactor = mix(0.0, bloomFactor, sunriseSunsetProgress);
+	// Only show the sun bloom when sun is visible
+	sunBloomFactor = sunBloomFactor * sunriseSunsetProgress;
 	
 	// Apply the bloom to the final color
-	final = mix(final, sunBloomColor, bloomFactor);
+	final = mix(final, sunBloomColor, sunBloomFactor);
+	final = mix(final, moonBloomColor, moonBloomFactor);
 	
 	// Output the final color
 	FragColor = vec4(final, 1.0);
