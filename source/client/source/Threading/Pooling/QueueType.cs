@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Threading.Pooling;
+﻿namespace Korpi.Client.Threading.Pooling;
 
 /// <summary>
 /// Queue type used by the thread-pool to handle updates pushed to main.

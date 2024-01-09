@@ -1,10 +1,10 @@
-﻿using BlockEngine.Client.Debugging.Drawing.Drawables;
-using BlockEngine.Client.Rendering.Shaders;
-using BlockEngine.Client.Window;
+﻿using Korpi.Client.Debugging.Drawing.Drawables;
+using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.Window;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Debugging.Drawing;
+namespace Korpi.Client.Debugging.Drawing;
 
 public static class DebugDrawer
 {

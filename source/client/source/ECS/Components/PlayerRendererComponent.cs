@@ -1,8 +1,8 @@
-﻿using BlockEngine.Client.ECS.Entities;
-using BlockEngine.Client.Rendering.Shaders;
+﻿using Korpi.Client.ECS.Entities;
+using Korpi.Client.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Client.ECS.Components;
+namespace Korpi.Client.ECS.Components;
 
 public class PlayerRendererComponent : Component
 {

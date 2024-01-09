@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Mathematics;
+namespace Korpi.Client.Mathematics;
 
 public static class CoordinateUtils
 {

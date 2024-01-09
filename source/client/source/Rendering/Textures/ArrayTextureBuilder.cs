@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Exceptions;
-using BlockEngine.Client.Modding.Blocks;
+﻿using Korpi.Client.Exceptions;
+using Korpi.Client.Modding.Blocks;
 
-namespace BlockEngine.Client.Rendering.Textures;
+namespace Korpi.Client.Rendering.Textures;
 
 public class ArrayTextureBuilder
 {

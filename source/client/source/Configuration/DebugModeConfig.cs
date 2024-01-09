@@ -1,6 +1,6 @@
 ﻿#if DEBUG
 
-namespace BlockEngine.Client.Configuration;
+namespace Korpi.Client.Configuration;
 
 public class DebugModeConfig
 {

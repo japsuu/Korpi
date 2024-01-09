@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Window;
 using ImGuiNET;
+using Korpi.Client.Window;
 
-namespace BlockEngine.Client.UI.Windows;
+namespace Korpi.Client.UI.Windows;
 
 public class MemoryProfilerWindow : ImGuiWindow
 {

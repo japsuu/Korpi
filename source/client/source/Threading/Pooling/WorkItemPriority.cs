@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Threading.Pooling;
+﻿namespace Korpi.Client.Threading.Pooling;
 
 /// <summary>
 /// The priority of a work item.

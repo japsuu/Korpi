@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Meshing;
+namespace Korpi.Client.Meshing;
 
 /// <summary>
 /// Contains the mesh data for a chunk, and the chunk's position.

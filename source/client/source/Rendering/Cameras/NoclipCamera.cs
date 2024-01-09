@@ -1,8 +1,8 @@
-﻿using BlockEngine.Client.Window;
+﻿using Korpi.Client.Window;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Client.Rendering.Cameras;
+namespace Korpi.Client.Rendering.Cameras;
 
 /// <summary>
 /// A camera that can freely fly around the world.

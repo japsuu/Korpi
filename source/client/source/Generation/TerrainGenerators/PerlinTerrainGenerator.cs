@@ -1,11 +1,11 @@
-﻿using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Mathematics.Noise;
-using BlockEngine.Client.Registries;
-using BlockEngine.Client.World.Regions.Chunks;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.Debugging;
+using Korpi.Client.Mathematics.Noise;
+using Korpi.Client.Registries;
+using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Generation.TerrainGenerators;
+namespace Korpi.Client.Generation.TerrainGenerators;
 
 public class PerlinTerrainGenerator : ITerrainGenerator
 {

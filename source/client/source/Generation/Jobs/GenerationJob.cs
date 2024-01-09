@@ -1,10 +1,10 @@
-﻿using BlockEngine.Client.Logging;
-using BlockEngine.Client.Threading.Jobs;
-using BlockEngine.Client.Threading.Pooling;
-using BlockEngine.Client.World;
-using BlockEngine.Client.World.Regions.Chunks;
+﻿using Korpi.Client.Logging;
+using Korpi.Client.Threading.Jobs;
+using Korpi.Client.Threading.Pooling;
+using Korpi.Client.World;
+using Korpi.Client.World.Regions.Chunks;
 
-namespace BlockEngine.Client.Generation.Jobs;
+namespace Korpi.Client.Generation.Jobs;
 
 public class GenerationJob : KorpiJob
 {

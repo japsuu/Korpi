@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Configuration;
+using Korpi.Client.Configuration;
 
-namespace BlockEngine.Client.Logging
+namespace Korpi.Client.Logging
 {
     public static class Logger
     {

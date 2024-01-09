@@ -22,7 +22,7 @@
 * THE SOFTWARE.
 */
 
-namespace BlockEngine.Client.Bitpacking
+namespace Korpi.Client.Bitpacking
 {
 
 	public static class ArraySerializeUnsafe

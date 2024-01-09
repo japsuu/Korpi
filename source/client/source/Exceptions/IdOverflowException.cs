@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Exceptions;
+﻿namespace Korpi.Client.Exceptions;
 
 public class IdOverflowException : Exception
 {

@@ -53,7 +53,7 @@ using System.Runtime.CompilerServices;
 using FNLfloat = System.Single;
 //using FNLfloat = System.Double;
 
-namespace BlockEngine.Client.Mathematics.Noise;
+namespace Korpi.Client.Mathematics.Noise;
 
 public class FastNoiseLite
 {

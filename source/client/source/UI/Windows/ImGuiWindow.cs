@@ -1,6 +1,6 @@
 ﻿using ImGuiNET;
 
-namespace BlockEngine.Client.UI.Windows;
+namespace Korpi.Client.UI.Windows;
 
 public abstract class ImGuiWindow
 {

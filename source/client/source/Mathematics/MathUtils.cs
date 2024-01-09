@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Mathematics;
+﻿namespace Korpi.Client.Mathematics;
 
 public static class MathUtils
 {

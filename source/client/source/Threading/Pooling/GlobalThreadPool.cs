@@ -1,10 +1,10 @@
 ﻿using System.Collections.Concurrent;
-using BlockEngine.Client.Logging;
-using BlockEngine.Client.Threading.Jobs;
-using BlockEngine.Client.Threading.Threads;
-using BlockEngine.Client.Window;
+using Korpi.Client.Logging;
+using Korpi.Client.Threading.Jobs;
+using Korpi.Client.Threading.Threads;
+using Korpi.Client.Window;
 
-namespace BlockEngine.Client.Threading.Pooling;
+namespace Korpi.Client.Threading.Pooling;
 
 /// <summary>
 /// A static thread-pool.

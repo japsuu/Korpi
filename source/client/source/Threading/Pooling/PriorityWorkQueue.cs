@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace BlockEngine.Client.Threading.Pooling;
+namespace Korpi.Client.Threading.Pooling;
 
 /// <summary>
 /// A thread-safe work queue with multiple priority levels.

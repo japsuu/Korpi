@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.ECS.Entities;
+﻿namespace Korpi.Client.ECS.Entities;
 
 public class EntityManager
 {

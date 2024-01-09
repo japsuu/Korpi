@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Threading.Jobs;
+﻿namespace Korpi.Client.Threading.Jobs;
 
 /// <summary>
 /// Test job with an integer result equal to the product of 7 and 6.

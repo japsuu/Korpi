@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Utils;
+using Korpi.Client.Utils;
 
-namespace BlockEngine.Client.World.Regions.Chunks.Blocks;
+namespace Korpi.Client.World.Regions.Chunks.Blocks;
 
 /// <summary>
 /// 9-bit RGB333 color value.

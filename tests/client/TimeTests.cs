@@ -1,4 +1,4 @@
-﻿using BlockEngine.Client.Window;
+﻿using Korpi.Client.Window;
 
 namespace ClientTests;
 

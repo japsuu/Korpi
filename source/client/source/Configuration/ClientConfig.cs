@@ -1,8 +1,7 @@
-﻿
-using BlockEngine.Client.Logging;
-using Config.Net;
+﻿using Config.Net;
+using Korpi.Client.Logging;
 
-namespace BlockEngine.Client.Configuration;
+namespace Korpi.Client.Configuration;
 
 /// <summary>
 /// Holds all configuration objects.

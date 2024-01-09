@@ -1,6 +1,6 @@
-﻿using BlockEngine;
-using BlockEngine.Client;
-using BlockEngine.Client.World.Regions;
+﻿using Korpi;
+using Korpi.Client;
+using Korpi.Client.World.Regions;
 using OpenTK.Mathematics;
 
 namespace ClientTests;

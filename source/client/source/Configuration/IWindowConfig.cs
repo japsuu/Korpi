@@ -1,6 +1,6 @@
 ﻿using Config.Net;
 
-namespace BlockEngine.Client.Configuration;
+namespace Korpi.Client.Configuration;
 
 /// <summary>
 /// Configuration settings for the client window.

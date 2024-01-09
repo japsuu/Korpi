@@ -1,10 +1,10 @@
 ﻿using System.Collections.Concurrent;
-using BlockEngine.Client.ECS.Entities;
-using BlockEngine.Client.World;
 using ConcurrentCollections;
+using Korpi.Client.ECS.Entities;
+using Korpi.Client.World;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Threading;
+namespace Korpi.Client.Threading;
 
 /// <summary>
 /// Base class for a wrapper (manager) of a <see cref="ChunkProcessorThread{T}"/> classes.

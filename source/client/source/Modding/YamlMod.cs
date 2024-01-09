@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Modding.Blocks;
+﻿using Korpi.Client.Modding.Blocks;
 using YamlDotNet.Serialization;
 
-namespace BlockEngine.Client.Modding;
+namespace Korpi.Client.Modding;
 
 public sealed class YamlMod
 {

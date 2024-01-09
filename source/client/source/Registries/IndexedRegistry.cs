@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Registries;
+﻿namespace Korpi.Client.Registries;
 
 /// <summary>
 /// Allows retrieving references to values through either a namespaced key or an ID.

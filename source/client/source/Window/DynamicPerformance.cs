@@ -1,6 +1,6 @@
-﻿using BlockEngine.Client.Mathematics;
+﻿using Korpi.Client.Mathematics;
 
-namespace BlockEngine.Client.Window;
+namespace Korpi.Client.Window;
 
 /// <summary>
 /// Class that can dynamically adjust game settings based on the current performance of the game.

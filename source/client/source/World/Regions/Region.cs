@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.World.Regions.Chunks;
+﻿using Korpi.Client.World.Regions.Chunks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World.Regions;
+namespace Korpi.Client.World.Regions;
 
 /// <summary>
 /// Vertical column of chunks.

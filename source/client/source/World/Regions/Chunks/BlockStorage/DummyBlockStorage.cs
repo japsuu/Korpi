@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Registries;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.Registries;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 
-namespace BlockEngine.Client.World.Regions.Chunks.BlockStorage;
+namespace Korpi.Client.World.Regions.Chunks.BlockStorage;
 
 public class DummyBlockStorage : IBlockStorage
 {

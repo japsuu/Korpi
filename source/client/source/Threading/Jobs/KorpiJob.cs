@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Logging;
-using BlockEngine.Client.Threading.Pooling;
+﻿using Korpi.Client.Logging;
+using Korpi.Client.Threading.Pooling;
 
-namespace BlockEngine.Client.Threading.Jobs;
+namespace Korpi.Client.Threading.Jobs;
 
 /// <summary>
 /// A job for the <see cref="Pooling.ThreadPool"/> with a generic result type.

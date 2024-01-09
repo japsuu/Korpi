@@ -1,8 +1,8 @@
-﻿using BlockEngine.Client.Logging;
-using BlockEngine.Client.Threading.Jobs;
-using BlockEngine.Client.Threading.Pooling;
+﻿using Korpi.Client.Logging;
+using Korpi.Client.Threading.Jobs;
+using Korpi.Client.Threading.Pooling;
 
-namespace BlockEngine.Client.Threading.Threads;
+namespace Korpi.Client.Threading.Threads;
 
 public sealed class WorkerThread
 {

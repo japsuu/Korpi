@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Rendering.Cameras;
+namespace Korpi.Client.Rendering.Cameras;
 
 /// <summary>
 /// A static camera used for photo mode.

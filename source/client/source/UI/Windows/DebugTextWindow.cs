@@ -1,9 +1,9 @@
-﻿using BlockEngine.Client.Rendering.Shaders;
-using BlockEngine.Client.Window;
-using ImGuiNET;
+﻿using ImGuiNET;
+using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.Window;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.UI.Windows;
+namespace Korpi.Client.UI.Windows;
 
 public class DebugTextWindow : ImGuiWindow
 {

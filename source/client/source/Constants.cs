@@ -1,6 +1,7 @@
-﻿using BlockEngine.Client.Threading.Jobs;
+﻿using Korpi.Client.Threading.Jobs;
+using Korpi.Client.Window;
 
-namespace BlockEngine.Client;
+namespace Korpi.Client;
 
 public static class Constants
 {
@@ -29,7 +30,7 @@ public static class Constants
     public const float DELTA_TIME_SLOW_THRESHOLD = 0.1f;
     
     /// <summary>
-    /// An upper limit on the amount of time the engine will report as having passed by the <see cref="BlockEngine.Client.Window.GameTime.DeltaTime"/>.
+    /// An upper limit on the amount of time the engine will report as having passed by the <see cref="GameTime.DeltaTime"/>.
     /// </summary>
     public const float MAX_DELTA_TIME = 0.5f;
     

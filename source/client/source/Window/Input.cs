@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Client.Window;
+namespace Korpi.Client.Window;
 
 public static class Input
 {

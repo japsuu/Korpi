@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Window;
+﻿namespace Korpi.Client.Window;
 
 /// <summary>
 /// Contains information about the current system.

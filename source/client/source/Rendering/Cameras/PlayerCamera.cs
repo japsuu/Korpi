@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Window;
+﻿using Korpi.Client.Window;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Rendering.Cameras;
+namespace Korpi.Client.Rendering.Cameras;
 
 public class PlayerCamera : Camera
 {

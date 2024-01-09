@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Utils;
+﻿namespace Korpi.Client.Utils;
 
 public static class StringUtils
 {

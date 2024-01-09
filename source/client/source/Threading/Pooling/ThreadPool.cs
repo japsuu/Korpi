@@ -1,8 +1,8 @@
-﻿using BlockEngine.Client.Logging;
-using BlockEngine.Client.Threading.Jobs;
-using BlockEngine.Client.Threading.Threads;
+﻿using Korpi.Client.Logging;
+using Korpi.Client.Threading.Jobs;
+using Korpi.Client.Threading.Threads;
 
-namespace BlockEngine.Client.Threading.Pooling;
+namespace Korpi.Client.Threading.Pooling;
 
 /// <summary>
 /// Custom thread pool with progressive throttling.

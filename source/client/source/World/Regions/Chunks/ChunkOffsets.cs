@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World.Regions.Chunks;
+namespace Korpi.Client.World.Regions.Chunks;
 
 public static class ChunkOffsets
 {

@@ -1,25 +1,25 @@
 ﻿using System.Runtime.InteropServices;
-using BlockEngine.Client.Configuration;
-using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Debugging.Drawing;
-using BlockEngine.Client.ECS.Entities;
-using BlockEngine.Client.Logging;
-using BlockEngine.Client.Modding;
-using BlockEngine.Client.Registries;
-using BlockEngine.Client.Rendering.Cameras;
-using BlockEngine.Client.Rendering.Shaders;
-using BlockEngine.Client.Rendering.Skybox;
-using BlockEngine.Client.Threading.Pooling;
-using BlockEngine.Client.UI;
-using BlockEngine.Client.UI.HUD;
-using BlockEngine.Client.World;
+using Korpi.Client.Configuration;
+using Korpi.Client.Debugging;
+using Korpi.Client.Debugging.Drawing;
+using Korpi.Client.ECS.Entities;
+using Korpi.Client.Logging;
+using Korpi.Client.Modding;
+using Korpi.Client.Registries;
+using Korpi.Client.Rendering.Cameras;
+using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.Rendering.Skybox;
+using Korpi.Client.Threading.Pooling;
+using Korpi.Client.UI;
+using Korpi.Client.UI.HUD;
+using Korpi.Client.World;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Client.Window;
+namespace Korpi.Client.Window;
 
 public class GameClient : GameWindow
 {

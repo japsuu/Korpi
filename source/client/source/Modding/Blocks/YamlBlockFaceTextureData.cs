@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Modding.Blocks;
+﻿namespace Korpi.Client.Modding.Blocks;
 
 public struct YamlBlockFaceTextureData
 {

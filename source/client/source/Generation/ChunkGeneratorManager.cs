@@ -1,10 +1,10 @@
-﻿using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Threading;
-using BlockEngine.Client.World;
-using BlockEngine.Client.World.Regions.Chunks;
+﻿using Korpi.Client.Debugging;
+using Korpi.Client.World;
+using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.Threading;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Generation;
+namespace Korpi.Client.Generation;
 
 [Obsolete("This class is not used anymore, and will be removed in the future.")]
 public class ChunkGeneratorManager : ChunkProcessorThreadManager<ChunkGeneratorThread, Vector3i>

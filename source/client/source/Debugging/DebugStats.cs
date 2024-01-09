@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace BlockEngine.Client.Debugging;
+namespace Korpi.Client.Debugging;
 
 public static class DebugStats
 {

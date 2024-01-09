@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Bitpacking;
+﻿namespace Korpi.Client.Bitpacking;
 
 public unsafe class BitBuffer
 {

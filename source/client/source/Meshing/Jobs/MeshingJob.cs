@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Logging;
-using BlockEngine.Client.Rendering.Chunks;
-using BlockEngine.Client.Threading.Jobs;
-using BlockEngine.Client.Threading.Pooling;
-using BlockEngine.Client.World;
-using BlockEngine.Client.World.Regions.Chunks;
+using Korpi.Client.Logging;
+using Korpi.Client.Rendering.Chunks;
+using Korpi.Client.Threading.Jobs;
+using Korpi.Client.Threading.Pooling;
+using Korpi.Client.World;
+using Korpi.Client.World.Regions.Chunks;
 
-namespace BlockEngine.Client.Meshing.Jobs;
+namespace Korpi.Client.Meshing.Jobs;
 
 public class MeshingJob : KorpiJob
 {

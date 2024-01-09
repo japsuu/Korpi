@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Rendering.Shaders;
+﻿using Korpi.Client.Rendering.Shaders;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Debugging.Drawing.Drawables;
+namespace Korpi.Client.Debugging.Drawing.Drawables;
 
 public abstract class DebugDrawable
 {

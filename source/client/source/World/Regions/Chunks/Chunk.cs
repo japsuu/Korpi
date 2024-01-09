@@ -1,13 +1,13 @@
-﻿using BlockEngine.Client.Debugging.Drawing;
-using BlockEngine.Client.Generation.Jobs;
-using BlockEngine.Client.Logging;
-using BlockEngine.Client.Meshing.Jobs;
-using BlockEngine.Client.Threading.Pooling;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
-using BlockEngine.Client.World.Regions.Chunks.BlockStorage;
+﻿using Korpi.Client.Debugging.Drawing;
+using Korpi.Client.Generation.Jobs;
+using Korpi.Client.Logging;
+using Korpi.Client.Meshing.Jobs;
+using Korpi.Client.Threading.Pooling;
+using Korpi.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.World.Regions.Chunks.BlockStorage;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World.Regions.Chunks;
+namespace Korpi.Client.World.Regions.Chunks;
 
 public class Chunk
 {

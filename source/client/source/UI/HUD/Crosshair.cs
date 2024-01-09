@@ -1,10 +1,10 @@
-﻿using BlockEngine.Client.Rendering.Shaders;
-using BlockEngine.Client.Rendering.Textures;
-using BlockEngine.Client.Utils;
-using BlockEngine.Client.Window;
+﻿using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.Rendering.Textures;
+using Korpi.Client.Utils;
+using Korpi.Client.Window;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Client.UI.HUD;
+namespace Korpi.Client.UI.HUD;
 
 public class Crosshair
 {

@@ -1,10 +1,10 @@
-﻿using BlockEngine.Client.Logging;
-using BlockEngine.Client.Meshing;
-using BlockEngine.Client.Rendering.Shaders;
+﻿using Korpi.Client.Logging;
+using Korpi.Client.Meshing;
+using Korpi.Client.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Rendering.Chunks;
+namespace Korpi.Client.Rendering.Chunks;
 
 public class ChunkRenderer : IDisposable
 {

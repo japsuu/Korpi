@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.UI.Windows;
-using ImGuiNET;
+﻿using ImGuiNET;
+using Korpi.Client.UI.Windows;
 
-namespace BlockEngine.Client.UI;
+namespace Korpi.Client.UI;
 
 public static class ImGuiWindowManager
 {
