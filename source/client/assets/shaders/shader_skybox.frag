@@ -14,8 +14,8 @@ const vec3 sunBloomColor = vec3(1.0, 0.96, 0.84);
 const vec3 moonBloomColor = vec3(0.9, 0.9, 1.0);
 
 // Range of the bloom in the range 0-1.
-const float sunBloomRange = 0.01;
-const float sunBloomStrength = 0.7;
+const float sunBloomRange = 0.03;
+const float sunBloomStrength = 0.4;
 
 // Range of the bloom in the range 0-1.
 const float moonBloomRange = 0.01;

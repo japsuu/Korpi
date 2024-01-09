@@ -64,6 +64,8 @@ public abstract class CelestialBody : SkyboxFeature, IDisposable
 
     protected abstract Vector3 Position { get; }
     protected abstract float Scale { get; }
+    protected abstract float RotationX { get; }
+    protected abstract float RotationY { get; }
 
 
     protected CelestialBody(bool enableRotation, string[] texturePaths, int textureUnit)
@@ -98,8 +100,8 @@ public abstract class CelestialBody : SkyboxFeature, IDisposable
         Matrix4 modelMatrix = Matrix4.Identity;
         if (_enableRotation)
         {
-            modelMatrix *= Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(1f * GameTime.TotalTime));
-            modelMatrix *= Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(0.01f * GameTime.TotalTime));
+            modelMatrix *= Matrix4.CreateRotationX(MathHelper.DegreesToRadians(RotationX));
+            modelMatrix *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(RotationY));
         }
 
         modelMatrix *= Matrix4.CreateScale(Scale);

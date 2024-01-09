@@ -21,4 +21,6 @@ public class Moon : CelestialBody
 
     protected override Vector3 Position => -GameTime.SunDirection * 800; // WARN: The proper way would be to use a orthographic projection matrix
     protected override float Scale => 40f;
+    protected override float RotationX => 1f * (float)GameTime.TotalTime;
+    protected override float RotationY => 0.01f * (float)GameTime.TotalTime;
 }
