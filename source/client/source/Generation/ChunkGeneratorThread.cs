@@ -36,8 +36,8 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
         bool isBelowSurface = chunk.Top < TERRAIN_HEIGHT_MIN;
 
         BlockState air = BlockRegistry.Air.GetDefaultState();
-        BlockState stone = BlockRegistry.GetBlock("block_engine:stone").GetDefaultState();
-        BlockState dirt = BlockRegistry.GetBlock("block_engine:dirt").GetDefaultState();
+        BlockState stone = BlockRegistry.GetBlock("korpi:stone").GetDefaultState();
+        BlockState dirt = BlockRegistry.GetBlock("korpi:dirt").GetDefaultState();
 
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         for (int x = 0; x < Constants.CHUNK_SIZE; x++)

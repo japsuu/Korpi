@@ -15,7 +15,7 @@ public static class Constants
     public const string MODS_PATH = "assets/mods/";
     
     // Mods
-    public const string BUILT_INS_NAMESPACE = "block_engine";
+    public const string BUILT_INS_NAMESPACE = "korpi";
     public const string YAML_MOD_FILE_EXTENSION = "yaml";
     
     // Game logic

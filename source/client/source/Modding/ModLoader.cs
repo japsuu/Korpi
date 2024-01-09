@@ -75,6 +75,7 @@ public static class ModLoader
     
     private static string GetDefaultBuiltinMod()
     {
+        throw new NotImplementedException("TODO: Implement default builtin mod.");
         List<YamlBlockData> blocks = new()
         {
             new YamlBlockData("TestBlock", BlockRenderType.Normal, "TestBlock")
