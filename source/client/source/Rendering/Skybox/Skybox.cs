@@ -60,6 +60,7 @@ public class Skybox : IDisposable
     };
     
     private readonly Sun _sun;
+    private readonly Moon _moon;
     private readonly CubemapTexture _daySkyboxTexture;
     private readonly CubemapTexture _nightSkyboxTexture;
     private readonly int _skyboxVAO;
@@ -109,6 +110,7 @@ public class Skybox : IDisposable
         ShaderManager.SkyboxShader.SetInt("skyboxNightTexture", 2);
         
         _sun = new Sun(true);
+        _moon = new Moon(true);
     }
 
 
@@ -137,6 +139,7 @@ public class Skybox : IDisposable
         GL.BindVertexArray(0);
         
         _sun.Render();
+        _moon.Render();
         
         GL.DepthFunc(DepthFunction.Less); // set depth function back to default
     }
@@ -148,6 +151,7 @@ public class Skybox : IDisposable
         _nightSkyboxTexture.Dispose();
         GL.DeleteVertexArray(_skyboxVAO);
         _sun.Dispose();
+        _moon.Dispose();
     }
 
 
