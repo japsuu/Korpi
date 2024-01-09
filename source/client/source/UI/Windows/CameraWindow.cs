@@ -1,13 +1,13 @@
-﻿using BlockEngine.Client.Debugging;
-using BlockEngine.Client.ECS.Entities;
-using BlockEngine.Client.Mathematics;
-using BlockEngine.Client.Registries;
-using BlockEngine.Client.Rendering.Cameras;
-using BlockEngine.Client.Window;
-using ImGuiNET;
+﻿using ImGuiNET;
+using Korpi.Client.Debugging;
+using Korpi.Client.ECS.Entities;
+using Korpi.Client.Mathematics;
+using Korpi.Client.Registries;
+using Korpi.Client.Rendering.Cameras;
+using Korpi.Client.Window;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.UI.Windows;
+namespace Korpi.Client.UI.Windows;
 
 public class CameraWindow : ImGuiWindow
 {

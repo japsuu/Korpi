@@ -1,5 +1,5 @@
-﻿using BlockEngine;
-using BlockEngine.Client;
+﻿using Korpi;
+using Korpi.Client;
 
 namespace ClientTests;
 

@@ -1,10 +1,10 @@
-﻿using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Rendering.Chunks;
-using BlockEngine.Client.Threading;
-using BlockEngine.Client.World;
-using BlockEngine.Client.World.Regions.Chunks;
+﻿using Korpi.Client.Debugging;
+using Korpi.Client.Rendering.Chunks;
+using Korpi.Client.World;
+using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.Threading;
 
-namespace BlockEngine.Client.Meshing;
+namespace Korpi.Client.Meshing;
 
 [Obsolete("This class is no longer used, and will be removed in the future. Use MeshingJob instead.")]
 public class ChunkMesherManager : ChunkProcessorThreadManager<ChunkMesherThread, ChunkMesh>

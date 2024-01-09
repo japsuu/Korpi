@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Logging;
+﻿using Korpi.Client.Logging;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Client.Rendering.Textures;
+namespace Korpi.Client.Rendering.Textures;
 
 /// <summary>
 /// Collection of methods to bind textures to texture units statically (for the entire lifetime of the program).

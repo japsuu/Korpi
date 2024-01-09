@@ -1,6 +1,6 @@
-﻿using BlockEngine.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.World.Regions.Chunks.Blocks;
 
-namespace BlockEngine.Client.Debugging;
+namespace Korpi.Client.Debugging;
 
 public static class CameraWindowData
 {

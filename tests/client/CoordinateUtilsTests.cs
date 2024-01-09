@@ -1,5 +1,5 @@
-using BlockEngine.Client.Mathematics;
-using BlockEngine.Client.Utils;
+using Korpi.Client.Mathematics;
+using Korpi.Client.Utils;
 using OpenTK.Mathematics;
 
 namespace ClientTests;

@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.ECS.Components;
+namespace Korpi.Client.ECS.Components;
 
 public class TransformComponent : Component
 {

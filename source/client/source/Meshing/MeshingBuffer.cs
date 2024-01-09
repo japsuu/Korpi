@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Configuration;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.Configuration;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Meshing;
+namespace Korpi.Client.Meshing;
 
 /// <summary>
 /// Buffer in to which meshes are generated.

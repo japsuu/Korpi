@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
-using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Rendering.Chunks;
-using BlockEngine.Client.Threading.Pooling;
-using BlockEngine.Client.Window;
 using ImGuiNET;
+using Korpi.Client.Debugging;
+using Korpi.Client.Rendering.Chunks;
+using Korpi.Client.Threading.Pooling;
+using Korpi.Client.Window;
 
-namespace BlockEngine.Client.UI.Windows;
+namespace Korpi.Client.UI.Windows;
 
 public class DebugStatsWindow : ImGuiWindow
 {

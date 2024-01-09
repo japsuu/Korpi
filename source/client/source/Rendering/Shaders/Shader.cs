@@ -1,8 +1,8 @@
-﻿using BlockEngine.Client.Logging;
+﻿using Korpi.Client.Logging;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Rendering.Shaders;
+namespace Korpi.Client.Rendering.Shaders;
 
 public class Shader : IDisposable
 {

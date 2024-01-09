@@ -1,6 +1,6 @@
 ﻿using Config.Net;
 
-namespace BlockEngine.Client.Configuration;
+namespace Korpi.Client.Configuration;
 
 public interface ILoggingConfig
 {

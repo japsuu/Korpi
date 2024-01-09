@@ -1,21 +1,21 @@
 ﻿using System.Collections.Concurrent;
-using BlockEngine.Client.Configuration;
-using BlockEngine.Client.Debugging.Drawing;
-using BlockEngine.Client.ECS.Entities;
-using BlockEngine.Client.Logging;
-using BlockEngine.Client.Mathematics;
-using BlockEngine.Client.Meshing;
-using BlockEngine.Client.Physics;
-using BlockEngine.Client.Registries;
-using BlockEngine.Client.Rendering.Cameras;
-using BlockEngine.Client.Rendering.Chunks;
-using BlockEngine.Client.Rendering.Shaders;
-using BlockEngine.Client.World.Regions;
-using BlockEngine.Client.World.Regions.Chunks;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.Configuration;
+using Korpi.Client.Debugging.Drawing;
+using Korpi.Client.ECS.Entities;
+using Korpi.Client.Logging;
+using Korpi.Client.Mathematics;
+using Korpi.Client.Meshing;
+using Korpi.Client.Physics;
+using Korpi.Client.Registries;
+using Korpi.Client.Rendering.Cameras;
+using Korpi.Client.Rendering.Chunks;
+using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.World.Regions;
+using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.World;
+namespace Korpi.Client.World;
 
 /// <summary>
 /// Manages all loaded <see cref="Chunk"/>s and chunk columns (<see cref="Region"/>s).

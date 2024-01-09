@@ -1,11 +1,11 @@
-﻿using BlockEngine.Client.Rendering.Shaders;
-using BlockEngine.Client.Rendering.Textures;
-using BlockEngine.Client.Utils;
-using BlockEngine.Client.Window;
+﻿using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.Rendering.Textures;
+using Korpi.Client.Utils;
+using Korpi.Client.Window;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Rendering.Skybox;
+namespace Korpi.Client.Rendering.Skybox;
 
 public class Skybox : IDisposable
 {

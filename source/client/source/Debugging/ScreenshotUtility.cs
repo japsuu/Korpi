@@ -1,10 +1,10 @@
 ﻿using BigGustave;
-using BlockEngine.Client.Logging;
+using Korpi.Client.Logging;
 using OpenTK.Graphics.OpenGL4;
 using Buffer = System.Buffer;
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 
-namespace BlockEngine.Client.Debugging;
+namespace Korpi.Client.Debugging;
 
 public static class ScreenshotUtility
 {

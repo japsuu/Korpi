@@ -1,4 +1,4 @@
-namespace BlockEngine.Client.World.Regions.Chunks.Blocks;
+namespace Korpi.Client.World.Regions.Chunks.Blocks;
 
 /// <summary>
 /// The state of a <see cref="Block"/>. Also this is what chunks actually store.

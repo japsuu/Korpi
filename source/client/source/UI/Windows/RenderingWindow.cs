@@ -1,10 +1,10 @@
 ﻿#if DEBUG
-using BlockEngine.Client.Configuration;
-using BlockEngine.Client.Debugging.Drawing;
-using BlockEngine.Client.World;
 using ImGuiNET;
+using Korpi.Client.Configuration;
+using Korpi.Client.Debugging.Drawing;
+using Korpi.Client.World;
 
-namespace BlockEngine.Client.UI.Windows;
+namespace Korpi.Client.UI.Windows;
 
 public class RenderingWindow : ImGuiWindow
 {

@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Modding.Blocks;
-using BlockEngine.Client.Rendering.Textures;
-using BlockEngine.Client.Utils;
-using BlockEngine.Client.World.Regions.Chunks.Blocks.Textures;
+using Korpi.Client.Modding.Blocks;
+using Korpi.Client.Rendering.Textures;
+using Korpi.Client.Utils;
+using Korpi.Client.World.Regions.Chunks.Blocks.Textures;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Client.Registries;
+namespace Korpi.Client.Registries;
 
 public static class TextureRegistry
 {

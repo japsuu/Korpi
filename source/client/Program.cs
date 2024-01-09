@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Configuration;
-using BlockEngine.Client.Window;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Window;
 
-namespace BlockEngine.Client
+namespace Korpi.Client
 {
     internal static class Program
     {

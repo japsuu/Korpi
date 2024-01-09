@@ -1,6 +1,6 @@
-﻿using BlockEngine.Client.ECS.Entities;
+﻿using Korpi.Client.ECS.Entities;
 
-namespace BlockEngine.Client.ECS.Components;
+namespace Korpi.Client.ECS.Components;
 
 public abstract class Component
 {

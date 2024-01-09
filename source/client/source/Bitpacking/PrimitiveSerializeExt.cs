@@ -23,7 +23,7 @@
 */
 
 
-namespace BlockEngine.Client.Bitpacking
+namespace Korpi.Client.Bitpacking
 {
 	/// <summary>
 	/// Extension methods for writing bits to primitive buffers.

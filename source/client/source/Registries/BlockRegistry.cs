@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Exceptions;
-using BlockEngine.Client.Logging;
-using BlockEngine.Client.Modding;
-using BlockEngine.Client.Modding.Blocks;
-using BlockEngine.Client.Utils;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
-using BlockEngine.Client.World.Regions.Chunks.Blocks.Textures;
+using Korpi.Client.Exceptions;
+using Korpi.Client.Logging;
+using Korpi.Client.Modding;
+using Korpi.Client.Modding.Blocks;
+using Korpi.Client.Utils;
+using Korpi.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.World.Regions.Chunks.Blocks.Textures;
 
-namespace BlockEngine.Client.Registries;
+namespace Korpi.Client.Registries;
 
 /// <summary>
 /// Allows retrieving block references through either a namespaced name or an ID.

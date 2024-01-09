@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Physics;
+namespace Korpi.Client.Physics;
 
 public struct RaycastResult
 {

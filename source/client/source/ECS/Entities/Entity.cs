@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using BlockEngine.Client.ECS.Components;
+using Korpi.Client.ECS.Components;
 
-namespace BlockEngine.Client.ECS.Entities;
+namespace Korpi.Client.ECS.Entities;
 
 public abstract class Entity
 {

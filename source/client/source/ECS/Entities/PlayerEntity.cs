@@ -1,11 +1,11 @@
-﻿using BlockEngine.Client.ECS.Components;
-using BlockEngine.Client.Registries;
-using BlockEngine.Client.Rendering.Cameras;
-using BlockEngine.Client.Window;
+﻿using Korpi.Client.ECS.Components;
+using Korpi.Client.Registries;
+using Korpi.Client.Rendering.Cameras;
+using Korpi.Client.Window;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace BlockEngine.Client.ECS.Entities;
+namespace Korpi.Client.ECS.Entities;
 
 /// <summary>
 /// Basic playerEntity entity. Always has a <see cref="PlayerCamera"/> attached to it.

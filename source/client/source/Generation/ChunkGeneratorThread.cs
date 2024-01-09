@@ -1,13 +1,13 @@
-﻿using BlockEngine.Client.Debugging;
-using BlockEngine.Client.Mathematics;
-using BlockEngine.Client.Mathematics.Noise;
-using BlockEngine.Client.Registries;
-using BlockEngine.Client.Threading;
-using BlockEngine.Client.World.Regions.Chunks;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.Mathematics;
+using Korpi.Client.Debugging;
+using Korpi.Client.Mathematics.Noise;
+using Korpi.Client.Registries;
+using Korpi.Client.Threading;
+using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Generation;
+namespace Korpi.Client.Generation;
 
 public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
 {
@@ -36,8 +36,8 @@ public class ChunkGeneratorThread : ChunkProcessorThread<Vector3i>
         bool isBelowSurface = chunk.Top < TERRAIN_HEIGHT_MIN;
 
         BlockState air = BlockRegistry.Air.GetDefaultState();
-        BlockState stone = BlockRegistry.GetBlock("block_engine:stone").GetDefaultState();
-        BlockState dirt = BlockRegistry.GetBlock("block_engine:dirt").GetDefaultState();
+        BlockState stone = BlockRegistry.GetBlock("korpi:stone").GetDefaultState();
+        BlockState dirt = BlockRegistry.GetBlock("korpi:dirt").GetDefaultState();
 
         for (int z = 0; z < Constants.CHUNK_SIZE; z++)
         for (int x = 0; x < Constants.CHUNK_SIZE; x++)

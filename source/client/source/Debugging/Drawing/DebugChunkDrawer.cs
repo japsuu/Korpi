@@ -1,8 +1,8 @@
-﻿using BlockEngine.Client.Rendering.Shaders;
+﻿using Korpi.Client.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Debugging.Drawing;
+namespace Korpi.Client.Debugging.Drawing;
 
 public static class DebugChunkDrawer
 {

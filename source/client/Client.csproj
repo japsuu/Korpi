@@ -6,7 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RootNamespace>BlockEngine.Client</RootNamespace>
+    <RootNamespace>Korpi.Client</RootNamespace>
+    <Company>Japsu</Company>
+    <Product>Korpi Client</Product>
   </PropertyGroup>
 
   <ItemGroup>

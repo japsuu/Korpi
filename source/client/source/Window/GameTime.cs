@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Window;
+namespace Korpi.Client.Window;
 
 public static class GameTime
 {

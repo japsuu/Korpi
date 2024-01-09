@@ -1,10 +1,10 @@
-﻿using BlockEngine.Client.Registries;
-using BlockEngine.Client.World;
-using BlockEngine.Client.World.Regions.Chunks;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.Registries;
+using Korpi.Client.World;
+using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Meshing;
+namespace Korpi.Client.Meshing;
 
 /// <summary>
 /// Contains the BlockState data of a chunk, and a border of its neighbouring chunks.

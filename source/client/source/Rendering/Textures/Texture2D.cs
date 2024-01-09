@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 
-namespace BlockEngine.Client.Rendering.Textures;
+namespace Korpi.Client.Rendering.Textures;
 
 public class Texture2D : Texture
 {

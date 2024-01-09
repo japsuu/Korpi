@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace BlockEngine.Client.Threading.Jobs;
+namespace Korpi.Client.Threading.Jobs;
 
 public interface IAwaitable : INotifyCompletion
 {

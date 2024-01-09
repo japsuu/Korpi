@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Meshing;
+﻿using Korpi.Client.Meshing;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Rendering.Chunks;
+namespace Korpi.Client.Rendering.Chunks;
 
 /// <summary>
 /// Used to store and dynamically fetch chunk meshes/renderers.

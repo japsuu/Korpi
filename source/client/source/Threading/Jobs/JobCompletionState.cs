@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Threading.Jobs;
+﻿namespace Korpi.Client.Threading.Jobs;
 
 /// <summary>
 /// Represents the completion state of a <see cref="IKorpiJob"/>.

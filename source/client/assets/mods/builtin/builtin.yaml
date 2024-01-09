@@ -1,5 +1,5 @@
 ﻿name: Builtins
-namespace: block_engine
+namespace: korpi
 description: Built-in blocks
 author: Japsu
 blocks:

@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
-using BlockEngine.Client.Configuration;
+using Korpi.Client.Configuration;
 
-namespace BlockEngine.Client.Logging
+namespace Korpi.Client.Logging
 {
     public static class Logger
     {
-        private const string LOG_PREFIX = $"[{Constants.ENGINE_NAME}]";
+        private const string LOG_PREFIX = $"[{Constants.CLIENT_NAME}]";
         
         private static int debugCounter = -1;
         

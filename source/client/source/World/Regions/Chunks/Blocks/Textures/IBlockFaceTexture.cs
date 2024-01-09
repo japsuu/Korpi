@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.World.Regions.Chunks.Blocks.Textures;
+﻿namespace Korpi.Client.World.Regions.Chunks.Blocks.Textures;
 
 public interface IBlockFaceTexture
 {

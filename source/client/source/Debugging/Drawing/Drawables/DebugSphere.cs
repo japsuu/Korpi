@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Debugging.Drawing.Drawables;
+namespace Korpi.Client.Debugging.Drawing.Drawables;
 
 public class DebugSphere : DebugDrawable
 {

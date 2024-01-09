@@ -1,10 +1,10 @@
 ﻿using System.Collections.Concurrent;
-using BlockEngine.Client.World;
-using BlockEngine.Client.World.Regions.Chunks;
 using ConcurrentCollections;
+using Korpi.Client.World;
+using Korpi.Client.World.Regions.Chunks;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.Threading;
+namespace Korpi.Client.Threading;
 
 /// <summary>
 /// Base class for a thread that processes chunks and provides some kind of output.

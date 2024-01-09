@@ -1,4 +1,4 @@
-﻿namespace BlockEngine.Client.Threading.Threads;
+﻿namespace Korpi.Client.Threading.Threads;
 
 /// <summary>
 /// Status of a <see cref="WorkerThread"/>.

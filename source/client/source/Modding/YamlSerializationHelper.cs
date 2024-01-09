@@ -1,7 +1,7 @@
 ﻿using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace BlockEngine.Client.Modding;
+namespace Korpi.Client.Modding;
 
 public static class YamlSerializationHelper
 {

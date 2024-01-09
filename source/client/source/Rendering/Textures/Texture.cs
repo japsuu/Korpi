@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.Registries;
+﻿using Korpi.Client.Registries;
 using OpenTK.Graphics.OpenGL4;
 
-namespace BlockEngine.Client.Rendering.Textures;
+namespace Korpi.Client.Rendering.Textures;
 
 public abstract class Texture : IHasName, IDisposable
 {

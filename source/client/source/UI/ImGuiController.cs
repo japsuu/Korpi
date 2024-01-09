@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using BlockEngine.Client.Logging;
 using ImGuiNET;
+using Korpi.Client.Logging;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
@@ -9,7 +9,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
 using Vector4 = System.Numerics.Vector4;
 
-namespace BlockEngine.Client.UI;
+namespace Korpi.Client.UI;
 
 public class ImGuiController : IDisposable
 {

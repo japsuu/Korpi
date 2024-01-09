@@ -1,5 +1,5 @@
 ﻿
-using BlockEngine.Client.Bitpacking;
+using Korpi.Client.Bitpacking;
 
 namespace ClientTests;
 

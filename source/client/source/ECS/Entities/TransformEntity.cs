@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.ECS.Components;
+﻿using Korpi.Client.ECS.Components;
 using OpenTK.Mathematics;
 
-namespace BlockEngine.Client.ECS.Entities;
+namespace Korpi.Client.ECS.Entities;
 
 /// <summary>
 /// Basic entity with a transform component.

@@ -1,7 +1,7 @@
-﻿using BlockEngine.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.World.Regions.Chunks.Blocks;
 using YamlDotNet.Serialization;
 
-namespace BlockEngine.Client.Modding.Blocks;
+namespace Korpi.Client.Modding.Blocks;
 
 /// <summary>
 /// Serializable data of a block.

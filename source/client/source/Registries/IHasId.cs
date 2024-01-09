@@ -1,4 +1,4 @@
-namespace BlockEngine.Client.Registries;
+namespace Korpi.Client.Registries;
 
 public interface IHasId
 {

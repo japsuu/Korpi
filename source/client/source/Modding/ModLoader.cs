@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using BlockEngine.Client.Logging;
-using BlockEngine.Client.Modding.Blocks;
-using BlockEngine.Client.Registries;
-using BlockEngine.Client.Utils;
-using BlockEngine.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.Logging;
+using Korpi.Client.Modding.Blocks;
+using Korpi.Client.Registries;
+using Korpi.Client.Utils;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 
-namespace BlockEngine.Client.Modding;
+namespace Korpi.Client.Modding;
 
 public static class ModLoader
 {
@@ -75,6 +75,7 @@ public static class ModLoader
     
     private static string GetDefaultBuiltinMod()
     {
+        throw new NotImplementedException("TODO: Implement default builtin mod.");
         List<YamlBlockData> blocks = new()
         {
             new YamlBlockData("TestBlock", BlockRenderType.Normal, "TestBlock")

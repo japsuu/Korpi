@@ -1,12 +1,13 @@
-﻿using BlockEngine.Client.Threading.Jobs;
+﻿using Korpi.Client.Threading.Jobs;
+using Korpi.Client.Window;
 
-namespace BlockEngine.Client;
+namespace Korpi.Client;
 
 public static class Constants
 {
     // Engine
-    public const string ENGINE_NAME = "BlockEngine";
-    public const string ENGINE_VERSION = "0.0.1";
+    public const string CLIENT_NAME = "Korpi Client";
+    public const string CLIENT_VERSION = "0.0.1";
     
     // IO Paths
     public const string SHADER_PATH = "assets/shaders/";
@@ -14,7 +15,7 @@ public static class Constants
     public const string MODS_PATH = "assets/mods/";
     
     // Mods
-    public const string BUILT_INS_NAMESPACE = "block_engine";
+    public const string BUILT_INS_NAMESPACE = "korpi";
     public const string YAML_MOD_FILE_EXTENSION = "yaml";
     
     // Game logic
@@ -29,7 +30,7 @@ public static class Constants
     public const float DELTA_TIME_SLOW_THRESHOLD = 0.1f;
     
     /// <summary>
-    /// An upper limit on the amount of time the engine will report as having passed by the <see cref="BlockEngine.Client.Window.GameTime.DeltaTime"/>.
+    /// An upper limit on the amount of time the engine will report as having passed by the <see cref="GameTime.DeltaTime"/>.
     /// </summary>
     public const float MAX_DELTA_TIME = 0.5f;
     
