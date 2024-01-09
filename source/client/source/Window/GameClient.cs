@@ -65,7 +65,7 @@ public class GameClient : GameWindow
         new NativeWindowSettings
         {
             Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
-            Title = $"{Constants.ENGINE_NAME} v{Constants.ENGINE_VERSION}",
+            Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
             NumberOfSamples = 8,
 #if DEBUG
             Flags = ContextFlags.Debug
@@ -76,7 +76,7 @@ public class GameClient : GameWindow
     protected override void OnLoad()
     {
         base.OnLoad();
-        Logger.Log($"Starting v{Constants.ENGINE_VERSION}...");
+        Logger.Log($"Starting v{Constants.CLIENT_VERSION}...");
 
         WindowWidth = ClientSize.X;
         WindowHeight = ClientSize.Y;

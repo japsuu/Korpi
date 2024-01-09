@@ -6,8 +6,8 @@ namespace Korpi.Client;
 public static class Constants
 {
     // Engine
-    public const string ENGINE_NAME = "BlockEngine";
-    public const string ENGINE_VERSION = "0.0.1";
+    public const string CLIENT_NAME = "Korpi Client";
+    public const string CLIENT_VERSION = "0.0.1";
     
     // IO Paths
     public const string SHADER_PATH = "assets/shaders/";
