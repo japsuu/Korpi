@@ -15,18 +15,18 @@ public class Chunk
     /// <summary>
     /// Represents the state of the chunk.
     /// </summary>
-    private enum ChunkGenerationState    //TODO: Add "Decorating" state
+    private enum ChunkGenerationState //TODO: Add "Decorating" state
     {
         /// <summary>
         /// The chunk has not been generated yet.
         /// </summary>
         NONE = 0,
-        
+
         /// <summary>
         /// The chunk is queued for generation.
         /// </summary>
         GENERATING = 1,
-        
+
         /// <summary>
         /// The chunk has been generated.
         /// </summary>
@@ -42,17 +42,17 @@ public class Chunk
         /// The chunk has not been meshed.
         /// </summary>
         NONE = 0,
-        
+
         /// <summary>
         /// The chunk is waiting for neighbouring chunks to be generated.
         /// </summary>
         WAITING_FOR_NEIGHBOURS_TO_GENERATE = 1,
-        
+
         /// <summary>
         /// The chunk is queued for meshing.
         /// </summary>
         MESHING = 2,
-        
+
         /// <summary>
         /// The chunk has been meshed.
         /// </summary>
@@ -61,7 +61,6 @@ public class Chunk
 
 
     private readonly IBlockStorage _blockStorage = new BlockPalette();
-    private readonly object _blockStorageLock = new();  // WARN: BUG: Remove this!
     private readonly Action _generateJobCallback;
     private readonly Action _meshJobCallback;
 
@@ -70,29 +69,29 @@ public class Chunk
     private long _currentJobId;
     private ChunkGenerationState _generationState;
     private ChunkMeshState _meshState;
-    
+
     public readonly ReaderWriterLockSlim ThreadLock;
     public readonly Vector3i Position;
     public readonly int Top;
     public readonly int Bottom;
-    
+
     public bool IsGenerated => _generationState == ChunkGenerationState.READY;
     public bool ShouldBeRendered => IsGenerated && _meshState >= ChunkMeshState.MESHING;
     public long CurrentJobId => Interlocked.Read(ref _currentJobId);
 
 
-    public Chunk(Vector3i position)     //TODO: Isolate state to a separate class
+    public Chunk(Vector3i position) //TODO: Isolate state to a separate class
     {
         Position = position;
         Top = position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
         Bottom = position.Y;
         _containsRenderedBlocks = false;
         ThreadLock = new ReaderWriterLockSlim();
-        
+
         // Set callbacks
         _generateJobCallback = OnGenerated;
         _meshJobCallback = OnMeshed;
-        
+
         // Set state
         _generationState = ChunkGenerationState.NONE;
         _meshState = ChunkMeshState.NONE;
@@ -103,20 +102,17 @@ public class Chunk
     {
         if (!_isLoaded)
             throw new InvalidOperationException("Tried to tick an unloaded chunk!");
-        
+
         if (_meshState == ChunkMeshState.WAITING_FOR_NEIGHBOURS_TO_GENERATE)
-        {
             if (CanBeMeshed())
-            {
                 EnqueueForMeshing();
-            }
-        }
 
 #if DEBUG
-        if (Configuration.ClientConfig.DebugModeConfig.RenderChunkMeshState)
+        if (ClientConfig.DebugModeConfig.RenderChunkMeshState)
         {
             const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;
-            Vector3 centerOffset = new Vector3(halfAChunk, 0, halfAChunk);
+            Vector3 centerOffset = new(halfAChunk, 0, halfAChunk);
+
             // if (_containsRenderedBlocks)
             // {
             //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Green);
@@ -137,10 +133,12 @@ public class Chunk
                 case ChunkMeshState.MESHING:
                     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Yellow);
                     break;
+
                 // case ChunkMeshState.READY:
                 //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Green);
                 //     break;
             }
+
             // if (CoordinateUtils.WorldToChunk(Camera.RenderingCamera.Position) == Position)
             //     DebugTextWindow.AddFrameText(Position + new Vector3(halfAChunk, halfAChunk, halfAChunk), $"HighestRenderedBlockY = {HighestRenderedBlockY}");
         }
@@ -151,9 +149,7 @@ public class Chunk
     public void Load()
     {
         if (_generationState == ChunkGenerationState.GENERATING)
-        {
             Logger.LogWarning("Multiple generation jobs enqueued for chunk!");
-        }
         _generationState = ChunkGenerationState.GENERATING;
         _isLoaded = true;
         Interlocked.Increment(ref _currentJobId);
@@ -174,13 +170,9 @@ public class Chunk
         if (_containsRenderedBlocks)
         {
             if (CanBeMeshed())
-            {
                 EnqueueForMeshing();
-            }
             else
-            {
                 _meshState = ChunkMeshState.WAITING_FOR_NEIGHBOURS_TO_GENERATE;
-            }
         }
         else
         {
@@ -192,7 +184,7 @@ public class Chunk
     private void OnMeshed()
     {
         _meshState = ChunkMeshState.READY;
-        
+
         OnReady();
     }
 
@@ -201,15 +193,11 @@ public class Chunk
     {
         if (!_containsRenderedBlocks)
             return;
-        
+
         if (CanBeMeshed())
-        {
             EnqueueForMeshing();
-        }
         else
-        {
             _meshState = ChunkMeshState.WAITING_FOR_NEIGHBOURS_TO_GENERATE;
-        }
     }
 
 
@@ -217,8 +205,8 @@ public class Chunk
     {
         _generationState = ChunkGenerationState.READY;
     }
-    
-    
+
+
     private bool CanBeMeshed()
     {
         if (_generationState != ChunkGenerationState.READY)
@@ -242,14 +230,10 @@ public class Chunk
     private void EnqueueForMeshing()
     {
         if (IsSurroundedByBlocks())
-        {
             Logger.LogWarning("TODO: Chunk is surrounded by blocks, skipping meshing.");
-        }
 
         if (_meshState == ChunkMeshState.MESHING)
-        {
             Logger.LogWarning("Multiple meshing jobs enqueued for chunk!");
-        }
         _meshState = ChunkMeshState.MESHING;
         Interlocked.Increment(ref _currentJobId);
         GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, _meshJobCallback), WorkItemPriority.High);
@@ -269,20 +253,18 @@ public class Chunk
     /// </summary>
     public bool SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
-        lock (_blockStorageLock)
-        {
-            _blockStorage.SetBlock(position, block, out oldBlock);
-        
-            // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
-            bool shouldDirtyMesh = _generationState == ChunkGenerationState.READY && _meshState != ChunkMeshState.MESHING && (oldBlock.IsRendered || block.IsRendered);
-            
-            if (shouldDirtyMesh)
-                EnqueueForMeshing();
-        
-            _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
-        
-            return shouldDirtyMesh;
-        }
+        _blockStorage.SetBlock(position, block, out oldBlock);
+
+        // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
+        bool shouldDirtyMesh = _generationState == ChunkGenerationState.READY && _meshState != ChunkMeshState.MESHING &&
+                               (oldBlock.IsRendered || block.IsRendered);
+
+        if (shouldDirtyMesh)
+            EnqueueForMeshing();
+
+        _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+
+        return shouldDirtyMesh;
     }
 
 
@@ -296,9 +278,6 @@ public class Chunk
     /// </summary>
     public BlockState GetBlockState(ChunkBlockPosition position)
     {
-        lock (_blockStorageLock)
-        {
-            return _blockStorage.GetBlock(position);
-        }
+        return _blockStorage.GetBlock(position);
     }
 }
