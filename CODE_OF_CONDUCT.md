@@ -1,4 +1,4 @@
-# Code of Conduct - BlockEngine
+# Code of Conduct - Korpi
 
 ## Our Pledge
 
