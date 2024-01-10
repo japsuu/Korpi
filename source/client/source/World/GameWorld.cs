@@ -74,14 +74,14 @@ public class GameWorld
             {
                 if (raycastResult.Hit)
                 {
-                    RegionManager.SetBlockStateAt(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
+                    RegionManager.SetBlockStateAtWorld(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
                 }
             }
             else if (Input.MouseState.IsButtonPressed(MouseButton.Right))
             {
                 if (raycastResult.Hit)
                 {
-                    RegionManager.SetBlockStateAt(
+                    RegionManager.SetBlockStateAtWorld(
                         raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(),
                         BlockRegistry.GetBlock(PlayerEntity.SelectedBlockType).GetDefaultState());
                 }

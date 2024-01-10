@@ -56,7 +56,7 @@ public class MeshingDataCache
             !yUnderflow && !yOverflow &&
             !zUnderflow && !zOverflow)
         {
-            blockState = _centerChunk.GetBlockState(new Vector3i(blockPosX, blockPosY, blockPosZ));
+            blockState = _centerChunk.GetBlockState(new ChunkBlockPosition(blockPosX, blockPosY, blockPosZ));
             return true;
         }
 
@@ -99,7 +99,7 @@ public class MeshingDataCache
         }
         
         Vector3i chunkPosition = new(chunkPosX, chunkPosY, chunkPosZ);
-        Vector3i blockPos = new(blockPosX, blockPosY, blockPosZ);
+        ChunkBlockPosition blockPos = new(blockPosX, blockPosY, blockPosZ);
         
         // If the chunk is loaded, get the block state from there.
         if (_neighbourChunks.TryGetValue(chunkPosition, out Chunk? chunk))

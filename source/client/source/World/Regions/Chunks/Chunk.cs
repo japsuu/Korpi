@@ -61,7 +61,7 @@ public class Chunk
 
 
     private readonly IBlockStorage _blockStorage = new BlockPalette();
-    private readonly object _blockStorageLock = new();
+    private readonly object _blockStorageLock = new();  // WARN: BUG: Remove this!
     private readonly Action _generateJobCallback;
     private readonly Action _meshJobCallback;
 
@@ -267,11 +267,11 @@ public class Chunk
     /// </code>
     /// Thread safe.
     /// </summary>
-    public bool SetBlockState(Vector3i position, BlockState block, out BlockState oldBlock)
+    public bool SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
         lock (_blockStorageLock)
         {
-            _blockStorage.SetBlock(position.X, position.Y, position.Z, block, out oldBlock);
+            _blockStorage.SetBlock(position, block, out oldBlock);
         
             // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
             bool shouldDirtyMesh = _generationState == ChunkGenerationState.READY && _meshState != ChunkMeshState.MESHING && (oldBlock.IsRendered || block.IsRendered);
@@ -294,11 +294,11 @@ public class Chunk
     ///       for x in range:
     ///          block = BlockMap[x, y, z]
     /// </summary>
-    public BlockState GetBlockState(Vector3i position)
+    public BlockState GetBlockState(ChunkBlockPosition position)
     {
         lock (_blockStorageLock)
         {
-            return _blockStorage.GetBlock(position.X, position.Y, position.Z);
+            return _blockStorage.GetBlock(position);
         }
     }
 }

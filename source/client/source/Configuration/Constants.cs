@@ -93,6 +93,16 @@ public static class Constants
     /// The length of one side of a chunk in blocks.
     /// </summary>
     public const int CHUNK_SIDE_LENGTH = 32;
+
+    /// <summary>
+    /// The amount of bits needed to represent <see cref="CHUNK_SIDE_LENGTH"/>.
+    /// </summary>
+    public const int CHUNK_SIDE_BITS = 5;
+
+    /// <summary>
+    /// The amount of bits needed to represent <see cref="CHUNK_SIDE_LENGTH"/> doubled.
+    /// </summary>
+    public const int CHUNK_SIDE_BITS_DOUBLED = CHUNK_SIDE_BITS * 2;
     
     /// <summary>
     /// The bitmask used to get the remainder of a block's position in a chunk.
