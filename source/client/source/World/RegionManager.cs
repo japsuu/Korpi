@@ -294,17 +294,17 @@ public class RegionManager
         
         if(chunkRelativePos.X == 0)
             GetChunkAt(position + new Vector3i(-1, 0, 0))?.SetMeshDirty();
-        else if(chunkRelativePos.X == Constants.CHUNK_SIZE - 1)
+        else if(chunkRelativePos.X == Constants.CHUNK_SIDE_LENGTH - 1)
             GetChunkAt(position + new Vector3i(1, 0, 0))?.SetMeshDirty();
             
         if(chunkRelativePos.Y == 0)
             GetChunkAt(position + new Vector3i(0, -1, 0))?.SetMeshDirty();
-        else if(chunkRelativePos.Y == Constants.CHUNK_SIZE - 1)
+        else if(chunkRelativePos.Y == Constants.CHUNK_SIDE_LENGTH - 1)
             GetChunkAt(position + new Vector3i(0, 1, 0))?.SetMeshDirty();
             
         if(chunkRelativePos.Z == 0)
             GetChunkAt(position + new Vector3i(0, 0, -1))?.SetMeshDirty();
-        else if(chunkRelativePos.Z == Constants.CHUNK_SIZE - 1)
+        else if(chunkRelativePos.Z == Constants.CHUNK_SIDE_LENGTH - 1)
             GetChunkAt(position + new Vector3i(0, 0, 1))?.SetMeshDirty();
 
         return oldBlockState;
@@ -331,7 +331,7 @@ public class RegionManager
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
         foreach (KeyValuePair<Vector2i, Region> pair in _existingRegions)
         {
-            Vector2i normalizedColumnPos = (pair.Key - originColumnPos) / Constants.CHUNK_SIZE;
+            Vector2i normalizedColumnPos = (pair.Key - originColumnPos) / Constants.CHUNK_SIDE_LENGTH;
             if (Constants.CIRCULAR_LOAD_REGION)
             {
                 bool inRange = normalizedColumnPos.X * normalizedColumnPos.X + normalizedColumnPos.Y * normalizedColumnPos.Y <=
@@ -367,7 +367,7 @@ public class RegionManager
                 if (chunk == null)
                     continue;
 
-                Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIZE, column.Position.Y);
+                Vector3i chunkPos = new(column.Position.X, y * Constants.CHUNK_SIDE_LENGTH, column.Position.Y);
                 ChunkRendererStorage.RemoveChunkMesh(chunkPos);
             }
 
@@ -437,7 +437,7 @@ public class RegionManager
                 if (!inRange)
                     continue;
             }
-            _regionLoadSpiral.Add(pos * Constants.CHUNK_SIZE);
+            _regionLoadSpiral.Add(pos * Constants.CHUNK_SIDE_LENGTH);
         }
 
         Logger.Log($"Precomputed column load spiral for render distance {Constants.CHUNK_COLUMN_LOAD_RADIUS}, for {_regionLoadSpiral.Count} columns.");

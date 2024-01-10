@@ -16,7 +16,7 @@ public class MeshingBuffer
     private const int INDICES_PER_FACE = 6;
 
     // Since we cull internal faces, the worst case is half of the faces (every other block needs to be meshed).
-    private const int MAX_VISIBLE_FACES = Constants.CHUNK_SIZE_CUBED * FACES_PER_BLOCK / 2;
+    private const int MAX_VISIBLE_FACES = Constants.CHUNK_SIDE_LENGTH_CUBED * FACES_PER_BLOCK / 2;
     private const int MAX_VERTICES_PER_CHUNK = MAX_VISIBLE_FACES * VERTICES_PER_FACE;
     private const int MAX_INDICES_PER_CHUNK = MAX_VISIBLE_FACES * INDICES_PER_FACE;
     private const int MAX_VERTEX_DATA_PER_CHUNK = MAX_VERTICES_PER_CHUNK * ELEMENTS_PER_VERTEX;

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Korpi.Client.Configuration;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Mathematics;
@@ -14,9 +15,9 @@ public static class CoordinateUtils
     public static Vector3i WorldToChunk(Vector3 position)
     {
         return new Vector3i(
-            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIZE_BITMASK,
-            (int)System.Math.Floor(position.Y) & ~Constants.CHUNK_SIZE_BITMASK,
-            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIZE_BITMASK
+            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            (int)System.Math.Floor(position.Y) & ~Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIDE_LENGTH_BITMASK
         );
     }
     
@@ -30,9 +31,9 @@ public static class CoordinateUtils
     public static Vector3i WorldToChunk(Vector3i position)
     {
         return new Vector3i(
-            position.X & ~Constants.CHUNK_SIZE_BITMASK,
-            position.Y & ~Constants.CHUNK_SIZE_BITMASK,
-            position.Z & ~Constants.CHUNK_SIZE_BITMASK
+            position.X & ~Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            position.Y & ~Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            position.Z & ~Constants.CHUNK_SIDE_LENGTH_BITMASK
         );
     }
         
@@ -46,8 +47,8 @@ public static class CoordinateUtils
     public static Vector2i WorldToColumn(Vector3i position)
     {
         return new Vector2i(
-            position.X & ~Constants.CHUNK_SIZE_BITMASK,
-            position.Z & ~Constants.CHUNK_SIZE_BITMASK
+            position.X & ~Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            position.Z & ~Constants.CHUNK_SIDE_LENGTH_BITMASK
         );
     }
         
@@ -61,8 +62,8 @@ public static class CoordinateUtils
     public static Vector2i WorldToColumn(Vector3 position)
     {
         return new Vector2i(
-            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIZE_BITMASK,
-            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIZE_BITMASK
+            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIDE_LENGTH_BITMASK
         );
     }
     
@@ -76,9 +77,9 @@ public static class CoordinateUtils
     public static Vector3i WorldToChunkRelative(Vector3i position)
     {
         return new Vector3i(
-            position.X & Constants.CHUNK_SIZE_BITMASK,
-            position.Y & Constants.CHUNK_SIZE_BITMASK,
-            position.Z & Constants.CHUNK_SIZE_BITMASK
+            position.X & Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            position.Y & Constants.CHUNK_SIDE_LENGTH_BITMASK,
+            position.Z & Constants.CHUNK_SIDE_LENGTH_BITMASK
         );
     }
 }

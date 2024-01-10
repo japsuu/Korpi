@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Debugging.Drawing;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Logging;
 using Korpi.Client.Meshing.Jobs;
@@ -83,7 +84,7 @@ public class Chunk
     public Chunk(Vector3i position)     //TODO: Isolate state to a separate class
     {
         Position = position;
-        Top = position.Y + Constants.CHUNK_SIZE - 1;
+        Top = position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
         Bottom = position.Y;
         _containsRenderedBlocks = false;
         ThreadLock = new ReaderWriterLockSlim();
@@ -114,30 +115,30 @@ public class Chunk
 #if DEBUG
         if (Configuration.ClientConfig.DebugModeConfig.RenderChunkMeshState)
         {
-            const float halfAChunk = Constants.CHUNK_SIZE / 2f;
+            const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;
             Vector3 centerOffset = new Vector3(halfAChunk, 0, halfAChunk);
             // if (_containsRenderedBlocks)
             // {
-            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
+            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Green);
             // }
             // else
             // {
-            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Red);
+            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Red);
             // }
             // return;
             switch (_meshState)
             {
                 case ChunkMeshState.NONE:
-                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Red);
+                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Red);
                     break;
                 case ChunkMeshState.WAITING_FOR_NEIGHBOURS_TO_GENERATE:
-                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Blue);
+                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Blue);
                     break;
                 case ChunkMeshState.MESHING:
-                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Yellow);
+                    DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Yellow);
                     break;
                 // case ChunkMeshState.READY:
-                //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIZE, Color4.Green);
+                //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Green);
                 //     break;
             }
             // if (CoordinateUtils.WorldToChunk(Camera.RenderingCamera.Position) == Position)

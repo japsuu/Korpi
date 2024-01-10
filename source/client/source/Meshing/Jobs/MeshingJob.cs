@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.Configuration;
 using Korpi.Client.Logging;
 using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Jobs;

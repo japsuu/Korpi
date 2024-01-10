@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using JetBrains.Profiler.Api;
+using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Registries;
 using Korpi.Client.World;
@@ -42,8 +43,8 @@ public class ChunkMesher
 
     public ChunkMesh GenerateMesh(Chunk chunk)
     {
-        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIZE, 0))
-        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
+        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
             MeasureProfiler.StartCollectingData();
         DebugStats.StartChunkMeshing();
         GameWorld.CurrentGameWorld.RegionManager.FillMeshingCache(chunk.Position, _meshingDataCache);
@@ -53,11 +54,11 @@ public class ChunkMesher
         _meshingBuffer.Clear();
         
         // Mesh the chunk based on the data cache.
-        for (int z = 0; z < Constants.CHUNK_SIZE; z++)
+        for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
         {
-            for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+            for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH; y++)
             {
-                for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+                for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
                 {
                      _meshingDataCache.TryGetData(x, y, z, out BlockState blockState);
                     
@@ -75,8 +76,8 @@ public class ChunkMesher
         
         ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
         
-        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIZE, 0))
-        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIZE, 0))
+        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
             MeasureProfiler.SaveData();
 
         return mesh;
@@ -85,9 +86,9 @@ public class ChunkMesher
 
     private void AddFaces(BlockState blockState, int x, int y, int z)
     {
-        Debug.Assert(x >= 0 && x < Constants.CHUNK_SIZE, "0 <= x < CHUNK_SIZE");
-        Debug.Assert(y >= 0 && y < Constants.CHUNK_SIZE, "0 <= y < CHUNK_SIZE");
-        Debug.Assert(z >= 0 && z < Constants.CHUNK_SIZE, "0 <= z < CHUNK_SIZE");
+        Debug.Assert(x >= 0 && x < Constants.CHUNK_SIDE_LENGTH, "0 <= x < CHUNK_SIDE_LENGTH");
+        Debug.Assert(y >= 0 && y < Constants.CHUNK_SIDE_LENGTH, "0 <= y < CHUNK_SIDE_LENGTH");
+        Debug.Assert(z >= 0 && z < Constants.CHUNK_SIDE_LENGTH, "0 <= z < CHUNK_SIDE_LENGTH");
         // Iterate over all 6 faces of the block
         for (int face = 0; face < 6; face++)
         {

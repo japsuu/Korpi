@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Korpi.Client.Configuration;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Regions.Chunks;
 
@@ -94,16 +95,16 @@ public static class ChunkOffsets
     public static readonly Vector2i[] RegionNeighbourOffsets =
     {
         // 4 Corners
-        new(1 * Constants.CHUNK_SIZE, 1 * Constants.CHUNK_SIZE),
-        new(-1 * Constants.CHUNK_SIZE, 1 * Constants.CHUNK_SIZE),
-        new(-1 * Constants.CHUNK_SIZE, -1 * Constants.CHUNK_SIZE),
-        new(1 * Constants.CHUNK_SIZE, -1 * Constants.CHUNK_SIZE),
+        new(1 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
+        new(-1 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
+        new(-1 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
+        new(1 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
 
         // 4 Faces
-        new(1 * Constants.CHUNK_SIZE, 0 * Constants.CHUNK_SIZE),
-        new(0 * Constants.CHUNK_SIZE, 1 * Constants.CHUNK_SIZE),
-        new(-1 * Constants.CHUNK_SIZE, 0 * Constants.CHUNK_SIZE),
-        new(0 * Constants.CHUNK_SIZE, -1 * Constants.CHUNK_SIZE),
+        new(1 * Constants.CHUNK_SIDE_LENGTH, 0 * Constants.CHUNK_SIDE_LENGTH),
+        new(0 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
+        new(-1 * Constants.CHUNK_SIDE_LENGTH, 0 * Constants.CHUNK_SIDE_LENGTH),
+        new(0 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
     };
 
     /// <summary>
@@ -126,7 +127,7 @@ public static class ChunkOffsets
         ChunkNeighbourOffsets = new Vector3i[26];
         for (int i = 0; i < NeighbourOffsets.Length; i++)
         {
-            ChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.CHUNK_SIZE;
+            ChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.CHUNK_SIDE_LENGTH;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Modding.Blocks;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Modding.Blocks;
 using YamlDotNet.Serialization;
 
 namespace Korpi.Client.Modding;
@@ -21,7 +22,7 @@ public sealed class YamlMod
     public YamlBlockData[]? Blocks;
     
     // Non-YAML serialized fields.
-    public bool IsBuiltin => Namespace == Constants.BUILT_INS_NAMESPACE;
+    public bool IsBuiltin => Namespace == Constants.BUILT_IN_MOD_NAMESPACE;
     public string? ContainingFolderPath => _containingFolderPath;
     
     private string? _containingFolderPath;

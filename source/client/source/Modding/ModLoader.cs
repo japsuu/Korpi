@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Korpi.Client.Configuration;
 using Korpi.Client.Logging;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Registries;
@@ -81,7 +82,7 @@ public static class ModLoader
             new YamlBlockData("TestBlock", BlockRenderType.Normal, "TestBlock")
         };
 
-        YamlMod mod = new("Builtins", Constants.BUILT_INS_NAMESPACE, "Built-in blocks", "Japsu", blocks.ToArray());
+        YamlMod mod = new("Builtins", Constants.BUILT_IN_MOD_NAMESPACE, "Built-in blocks", "Japsu", blocks.ToArray());
         
         return YamlSerializationHelper.Serialize(mod);
     }

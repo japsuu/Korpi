@@ -21,6 +21,9 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Korpi.Client.Window;
 
+/// <summary>
+/// The main game client window.
+/// </summary>
 public class GameClient : GameWindow
 {
     /// <summary>

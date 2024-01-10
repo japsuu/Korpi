@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Debugging;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Debugging;
 using Korpi.Client.Mathematics.Noise;
 using Korpi.Client.Registries;
 using Korpi.Client.World.Regions.Chunks;
@@ -41,20 +42,20 @@ public class PerlinTerrainGenerator : ITerrainGenerator
         BlockState stone = BlockRegistry.GetBlock("korpi:stone").GetDefaultState();
         BlockState dirt = BlockRegistry.GetBlock("korpi:dirt").GetDefaultState();
 
-        for (int z = 0; z < Constants.CHUNK_SIZE; z++)
-        for (int x = 0; x < Constants.CHUNK_SIZE; x++)
+        for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
+        for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
         {
             if (isBelowSurface)
             {
                 // Fill the chunk with stone.
-                for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+                for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH; y++)
                     chunk.SetBlockState(new Vector3i(x, y, z), stone, out _);
                 continue;
             }
 
             int height = GetHeightmapAtPosition(new Vector2i(x + chunk.Position.X, z + chunk.Position.Z));
 
-            for (int y = 0; y < Constants.CHUNK_SIZE; y++)
+            for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH; y++)
             {
                 int worldY = chunk.Position.Y + y;
 

@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Registries;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Registries;
 using Korpi.Client.World;
 using Korpi.Client.World.Regions.Chunks;
 using Korpi.Client.World.Regions.Chunks.Blocks;
@@ -36,19 +37,19 @@ public class MeshingDataCache
     /// If accessing multiple blocks, loop in the order of z, y, x.
     /// This minimizes cache trashing.
     /// </summary>
-    /// <param name="blockPosX">Chunk-relative X position of the block. Valid range is [-1, Constants.CHUNK_SIZE]</param>
-    /// <param name="blockPosY">Chunk-relative Y position of the block. Valid range is [-1, Constants.CHUNK_SIZE]</param>
-    /// <param name="blockPosZ">Chunk-relative Z position of the block. Valid range is [-1, Constants.CHUNK_SIZE]</param>
+    /// <param name="blockPosX">Chunk-relative X position of the block. Valid range is [-1, Constants.CHUNK_SIDE_LENGTH]</param>
+    /// <param name="blockPosY">Chunk-relative Y position of the block. Valid range is [-1, Constants.CHUNK_SIDE_LENGTH]</param>
+    /// <param name="blockPosZ">Chunk-relative Z position of the block. Valid range is [-1, Constants.CHUNK_SIDE_LENGTH]</param>
     /// <param name="blockState">The BlockState of the block at the given position.</param>
     /// <returns>If the position was in a loaded chunk.</returns>
     public bool TryGetData(int blockPosX, int blockPosY, int blockPosZ, out BlockState blockState)
     {
         bool xUnderflow = blockPosX < 0;
-        bool xOverflow = blockPosX >= Constants.CHUNK_SIZE;
+        bool xOverflow = blockPosX >= Constants.CHUNK_SIDE_LENGTH;
         bool yUnderflow = blockPosY < 0;
-        bool yOverflow = blockPosY >= Constants.CHUNK_SIZE;
+        bool yOverflow = blockPosY >= Constants.CHUNK_SIDE_LENGTH;
         bool zUnderflow = blockPosZ < 0;
-        bool zOverflow = blockPosZ >= Constants.CHUNK_SIZE;
+        bool zOverflow = blockPosZ >= Constants.CHUNK_SIDE_LENGTH;
         
         // If we are in the center chunk, we can just get the block state from there.
         if (!xUnderflow && !xOverflow &&
@@ -66,34 +67,34 @@ public class MeshingDataCache
         
         if (xUnderflow)
         {
-            chunkPosX = -Constants.CHUNK_SIZE;
-            blockPosX = Constants.CHUNK_SIZE - 1;
+            chunkPosX = -Constants.CHUNK_SIDE_LENGTH;
+            blockPosX = Constants.CHUNK_SIDE_LENGTH - 1;
         }
         else if (xOverflow)
         {
-            chunkPosX = Constants.CHUNK_SIZE;
+            chunkPosX = Constants.CHUNK_SIDE_LENGTH;
             blockPosX = 0;
         }
 
         if (yUnderflow)
         {
-            chunkPosY = -Constants.CHUNK_SIZE;
-            blockPosY = Constants.CHUNK_SIZE - 1;
+            chunkPosY = -Constants.CHUNK_SIDE_LENGTH;
+            blockPosY = Constants.CHUNK_SIDE_LENGTH - 1;
         }
         else if (yOverflow)
         {
-            chunkPosY = Constants.CHUNK_SIZE;
+            chunkPosY = Constants.CHUNK_SIDE_LENGTH;
             blockPosY = 0;
         }
         
         if (zUnderflow)
         {
-            chunkPosZ = -Constants.CHUNK_SIZE;
-            blockPosZ = Constants.CHUNK_SIZE - 1;
+            chunkPosZ = -Constants.CHUNK_SIDE_LENGTH;
+            blockPosZ = Constants.CHUNK_SIDE_LENGTH - 1;
         }
         else if (zOverflow)
         {
-            chunkPosZ = Constants.CHUNK_SIZE;
+            chunkPosZ = Constants.CHUNK_SIDE_LENGTH;
             blockPosZ = 0;
         }
         
@@ -117,9 +118,9 @@ public class MeshingDataCache
     /// If accessing multiple blocks, loop in the order of z, y, x.
     /// This minimizes cache trashing.
     /// </summary>
-    /// <param name="blockPosX">Chunk-relative X position of the block. Valid range is [-1, Constants.CHUNK_SIZE]</param>
-    /// <param name="blockPosY">Chunk-relative Y position of the block. Valid range is [-1, Constants.CHUNK_SIZE]</param>
-    /// <param name="blockPosZ">Chunk-relative Z position of the block. Valid range is [-1, Constants.CHUNK_SIZE]</param>
+    /// <param name="blockPosX">Chunk-relative X position of the block. Valid range is [-1, Constants.CHUNK_SIDE_LENGTH]</param>
+    /// <param name="blockPosY">Chunk-relative Y position of the block. Valid range is [-1, Constants.CHUNK_SIDE_LENGTH]</param>
+    /// <param name="blockPosZ">Chunk-relative Z position of the block. Valid range is [-1, Constants.CHUNK_SIDE_LENGTH]</param>
     /// <returns>The BlockState of the block at the given position.</returns>
     public BlockState GetData(int blockPosX, int blockPosY, int blockPosZ)
     {

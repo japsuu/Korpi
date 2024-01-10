@@ -1,4 +1,5 @@
 ﻿using Korpi.Client.Bitpacking;
+using Korpi.Client.Configuration;
 using Korpi.Client.Registries;
 using Korpi.Client.World.Regions.Chunks.Blocks;
 
@@ -8,7 +9,7 @@ public class BlockPalette : IBlockStorage
 {
     /// <summary>
     /// How many blocks can this palette hold?
-    /// Usually CHUNK_SIZE^3.
+    /// Usually CHUNK_SIDE_LENGTH^3.
     /// </summary>
     private readonly int _sizeInBlocks;
     
@@ -39,7 +40,7 @@ public class BlockPalette : IBlockStorage
 
     public BlockPalette()
     {
-        _sizeInBlocks = Constants.CHUNK_SIZE_CUBED;
+        _sizeInBlocks = Constants.CHUNK_SIDE_LENGTH_CUBED;
         _palette = new PaletteEntry[]
         {
             new(_sizeInBlocks, BlockRegistry.Air.GetDefaultState()),
@@ -159,7 +160,7 @@ public class BlockPalette : IBlockStorage
         _indexLengthInBits <<= 1;   // Double the amount of bits used to represent an index.
         int maxUniqueEntries = (int)System.Math.Pow(2, _indexLengthInBits);    // Calculate the new maximum amount of unique entries that can be stored in the palette.
         
-        // Now because the theoretical maximum of unique entries in a chunk is CHUNK_SIZE_CUBED, we limit the maximum amount of unique entries to that.
+        // Now because the theoretical maximum of unique entries in a chunk is CHUNK_SIDE_LENGTH_CUBED, we limit the maximum amount of unique entries to that.
         // This means that there COULD be indices that go outside of the palette, if not using a chunk size that is a power of two.
         // This is why we throw an exception early (before writing to the BitBuffer) if an index is outside of the possible range.
         if (maxUniqueEntries > _sizeInBlocks)
@@ -184,7 +185,7 @@ public class BlockPalette : IBlockStorage
     private int GetIndex(int x, int y, int z)
     {
         // Calculate the index in a way that minimizes cache trashing.
-        return x + Constants.CHUNK_SIZE * (y + Constants.CHUNK_SIZE * z);
+        return x + Constants.CHUNK_SIDE_LENGTH * (y + Constants.CHUNK_SIDE_LENGTH * z);
     }
 
 
