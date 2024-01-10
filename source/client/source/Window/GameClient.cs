@@ -213,6 +213,7 @@ public class GameClient : GameWindow
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && DebugStats.ChunksInGenerationQueue == 0 && DebugStats.ChunksInMeshingQueue == 0)
         {
             ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
+            Logger.Debug($"Photomode completed in {GameTime.TotalTime:F2}s.");
             Close();
             return;
         }

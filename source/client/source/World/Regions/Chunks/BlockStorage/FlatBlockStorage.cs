@@ -10,9 +10,9 @@ public class FlatBlockStorage : IBlockStorage
     public int RenderedBlockCount { get; private set; }
     
     
-    public void SetBlock(int x, int y, int z, BlockState block, out BlockState oldBlock)
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
-        int index = GetIndex(x, y, z);
+        int index = position.Index;
 
         oldBlock = _blocks[index];
         
@@ -27,15 +27,8 @@ public class FlatBlockStorage : IBlockStorage
     }
 
 
-    public BlockState GetBlock(int x, int y, int z)
+    public BlockState GetBlock(ChunkBlockPosition position)
     {
-        return _blocks[GetIndex(x, y, z)];
-    }
-    
-    
-    private int GetIndex(int x, int y, int z)
-    {
-        // Calculate the index in a way that minimizes cache trashing.
-        return x + Constants.CHUNK_SIDE_LENGTH * (y + Constants.CHUNK_SIDE_LENGTH * z);
+        return _blocks[position.Index];
     }
 }

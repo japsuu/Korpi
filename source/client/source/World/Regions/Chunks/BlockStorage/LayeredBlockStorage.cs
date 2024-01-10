@@ -68,8 +68,11 @@ public class LayeredBlockStorage : IBlockStorage
     public int RenderedBlockCount { get; private set; }
     
     
-    public void SetBlock(int x, int y, int z, BlockState block, out BlockState oldBlock)
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
+        int x = position.X;
+        int y = position.Y;
+        int z = position.Z;
         BlockLayer? layer = _layers[y];
         if (layer == null)
         {
@@ -93,8 +96,12 @@ public class LayeredBlockStorage : IBlockStorage
     }
 
 
-    public BlockState GetBlock(int x, int y, int z)
+    public BlockState GetBlock(ChunkBlockPosition position)
     {
+        int x = position.X;
+        int y = position.Y;
+        int z = position.Z;
+        
         BlockLayer? layer = _layers[y];
         if (layer == null)
             return BlockRegistry.Air.GetDefaultState();

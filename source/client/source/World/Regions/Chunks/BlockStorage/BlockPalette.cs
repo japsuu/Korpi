@@ -52,9 +52,9 @@ public class BlockPalette : IBlockStorage
     }
 
 
-    public void SetBlock(int x, int y, int z, BlockState block, out BlockState oldBlock)
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
-        int index = GetIndex(x, y, z);
+        int index = position.Index;
         if (index < 0 || index >= _sizeInBlocks)
             throw new IndexOutOfRangeException("Tried to set blocks outside of a palette");
         
@@ -111,9 +111,9 @@ public class BlockPalette : IBlockStorage
     }
     
     
-    public BlockState GetBlock(int x, int y, int z)
+    public BlockState GetBlock(ChunkBlockPosition position)
     {
-        int index = GetIndex(x, y, z);
+        int index = position.Index;
         uint paletteIndex = _indices.Get(index * _indexLengthInBits, _indexLengthInBits);
         
         if (_palette[paletteIndex].IsEmpty)
@@ -158,7 +158,7 @@ public class BlockPalette : IBlockStorage
         }
     
         _indexLengthInBits <<= 1;   // Double the amount of bits used to represent an index.
-        int maxUniqueEntries = (int)System.Math.Pow(2, _indexLengthInBits);    // Calculate the new maximum amount of unique entries that can be stored in the palette.
+        int maxUniqueEntries = (int)Math.Pow(2, _indexLengthInBits);    // Calculate the new maximum amount of unique entries that can be stored in the palette.
         
         // Now because the theoretical maximum of unique entries in a chunk is CHUNK_SIDE_LENGTH_CUBED, we limit the maximum amount of unique entries to that.
         // This means that there COULD be indices that go outside of the palette, if not using a chunk size that is a power of two.
@@ -179,13 +179,6 @@ public class BlockPalette : IBlockStorage
         {
             _indices.Set(i * _indexLengthInBits, _indexLengthInBits, indices[i]);
         }
-    }
-    
-    
-    private int GetIndex(int x, int y, int z)
-    {
-        // Calculate the index in a way that minimizes cache trashing.
-        return x + Constants.CHUNK_SIDE_LENGTH * (y + Constants.CHUNK_SIDE_LENGTH * z);
     }
 
 

@@ -269,43 +269,56 @@ public class RegionManager
     }
 
 
-    public BlockState GetBlockStateAt(Vector3i position)
+    /// <summary>
+    /// Inefficiently gets the block state at the given world position.
+    /// Do not use this method for getting multiple blocks at once.
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    public BlockState GetBlockStateAtWorld(Vector3i worldPosition)
     {
-        Chunk? chunk = GetChunkAt(position);
+        Chunk? chunk = GetChunkAt(worldPosition);
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
-        Vector3i chunkRelativePos = CoordinateUtils.WorldToChunkRelative(position);
-        return chunk.GetBlockState(chunkRelativePos);
+        Vector3i chunkRelativePos = CoordinateUtils.WorldToChunkRelative(worldPosition);
+        return chunk.GetBlockState(new ChunkBlockPosition(chunkRelativePos));
     }
     
     
-    public BlockState SetBlockStateAt(Vector3i position, BlockState blockState)
+    /// <summary>
+    /// Inefficiently sets the block state at the given world position.
+    /// Do not use this method for setting multiple blocks at once.
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <param name="blockState"></param>
+    /// <returns></returns>
+    public BlockState SetBlockStateAtWorld(Vector3i worldPosition, BlockState blockState)
     {
-        Chunk? chunk = GetChunkAt(position);
+        Chunk? chunk = GetChunkAt(worldPosition);
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
-        Vector3i chunkRelativePos = CoordinateUtils.WorldToChunkRelative(position);
-        bool wasSetDirty = chunk.SetBlockState(chunkRelativePos, blockState, out BlockState oldBlockState);
+        Vector3i chunkRelativePos = CoordinateUtils.WorldToChunkRelative(worldPosition);
+        bool wasSetDirty = chunk.SetBlockState(new ChunkBlockPosition(chunkRelativePos), blockState, out BlockState oldBlockState);
 
         if (!wasSetDirty)
             return oldBlockState;
         
         if(chunkRelativePos.X == 0)
-            GetChunkAt(position + new Vector3i(-1, 0, 0))?.SetMeshDirty();
+            GetChunkAt(worldPosition + new Vector3i(-1, 0, 0))?.SetMeshDirty();
         else if(chunkRelativePos.X == Constants.CHUNK_SIDE_LENGTH - 1)
-            GetChunkAt(position + new Vector3i(1, 0, 0))?.SetMeshDirty();
+            GetChunkAt(worldPosition + new Vector3i(1, 0, 0))?.SetMeshDirty();
             
         if(chunkRelativePos.Y == 0)
-            GetChunkAt(position + new Vector3i(0, -1, 0))?.SetMeshDirty();
+            GetChunkAt(worldPosition + new Vector3i(0, -1, 0))?.SetMeshDirty();
         else if(chunkRelativePos.Y == Constants.CHUNK_SIDE_LENGTH - 1)
-            GetChunkAt(position + new Vector3i(0, 1, 0))?.SetMeshDirty();
+            GetChunkAt(worldPosition + new Vector3i(0, 1, 0))?.SetMeshDirty();
             
         if(chunkRelativePos.Z == 0)
-            GetChunkAt(position + new Vector3i(0, 0, -1))?.SetMeshDirty();
+            GetChunkAt(worldPosition + new Vector3i(0, 0, -1))?.SetMeshDirty();
         else if(chunkRelativePos.Z == Constants.CHUNK_SIDE_LENGTH - 1)
-            GetChunkAt(position + new Vector3i(0, 0, 1))?.SetMeshDirty();
+            GetChunkAt(worldPosition + new Vector3i(0, 0, 1))?.SetMeshDirty();
 
         return oldBlockState;
     }
@@ -528,7 +541,7 @@ public class RegionManager
                 DebugDrawer.DrawBox(new Vector3(blockPos.X + 0.5f, blockPos.Y + 0.5f, blockPos.Z + 0.5f), Vector3.One, Color4.Red);
 #endif
 
-            BlockState blockState = GetBlockStateAt(blockPos);
+            BlockState blockState = GetBlockStateAtWorld(blockPos);
             
             // Calculate the intersection point (travelled distance).
             travelledDistance = Math.Min(Math.Min(intersectionDistance.X, intersectionDistance.Y), intersectionDistance.Z);

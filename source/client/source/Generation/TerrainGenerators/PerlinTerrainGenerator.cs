@@ -2,6 +2,7 @@
 using Korpi.Client.Debugging;
 using Korpi.Client.Mathematics.Noise;
 using Korpi.Client.Registries;
+using Korpi.Client.World;
 using Korpi.Client.World.Regions.Chunks;
 using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
@@ -49,7 +50,7 @@ public class PerlinTerrainGenerator : ITerrainGenerator
             {
                 // Fill the chunk with stone.
                 for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH; y++)
-                    chunk.SetBlockState(new Vector3i(x, y, z), stone, out _);
+                    chunk.SetBlockState(new ChunkBlockPosition(x, y, z), stone, out _);
                 continue;
             }
 
@@ -59,17 +60,18 @@ public class PerlinTerrainGenerator : ITerrainGenerator
             {
                 int worldY = chunk.Position.Y + y;
 
+                ChunkBlockPosition position = new(x, y, z);
                 if (worldY == height)
                 {
-                    chunk.SetBlockState(new Vector3i(x, y, z), dirt, out _);
+                    chunk.SetBlockState(position, dirt, out _);
                 }
                 else if (worldY < height)
                 {
-                    chunk.SetBlockState(new Vector3i(x, y, z), stone, out _);
+                    chunk.SetBlockState(position, stone, out _);
                 }
                 else
                 {
-                    chunk.SetBlockState(new Vector3i(x, y, z), air, out _);
+                    chunk.SetBlockState(position, air, out _);
                 }
             }
         }
