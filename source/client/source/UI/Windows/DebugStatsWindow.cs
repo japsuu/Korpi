@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using ImGuiNET;
+using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Pooling;
@@ -30,7 +31,7 @@ public class DebugStatsWindow : ImGuiWindow
     protected override void UpdateContent()
     {
         uint loadedChunksApprox = (uint)DebugStats.LoadedRegionCount * Constants.CHUNK_COLUMN_HEIGHT;
-        uint loadedBlocksApprox = loadedChunksApprox * Constants.CHUNK_SIZE_CUBED;
+        uint loadedBlocksApprox = loadedChunksApprox * Constants.CHUNK_SIDE_LENGTH_CUBED;
         
         string loadedBlocksApproxFormatted = loadedBlocksApprox.ToString("#,0", _largeNumberFormat);
         string loadedChunksApproxFormatted = loadedChunksApprox.ToString("#,0", _largeNumberFormat);

@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Logging;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Logging;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World;

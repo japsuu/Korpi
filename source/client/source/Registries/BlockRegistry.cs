@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.Configuration;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Logging;
 using Korpi.Client.Modding;
@@ -18,7 +19,7 @@ public static class BlockRegistry
     private static readonly Dictionary<string, Block> NameToValue = new();
     private static ushort nextId;
     
-    public static readonly Block Air = RegisterNewBuiltinBlock(Constants.BUILT_INS_NAMESPACE, YamlBlockData.Empty("Air"));
+    public static readonly Block Air = RegisterNewBuiltinBlock(Constants.BUILT_IN_MOD_NAMESPACE, YamlBlockData.Empty("Air"));
 
 
     public static int GetBlockCount() => Values.Count;

@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Korpi.Client.Configuration;
+using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 
 namespace Korpi.Client.Rendering.Textures;

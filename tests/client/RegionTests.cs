@@ -1,5 +1,7 @@
 ﻿using Korpi;
 using Korpi.Client;
+using Korpi.Client.Configuration;
+using Korpi.Client.Window;
 using Korpi.Client.World.Regions;
 using OpenTK.Mathematics;
 

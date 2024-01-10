@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Rendering.Shaders;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;
 using Korpi.Client.Window;
@@ -67,7 +68,7 @@ public class Skybox : IDisposable
     private readonly bool _enableStarsRotation;
 
 
-    public Skybox(bool enableStarsRotation)
+    public Skybox(bool enableStarsRotation) //TODO: Instead of blending between two skybox textures, only have a single night texture. Handle the day rendering in the shader.
     {
         _enableStarsRotation = enableStarsRotation;
         

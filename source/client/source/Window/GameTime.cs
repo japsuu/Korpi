@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Korpi.Client.Configuration;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.Window;
 

@@ -1,4 +1,6 @@
-﻿namespace Korpi.Client.Utils;
+﻿using Korpi.Client.Configuration;
+
+namespace Korpi.Client.Utils;
 
 public static class IoUtils
 {

@@ -1,8 +1,4 @@
-﻿using Korpi.Client.Debugging;
-using Korpi.Client.Rendering.Chunks;
-using Korpi.Client.World;
-using Korpi.Client.World.Regions.Chunks;
-using Korpi.Client.Threading;
+﻿using Korpi.Client.Threading;
 
 namespace Korpi.Client.Meshing;
 

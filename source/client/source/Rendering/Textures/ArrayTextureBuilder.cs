@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Exceptions;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Exceptions;
 using Korpi.Client.Modding.Blocks;
 
 namespace Korpi.Client.Rendering.Textures;

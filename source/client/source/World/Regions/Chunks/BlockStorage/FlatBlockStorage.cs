@@ -1,10 +1,11 @@
-﻿using Korpi.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 
 namespace Korpi.Client.World.Regions.Chunks.BlockStorage;
 
 public class FlatBlockStorage : IBlockStorage
 {
-    private readonly BlockState[] _blocks = new BlockState[Constants.CHUNK_SIZE_CUBED];
+    private readonly BlockState[] _blocks = new BlockState[Constants.CHUNK_SIDE_LENGTH_CUBED];
     
     public int RenderedBlockCount { get; private set; }
     
@@ -35,6 +36,6 @@ public class FlatBlockStorage : IBlockStorage
     private int GetIndex(int x, int y, int z)
     {
         // Calculate the index in a way that minimizes cache trashing.
-        return x + Constants.CHUNK_SIZE * (y + Constants.CHUNK_SIZE * z);
+        return x + Constants.CHUNK_SIDE_LENGTH * (y + Constants.CHUNK_SIDE_LENGTH * z);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Korpi;
 using Korpi.Client;
+using Korpi.Client.Configuration;
+using Korpi.Client.Window;
 
 namespace ClientTests;
 
@@ -15,7 +17,7 @@ public class ConstantsTests
     [Test]
     public void ChunkSize_IsPowerOfTwo()
     {
-        Assert.That(Constants.CHUNK_SIZE % 2, Is.EqualTo(0));
+        Assert.That(Constants.CHUNK_SIDE_LENGTH % 2, Is.EqualTo(0));
     }
 
     [Test]
@@ -27,31 +29,31 @@ public class ConstantsTests
     [Test]
     public void ChunkSizeBitmask_IsCalculatedCorrectly()
     {
-        Assert.That(Constants.CHUNK_SIZE_BITMASK, Is.EqualTo(Constants.CHUNK_SIZE - 1));
+        Assert.That(Constants.CHUNK_SIDE_LENGTH_BITMASK, Is.EqualTo(Constants.CHUNK_SIDE_LENGTH - 1));
     }
 
     [Test]
     public void ChunkSizeCubed_IsCalculatedCorrectly()
     {
-        Assert.That(Constants.CHUNK_SIZE_CUBED, Is.EqualTo(Constants.CHUNK_SIZE * Constants.CHUNK_SIZE * Constants.CHUNK_SIZE));
+        Assert.That(Constants.CHUNK_SIDE_LENGTH_CUBED, Is.EqualTo(Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH));
     }
 
     [Test]
     public void ChunkSizeLog2_IsCalculatedCorrectly()
     {
-        Assert.That((int)Math.Log(Constants.CHUNK_SIZE, 2), Is.EqualTo(Constants.CHUNK_SIZE_LOG2));
+        Assert.That((int)Math.Log(Constants.CHUNK_SIDE_LENGTH, 2), Is.EqualTo(Constants.CHUNK_SIDE_LENGTH_LOG2));
     }
 
     [Test]
     public void ChunkSizeLog2Doubled_IsCalculatedCorrectly()
     {
-        Assert.That(Constants.CHUNK_SIZE_LOG2_DOUBLED, Is.EqualTo(Constants.CHUNK_SIZE_LOG2 * 2));
+        Assert.That(Constants.CHUNK_SIDE_LENGTH_LOG2_DOUBLED, Is.EqualTo(Constants.CHUNK_SIDE_LENGTH_LOG2 * 2));
     }
 
     [Test]
     public void ChunkColumnHeightBlocks_IsCalculatedCorrectly()
     {
-        Assert.That(Constants.CHUNK_COLUMN_HEIGHT_BLOCKS, Is.EqualTo(Constants.CHUNK_COLUMN_HEIGHT * Constants.CHUNK_SIZE));
+        Assert.That(Constants.CHUNK_COLUMN_HEIGHT_BLOCKS, Is.EqualTo(Constants.CHUNK_COLUMN_HEIGHT * Constants.CHUNK_SIDE_LENGTH));
     }
 
     [Test]

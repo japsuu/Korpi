@@ -1,4 +1,5 @@
-﻿using Korpi.Client.World.Regions.Chunks;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.World.Regions.Chunks;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Regions;
@@ -27,7 +28,7 @@ public class Region
     {
         if (y < 0 || y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
             return null;
-        int arrayIndex = y / Constants.CHUNK_SIZE;
+        int arrayIndex = y / Constants.CHUNK_SIDE_LENGTH;
         return _chunks[arrayIndex];
     }
         
@@ -36,7 +37,7 @@ public class Region
     {
         if (y < 0 || y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
             return false;
-        int arrayIndex = y / Constants.CHUNK_SIZE;
+        int arrayIndex = y / Constants.CHUNK_SIDE_LENGTH;
         return _chunks[arrayIndex] != null;
     }
         
@@ -71,7 +72,7 @@ public class Region
         {
             // if (Position != Vector2i.Zero)
             //     continue;
-            Chunk chunk = new Chunk(new Vector3i(Position.X, i * Constants.CHUNK_SIZE, Position.Y));
+            Chunk chunk = new Chunk(new Vector3i(Position.X, i * Constants.CHUNK_SIDE_LENGTH, Position.Y));
             chunk.Load();
             _chunks[i] = chunk;
         }

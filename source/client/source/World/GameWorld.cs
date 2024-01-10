@@ -1,5 +1,4 @@
-﻿using Korpi.Client.Generation;
-using Korpi.Client.Configuration;
+﻿using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
