@@ -58,7 +58,7 @@ public class GameWorld
     
     public void Draw()
     {
-        RegionManager.Draw(ShaderManager.ChunkShader);
+        RegionManager.Draw();
         _entityManager.Draw();
     }
     

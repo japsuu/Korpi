@@ -64,6 +64,15 @@ public class Region
             chunk?.Tick();
         }
     }
+        
+        
+    public void Draw()
+    {
+        foreach (Chunk? chunk in _chunks)
+        {
+            chunk?.Draw();
+        }
+    }
 
 
     public void Load()

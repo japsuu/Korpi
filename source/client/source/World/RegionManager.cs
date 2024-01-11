@@ -56,21 +56,13 @@ public class RegionManager
     }
 
 
-    public void Draw(Shader chunkShader)
+    public void Draw()
     {
+        ShaderManager.ChunkShader.Use();
+        
         foreach (Region column in _existingRegions.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
-            for (int i = 0; i < Constants.CHUNK_COLUMN_HEIGHT; i++)
-            {
-                Chunk? chunk = column.GetChunk(i);
-                if (chunk == null)
-                    continue;
-                
-                if (!chunk.ShouldBeRendered)
-                    continue;
-
-                DrawChunkAt(chunk.Position, chunkShader);
-            }
+            column.Draw();
         }
 
 #if DEBUG
@@ -122,120 +114,6 @@ public class RegionManager
             return null;
 
         return column.GetChunkAtHeight(position.Y);
-    }
-
-
-    /// <summary>
-    /// Checks if all neighbouring chunks of the chunk at the given position are generated.
-    /// </summary>
-    /// <param name="chunkPos">Position of the chunk whose neighbours we want to check</param>
-    /// <param name="excludeMissingChunks">If true, chunks that are not loaded are excluded from neighbourhood checks</param>
-    /// <returns>True if all neighbouring chunks are generated, false otherwise</returns>
-    public bool AreChunkNeighboursGenerated(Vector3i chunkPos, bool excludeMissingChunks)
-    {
-        foreach (Vector3i chunkOffset in ChunkOffsets.ChunkNeighbourOffsets)
-        {
-            Vector3i neighbourPos = chunkPos + chunkOffset;
-            Chunk? neighbourChunk = GetChunkAt(neighbourPos);
-
-            if (neighbourChunk == null)
-            {
-                if (!excludeMissingChunks)
-                    return false;
-            }
-            else
-            {
-                if (!neighbourChunk.IsGenerated)
-                    return false;
-            }
-        }
-        
-        return true;
-        
-        // Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
-        // 
-        // foreach (Vector2i neighbourOffset in _precomputedNeighbouringRegionOffsets)
-        // {
-        //     Vector2i neighbourPos = columnPos + neighbourOffset;
-        //     
-        //     if (!_existingRegions.TryGetValue(neighbourPos, out Region? column))
-        //     {
-        //         if (excludeMissingChunks)
-        //             continue;
-        //         
-        //         return false;
-        //     }
-        //
-        //     Chunk? chunk = column.GetChunkAtHeight(chunkPos.Y);
-        //     if (chunk == null)
-        //     {
-        //         if (!excludeMissingChunks)
-        //             return false;
-        //     }
-        //     else
-        //     {
-        //         if (!chunk.IsGenerated)
-        //             return false;
-        //     }
-        //
-        //     chunk = column.GetChunkAtHeight(chunkPos.Y + 1);
-        //     if (chunk == null)
-        //     {
-        //         if (!excludeMissingChunks)
-        //             return false;
-        //     }
-        //     else
-        //     {
-        //         if (!chunk.IsGenerated)
-        //             return false;
-        //     }
-        //
-        //     chunk = column.GetChunkAtHeight(chunkPos.Y - 1);
-        //     if (chunk == null)
-        //     {
-        //         if (!excludeMissingChunks)
-        //             return false;
-        //     }
-        //     else
-        //     {
-        //         if (!chunk.IsGenerated)
-        //             return false;
-        //     }
-        // }
-        //     
-        // if (!_existingRegions.TryGetValue(columnPos, out Region? centerColumn))
-        // {
-        //     if (excludeMissingChunks)
-        //         return true;
-        //         
-        //     return false;
-        // }
-        //
-        // Chunk? sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y + 1);
-        // if (sisterChunk == null)
-        // {
-        //     if (!excludeMissingChunks)
-        //         return false;
-        // }
-        // else
-        // {
-        //     if (!sisterChunk.IsGenerated)
-        //         return false;
-        // }
-        //
-        // sisterChunk = centerColumn.GetChunkAtHeight(chunkPos.Y - 1);
-        // if (sisterChunk == null)
-        // {
-        //     if (!excludeMissingChunks)
-        //         return false;
-        // }
-        // else
-        // {
-        //     if (!sisterChunk.IsGenerated)
-        //         return false;
-        // }
-        //
-        // return true;
     }
 
 
@@ -422,13 +300,6 @@ public class RegionManager
 
             RemeshNeighbouringColumns(columnPos);
         }
-    }
-
-
-    private void DrawChunkAt(Vector3i position, Shader chunkShader)
-    {
-        if (ChunkRendererStorage.TryGetRenderer(position, out ChunkRenderer? mesh))
-            mesh!.Draw(chunkShader);
     }
 
 

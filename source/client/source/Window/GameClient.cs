@@ -276,8 +276,6 @@ public class GameClient : GameWindow
 
     private void DrawWorld()
     {
-        ShaderManager.ChunkShader.Use();
-
         // Enable backface culling.
         GL.Enable(EnableCap.CullFace);
         _gameWorld.Draw();
