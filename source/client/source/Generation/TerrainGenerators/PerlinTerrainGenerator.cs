@@ -50,7 +50,7 @@ public class PerlinTerrainGenerator : ITerrainGenerator
             {
                 // Fill the chunk with stone.
                 for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH; y++)
-                    chunk.SetBlockState(new ChunkBlockPosition(x, y, z), stone, out _);
+                    chunk.SetBlockState(new ChunkBlockPosition(x, y, z), stone, out _, false);
                 continue;
             }
 
@@ -63,15 +63,15 @@ public class PerlinTerrainGenerator : ITerrainGenerator
                 ChunkBlockPosition position = new(x, y, z);
                 if (worldY == height)
                 {
-                    chunk.SetBlockState(position, dirt, out _);
+                    chunk.SetBlockState(position, dirt, out _, false);
                 }
                 else if (worldY < height)
                 {
-                    chunk.SetBlockState(position, stone, out _);
+                    chunk.SetBlockState(position, stone, out _, false);
                 }
                 else
                 {
-                    chunk.SetBlockState(position, air, out _);
+                    chunk.SetBlockState(position, air, out _, false);
                 }
             }
         }

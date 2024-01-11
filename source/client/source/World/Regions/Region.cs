@@ -46,15 +46,6 @@ public class Region
     {
         return _chunks[i];
     }
-    
-    
-    public void RemeshAllChunks()
-    {
-        foreach (Chunk? chunk in _chunks)
-        {
-            chunk?.SetMeshDirty();
-        }
-    }
         
         
     public void Tick()
@@ -62,6 +53,15 @@ public class Region
         foreach (Chunk? chunk in _chunks)
         {
             chunk?.Tick();
+        }
+    }
+        
+        
+    public void Draw()
+    {
+        foreach (Chunk? chunk in _chunks)
+        {
+            chunk?.Draw();
         }
     }
 

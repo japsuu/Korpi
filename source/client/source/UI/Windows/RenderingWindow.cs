@@ -39,7 +39,7 @@ public class RenderingWindow : ImGuiWindow
         ImGui.Separator();
         ImGui.Checkbox("Enable Wireframe", ref ClientConfig.DebugModeConfig.RenderWireframe);
         if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.DebugModeConfig.EnableAmbientOcclusion))
-            GameWorld.CurrentGameWorld.RegionManager.RemeshAllColumns();
+            GameWorld.ReloadAllChunks();
         ImGui.Checkbox("Enable skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
 
         ImGui.Separator();

@@ -63,9 +63,9 @@ public class ChunkRenderer : IDisposable
     }
 
 
-    public void Draw(Shader chunkShader)
+    public void Draw()
     {
-        chunkShader.SetMatrix4("model", _modelMatrix);
+        ShaderManager.ChunkShader.SetMatrix4("model", _modelMatrix);
 
         // Bind the VAO.
         GL.BindVertexArray(_meshVAO);
