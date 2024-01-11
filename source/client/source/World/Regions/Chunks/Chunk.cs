@@ -22,6 +22,7 @@ public class Chunk
     private long _currentJobId;
     private bool _containsRenderedBlocks;
     private bool _hasBeenMeshed;
+    private ChunkOffsets.NeighbourOffsetFlags _neighboursToMeshDirty;
     private bool HasBeenGenerated => _currentState >= ChunkState.WAITING_FOR_MESHING;
     
     /// <summary>
@@ -58,6 +59,23 @@ public class Chunk
         
         _containsRenderedBlocks = false;
         ThreadLock = new ReaderWriterLockSlim();
+        
+        GameWorld.WorldEventPublished += WorldEventHandler;
+    }
+
+
+    private void WorldEventHandler(WorldEvent worldEvent)
+    {
+        switch (worldEvent)
+        {
+            case WorldEvent.RELOAD_ALL_CHUNKS:
+                SetMeshDirty();
+                break;
+            case WorldEvent.LOAD_REGION_CHANGED:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(worldEvent), worldEvent, null);
+        }
     }
 
 
@@ -93,16 +111,6 @@ public class Chunk
     }
 
 
-    public void SetMeshDirty()
-    {
-        if (!_containsRenderedBlocks)
-            return;
-
-        if (_currentState != ChunkState.WAITING_FOR_MESHING)
-            ChangeState(ChunkState.WAITING_FOR_MESHING);
-    }
-
-
     /// <summary>
     /// Indexes to the block at the given position.
     /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
@@ -113,20 +121,35 @@ public class Chunk
     ///             block = BlockMap[x, y, z].
     /// </code>
     /// </summary>
-    public bool SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+    /// <param name="position">Chunk-relative position of the block</param>
+    /// <param name="block">Block to set</param>
+    /// <param name="oldBlock">Old block at the given position</param>
+    /// <param name="delayedMeshDirtying">If true, the chunk mesh will not be marked dirty until <see cref="ExecuteDelayedMeshDirtying"/> is called.
+    /// Has only effect if <see cref="_currentState"/> is <see cref="ChunkState.READY"/></param>
+    public void SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock, bool delayedMeshDirtying)
     {
         _blockStorage.SetBlock(position, block, out oldBlock);
-
-        // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
-        //bool shouldDirtyMesh = _generationState == ChunkGenerationState.READY && _meshState != ChunkMeshState.MESHING && (oldBlock.IsRendered || block.IsRendered);
-        bool shouldDirtyMesh = _currentState == ChunkState.READY && (oldBlock.IsRendered || block.IsRendered);
-
-        if (shouldDirtyMesh)
-            ChangeState(ChunkState.WAITING_FOR_MESHING);
-
         _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
 
-        return shouldDirtyMesh;
+        bool isChunkReady = _currentState == ChunkState.READY;
+        bool renderedBlockChanged = oldBlock.IsRendered || block.IsRendered;
+        
+        // Only consider re-meshing if the chunk has been meshed before, is not meshed currently, and a rendered block was changed.
+        // NOTE: MIGHT cause mesh desync issues when settings blocks on chunk borders, but this needs to be tested.
+        // If multiple blocks are set with delayedMeshDirtying=false, only the first block would update the _neighboursToMeshDirty mask.
+        // This is because SetSelfAndNeighboursMeshDirty would be called for the first block, changing chunk state and changing _currentState.
+        if (!isChunkReady || !renderedBlockChanged)
+            return;
+        
+        // Cache the neighbours that would be affected by this change to dirty them,
+        // either when ExecuteDelayedMeshDirtying is called or if delayedMeshDirtying is false
+        ChunkOffsets.NeighbourOffsetFlags affectedNeighbours = ChunkOffsets.CalculateNeighboursFromOtherChunks(position);
+        _neighboursToMeshDirty |= affectedNeighbours;
+        
+        if (delayedMeshDirtying)
+            return;
+        
+        SetSelfAndNeighboursMeshDirty(_neighboursToMeshDirty);
     }
 
 
@@ -143,6 +166,52 @@ public class Chunk
     public BlockState GetBlockState(ChunkBlockPosition position)
     {
         return _blockStorage.GetBlock(position);
+    }
+
+
+    /// <summary>
+    /// Sets the chunk mesh dirty, causing it to be regenerated.
+    /// Should be called after calling <see cref="SetBlockState"/> with delayedMeshDirtying set to true.
+    /// </summary>
+    public void ExecuteDelayedMeshDirtying()
+    {
+        // Dirty the neighbours that were affected by SetBlockState with delayedMeshDirtying set to true
+        SetSelfAndNeighboursMeshDirty(_neighboursToMeshDirty);
+    }
+
+
+    private void SetSelfAndNeighboursMeshDirty(ChunkOffsets.NeighbourOffsetFlags neighbours)
+    {
+        SetMeshDirty();
+
+        DirtyNeighbours(neighbours);
+    }
+
+
+    private void DirtyNeighbours(ChunkOffsets.NeighbourOffsetFlags flags)
+    {
+        if (flags == ChunkOffsets.NeighbourOffsetFlags.None)
+            return;
+        
+        foreach (Vector3i vector in ChunkOffsets.OffsetsAsChunkVectors(flags))
+        {
+            Vector3i neighbourPos = Position + vector;
+            Chunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
+
+            neighbourChunk?.SetMeshDirty();
+        }
+        
+        _neighboursToMeshDirty = ChunkOffsets.NeighbourOffsetFlags.None;
+    }
+
+
+    private void SetMeshDirty()
+    {
+        if (!_containsRenderedBlocks)
+            return;
+
+        if (_currentState != ChunkState.WAITING_FOR_MESHING)
+            ChangeState(ChunkState.WAITING_FOR_MESHING);
     }
 
 

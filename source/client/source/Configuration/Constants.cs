@@ -105,9 +105,10 @@ public static class Constants
     public const int CHUNK_SIDE_BITS_DOUBLED = CHUNK_SIDE_BITS * 2;
     
     /// <summary>
+    /// <see cref="CHUNK_SIDE_LENGTH"/> minus one.
     /// The bitmask used to get the remainder of a block's position in a chunk.
     /// </summary>
-    public const int CHUNK_SIDE_LENGTH_BITMASK = CHUNK_SIDE_LENGTH - 1;
+    public const int CHUNK_SIDE_LENGTH_MAX_INDEX = CHUNK_SIDE_LENGTH - 1;
     
     /// <summary>
     /// The square of <see cref="CHUNK_SIDE_LENGTH"/>.

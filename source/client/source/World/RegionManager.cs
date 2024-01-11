@@ -138,15 +138,6 @@ public class RegionManager
     }
 
 
-    public void RemeshAllColumns()
-    {
-        foreach (Region column in _existingRegions.Values)
-        {
-            column.RemeshAllChunks();
-        }
-    }
-
-
     /// <summary>
     /// Inefficiently gets the block state at the given world position.
     /// Do not use this method for getting multiple blocks at once.
@@ -178,41 +169,9 @@ public class RegionManager
             return BlockRegistry.Air.GetDefaultState();
 
         Vector3i chunkRelativePos = CoordinateUtils.WorldToChunkRelative(worldPosition);
-        bool wasSetDirty = chunk.SetBlockState(new ChunkBlockPosition(chunkRelativePos), blockState, out BlockState oldBlockState);
-
-        if (!wasSetDirty)
-            return oldBlockState;
-        
-        if(chunkRelativePos.X == 0)
-            GetChunkAt(worldPosition + new Vector3i(-1, 0, 0))?.SetMeshDirty();
-        else if(chunkRelativePos.X == Constants.CHUNK_SIDE_LENGTH - 1)
-            GetChunkAt(worldPosition + new Vector3i(1, 0, 0))?.SetMeshDirty();
-            
-        if(chunkRelativePos.Y == 0)
-            GetChunkAt(worldPosition + new Vector3i(0, -1, 0))?.SetMeshDirty();
-        else if(chunkRelativePos.Y == Constants.CHUNK_SIDE_LENGTH - 1)
-            GetChunkAt(worldPosition + new Vector3i(0, 1, 0))?.SetMeshDirty();
-            
-        if(chunkRelativePos.Z == 0)
-            GetChunkAt(worldPosition + new Vector3i(0, 0, -1))?.SetMeshDirty();
-        else if(chunkRelativePos.Z == Constants.CHUNK_SIDE_LENGTH - 1)
-            GetChunkAt(worldPosition + new Vector3i(0, 0, 1))?.SetMeshDirty();
+        chunk.SetBlockState(new ChunkBlockPosition(chunkRelativePos), blockState, out BlockState oldBlockState, false);
 
         return oldBlockState;
-    }
-    
-    
-    private void RemeshNeighbouringColumns(Vector2i columnPos)
-    {
-        foreach (Vector2i neighbourOffset in ChunkOffsets.RegionNeighbourOffsets)
-        {
-            Vector2i neighbourPos = columnPos + neighbourOffset;
-            
-            if (!_existingRegions.TryGetValue(neighbourPos, out Region? column))
-                continue;
-
-            column.RemeshAllChunks();
-        }
     }
 
 
@@ -297,8 +256,6 @@ public class RegionManager
             column.Load();
             if (!_existingRegions.TryAdd(columnPos, column))
                 Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");
-
-            RemeshNeighbouringColumns(columnPos);
         }
     }
 

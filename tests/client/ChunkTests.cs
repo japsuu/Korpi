@@ -14,7 +14,7 @@ public class ChunkTests
         Chunk chunk = new(new Vector3i(0, 0, 0));
         ChunkBlockPosition position = new(1, 1, 1);
         BlockState blockState = new();
-        chunk.SetBlockState(position, blockState, out _);
+        chunk.SetBlockState(position, blockState, out _, false);
 
         // Act
         BlockState result = chunk.GetBlockState(new ChunkBlockPosition(position.X, position.Y, position.Z));

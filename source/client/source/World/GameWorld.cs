@@ -7,7 +7,6 @@ using Korpi.Client.Logging;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
-using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Window;
 using Korpi.Client.World.Regions.Chunks.Blocks;
 using OpenTK.Mathematics;
@@ -18,6 +17,8 @@ namespace Korpi.Client.World;
 public class GameWorld
 {
     public static GameWorld CurrentGameWorld { get; private set; } = null!;
+
+    public static event Action<WorldEvent>? WorldEventPublished;
     
     public readonly RegionManager RegionManager;      // TODO: Make private, and wrap around a function
     public readonly ITerrainGenerator TerrainGenerator;
@@ -103,5 +104,17 @@ public class GameWorld
     public override string ToString()
     {
         return $"World '{_name}'";
+    }
+
+
+    public static void ReloadAllChunks()
+    {
+        PublishWorldEvent(WorldEvent.RELOAD_ALL_CHUNKS);
+    }
+    
+    
+    private static void PublishWorldEvent(WorldEvent worldEvent)
+    {
+        WorldEventPublished?.Invoke(worldEvent);
     }
 }

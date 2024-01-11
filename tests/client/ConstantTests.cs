@@ -29,7 +29,7 @@ public class ConstantsTests
     [Test]
     public void ChunkSizeBitmask_IsCalculatedCorrectly()
     {
-        Assert.That(Constants.CHUNK_SIDE_LENGTH_BITMASK, Is.EqualTo(Constants.CHUNK_SIDE_LENGTH - 1));
+        Assert.That(Constants.CHUNK_SIDE_LENGTH_MAX_INDEX, Is.EqualTo(Constants.CHUNK_SIDE_LENGTH - 1));
     }
 
     [Test]
