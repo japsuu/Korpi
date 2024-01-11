@@ -9,7 +9,7 @@ using OpenTK.Mathematics;
 
 namespace Korpi.Client.Generation.TerrainGenerators;
 
-public class PerlinTerrainGenerator : ITerrainGenerator
+public class SimplexTerrainGenerator : ITerrainGenerator
 {
     private const int SEA_LEVEL = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 4 + 16;
     private const int TERRAIN_HEIGHT_MIN = SEA_LEVEL - 16;
@@ -18,16 +18,16 @@ public class PerlinTerrainGenerator : ITerrainGenerator
     private readonly FastNoiseLite _noise;   // FNL seems to be thread safe, as long as you don't change the seed/other settings while generating.
 
 
-    private PerlinTerrainGenerator()
+    private SimplexTerrainGenerator()
     {
         _noise = new FastNoiseLite();
         _noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
     }
 
 
-    public static PerlinTerrainGenerator Default()
+    public static SimplexTerrainGenerator Default()
     {
-        return new PerlinTerrainGenerator();
+        return new SimplexTerrainGenerator();
     }
 
 
