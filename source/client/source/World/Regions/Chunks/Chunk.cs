@@ -15,21 +15,39 @@ namespace Korpi.Client.World.Regions.Chunks;
 public class Chunk
 {
     private readonly IBlockStorage _blockStorage = new BlockPalette();
-
-    private long _currentJobId;
-    private bool _containsRenderedBlocks;
     
     // State machine
     private ChunkState _currentState;
 
-    public readonly ReaderWriterLockSlim ThreadLock;
+    private long _currentJobId;
+    private bool _containsRenderedBlocks;
+    private bool _hasBeenMeshed;
+    private bool HasBeenGenerated => _currentState >= ChunkState.WAITING_FOR_MESHING;
+    
+    /// <summary>
+    /// Position of this chunk in the world.
+    /// </summary>
     public readonly Vector3i Position;
+    
+    /// <summary>
+    /// Highest possible Y value in this chunk.
+    /// </summary>
     public readonly int Top;
+    
+    /// <summary>
+    /// Lowest possible Y value in this chunk.
+    /// </summary>
     public readonly int Bottom;
-
+    
+    /// <summary>
+    /// Lock used to synchronize access to this chunk.
+    /// </summary>
+    public readonly ReaderWriterLockSlim ThreadLock;
+    
+    /// <summary>
+    /// Id of the job last executed on this chunk.
+    /// </summary>
     public long CurrentJobId => Interlocked.Read(ref _currentJobId);
-    public bool HasBeenGenerated => _currentState >= ChunkState.WAITING_FOR_MESHING;
-    public bool HasBeenMeshed { get; private set; }
 
 
     public Chunk(Vector3i position)
@@ -51,7 +69,7 @@ public class Chunk
 
     public void Draw()
     {
-        if (!HasBeenMeshed)
+        if (!_hasBeenMeshed)
             return;
 
         if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
@@ -94,7 +112,6 @@ public class Chunk
     ///         for x in range:
     ///             block = BlockMap[x, y, z].
     /// </code>
-    /// Thread safe.
     /// </summary>
     public bool SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
@@ -116,10 +133,12 @@ public class Chunk
     /// <summary>
     /// Indexes to the block at the given position.
     /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+    /// <code>
     /// for z in range:
     ///    for y in range:
     ///       for x in range:
     ///          block = BlockMap[x, y, z]
+    /// </code>
     /// </summary>
     public BlockState GetBlockState(ChunkBlockPosition position)
     {
@@ -135,13 +154,13 @@ public class Chunk
             return;
         }
         ChunkState previousState = _currentState;
-        OnExitState(newState, previousState);
+        OnExitState(previousState);
         _currentState = newState;
-        OnEnterState(newState, previousState);
+        OnEnterState(newState);
     }
 
 
-    private void OnEnterState(ChunkState newState, ChunkState previousState)
+    private void OnEnterState(ChunkState newState)
     {
         switch (newState)
         {
@@ -177,7 +196,7 @@ public class Chunk
                 GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkState.READY)), WorkItemPriority.High);
                 break;
             case ChunkState.READY:
-                HasBeenMeshed = true;
+                _hasBeenMeshed = true;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -212,7 +231,7 @@ public class Chunk
     }
 
 
-    private void OnExitState(ChunkState newState, ChunkState previousState)
+    private void OnExitState(ChunkState previousState)
     {
         switch (previousState)
         {
@@ -231,7 +250,7 @@ public class Chunk
             case ChunkState.READY:
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+                throw new ArgumentOutOfRangeException(nameof(previousState), previousState, null);
         }
     }
 
