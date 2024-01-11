@@ -334,6 +334,14 @@ public class Chunk
         foreach (Vector3i chunkOffset in ChunkOffsets.ChunkNeighbourOffsets)
         {
             Vector3i neighbourPos = Position + chunkOffset;
+            
+            // Assert that the neighbour position is not below -Constants.CHUNK_SIDE_LENGTH. This exists because of the next check.
+            Debug.Assert(neighbourPos.Y >= -Constants.CHUNK_SIDE_LENGTH, "I see you've implemented infinite world height. Good luck with that. Remove this assert if you know what you're doing.");
+            
+            // Do not check chunks below the world, as they cannot generate. Without this check, the bottom-most chunks would never mesh.
+            if (neighbourPos.Y <= -Constants.CHUNK_SIDE_LENGTH)
+                continue;
+            
             Chunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
 
             if (neighbourChunk == null)

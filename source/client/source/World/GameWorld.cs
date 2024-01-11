@@ -31,7 +31,7 @@ public class GameWorld
     {
         _name = name;
         RegionManager = new RegionManager();
-        TerrainGenerator = PerlinTerrainGenerator.Default();
+        TerrainGenerator = SimplexTerrainGenerator.Default();
         _entityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
