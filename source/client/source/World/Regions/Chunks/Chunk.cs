@@ -43,6 +43,90 @@ public class Chunk
     }
 
 
+    public void Tick()
+    {
+        ExecuteCurrentState();
+    }
+
+
+    public void Draw()
+    {
+        if (!HasBeenMeshed)
+            return;
+
+        if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
+            mesh!.Draw();
+        
+#if DEBUG
+        DebugDraw();
+#endif
+    }
+
+
+    public void Load()
+    {
+        ChangeState(ChunkState.GENERATING_TERRAIN);
+    }
+
+
+    public void Unload()
+    {
+        ChangeState(ChunkState.UNINITIALIZED);
+    }
+
+
+    public void SetMeshDirty()
+    {
+        if (!_containsRenderedBlocks)
+            return;
+
+        if (_currentState != ChunkState.WAITING_FOR_MESHING)
+            ChangeState(ChunkState.WAITING_FOR_MESHING);
+    }
+
+
+    /// <summary>
+    /// Indexes to the block at the given position.
+    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+    /// <code>
+    /// for z in range:
+    ///     for y in range:
+    ///         for x in range:
+    ///             block = BlockMap[x, y, z].
+    /// </code>
+    /// Thread safe.
+    /// </summary>
+    public bool SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+    {
+        _blockStorage.SetBlock(position, block, out oldBlock);
+
+        // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
+        //bool shouldDirtyMesh = _generationState == ChunkGenerationState.READY && _meshState != ChunkMeshState.MESHING && (oldBlock.IsRendered || block.IsRendered);
+        bool shouldDirtyMesh = _currentState == ChunkState.READY && (oldBlock.IsRendered || block.IsRendered);
+
+        if (shouldDirtyMesh)
+            ChangeState(ChunkState.WAITING_FOR_MESHING);
+
+        _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+
+        return shouldDirtyMesh;
+    }
+
+
+    /// <summary>
+    /// Indexes to the block at the given position.
+    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+    /// for z in range:
+    ///    for y in range:
+    ///       for x in range:
+    ///          block = BlockMap[x, y, z]
+    /// </summary>
+    public BlockState GetBlockState(ChunkBlockPosition position)
+    {
+        return _blockStorage.GetBlock(position);
+    }
+
+
     private void ChangeState(ChunkState newState)
     {
         if (_currentState == newState)
@@ -152,92 +236,6 @@ public class Chunk
     }
 
 
-    public void Tick()
-    {
-        ExecuteCurrentState();
-    }
-
-
-    public void Draw()
-    {
-        if (!HasBeenMeshed)
-            return;
-
-        if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
-            mesh!.Draw();
-        
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderChunkMeshState)
-        {
-            const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;
-            Vector3 centerOffset = new(halfAChunk, 0, halfAChunk);
-
-            // if (_containsRenderedBlocks)
-            // {
-            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Green);
-            // }
-            // else
-            // {
-            //     DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, Color4.Red);
-            // }
-            // return;
-            Color4 color = Color4.White;
-            switch (_currentState)
-            {
-                case ChunkState.UNINITIALIZED:
-                    break;
-                case ChunkState.GENERATING_TERRAIN:
-                    color = Color4.Red;
-                    break;
-                case ChunkState.GENERATING_DECORATION:
-                    color = Color4.Blue;
-                    break;
-                case ChunkState.GENERATING_LIGHTING:
-                    color = Color4.Yellow;
-                    break;
-                case ChunkState.WAITING_FOR_MESHING:
-                    color = Color4.Orange;
-                    break;
-                case ChunkState.MESHING:
-                    color = Color4.Cyan;
-                    break;
-                case ChunkState.READY:
-                    color = Color4.Green;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, color);
-
-            // if (CoordinateUtils.WorldToChunk(Camera.RenderingCamera.Position) == Position)
-            //     DebugTextWindow.AddFrameText(Position + new Vector3(halfAChunk, halfAChunk, halfAChunk), $"HighestRenderedBlockY = {HighestRenderedBlockY}");
-        }
-#endif
-    }
-
-
-    public void Load()
-    {
-        ChangeState(ChunkState.GENERATING_TERRAIN);
-    }
-
-
-    public void Unload()
-    {
-        ChangeState(ChunkState.UNINITIALIZED);
-    }
-
-
-    public void SetMeshDirty()
-    {
-        if (!_containsRenderedBlocks)
-            return;
-
-        if (_currentState != ChunkState.WAITING_FOR_MESHING)
-            ChangeState(ChunkState.WAITING_FOR_MESHING);
-    }
-
-
     /// <summary>
     /// Checks if all neighbouring chunks of this chunk are generated.
     /// </summary>
@@ -266,44 +264,42 @@ public class Chunk
     }
 
 
-    /// <summary>
-    /// Indexes to the block at the given position.
-    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
-    /// <code>
-    /// for z in range:
-    ///     for y in range:
-    ///         for x in range:
-    ///             block = BlockMap[x, y, z].
-    /// </code>
-    /// Thread safe.
-    /// </summary>
-    public bool SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+#if DEBUG
+    private void DebugDraw()
     {
-        _blockStorage.SetBlock(position, block, out oldBlock);
+        if (!ClientConfig.DebugModeConfig.RenderChunkMeshState)
+            return;
+        
+        const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;
+        Vector3 centerOffset = new(halfAChunk, 0, halfAChunk);
 
-        // If the chunk has been meshed and a rendered block was changed, mark the chunk mesh as dirty.
-        //bool shouldDirtyMesh = _generationState == ChunkGenerationState.READY && _meshState != ChunkMeshState.MESHING && (oldBlock.IsRendered || block.IsRendered);
-        bool shouldDirtyMesh = _currentState == ChunkState.READY && (oldBlock.IsRendered || block.IsRendered);
-
-        if (shouldDirtyMesh)
-            ChangeState(ChunkState.WAITING_FOR_MESHING);
-
-        _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
-
-        return shouldDirtyMesh;
+        Color4 color = Color4.White;
+        switch (_currentState)
+        {
+            case ChunkState.UNINITIALIZED:
+                break;
+            case ChunkState.GENERATING_TERRAIN:
+                color = Color4.Red;
+                break;
+            case ChunkState.GENERATING_DECORATION:
+                color = Color4.Blue;
+                break;
+            case ChunkState.GENERATING_LIGHTING:
+                color = Color4.Yellow;
+                break;
+            case ChunkState.WAITING_FOR_MESHING:
+                color = Color4.Orange;
+                break;
+            case ChunkState.MESHING:
+                color = Color4.Cyan;
+                break;
+            case ChunkState.READY:
+                color = Color4.Green;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, color);
     }
-
-
-    /// <summary>
-    /// Indexes to the block at the given position.
-    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
-    /// for z in range:
-    ///    for y in range:
-    ///       for x in range:
-    ///          block = BlockMap[x, y, z]
-    /// </summary>
-    public BlockState GetBlockState(ChunkBlockPosition position)
-    {
-        return _blockStorage.GetBlock(position);
-    }
+#endif
 }
