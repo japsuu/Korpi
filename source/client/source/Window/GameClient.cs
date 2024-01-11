@@ -96,7 +96,7 @@ public class GameClient : GameWindow
         GL.Enable(EnableCap.Multisample); // Enable multisampling.
         GL.Enable(EnableCap.Blend); // Enable blending for transparent textures.
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.ClearColor(1f, 0f, 1f, 1.0f);
+        GL.ClearColor(0f, 0f, 0f, 1.0f);
 
         // Resource initialization.
         GlobalThreadPool.Initialize();

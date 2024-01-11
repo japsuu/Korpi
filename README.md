@@ -4,7 +4,7 @@
 [![client tests](https://github.com/japsuu/Korpi/actions/workflows/test_client.yml/badge.svg)](https://github.com/japsuu/Korpi/tree/master/tests/client)
 [![documentation](https://github.com/japsuu/Korpi/actions/workflows/documentation.yml/badge.svg)](https://japsuu.github.io/Korpi/)
 
-![Latest progress screenshot](https://raw.githubusercontent.com/japsuu/Korpi/master/screenshots/latest.png)
+![Cave generation screenshot](screenshots/cave_gen.png)
 
 Korpi is a voxel[*](#voxel-engine-vs-korpi) engine written in C#, that uses OpenGL as the rendering backend.
 
@@ -61,6 +61,7 @@ A non-exhaustive list of currently implemented features. Updated every once in a
   - [Raycasting](#raycasting)
 - World generation
   - Simplex noise-based terrain heightmap generation
+  - Cave generation
 - Gameplay
   - ECS-based player character, with free cam mode
 - Misc
@@ -71,10 +72,18 @@ A non-exhaustive list of currently implemented features. Updated every once in a
 
 ### Rendering pipeline
 
+![Terrain wireframe screenshot](screenshots/terrain_wireframe.png)
+
 The engine has a fully functional OpenGL voxel rendering pipeline.
 A chunk is passed to a multithreaded chunk mesher, which uses a meshing buffer to create vertices and indices, used to construct a polygonal mesh for the chunk.
 The mesh is rendered by a shader which unpacks the bitpacked vertex data, positions the vertices based on the chunk position, assigns textures, applies shading, and renders the fragments.
 TODO: More info.
+
+The ambient occlusion (AO) is also baked in to the mesh vertex data, which allows for a more efficient rendering pipeline, as the AO is calculated only once per chunk, instead of every frame.
+
+AFAIK Minecraft uses a similar technique for smooth lighting.
+
+![Cave ambient occlusion screenshot](screenshots/cave_ao.png)
 
 ### Data management
 
@@ -104,7 +113,9 @@ As usual with voxel engines, the actual block data is stored inside so-called "c
 Dividing the game world into chunks offers some advantages.
 - A chunk-based architecture enables efficient rendering and optimization, allowing the engine to perform chunk culling to selectively update and render only the visible portions of the world. This drastically improves performance by minimizing the computational load and memory requirements.
 - Dynamic world modification and streaming are made possible (infinite worlds!), as individual chunks can be loaded or unloaded based on the player's proximity.
-- Simple multithreading/parallel processing of chunks. All the currently loaded chunks can be processed in 8 batches so that each thread in a batch always has a 3x3x3 chunk area to perform operations on. The processing order is [x,y,z] [x±1,y,z] [x,y±1,z] [x,y,z±1] [x±1,y±1,z] [x±1,y,z±1] [x,y±1,z±1] [x±1,y±1,z±1], which can also be visualized in 2D as: TODO
+- Simple multithreading/parallel processing of chunks. All the currently loaded chunks can be processed in 8 batches so that each thread in a batch always has a 3x3x3 chunk area to perform operations on. The processing order is `[x,y,z] [x±1,y,z] [x,y±1,z] [x,y,z±1] [x±1,y±1,z] [x±1,y,z±1] [x,y±1,z±1] [x±1,y±1,z±1]`, which can also be visualized in 2D as: TODO
+
+![Latest progress screenshot](screenshots/latest.png)
 
 ### Physics
 
