@@ -115,8 +115,6 @@ Dividing the game world into chunks offers some advantages.
 - Dynamic world modification and streaming are made possible (infinite worlds!), as individual chunks can be loaded or unloaded based on the player's proximity.
 - Simple multithreading/parallel processing of chunks. All the currently loaded chunks can be processed in 8 batches so that each thread in a batch always has a 3x3x3 chunk area to perform operations on. The processing order is `[x,y,z] [x±1,y,z] [x,y±1,z] [x,y,z±1] [x±1,y±1,z] [x±1,y,z±1] [x,y±1,z±1] [x±1,y±1,z±1]`, which can also be visualized in 2D as: TODO
 
-![Latest progress screenshot](screenshots/latest.png)
-
 ### Physics
 
 #### Raycasting
