@@ -92,8 +92,21 @@ public class Chunk
         if (!_hasBeenMeshed)
             return;
         
+#if DEBUG
+        // If in debug mode, allow the player to toggle frustum culling on/off
+        if (ClientConfig.DebugModeConfig.DoFrustumCulling)
+        {
+            Frustum cameraViewFrustum = ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling ?
+                PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum :
+                Camera.RenderingCamera.ViewFrustum;
+        
+            if (!IsOnFrustum(cameraViewFrustum))
+                return;
+        }
+#else
         if (!IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
             return;
+#endif
 
         if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
             mesh!.Draw();

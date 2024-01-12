@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.World.Regions.Chunks.Blocks;
 
 namespace Korpi.Client.Debugging;
 
@@ -23,6 +24,8 @@ public static class DebugStats
     public static float MaxChunkGenerationTime = float.MinValue;
     public static float MinChunkMeshingTime = float.MaxValue;
     public static float MaxChunkMeshingTime = float.MinValue;
+    
+    public static BlockState LastRaycastResult;
 
     private static readonly Stopwatch ChunkGenerationTimer = new();
     private static readonly Stopwatch ChunkMeshingTimer = new();
