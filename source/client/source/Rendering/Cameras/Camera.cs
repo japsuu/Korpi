@@ -24,6 +24,11 @@ public abstract class Camera : IDisposable, IComparable<Camera>
     /// </summary>
     protected int RenderPriority;
     
+    public const float DEPTH_NEAR = 0.01f;
+    public const float DEPTH_FAR = 1000f;
+
+    public readonly Frustum ViewFrustum;
+    
     /// <summary>
     /// The view matrix of this camera.
     /// </summary>
@@ -117,6 +122,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
 
     protected Camera(Vector3 localPosition, int renderPriority = 0)
     {
+        ViewFrustum = new Frustum();
         RenderPriority = renderPriority;
         FovRadians = MathHelper.PiOver2;
         Position = localPosition;
@@ -127,7 +133,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
 
         GameClient.ClientResized += RecalculateProjectionMatrix;
         
-        RecalculateMatrices();
+        Initialize();
         ActiveCameras.Add(this);
         RenderingCamera = ActiveCameras.Min!;
     }
@@ -135,6 +141,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
 
     protected Camera(Vector3 localPosition, float pitch, float yaw, int renderPriority = 0)
     {
+        ViewFrustum = new Frustum();
         RenderPriority = renderPriority;
         FovRadians = MathHelper.PiOver2;
         Position = localPosition;
@@ -147,7 +154,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
 
         GameClient.ClientResized += RecalculateProjectionMatrix;
         
-        RecalculateMatrices();
+        Initialize();
         ActiveCameras.Add(this);
         RenderingCamera = ActiveCameras.Min!;
     }
@@ -185,10 +192,11 @@ public abstract class Camera : IDisposable, IComparable<Camera>
     }
 
 
-    private void RecalculateMatrices()
+    private void Initialize()
     {
         RecalculateViewMatrix();
         RecalculateProjectionMatrix();
+        RecalculateFrustum();
     }
 
 
@@ -198,6 +206,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
     private void RecalculateViewMatrix()
     {
         ViewMatrix = Matrix4.LookAt(Position, Position + Forward, Up);
+        RecalculateFrustum();
     }
 
     
@@ -206,7 +215,46 @@ public abstract class Camera : IDisposable, IComparable<Camera>
     /// </summary>
     private void RecalculateProjectionMatrix()
     {
-        ProjectionMatrix = Matrix4.CreatePerspectiveFieldOfView(FovRadians, GameClient.WindowAspectRatio, 0.01f, 1000f);
+        ProjectionMatrix = Matrix4.CreatePerspectiveFieldOfView(FovRadians, GameClient.WindowAspectRatio, DEPTH_NEAR, DEPTH_FAR);
+        RecalculateFrustum();
+    }
+
+
+    private void RecalculateFrustum()
+    {
+        Matrix4 viewProjection = ViewMatrix * ProjectionMatrix;
+
+        // Left plane.
+        ViewFrustum.Left.Normal = new Vector3(viewProjection.M14 + viewProjection.M11, viewProjection.M24 + viewProjection.M21, viewProjection.M34 + viewProjection.M31);
+        ViewFrustum.Left.Distance = viewProjection.M44 + viewProjection.M41;
+
+        // Right plane.
+        ViewFrustum.Right.Normal = new Vector3(viewProjection.M14 - viewProjection.M11, viewProjection.M24 - viewProjection.M21, viewProjection.M34 - viewProjection.M31);
+        ViewFrustum.Right.Distance = viewProjection.M44 - viewProjection.M41;
+
+        // Bottom plane.
+        ViewFrustum.Bottom.Normal = new Vector3(viewProjection.M14 + viewProjection.M12, viewProjection.M24 + viewProjection.M22, viewProjection.M34 + viewProjection.M32);
+        ViewFrustum.Bottom.Distance = viewProjection.M44 + viewProjection.M42;
+
+        // Top plane.
+        ViewFrustum.Top.Normal = new Vector3(viewProjection.M14 - viewProjection.M12, viewProjection.M24 - viewProjection.M22, viewProjection.M34 - viewProjection.M32);
+        ViewFrustum.Top.Distance = viewProjection.M44 - viewProjection.M42;
+
+        // Near plane.
+        ViewFrustum.Near.Normal = new Vector3(viewProjection.M13, viewProjection.M23, viewProjection.M33);
+        ViewFrustum.Near.Distance = viewProjection.M43;
+
+        // Far plane.
+        ViewFrustum.Far.Normal = new Vector3(viewProjection.M14 - viewProjection.M13, viewProjection.M24 - viewProjection.M23, viewProjection.M34 - viewProjection.M33);
+        ViewFrustum.Far.Distance = viewProjection.M44 - viewProjection.M43;
+
+        // Normalize the planes.
+        for (int i = 0; i < 6; i++)
+        {
+            float length = ViewFrustum.Planes[i].Normal.Length;
+            ViewFrustum.Planes[i].Normal /= length;
+            ViewFrustum.Planes[i].Distance /= length;
+        }
     }
     
     

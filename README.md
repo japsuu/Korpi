@@ -36,10 +36,11 @@ My main goal with this project is to get familiar with OpenGL and the ins and ou
 A non-exhaustive list of currently implemented features. Updated every once in a while.
 
 - [Rendering pipeline](#rendering-pipeline)
-  - [Multithreaded chunk meshing](https://github.com/japsuu/Korpi/blob/master/source/client/source/Meshing/Jobs/MeshingJob.cs)
+  - Multithreaded chunk meshing
+  - Ambient occlusion
+  - Frustum culling
   - Internal face culling
   - Block texturing (animated texture support!)
-  - Ambient occlusion
   - Block face shading
   - ImGui integration
   - Dynamic skybox
