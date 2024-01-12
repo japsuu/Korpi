@@ -26,6 +26,7 @@ public static class DebugStats
     public static float MaxChunkMeshingTime = float.MinValue;
     
     public static BlockState LastRaycastResult;
+    public static ulong RenderedTris;
 
     private static readonly Stopwatch ChunkGenerationTimer = new();
     private static readonly Stopwatch ChunkMeshingTimer = new();

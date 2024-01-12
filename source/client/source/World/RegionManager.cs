@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Korpi.Client.Configuration;
+using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Logging;
@@ -59,6 +60,7 @@ public class RegionManager
     public void Draw()
     {
         ShaderManager.ChunkShader.Use();
+        DebugStats.RenderedTris = 0;
         
         foreach (Region column in _existingRegions.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {

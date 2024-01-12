@@ -39,7 +39,8 @@ public class DebugStatsWindow : ImGuiWindow
         float averageFps = ImGui.GetIO().Framerate;
         float frameTime = 1000f / averageFps;
         bool shouldCalcMinMaxFps = GameTime.TotalFrameCount > CALCULATE_MIN_MAX_FPS_AFTER_FRAMES;
-        
+
+        ImGui.Text("Rendering");
         ImGui.Text($"{averageFps:F1} fps ({frameTime:F1} ms/frame)");
         if (shouldCalcMinMaxFps)
         {
@@ -51,7 +52,10 @@ public class DebugStatsWindow : ImGuiWindow
             ImGui.Text($"Min: {_minFps:F1} fps");
             ImGui.Text($"Max: {_maxFps:F1} fps");
         }
+        ImGui.Text($"Triangles = {DebugStats.RenderedTris}");
 
+        ImGui.Separator();
+        ImGui.Text("Loaded regions");
         ImGui.Text($"Loaded blocks (approx) = {loadedBlocksApproxFormatted}");
         ImGui.Text($"Loaded chunks (approx) = {loadedChunksApproxFormatted}");
         ImGui.Text($"Loaded regions = {DebugStats.LoadedRegionCount}");
