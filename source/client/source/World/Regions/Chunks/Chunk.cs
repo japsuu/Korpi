@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging.Drawing;
+using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Logging;
 using Korpi.Client.Meshing.Jobs;
+using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World.Regions.Chunks.Blocks;
@@ -89,6 +91,22 @@ public class Chunk
     {
         if (!_hasBeenMeshed)
             return;
+        
+#if DEBUG
+        // If in debug mode, allow the player to toggle frustum culling on/off
+        if (ClientConfig.DebugModeConfig.DoFrustumCulling)
+        {
+            Frustum cameraViewFrustum = ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling ?
+                PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum :
+                Camera.RenderingCamera.ViewFrustum;
+        
+            if (!IsOnFrustum(cameraViewFrustum))
+                return;
+        }
+#else
+        if (!IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
+            return;
+#endif
 
         if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
             mesh!.Draw();
@@ -96,6 +114,36 @@ public class Chunk
 #if DEBUG
         DebugDraw();
 #endif
+    }
+
+
+    private bool IsOnFrustum(Frustum viewFrustum)
+    {
+        Vector3 min = Position;
+        Vector3 max = Position + new Vector3(Constants.CHUNK_SIDE_LENGTH);
+
+        foreach (FrustumPlane plane in viewFrustum.Planes)
+        {
+            Vector3 pVertex = min;
+
+            if (plane.Normal.X >= 0)
+            {
+                pVertex.X = max.X;
+            }
+            if (plane.Normal.Y >= 0)
+            {
+                pVertex.Y = max.Y;
+            }
+            if (plane.Normal.Z >= 0)
+            {
+                pVertex.Z = max.Z;
+            }
+
+            if (Vector3.Dot(plane.Normal, pVertex) + plane.Distance < 0)
+                return false;
+        }
+
+        return true;
     }
 
 

@@ -14,8 +14,6 @@ public class PlayerEntity : TransformEntity
 {
     private const float PLAYER_MOVEMENT_SPEED = 8*4f;
     private static readonly Vector3 CameraOffset = new(0, 1.5f, 0);
-    
-    private readonly PlayerCamera _camera;
     private NoclipCamera? _externalCamera;
     private bool _isExternalCameraEnabled;
     
@@ -27,16 +25,18 @@ public class PlayerEntity : TransformEntity
     
     public static ushort SelectedBlockType = 1;
     
+    public readonly PlayerCamera Camera;
+    
     /// <summary>
     /// The forward vector of the playerEntity's view.
     /// </summary>
-    public Vector3 ViewPosition => _camera.Position;
+    public Vector3 ViewPosition => Camera.Position;
     // public Vector3 ViewPosition => _isExternalCameraEnabled ? _externalCamera!.Position : _camera.Position;
     
     /// <summary>
     /// The forward vector of the playerEntity's view.
     /// </summary>
-    public Vector3 ViewForward => _camera.Forward;
+    public Vector3 ViewForward => Camera.Forward;
     
 
     /// <summary>
@@ -52,7 +52,7 @@ public class PlayerEntity : TransformEntity
             throw new Exception("For now, only one playerEntity can be loaded at a time");
         LocalPlayerEntity = this;
         
-        _camera = new PlayerCamera(position + CameraOffset, cameraYaw, cameraPitch);
+        Camera = new PlayerCamera(position + CameraOffset, cameraYaw, cameraPitch);
         
         Transform.LocalPosition = position;
         
@@ -71,7 +71,7 @@ public class PlayerEntity : TransformEntity
     private void EnableExternalCamera()
     {
         _isExternalCameraEnabled = true;
-        _externalCamera = new NoclipCamera(Transform.WorldPosition + CameraOffset, _camera.PitchDegrees, _camera.YawDegrees);
+        _externalCamera = new NoclipCamera(Transform.WorldPosition + CameraOffset, Camera.PitchDegrees, Camera.YawDegrees);
     }
 
 
@@ -98,37 +98,37 @@ public class PlayerEntity : TransformEntity
 
             if (Input.KeyboardState.IsKeyDown(Keys.W))
             {
-                positionDelta += _camera.Forward * PLAYER_MOVEMENT_SPEED * (float)time; // Forward
+                positionDelta += Camera.Forward * PLAYER_MOVEMENT_SPEED * (float)time; // Forward
             }
 
             if (Input.KeyboardState.IsKeyDown(Keys.S))
             {
-                positionDelta += -_camera.Forward * PLAYER_MOVEMENT_SPEED * (float)time; // Backwards
+                positionDelta += -Camera.Forward * PLAYER_MOVEMENT_SPEED * (float)time; // Backwards
             }
 
             if (Input.KeyboardState.IsKeyDown(Keys.A))
             {
-                positionDelta += -_camera.Right * PLAYER_MOVEMENT_SPEED * (float)time; // Left
+                positionDelta += -Camera.Right * PLAYER_MOVEMENT_SPEED * (float)time; // Left
             }
 
             if (Input.KeyboardState.IsKeyDown(Keys.D))
             {
-                positionDelta += _camera.Right * PLAYER_MOVEMENT_SPEED * (float)time; // Right
+                positionDelta += Camera.Right * PLAYER_MOVEMENT_SPEED * (float)time; // Right
             }
 
             if (Input.KeyboardState.IsKeyDown(Keys.Space))
             {
-                positionDelta += _camera.Up * PLAYER_MOVEMENT_SPEED * (float)time; // Up
+                positionDelta += Camera.Up * PLAYER_MOVEMENT_SPEED * (float)time; // Up
             }
 
             if (Input.KeyboardState.IsKeyDown(Keys.LeftShift))
             {
-                positionDelta += -_camera.Up * PLAYER_MOVEMENT_SPEED * (float)time; // Down
+                positionDelta += -Camera.Up * PLAYER_MOVEMENT_SPEED * (float)time; // Down
             }
 
             Transform.WorldPosition += positionDelta;
-            _camera.SetPosition(Transform.WorldPosition + CameraOffset);
-            _camera.UpdateRotation();
+            Camera.SetPosition(Transform.WorldPosition + CameraOffset);
+            Camera.UpdateRotation();
             
             // Update the SelectedBlockType
             if (Input.MouseState.ScrollDelta.Y > 0)
@@ -139,6 +139,6 @@ public class PlayerEntity : TransformEntity
             // Clamp between 0 and the number of blocks.
             SelectedBlockType = (ushort)System.Math.Clamp(SelectedBlockType, 1, BlockRegistry.GetBlockCount() - 1);
         }
-        Transform.WorldRotation = new Vector3(0, -_camera.YawRadians, 0);
+        Transform.WorldRotation = new Vector3(0, -Camera.YawRadians, 0);
     }
 }

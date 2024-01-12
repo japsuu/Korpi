@@ -16,6 +16,8 @@ public class DebugModeConfig
     public bool RenderRaycastHit;
     public bool RenderRaycastHitBlock = true;
     public bool EnableAmbientOcclusion = true;
+    public bool DoFrustumCulling = true;
+    public bool OnlyPlayerFrustumCulling;
 
 
     public DebugModeConfig(bool isPhotoModeEnabled, string photoModeScreenshotPath)

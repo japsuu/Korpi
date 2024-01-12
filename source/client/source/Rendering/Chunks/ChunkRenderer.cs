@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Logging;
+﻿using Korpi.Client.Debugging;
+using Korpi.Client.Logging;
 using Korpi.Client.Meshing;
 using Korpi.Client.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;
@@ -17,12 +18,14 @@ public class ChunkRenderer : IDisposable
 
     public int VerticesCount { get; private set; }
     public int IndicesCount { get; private set; }
+    public int TriangleCount { get; private set; }
 
 
     public ChunkRenderer(ChunkMesh mesh)
     {
         VerticesCount = mesh.VerticesCount;
         IndicesCount = mesh.IndicesCount;
+        TriangleCount = mesh.VerticesCount / 2; // 4 vertices are used to draw 2 triangles.
         _modelMatrix = Matrix4.CreateTranslation(mesh.ChunkPos);
 
         _meshVBO = GL.GenBuffer();
@@ -49,6 +52,7 @@ public class ChunkRenderer : IDisposable
     {
         VerticesCount = mesh.VerticesCount;
         IndicesCount = mesh.IndicesCount;
+        TriangleCount = mesh.VerticesCount / 2; // 4 vertices are used to draw 2 triangles.
         _modelMatrix = Matrix4.CreateTranslation(mesh.ChunkPos);
 
         GL.BindBuffer(BufferTarget.ArrayBuffer, _meshVBO);
@@ -73,6 +77,8 @@ public class ChunkRenderer : IDisposable
         // Draw.
         GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
         GL.BindVertexArray(0);
+        
+        DebugStats.RenderedTris += (ulong)TriangleCount;
     }
 
 
