@@ -1,0 +1,26 @@
+﻿name: Transparency test
+namespace: korpi
+description: Test transparent blocks
+author: Japsu
+blocks:
+- name: Glass
+  render_type: Normal
+  face_textures:
+    front:
+      textures:
+      - textures/glass.png
+    back:
+      textures:
+      - textures/glass.png
+    left:
+      textures:
+      - textures/glass.png
+    right:
+      textures:
+      - textures/glass.png
+    top:
+      textures:
+      - textures/glass.png
+    bottom:
+      textures:
+      - textures/glass.png

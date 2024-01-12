@@ -10,6 +10,8 @@ uniform sampler2DArray texture0;
 
 void main()
 {
-	FragColor = texture(texture0, uv) * vec4(aoColor * faceShading, 1.0f);
+	vec3 texColor = texture(texture0, uv).rgb;
+	vec3 final = texColor * aoColor * faceShading;
+	FragColor = vec4(final, 1.0f);
 	// FragColor = vec4(outNormalColor, 1.0f);
 }
