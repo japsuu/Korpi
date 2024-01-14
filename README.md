@@ -14,6 +14,7 @@ This project is still searching for its own identity :)
 - [Personal goals](#personal-goals)
 - [Project status](#project-status)
 - [Documentation](#documentation)
+- [Building from source](#building-from-source)
 - [Contributing](CONTRIBUTING.md)
 - [Input](#input)
 - [Voxel engine vs Korpi](#voxel-engine-vs-korpi)
@@ -125,9 +126,18 @@ The current solution supports also collision face detection.
 
 ## Documentation
 
-- [Docs index](https://japsuu.github.io/Korpi/)
-- [Introduction](https://japsuu.github.io/Korpi/documentation/introduction.html)
-- [API documentation](https://japsuu.github.io/Korpi/api/Korpi.Client.html)
+Technical documentation and additional information about the implementation of Korpi can be found in the [official documentation](https://japsuu.github.io/Korpi/).
+
+The full API Documentation is available on the [official API documentation website](https://japsuu.github.io/Korpi/api/Korpi.Client.html) or inline from your favourite IDE.
+
+## Building from source
+To build Korpi from source you just need to clone the git repo and open `Korpi.sln` in your favourite IDE.
+
+```git
+git clone https://github.com/japsuu/Korpi   # Download source code from git
+cd korpi   # Enter the source directory
+# open Korpi.sln
+```
 
 ## Input
 
