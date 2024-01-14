@@ -125,9 +125,9 @@ The current solution supports also collision face detection.
 
 ## Documentation
 
-- [Docs index](https://japsuu.github.io/Korpi/)
-- [Introduction](https://japsuu.github.io/Korpi/documentation/introduction.html)
-- [API documentation](https://japsuu.github.io/Korpi/api/Korpi.Client.html)
+Technical documentation and additional information about the implementation of Korpi can be found in the [official documentation](https://japsuu.github.io/Korpi/).
+
+The full API Documentation is available on the [official API documentation website](https://japsuu.github.io/Korpi/api/Korpi.Client.html) or inline from your favourite IDE.
 
 ## Input
 
