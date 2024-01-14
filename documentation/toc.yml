@@ -1,4 +1,12 @@
-﻿- name: Docs
-  href: documentation/
+﻿- name: FAQ
+  href: faq.md
+- name: Technical
+  href: technical/
+  homepage: technical/index.md
 - name: API
   href: api/
+  homepage: api/index.md
+- name: GitHub
+  href: https://github.com/japsuu/Korpi
+- name: Discord
+  href: https://discord.gg/AhSX58wmWG
