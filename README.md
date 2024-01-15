@@ -3,6 +3,8 @@
 [![client build](https://github.com/japsuu/Korpi/actions/workflows/build_client.yml/badge.svg)](https://github.com/japsuu/Korpi/actions/workflows/build_client.yml)
 [![client tests](https://github.com/japsuu/Korpi/actions/workflows/test_client.yml/badge.svg)](https://github.com/japsuu/Korpi/tree/master/tests/client)
 [![documentation](https://github.com/japsuu/Korpi/actions/workflows/documentation.yml/badge.svg)](https://japsuu.github.io/Korpi/)
+[![Discord](https://img.shields.io/discord/1196068889918984272?style=flat&label=Discord)](https://discord.gg/EFYfVc3vcb)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/japsuu/Korpi/master)
 
 ![Cave generation screenshot](screenshots/cave_gen.png)
 
