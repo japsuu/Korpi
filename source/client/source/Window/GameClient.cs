@@ -92,11 +92,9 @@ public class GameClient : GameWindow
         GL.Enable(EnableCap.DebugOutputSynchronous);
 #endif
 
-        GL.Enable(EnableCap.DepthTest); // Enable depth testing.
-        GL.Enable(EnableCap.Multisample); // Enable multisampling.
-        GL.Enable(EnableCap.Blend); // Enable blending for transparent textures.
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.ClearColor(0f, 0f, 0f, 1.0f);
+        GL.Enable(EnableCap.DepthTest);     // Enable depth testing.
+        GL.Enable(EnableCap.Multisample);   // Enable multisampling.
+        GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         // Resource initialization.
         GlobalThreadPool.Initialize();

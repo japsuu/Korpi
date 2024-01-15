@@ -5,6 +5,7 @@ using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Logging;
 using Korpi.Client.Meshing.Jobs;
+using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Pooling;
@@ -87,7 +88,7 @@ public class Chunk
     }
 
 
-    public void Draw()
+    public void Draw(RenderPass pass)
     {
         if (!_hasBeenMeshed)
             return;
@@ -109,7 +110,7 @@ public class Chunk
 #endif
 
         if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
-            mesh!.Draw();
+            mesh!.Draw(pass);
         
 #if DEBUG
         DebugDraw();

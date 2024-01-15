@@ -8,7 +8,8 @@ public class ShaderManager : IDisposable
 {
     public static Shader PassShader { get; private set; } = null!;
     public static Shader DebugShader { get; private set; } = null!;
-    public static Shader ChunkShader { get; private set; } = null!;
+    public static Shader OpaqueChunkShader { get; private set; } = null!;
+    public static Shader TransparentChunkShader { get; private set; } = null!;
     public static Shader SkyboxShader { get; private set; } = null!;
     public static Shader CelestialBodyShader { get; private set; } = null!;
     
@@ -24,8 +25,11 @@ public class ShaderManager : IDisposable
         DebugShader = new Shader(IoUtils.GetShaderPath("shader_debug.vert"), IoUtils.GetShaderPath("shader_debug.frag"));
         DebugShader.Use();
         
-        ChunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk.vert"), IoUtils.GetShaderPath("shader_chunk.frag"));
-        ChunkShader.Use();
+        OpaqueChunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk_opaque.vert"), IoUtils.GetShaderPath("shader_chunk_opaque.frag"));
+        OpaqueChunkShader.Use();
+        
+        TransparentChunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk_transparent.vert"), IoUtils.GetShaderPath("shader_chunk_transparent.frag"));
+        TransparentChunkShader.Use();
         
         SkyboxShader = new Shader(IoUtils.GetShaderPath("shader_skybox.vert"), IoUtils.GetShaderPath("shader_skybox.frag"));
         SkyboxShader.Use();
@@ -45,8 +49,11 @@ public class ShaderManager : IDisposable
         DebugShader.Use();
         DebugShader.SetMatrix4("projection", projectionMatrix);
         
-        ChunkShader.Use();
-        ChunkShader.SetMatrix4("projection", projectionMatrix);
+        OpaqueChunkShader.Use();
+        OpaqueChunkShader.SetMatrix4("projection", projectionMatrix);
+        
+        TransparentChunkShader.Use();
+        TransparentChunkShader.SetMatrix4("projection", projectionMatrix);
         
         SkyboxShader.Use();
         SkyboxShader.SetMatrix4("projection", projectionMatrix);
@@ -66,8 +73,11 @@ public class ShaderManager : IDisposable
         DebugShader.Use();
         DebugShader.SetMatrix4("view", viewMatrix);
         
-        ChunkShader.Use();
-        ChunkShader.SetMatrix4("view", viewMatrix);
+        OpaqueChunkShader.Use();
+        OpaqueChunkShader.SetMatrix4("view", viewMatrix);
+        
+        TransparentChunkShader.Use();
+        TransparentChunkShader.SetMatrix4("view", viewMatrix);
     }
     
     
@@ -97,7 +107,8 @@ public class ShaderManager : IDisposable
     public void Dispose()
     {
         DebugShader.Dispose();
-        ChunkShader.Dispose();
+        OpaqueChunkShader.Dispose();
+        TransparentChunkShader.Dispose();
         SkyboxShader.Dispose();
         CelestialBodyShader.Dispose();
         

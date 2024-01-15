@@ -4,24 +4,47 @@ namespace Korpi.Client.Meshing;
 
 /// <summary>
 /// Contains the mesh data for a chunk, and the chunk's position.
+///
+/// Opaque and transparent mesh data is stored in separate arrays.
 /// </summary>
 public class ChunkMesh
 {
+    /// <summary>
+    /// The position of the chunk in the world.
+    /// </summary>
     public readonly Vector3i ChunkPos;
     
-    public readonly uint[] VertexData;
-    public readonly int VerticesCount;
+    /// <summary>
+    /// The vertex data for the opaque blocks.
+    /// 2 uints per vertex, 4 vertices per quad.
+    /// </summary>
+    public readonly uint[] OpaqueVertexData;
     
-    public readonly uint[] IndexData;
-    public readonly int IndicesCount;
+    /// <summary>
+    /// The index data for the opaque blocks.
+    /// </summary>
+    public readonly uint[] OpaqueIndices;
+    
+    /// <summary>
+    /// The vertex data for the transparent blocks.
+    /// 2 uints per vertex, 4 vertices per quad.
+    /// </summary>
+    public readonly uint[] TransparentVertexData;
+    
+    /// <summary>
+    /// The index data for the transparent blocks.
+    /// </summary>
+    public readonly uint[] TransparentIndices;
 
 
-    public ChunkMesh(Vector3i chunkPos, uint[] vertexData, int verticesCount, uint[] indexData, int indicesCount)
+    public ChunkMesh(Vector3i chunkPos, uint[] opaqueVertexData, uint[] opaqueIndices, uint[] transparentVertexData, uint[] transparentIndices)
     {
         ChunkPos = chunkPos;
-        VertexData = vertexData;
-        VerticesCount = verticesCount;
-        IndexData = indexData;
-        IndicesCount = indicesCount;
+        
+        OpaqueVertexData = opaqueVertexData;
+        OpaqueIndices = opaqueIndices;
+        
+        TransparentVertexData = transparentVertexData;
+        TransparentIndices = transparentIndices;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Korpi.Client.Configuration;
+using Korpi.Client.Rendering;
 using Korpi.Client.World.Regions.Chunks;
 using OpenTK.Mathematics;
 
@@ -57,11 +58,11 @@ public class Region
     }
         
         
-    public void Draw()
+    public void Draw(RenderPass pass)
     {
         foreach (Chunk? chunk in _chunks)
         {
-            chunk?.Draw();
+            chunk?.Draw(pass);
         }
     }
 

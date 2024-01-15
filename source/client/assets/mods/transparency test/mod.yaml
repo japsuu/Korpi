@@ -4,7 +4,7 @@ description: Test transparent blocks
 author: Japsu
 blocks:
 - name: Glass
-  render_type: Normal
+  render_type: Transparent
   face_textures:
     front:
       textures:

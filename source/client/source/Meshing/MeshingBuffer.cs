@@ -8,7 +8,7 @@ namespace Korpi.Client.Meshing;
 /// <summary>
 /// Buffer in to which meshes are generated.
 /// </summary>
-public class MeshingBuffer
+public class MeshingBuffer  //TODO: Instead of storing the opaque and transparent data separately, use two MeshingBuffers.
 {
     private const int ELEMENTS_PER_VERTEX = 2;
     private const int FACES_PER_BLOCK = 6;
@@ -22,15 +22,22 @@ public class MeshingBuffer
     private const int MAX_VERTEX_DATA_PER_CHUNK = MAX_VERTICES_PER_CHUNK * ELEMENTS_PER_VERTEX;
 
     /// <summary>
-    /// Array of bytes containing the vertex data. 2 uints (64 bits) per vertex.
+    /// Array of uints containing the vertex data. 2 uints (64 bits) per vertex.
     /// </summary>
-    private readonly uint[] _vertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK]; // ~3.1 MB
+    private readonly uint[] _opaqueVertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK]; // ~3.1 MB
+    private readonly uint[] _opaqueIndexData = new uint[MAX_INDICES_PER_CHUNK]; // ~2.4 MB
+    /// <summary>
+    /// Array of uints containing the vertex data. 2 uints (64 bits) per vertex.
+    /// </summary>
+    private readonly uint[] _transparentVertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK]; // ~3.1 MB
+    private readonly uint[] _transparentIndexData = new uint[MAX_INDICES_PER_CHUNK]; // ~2.4 MB
 
-    private readonly uint[] _indexData = new uint[MAX_INDICES_PER_CHUNK]; // ~2.4 MB
-
-    public int AddedVertexDataCount { get; private set; }
-    public int AddedIndicesCount { get; private set; }
-    public int AddedFacesCount { get; private set; }
+    private int _addedOpaqueVertexDataCount;
+    private int _addedOpaqueIndicesCount;
+    private int _addedOpaqueFacesCount;
+    private int _addedTransparentVertexDataCount;
+    private int _addedTransparentIndicesCount;
+    private int _addedTransparentFacesCount;
 
 
     /// <summary>
@@ -43,7 +50,8 @@ public class MeshingBuffer
     /// <param name="lightColor">Color of the light hitting this face</param>
     /// <param name="lightLevel">Amount of light that hits this face (0-31)</param>
     /// <param name="skyLightLevel">Amount of skylight hitting this face (0-31)</param>
-    public void AddFace(MeshingDataCache dataCache, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel)
+    /// <param name="renderType">Render type of the block</param>
+    public void AddFace(MeshingDataCache dataCache, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel, BlockRenderType renderType)
     {
         // NOTE: Just to be clear, I'm not proud of this unmaintainable mess... - Japsu
         
@@ -209,23 +217,22 @@ public class MeshingBuffer
             int ao1 = CalculateAoIndex(dataCache, aoLeft1, aoRight1, aoMiddle1);
             int ao2 = CalculateAoIndex(dataCache, aoLeft2, aoRight2, aoMiddle2);
             int ao3 = CalculateAoIndex(dataCache, aoLeft3, aoRight3, aoMiddle3);
-            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, ao0, textureIndex, lightColor, lightLevel, skyLightLevel);
-            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, ao1, textureIndex, lightColor, lightLevel, skyLightLevel);
-            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, ao2, textureIndex, lightColor, lightLevel, skyLightLevel);
-            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, ao3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, ao0, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
+            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, ao1, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
+            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, ao2, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
+            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, ao3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
 #if DEBUG
         }
         else
         {
-            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
-            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
-            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
-            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
+            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
+            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
+            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
         }
 #endif
 
-        AddIndices();
-        AddedFacesCount++;
+        AddIndices(renderType);
     }
 
 
@@ -243,7 +250,7 @@ public class MeshingBuffer
 
 
     private void AddVertex(int vertexPosX, int vertexPosY, int vertexPosZ, int normal, int textureUvIndex, int aoIndex, int textureIndex, Color9 lightColor,
-        int lightLevel, int skyLightLevel)
+        int lightLevel, int skyLightLevel, BlockRenderType renderType)
     {
         // PositionIndex    =   0-133152. Calculated with x + Size * (y + Size * z).             = 18 bits.  18 bits.
         // TextureIndex     =   0-4095.                                                         = 12 bits.  30 bits.
@@ -288,42 +295,88 @@ public class MeshingBuffer
         data2 |= (uint)textureUvIndex << bitIndex2;
         bitIndex2 += 2;
         data2 |= (uint)aoIndex << bitIndex2;
-        _vertexData[AddedVertexDataCount] = data1;
-        _vertexData[AddedVertexDataCount + 1] = data2;
-        AddedVertexDataCount += 2;
+        switch (renderType)
+        {
+            case BlockRenderType.Transparent:
+                _transparentVertexData[_addedTransparentVertexDataCount] = data1;
+                _transparentVertexData[_addedTransparentVertexDataCount + 1] = data2;
+                _addedTransparentVertexDataCount += 2;
+                break;
+            case BlockRenderType.Normal:
+                _opaqueVertexData[_addedOpaqueVertexDataCount] = data1;
+                _opaqueVertexData[_addedOpaqueVertexDataCount + 1] = data2;
+                _addedOpaqueVertexDataCount += 2;
+                break;
+            case BlockRenderType.None:
+            default:
+                throw new ArgumentOutOfRangeException(nameof(renderType), renderType, null);
+        }
     }
 
 
-    private void AddIndices()
+    private void AddIndices(BlockRenderType renderType)
     {
-        uint offset = 4 * (uint)AddedFacesCount;
-        _indexData[AddedIndicesCount] = offset + 0;
-        _indexData[AddedIndicesCount + 1] = offset + 1;
-        _indexData[AddedIndicesCount + 2] = offset + 2;
-        _indexData[AddedIndicesCount + 3] = offset + 0;
-        _indexData[AddedIndicesCount + 4] = offset + 2;
-        _indexData[AddedIndicesCount + 5] = offset + 3;
-        AddedIndicesCount += 6;
+        switch (renderType)
+        {
+            case BlockRenderType.Transparent:
+                uint tOffset = 4 * (uint)_addedTransparentFacesCount;
+                _transparentIndexData[_addedTransparentIndicesCount] = tOffset + 0;
+                _transparentIndexData[_addedTransparentIndicesCount + 1] = tOffset + 1;
+                _transparentIndexData[_addedTransparentIndicesCount + 2] = tOffset + 2;
+                _transparentIndexData[_addedTransparentIndicesCount + 3] = tOffset + 0;
+                _transparentIndexData[_addedTransparentIndicesCount + 4] = tOffset + 2;
+                _transparentIndexData[_addedTransparentIndicesCount + 5] = tOffset + 3;
+                _addedTransparentIndicesCount += 6;
+                _addedTransparentFacesCount++;
+                break;
+            case BlockRenderType.Normal:
+                uint oOffset = 4 * (uint)_addedOpaqueFacesCount;
+                _opaqueIndexData[_addedOpaqueIndicesCount] = oOffset + 0;
+                _opaqueIndexData[_addedOpaqueIndicesCount + 1] = oOffset + 1;
+                _opaqueIndexData[_addedOpaqueIndicesCount + 2] = oOffset + 2;
+                _opaqueIndexData[_addedOpaqueIndicesCount + 3] = oOffset + 0;
+                _opaqueIndexData[_addedOpaqueIndicesCount + 4] = oOffset + 2;
+                _opaqueIndexData[_addedOpaqueIndicesCount + 5] = oOffset + 3;
+                _addedOpaqueIndicesCount += 6;
+                _addedOpaqueFacesCount++;
+                break;
+            case BlockRenderType.None:
+            default:
+                throw new ArgumentOutOfRangeException(nameof(renderType), renderType, null);
+        }
     }
 
 
     public ChunkMesh CreateMesh(Vector3i chunkPos)
     {
-        uint[] vertexData = new uint[AddedVertexDataCount];
-        uint[] indices = new uint[AddedIndicesCount];
-        Array.Copy(_vertexData, vertexData, AddedVertexDataCount);
-        Array.Copy(_indexData, indices, AddedIndicesCount);
+        uint[] opaqueVertexData = new uint[_addedOpaqueVertexDataCount];
+        uint[] opaqueIndices = new uint[_addedOpaqueIndicesCount];
+        uint[] transparentVertexData = new uint[_addedTransparentVertexDataCount];
+        uint[] transparentIndices = new uint[_addedTransparentIndicesCount];
+        
+        // Copy opaque data.
+        Array.Copy(_opaqueVertexData, opaqueVertexData, _addedOpaqueVertexDataCount);
+        Array.Copy(_opaqueIndexData, opaqueIndices, _addedOpaqueIndicesCount);
+        
+        // Copy transparent data.
+        Array.Copy(_transparentVertexData, transparentVertexData, _addedTransparentVertexDataCount);
+        Array.Copy(_transparentIndexData, transparentIndices, _addedTransparentIndicesCount);
 
-        return new ChunkMesh(chunkPos, vertexData, AddedVertexDataCount, indices, AddedIndicesCount);
+        return new ChunkMesh(chunkPos, opaqueVertexData, opaqueIndices, transparentVertexData, transparentIndices);
     }
 
 
     public void Clear()
     {
-        Array.Clear(_vertexData, 0, _vertexData.Length);
-        Array.Clear(_indexData, 0, _indexData.Length);
-        AddedVertexDataCount = 0;
-        AddedIndicesCount = 0;
-        AddedFacesCount = 0;
+        Array.Clear(_opaqueVertexData, 0, _opaqueVertexData.Length);
+        Array.Clear(_opaqueIndexData, 0, _opaqueIndexData.Length);
+        _addedOpaqueVertexDataCount = 0;
+        _addedOpaqueIndicesCount = 0;
+        _addedOpaqueFacesCount = 0;
+        Array.Clear(_transparentVertexData, 0, _transparentVertexData.Length);
+        Array.Clear(_transparentIndexData, 0, _transparentIndexData.Length);
+        _addedTransparentVertexDataCount = 0;
+        _addedTransparentIndicesCount = 0;
+        _addedTransparentFacesCount = 0;
     }
 }

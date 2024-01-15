@@ -53,11 +53,14 @@ public class Crosshair
 
     public void Draw()
     {
+        GL.Enable(EnableCap.Blend);
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         _shader.Use();
         _shader.SetFloat("aspectRatio", GameClient.WindowAspectRatio);
         GL.BindVertexArray(_vao);
         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         GL.BindVertexArray(0);
+        GL.Disable(EnableCap.Blend);
     }
     
     

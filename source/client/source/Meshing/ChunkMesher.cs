@@ -16,7 +16,7 @@ public class ChunkMesher
     public static ChunkMesher ThreadLocalInstance => ThreadLocal.Value!;
     
     /// <summary>
-    /// Cache in tyo which the data of the chunk currently being meshed is copied into.
+    /// Cache in to which the data of the chunk currently being meshed is copied into.
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
     private readonly MeshingDataCache _meshingDataCache = new();
@@ -97,8 +97,11 @@ public class ChunkMesher
                 continue;
 
             // If the neighbour is opaque, skip this face.
-            // If the neighbour is empty or transparent, we need to mesh this face.
             if (neighbour.RenderType == BlockRenderType.Normal)
+                continue;
+            
+            // If this block and the neighbour are both transparent, and of the same type, skip this face.
+            if (blockState.RenderType == BlockRenderType.Transparent && neighbour.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
                 continue;
 
             // Get the texture index of the block face
@@ -113,7 +116,7 @@ public class ChunkMesher
                         
             // Add the face to the meshing buffer
             Vector3i blockPos = new(x, y, z);
-            _meshingBuffer.AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
+            _meshingBuffer.AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel, blockState.RenderType);
         }
     }
 
