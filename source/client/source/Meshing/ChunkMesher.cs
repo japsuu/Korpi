@@ -62,7 +62,7 @@ public class ChunkMesher
                 {
                      _meshingDataCache.TryGetData(x, y, z, out BlockState blockState);
                     
-                    if (!blockState.ShouldRender())
+                    if (!blockState.IsRendered)
                         continue;
                     
                     AddFaces(blockState, x, y, z);
@@ -96,13 +96,24 @@ public class ChunkMesher
             if (!_meshingDataCache.TryGetData(x + neighbourOffset.X, y + neighbourOffset.Y, z + neighbourOffset.Z, out BlockState neighbour))
                 continue;
 
-            // If the neighbour is opaque, skip this face.
-            if (neighbour.RenderType == BlockRenderType.Normal)
-                continue;
-            
-            // If this block and the neighbour are both transparent, and of the same type, skip this face.
-            if (blockState.RenderType == BlockRenderType.Transparent && neighbour.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
-                continue;
+            switch (neighbour.RenderType)
+            {
+                case BlockRenderType.None:
+                    break;
+                case BlockRenderType.Opaque:
+                    // If the neighbour is opaque, skip this face.
+                    continue;
+                case BlockRenderType.AlphaClip:
+                    throw new NotImplementedException();
+                case BlockRenderType.Transparent:
+                    // If this block and the neighbour are both transparent and of the same type, skip this face.
+                    if (blockState.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
+                        continue;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(neighbour.RenderType), neighbour.RenderType, null);
+            }
+
 
             // Get the texture index of the block face
             ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);

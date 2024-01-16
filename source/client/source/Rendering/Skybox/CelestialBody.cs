@@ -56,7 +56,7 @@ public abstract class CelestialBody : SkyboxFeature, IDisposable
         1.0f, -1.0f,  1.0f
     };
     
-    private readonly CubemapTexture _texture;
+    private readonly TextureCubemap _texture;
     private readonly int _vao;
     private readonly bool _enableRotation;
     private readonly int _textureUnit;
@@ -69,7 +69,7 @@ public abstract class CelestialBody : SkyboxFeature, IDisposable
 
     protected CelestialBody(bool enableRotation, string[] texturePaths, int textureUnit)
     {
-        _texture = CubemapTexture.LoadFromFile(texturePaths, "Skybox Decor (celestial body)");
+        _texture = TextureCubemap.LoadFromFile(texturePaths, "Skybox Decor (celestial body)");
         
         _enableRotation = enableRotation;
         _textureUnit = textureUnit;

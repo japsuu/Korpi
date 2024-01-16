@@ -5,7 +5,23 @@ namespace Korpi.Client.World.Regions.Chunks.Blocks;
 /// </summary>
 public enum BlockRenderType
 {
+    /// <summary>
+    /// The block is not rendered.
+    /// </summary>
     None,
+    
+    /// <summary>
+    /// The block is opaque.
+    /// </summary>
+    Opaque,
+    
+    /// <summary>
+    /// The block texture is alpha clipped.
+    /// </summary>
+    AlphaClip,
+    
+    /// <summary>
+    /// The block is transparent.
+    /// </summary>
     Transparent,
-    Normal,
 }

@@ -8,8 +8,9 @@ public class ShaderManager : IDisposable
 {
     public static Shader PassShader { get; private set; } = null!;
     public static Shader DebugShader { get; private set; } = null!;
-    public static Shader OpaqueChunkShader { get; private set; } = null!;
-    public static Shader TransparentChunkShader { get; private set; } = null!;
+    public static Shader ShaderBlockOpaque { get; private set; } = null!;
+    public static Shader ShaderBlockCutout { get; private set; } = null!;
+    public static Shader ShaderBlockTranslucent { get; private set; } = null!;
     public static Shader SkyboxShader { get; private set; } = null!;
     public static Shader CelestialBodyShader { get; private set; } = null!;
     
@@ -25,11 +26,14 @@ public class ShaderManager : IDisposable
         DebugShader = new Shader(IoUtils.GetShaderPath("shader_debug.vert"), IoUtils.GetShaderPath("shader_debug.frag"));
         DebugShader.Use();
         
-        OpaqueChunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk_opaque.vert"), IoUtils.GetShaderPath("shader_chunk_opaque.frag"));
-        OpaqueChunkShader.Use();
+        ShaderBlockOpaque = new Shader(IoUtils.GetShaderPath("blocks_opaque.vert"), IoUtils.GetShaderPath("blocks_opaque.frag"));
+        ShaderBlockOpaque.Use();
         
-        TransparentChunkShader = new Shader(IoUtils.GetShaderPath("shader_chunk_transparent.vert"), IoUtils.GetShaderPath("shader_chunk_transparent.frag"));
-        TransparentChunkShader.Use();
+        ShaderBlockCutout = new Shader(IoUtils.GetShaderPath("blocks_cutout.vert"), IoUtils.GetShaderPath("blocks_cutout.frag"));
+        ShaderBlockCutout.Use();
+        
+        ShaderBlockTranslucent = new Shader(IoUtils.GetShaderPath("blocks_translucent.vert"), IoUtils.GetShaderPath("blocks_translucent.frag"));
+        ShaderBlockTranslucent.Use();
         
         SkyboxShader = new Shader(IoUtils.GetShaderPath("shader_skybox.vert"), IoUtils.GetShaderPath("shader_skybox.frag"));
         SkyboxShader.Use();
@@ -49,11 +53,14 @@ public class ShaderManager : IDisposable
         DebugShader.Use();
         DebugShader.SetMatrix4("projection", projectionMatrix);
         
-        OpaqueChunkShader.Use();
-        OpaqueChunkShader.SetMatrix4("projection", projectionMatrix);
+        ShaderBlockOpaque.Use();
+        ShaderBlockOpaque.SetMatrix4("projection", projectionMatrix);
         
-        TransparentChunkShader.Use();
-        TransparentChunkShader.SetMatrix4("projection", projectionMatrix);
+        ShaderBlockCutout.Use();
+        ShaderBlockCutout.SetMatrix4("projection", projectionMatrix);
+        
+        ShaderBlockTranslucent.Use();
+        ShaderBlockTranslucent.SetMatrix4("projection", projectionMatrix);
         
         SkyboxShader.Use();
         SkyboxShader.SetMatrix4("projection", projectionMatrix);
@@ -73,11 +80,14 @@ public class ShaderManager : IDisposable
         DebugShader.Use();
         DebugShader.SetMatrix4("view", viewMatrix);
         
-        OpaqueChunkShader.Use();
-        OpaqueChunkShader.SetMatrix4("view", viewMatrix);
+        ShaderBlockOpaque.Use();
+        ShaderBlockOpaque.SetMatrix4("view", viewMatrix);
         
-        TransparentChunkShader.Use();
-        TransparentChunkShader.SetMatrix4("view", viewMatrix);
+        ShaderBlockCutout.Use();
+        ShaderBlockCutout.SetMatrix4("view", viewMatrix);
+        
+        ShaderBlockTranslucent.Use();
+        ShaderBlockTranslucent.SetMatrix4("view", viewMatrix);
     }
     
     
@@ -107,8 +117,9 @@ public class ShaderManager : IDisposable
     public void Dispose()
     {
         DebugShader.Dispose();
-        OpaqueChunkShader.Dispose();
-        TransparentChunkShader.Dispose();
+        ShaderBlockOpaque.Dispose();
+        ShaderBlockCutout.Dispose();
+        ShaderBlockTranslucent.Dispose();
         SkyboxShader.Dispose();
         CelestialBodyShader.Dispose();
         

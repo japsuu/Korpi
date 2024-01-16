@@ -62,8 +62,8 @@ public class Skybox : IDisposable
     
     private readonly Sun _sun;
     private readonly Moon _moon;
-    private readonly CubemapTexture _daySkyboxTexture;
-    private readonly CubemapTexture _nightSkyboxTexture;
+    private readonly TextureCubemap _daySkyboxTexture;
+    private readonly TextureCubemap _nightSkyboxTexture;
     private readonly int _skyboxVAO;
     private readonly bool _enableStarsRotation;
 
@@ -82,7 +82,7 @@ public class Skybox : IDisposable
         GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
         
         // Load the skybox textures.
-        _daySkyboxTexture = CubemapTexture.LoadFromFile(new[]
+        _daySkyboxTexture = TextureCubemap.LoadFromFile(new[]
         {
             IoUtils.GetSkyboxTexturePath("day_x_neg.png"),
             IoUtils.GetSkyboxTexturePath("day_x_pos.png"),
@@ -93,7 +93,7 @@ public class Skybox : IDisposable
         }, "Skybox Day");
         
         // Load the skybox textures.
-        _nightSkyboxTexture = CubemapTexture.LoadFromFile(new[]
+        _nightSkyboxTexture = TextureCubemap.LoadFromFile(new[]
         {
             IoUtils.GetSkyboxTexturePath("night_x_neg.png"),
             IoUtils.GetSkyboxTexturePath("night_x_pos.png"),

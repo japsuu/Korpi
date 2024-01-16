@@ -9,7 +9,7 @@ namespace Korpi.Client.Registries;
 
 public static class TextureRegistry
 {
-    public static ArrayTexture BlockArrayTexture { get; private set; } = null!;
+    public static Texture2DArray BlockArrayTexture { get; private set; } = null!;
     
     private static ArrayTextureBuilder? arrayTextureBuilder;
     

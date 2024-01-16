@@ -5,13 +5,14 @@ using StbImageSharp;
 namespace Korpi.Client.Rendering.Textures;
 
 /// <summary>
-/// Represents a 2D texture.<br/>
-/// Images in this texture all are 2-dimensional. They have width and height, but no depth.
+/// Represents a 2D texture array.<br/>
+/// Images in this texture all are 2-dimensional. However, it contains multiple sets of 2-dimensional images,
+/// all within one texture. The array length is part of the texture's size.
 /// </summary>
-public sealed class Texture2D : Texture
+public sealed class Texture2DArray : LayeredTexture
 {
     public override string Name { get; }
-    public override TextureTarget TextureTarget => TextureTarget.Texture2D;
+    public override TextureTarget TextureTarget => TextureTarget.Texture2DArray;
 
     /// <summary>
     /// The width of the texture.
@@ -23,50 +24,64 @@ public sealed class Texture2D : Texture
     /// </summary>
     public int Height { get; private set; }
 
+    /// <summary>
+    /// The number of layers.
+    /// </summary>
+    public int Layers { get; private set; }
+
 
     /// <summary>
     /// Allocates immutable texture storage with the given parameters.<br/>
     /// A value of zero for the number of mipmap levels will default to the maximum number of levels possible for the given bitmaps width and height.
     /// </summary>
-    /// <param name="name">Name of this texture</param>
+    /// <param name="name">Name of the texture</param>
     /// <param name="internalFormat">The internal format to allocate.</param>
     /// <param name="width">The width of the texture.</param>
     /// <param name="height">The height of the texture.</param>
+    /// <param name="layers">The number of layers to allocate.</param>
     /// <param name="levels">The number of mipmap levels.</param>
-    public Texture2D(string name, SizedInternalFormat internalFormat, int width, int height, int levels = 0) :
+    public Texture2DArray(string name, SizedInternalFormat internalFormat, int width, int height, int layers, int levels = 0) :
         base(internalFormat, GetLevels(levels, width, height))
     {
         Name = name;
         Width = width;
         Height = height;
+        Layers = layers;
         GL.BindTexture(TextureTarget, Handle);
-        GL.TexStorage2D((TextureTarget2d)TextureTarget, Levels, InternalFormat, Width, Height);
+        GL.TexStorage3D((TextureTarget3d)TextureTarget, Levels, InternalFormat, Width, Height, Layers);
         CheckError();
-    }    
-    
-    
-    public static Texture2D LoadFromFile(string path, string texName)
+    }
+
+
+    public static Texture2DArray LoadFromFiles(string[] paths, string texName)
     {
-        Texture2D texture;
-        
+        Texture2DArray texture = new(texName, SizedInternalFormat.Rgba8, Constants.BLOCK_TEXTURE_SIZE, Constants.BLOCK_TEXTURE_SIZE, paths.Length);
+
         // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
         // so we tell StbImageSharp to flip the image when loading.
         StbImage.stbi_set_flip_vertically_on_load(1);
 
-        // Here we open a stream to the file and pass it to StbImageSharp to load.
-        using (Stream stream = File.OpenRead(path))
+        for (int i = 0; i < paths.Length; i++)
         {
-            ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
-            
-            texture = new Texture2D(texName, SizedInternalFormat.Rgba8, image.Width, image.Height);
+            using Stream stream = File.OpenRead(paths[i]);
 
-            GL.TexSubImage2D(
-                TextureTarget.Texture2D,
+            ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+
+            if (image.Width != Constants.BLOCK_TEXTURE_SIZE)
+                throw new ArgumentException($"Texture width must be {Constants.BLOCK_TEXTURE_SIZE} pixels.");
+
+            if (image.Height != Constants.BLOCK_TEXTURE_SIZE)
+                throw new ArgumentException($"Texture height must be {Constants.BLOCK_TEXTURE_SIZE} pixels.");
+
+            GL.TexSubImage3D(
+                TextureTarget.Texture2DArray,
                 0,
                 0,
                 0,
-                image.Width,
-                image.Height,
+                i,
+                Constants.BLOCK_TEXTURE_SIZE,
+                Constants.BLOCK_TEXTURE_SIZE,
+                1,
                 PixelFormat.Rgba,
                 PixelType.UnsignedByte,
                 image.Data);
@@ -78,17 +93,5 @@ public sealed class Texture2D : Texture
         texture.GenerateMipMaps();
 
         return texture;
-    }
-
-
-    /// <summary>
-    /// Internal constructor used by <see cref="TextureFactory"/> to wrap a Texture2D instance around an already existing texture.
-    /// </summary>
-    internal Texture2D(string name, int textureHandle, SizedInternalFormat internalFormat, int width, int height, int levels) :
-        base(textureHandle, internalFormat, levels)
-    {
-        Name = name;
-        Width = width;
-        Height = height;
     }
 }

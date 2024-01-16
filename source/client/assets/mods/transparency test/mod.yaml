@@ -24,3 +24,87 @@ blocks:
     bottom:
       textures:
       - textures/glass.png
+- name: White Glass
+  render_type: Transparent
+  face_textures:
+    front:
+      textures:
+      - textures/glass_white.png
+    back:
+      textures:
+      - textures/glass_white.png
+    left:
+      textures:
+      - textures/glass_white.png
+    right:
+      textures:
+      - textures/glass_white.png
+    top:
+      textures:
+      - textures/glass_white.png
+    bottom:
+      textures:
+      - textures/glass_white.png
+- name: Red Glass
+  render_type: Transparent
+  face_textures:
+    front:
+      textures:
+      - textures/glass_red.png
+    back:
+      textures:
+      - textures/glass_red.png
+    left:
+      textures:
+      - textures/glass_red.png
+    right:
+      textures:
+      - textures/glass_red.png
+    top:
+      textures:
+      - textures/glass_red.png
+    bottom:
+      textures:
+      - textures/glass_red.png
+- name: Green Glass
+  render_type: Transparent
+  face_textures:
+    front:
+      textures:
+      - textures/glass_green.png
+    back:
+      textures:
+      - textures/glass_green.png
+    left:
+      textures:
+      - textures/glass_green.png
+    right:
+      textures:
+      - textures/glass_green.png
+    top:
+      textures:
+      - textures/glass_green.png
+    bottom:
+      textures:
+      - textures/glass_green.png
+- name: Blue Glass
+  render_type: Transparent
+  face_textures:
+    front:
+      textures:
+      - textures/glass_blue.png
+    back:
+      textures:
+      - textures/glass_blue.png
+    left:
+      textures:
+      - textures/glass_blue.png
+    right:
+      textures:
+      - textures/glass_blue.png
+    top:
+      textures:
+      - textures/glass_blue.png
+    bottom:
+      textures:
+      - textures/glass_blue.png

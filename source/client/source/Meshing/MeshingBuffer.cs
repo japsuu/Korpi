@@ -241,11 +241,11 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
         BlockState left = dataCache.GetData(leftPos.X, leftPos.Y, leftPos.Z);
         BlockState right = dataCache.GetData(rightPos.X, rightPos.Y, rightPos.Z);
         BlockState corner = dataCache.GetData(cornerPos.X, cornerPos.Y, cornerPos.Z);
-        if (left.RenderType == BlockRenderType.Normal && right.RenderType == BlockRenderType.Normal)
+        if (left.RenderType == BlockRenderType.Opaque && right.RenderType == BlockRenderType.Opaque)    //TODO: Issues may arise...
             return 0;
 
-        return 3 - (left.RenderType == BlockRenderType.Normal ? 1 : 0) - (right.RenderType == BlockRenderType.Normal ? 1 : 0) -
-               (corner.RenderType == BlockRenderType.Normal ? 1 : 0);
+        return 3 - (left.RenderType == BlockRenderType.Opaque ? 1 : 0) - (right.RenderType == BlockRenderType.Opaque ? 1 : 0) -
+               (corner.RenderType == BlockRenderType.Opaque ? 1 : 0);
     }
 
 
@@ -302,12 +302,11 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
                 _transparentVertexData[_addedTransparentVertexDataCount + 1] = data2;
                 _addedTransparentVertexDataCount += 2;
                 break;
-            case BlockRenderType.Normal:
+            case BlockRenderType.Opaque:
                 _opaqueVertexData[_addedOpaqueVertexDataCount] = data1;
                 _opaqueVertexData[_addedOpaqueVertexDataCount + 1] = data2;
                 _addedOpaqueVertexDataCount += 2;
                 break;
-            case BlockRenderType.None:
             default:
                 throw new ArgumentOutOfRangeException(nameof(renderType), renderType, null);
         }
@@ -329,7 +328,7 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
                 _addedTransparentIndicesCount += 6;
                 _addedTransparentFacesCount++;
                 break;
-            case BlockRenderType.Normal:
+            case BlockRenderType.Opaque:
                 uint oOffset = 4 * (uint)_addedOpaqueFacesCount;
                 _opaqueIndexData[_addedOpaqueIndicesCount] = oOffset + 0;
                 _opaqueIndexData[_addedOpaqueIndicesCount + 1] = oOffset + 1;

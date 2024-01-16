@@ -265,7 +265,7 @@ public static class Constants
     /// <summary>
     /// The level of anisotropic filtering to use.
     /// </summary>
-    public const float ANISOTROPIC_FILTERING_LEVEL = 16f;
+    public const int ANISOTROPIC_FILTERING_LEVEL = 16;
 
     #endregion
 

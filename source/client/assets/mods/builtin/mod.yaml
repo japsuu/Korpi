@@ -4,7 +4,7 @@ description: Built-in blocks
 author: Japsu
 blocks:
 - name: Stone
-  render_type: Normal
+  render_type: Opaque
   face_textures:
     front:
       textures:
@@ -25,7 +25,7 @@ blocks:
       textures:
       - textures/stone.png
 - name: Dirt
-  render_type: Normal
+  render_type: Opaque
   face_textures:
     front:
       textures:

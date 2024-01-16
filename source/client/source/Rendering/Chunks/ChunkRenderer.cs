@@ -56,7 +56,7 @@ public class ChunkRenderer : IDisposable
 
     public void Draw(RenderPass pass)
     {
-        ShaderManager.OpaqueChunkShader.SetMatrix4("model", _modelMatrix);
+        ShaderManager.ShaderBlockOpaque.SetMatrix4("model", _modelMatrix);
 
         switch (pass)
         {

@@ -13,7 +13,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
     {
         // Arrange
         T storage = new();
-        BlockState block = new Block(1, "test", BlockRenderType.Normal, null).GetDefaultState();
+        BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
         storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
@@ -27,7 +27,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
     {
         // Arrange
         T storage = new();
-        BlockState block = new Block(1, "test", BlockRenderType.Normal, null).GetDefaultState();
+        BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
         storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState oldBlock);
@@ -62,7 +62,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
     {
         // Arrange
         T storage = new();
-        BlockState block = new Block(1, "test", BlockRenderType.Normal, null).GetDefaultState();
+        BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
         storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
@@ -76,7 +76,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
     {
         // Arrange
         T storage = new();
-        BlockState block = new Block(1, "test", BlockRenderType.Normal, null).GetDefaultState();
+        BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
         storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
 
         // Act
@@ -91,9 +91,9 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
     {
         // Arrange
         T storage = new();
-        BlockState block = new Block(1, "test1", BlockRenderType.Normal, null).GetDefaultState();
+        BlockState block = new Block(1, "test1", BlockRenderType.Opaque, null).GetDefaultState();
         storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
-        block = new Block(2, "test2", BlockRenderType.Normal, null).GetDefaultState();
+        block = new Block(2, "test2", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
         storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
@@ -107,7 +107,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
     {
         // Arrange
         T storage = new();
-        BlockState block = new Block(1, "test", BlockRenderType.Normal, null).GetDefaultState();
+        BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
         storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
         BlockState block2 = new Block(2, "test", BlockRenderType.None, null).GetDefaultState();
 

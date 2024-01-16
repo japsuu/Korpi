@@ -63,20 +63,23 @@ public class RegionManager
     {
         DebugStats.RenderedTris = 0;
         
-        ShaderManager.OpaqueChunkShader.Use();
-        foreach (Region column in _existingRegions.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        ShaderManager.ShaderBlockOpaque.Use();
+        foreach (Region column in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
-            column.Draw(RenderPass.Opaque);  //TODO: Draw chunks in order of distance to player, to reduce overdraw
+            column.Draw(RenderPass.Opaque);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
         }
         
-        ShaderManager.TransparentChunkShader.Use();
+        ShaderManager.ShaderBlockTranslucent.Use();
         GL.Disable(EnableCap.CullFace);
         GL.Enable(EnableCap.Blend);
+        GL.Enable(EnableCap.DepthTest);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        foreach (Region column in _existingRegions.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        
+        foreach (Region column in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
-            column.Draw(RenderPass.Transparent);  //TODO: Draw chunks in order of distance to player, to reduce overdraw
+            column.Draw(RenderPass.Transparent);                //TODO: Draw chunks in order of distance to player, to reduce overdraw
         }
+        
         GL.Disable(EnableCap.Blend);
         GL.Enable(EnableCap.CullFace);
 
