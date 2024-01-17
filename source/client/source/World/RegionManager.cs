@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Logging;
@@ -15,7 +14,6 @@ using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.World.Regions;
 using Korpi.Client.World.Regions.Chunks;
 using Korpi.Client.World.Regions.Chunks.Blocks;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World;
@@ -59,31 +57,18 @@ public class RegionManager
     }
 
 
-    public void Draw()
+    public void DrawChunks(RenderPass pass)
     {
-        DebugStats.RenderedTris = 0;
-        
-        ShaderManager.ShaderBlockOpaque.Use();
         foreach (Region column in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
-            column.Draw(RenderPass.Opaque);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
+            column.Draw(pass);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
         }
-        
-        ShaderManager.ShaderBlockTranslucent.Use();
-        GL.Disable(EnableCap.CullFace);
-        GL.Enable(EnableCap.Blend);
-        GL.Enable(EnableCap.DepthTest);
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        
-        foreach (Region column in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
-        {
-            column.Draw(RenderPass.Transparent);                //TODO: Draw chunks in order of distance to player, to reduce overdraw
-        }
-        
-        GL.Disable(EnableCap.Blend);
-        GL.Enable(EnableCap.CullFace);
+    }
+
 
 #if DEBUG
+    public static void DrawDebugBorders()
+    {
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
@@ -97,8 +82,8 @@ public class RegionManager
             Vector2i columnPos = CoordinateUtils.WorldToColumn(Camera.RenderingCamera.Position);
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
-#endif
     }
+#endif
 
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿#version 330 core
+﻿#version 420 core
 
 in vec3 uv;
 in vec3 aoColor;

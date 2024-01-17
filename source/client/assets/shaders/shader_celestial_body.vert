@@ -1,4 +1,4 @@
-#version 330 core
+#version 420 core
 
 uniform mat4 model;
 uniform mat4 view;

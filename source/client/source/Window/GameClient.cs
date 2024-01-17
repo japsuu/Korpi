@@ -6,6 +6,7 @@ using Korpi.Client.ECS.Entities;
 using Korpi.Client.Logging;
 using Korpi.Client.Modding;
 using Korpi.Client.Registries;
+using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Skybox;
@@ -50,6 +51,7 @@ public class GameClient : GameWindow
     private ShaderManager _shaderManager = null!;
     private Skybox _skybox = null!;
     private GameWorld _gameWorld = null!;
+    private GameWorldRenderer _gameWorldRenderer = null!;
     private Crosshair _crosshair = null!;
     private PlayerEntity _playerEntity = null!;
 
@@ -71,6 +73,8 @@ public class GameClient : GameWindow
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
             NumberOfSamples = 8,
             Location = new Vector2i(0, 0),
+            APIVersion = new Version(4,2),
+            Profile = ContextProfile.Core,
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
@@ -106,6 +110,7 @@ public class GameClient : GameWindow
         // World initialization.
         GameTime.Initialize();
         _gameWorld = new GameWorld("World1");
+        _gameWorldRenderer = new GameWorldRenderer(_gameWorld);
         _skybox = new Skybox(false);
 
         // PlayerEntity initialization.
@@ -131,6 +136,7 @@ public class GameClient : GameWindow
         base.OnUnload();
         Logger.Log("Shutting down...");
         _shaderManager.Dispose();
+        _gameWorldRenderer.Dispose();
         _skybox.Dispose();
         _imGuiController.DestroyDeviceObjects();
         TextureRegistry.BlockArrayTexture.Dispose();
@@ -177,11 +183,8 @@ public class GameClient : GameWindow
     protected override void OnRenderFrame(FrameEventArgs args)
     {
         base.OnRenderFrame(args);
-
-        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
+        
 #if DEBUG
-
         // Set the polygon mode to wireframe if the debug setting is enabled.
         GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.DebugModeConfig.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
 #endif
@@ -196,11 +199,10 @@ public class GameClient : GameWindow
         // If you pass the individual matrices to the shader and multiply there, you have to do in the order "model * view * projection".
         // You can think like this: first apply the modelToWorld (aka model) matrix, then apply the worldToView (aka view) matrix, 
         // and finally apply the viewToProjectedSpace (aka projection) matrix.
-        // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
         ShaderManager.UpdateViewMatrix(cameraViewMatrix);
         ShaderManager.UpdateProjectionMatrix(Camera.RenderingCamera.ProjectionMatrix);
 
-        DrawWorld();
+        _gameWorldRenderer.Draw();
 
 #if DEBUG
         if (ClientConfig.DebugModeConfig.RenderSkybox)
@@ -236,6 +238,7 @@ public class GameClient : GameWindow
     /// </summary>
     private void FixedUpdate()
     {
+        GameTime.FixedUpdate();
         GlobalThreadPool.FixedUpdate();
         _gameWorld.FixedUpdate();
     }
@@ -269,15 +272,6 @@ public class GameClient : GameWindow
 
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
             SwitchCursorState();
-    }
-
-
-    private void DrawWorld()
-    {
-        // Enable backface culling.
-        GL.Enable(EnableCap.CullFace);
-        _gameWorld.Draw();
-        GL.Disable(EnableCap.CullFace);
     }
 
 

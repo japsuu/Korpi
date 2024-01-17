@@ -6,11 +6,14 @@ namespace Korpi.Client.Rendering.Shaders;
 
 public class ShaderManager : IDisposable
 {
-    public static Shader PassShader { get; private set; } = null!;
+    public static Shader ShaderPlayer { get; private set; } = null!;
     public static Shader DebugShader { get; private set; } = null!;
     public static Shader ShaderBlockOpaque { get; private set; } = null!;
     public static Shader ShaderBlockCutout { get; private set; } = null!;
     public static Shader ShaderBlockTranslucent { get; private set; } = null!;
+    public static Shader ShaderComposite { get; private set; } = null!;
+    public static Shader ShaderScreen { get; private set; } = null!;
+    public static Shader ShaderUi { get; private set; } = null!;
     public static Shader SkyboxShader { get; private set; } = null!;
     public static Shader CelestialBodyShader { get; private set; } = null!;
     
@@ -20,26 +23,16 @@ public class ShaderManager : IDisposable
 
     public ShaderManager()
     {
-        PassShader = new Shader(IoUtils.GetShaderPath("shader_pass.vert"), IoUtils.GetShaderPath("shader_pass.frag"));
-        PassShader.Use();
-        
+        ShaderPlayer = new Shader(IoUtils.GetShaderPath("shader_player.vert"), IoUtils.GetShaderPath("shader_player.frag"));
         DebugShader = new Shader(IoUtils.GetShaderPath("shader_debug.vert"), IoUtils.GetShaderPath("shader_debug.frag"));
-        DebugShader.Use();
-        
-        ShaderBlockOpaque = new Shader(IoUtils.GetShaderPath("blocks_opaque.vert"), IoUtils.GetShaderPath("blocks_opaque.frag"));
-        ShaderBlockOpaque.Use();
-        
-        ShaderBlockCutout = new Shader(IoUtils.GetShaderPath("blocks_cutout.vert"), IoUtils.GetShaderPath("blocks_cutout.frag"));
-        ShaderBlockCutout.Use();
-        
-        ShaderBlockTranslucent = new Shader(IoUtils.GetShaderPath("blocks_translucent.vert"), IoUtils.GetShaderPath("blocks_translucent.frag"));
-        ShaderBlockTranslucent.Use();
-        
+        ShaderBlockOpaque = new Shader(IoUtils.GetShaderPath("blocks_common.vert"), IoUtils.GetShaderPath("blocks_opaque.frag"));
+        ShaderBlockCutout = new Shader(IoUtils.GetShaderPath("blocks_common.vert"), IoUtils.GetShaderPath("blocks_cutout.frag"));
+        ShaderBlockTranslucent = new Shader(IoUtils.GetShaderPath("blocks_common.vert"), IoUtils.GetShaderPath("blocks_translucent.frag"));
+        ShaderComposite = new Shader(IoUtils.GetShaderPath("pass.vert"), IoUtils.GetShaderPath("composite.frag"));
+        ShaderScreen = new Shader(IoUtils.GetShaderPath("screen.vert"), IoUtils.GetShaderPath("screen.frag"));
+        ShaderUi = new Shader(IoUtils.GetShaderPath("shader_ui.vert"), IoUtils.GetShaderPath("shader_ui.frag"));
         SkyboxShader = new Shader(IoUtils.GetShaderPath("shader_skybox.vert"), IoUtils.GetShaderPath("shader_skybox.frag"));
-        SkyboxShader.Use();
-        
         CelestialBodyShader = new Shader(IoUtils.GetShaderPath("shader_celestial_body.vert"), IoUtils.GetShaderPath("shader_celestial_body.frag"));
-        CelestialBodyShader.Use();
     }
     
     
@@ -47,8 +40,8 @@ public class ShaderManager : IDisposable
     {
         ProjectionMatrix = projectionMatrix;
         
-        PassShader.Use();
-        PassShader.SetMatrix4("projection", projectionMatrix);
+        ShaderPlayer.Use();
+        ShaderPlayer.SetMatrix4("projection", projectionMatrix);
         
         DebugShader.Use();
         DebugShader.SetMatrix4("projection", projectionMatrix);
@@ -74,8 +67,8 @@ public class ShaderManager : IDisposable
     {
         ViewMatrix = viewMatrix;
         
-        PassShader.Use();
-        PassShader.SetMatrix4("view", viewMatrix);
+        ShaderPlayer.Use();
+        ShaderPlayer.SetMatrix4("view", viewMatrix);
         
         DebugShader.Use();
         DebugShader.SetMatrix4("view", viewMatrix);
@@ -120,6 +113,9 @@ public class ShaderManager : IDisposable
         ShaderBlockOpaque.Dispose();
         ShaderBlockCutout.Dispose();
         ShaderBlockTranslucent.Dispose();
+        ShaderComposite.Dispose();
+        ShaderScreen.Dispose();
+        ShaderUi.Dispose();
         SkyboxShader.Dispose();
         CelestialBodyShader.Dispose();
         

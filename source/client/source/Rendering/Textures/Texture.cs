@@ -100,6 +100,15 @@ public abstract class Texture : GLObject, IHasName
 
 
     /// <summary>
+    /// Unbinds the texture from the default texture unit.
+    /// </summary>
+    public void Unbind()
+    {
+        GL.BindTexture(TextureTarget, 0);
+    }
+
+
+    /// <summary>
     /// Binds the texture to the given texture unit at its default texture target.
     /// </summary>
     /// <param name="unit">The texture unit to bind to.</param>

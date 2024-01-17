@@ -10,7 +10,7 @@ namespace Korpi.Client.Rendering;
 /// </summary>
 public abstract class GLResource : IDisposable
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GLResource));
+    protected static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GLResource));
 
     /// <summary>
     /// Gets a values specifying if this resource has already been disposed.

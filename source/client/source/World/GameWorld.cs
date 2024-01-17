@@ -6,9 +6,12 @@ using Korpi.Client.Generation.TerrainGenerators;
 using Korpi.Client.Logging;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
+using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
+using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Window;
 using Korpi.Client.World.Regions.Chunks.Blocks;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -20,11 +23,11 @@ public class GameWorld
 
     public static event Action<WorldEvent>? WorldEventPublished;
     
-    public readonly RegionManager RegionManager;      // TODO: Make private, and wrap around a function
+    public readonly RegionManager RegionManager;      // TODO: Make private, or wrap around a function
     public readonly ITerrainGenerator TerrainGenerator;
+    public readonly EntityManager EntityManager;
 
     private readonly string _name;
-    private readonly EntityManager _entityManager;
 
 
     public GameWorld(string name)
@@ -32,7 +35,7 @@ public class GameWorld
         _name = name;
         RegionManager = new RegionManager();
         TerrainGenerator = SimplexTerrainGenerator.Default();
-        _entityManager = new EntityManager();
+        EntityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
             throw new Exception("For now, only one world can be loaded at a time");
@@ -44,7 +47,7 @@ public class GameWorld
     
     public void Update()
     {
-        _entityManager.Update();
+        EntityManager.Update();
         DebugStats.LastRaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
     }
     
@@ -52,18 +55,11 @@ public class GameWorld
     public void FixedUpdate()
     {
         RegionManager.Tick();
-        _entityManager.FixedUpdate();
+        EntityManager.FixedUpdate();
         DebugStats.LoadedRegionCount = RegionManager.LoadedRegionsCount;
     }
-    
-    
-    public void Draw()
-    {
-        RegionManager.Draw();
-        _entityManager.Draw();
-    }
-    
-    
+
+
     public BlockState RaycastWorld(Vector3 start, Vector3 direction, float maxDistance)
     {
         Ray ray = new Ray(start, direction);

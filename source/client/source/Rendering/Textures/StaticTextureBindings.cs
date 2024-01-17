@@ -6,6 +6,7 @@ namespace Korpi.Client.Rendering.Textures;
 /// <summary>
 /// Collection of methods to bind textures to texture units statically (for the entire lifetime of the program).
 /// </summary>
+[Obsolete("No >:(")]
 public static class StaticTextureBindings
 {
     private static readonly Dictionary<TextureUnit, Texture> StaticallyBoundTextureUnits = new();

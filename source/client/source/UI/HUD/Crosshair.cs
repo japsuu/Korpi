@@ -21,7 +21,6 @@ public class Crosshair
     };
     
     private readonly Texture2D _crosshairTexture;
-    private readonly Shader _shader;
     private readonly int _vao;
     private readonly int _vbo;
     
@@ -29,7 +28,6 @@ public class Crosshair
     public Crosshair()
     {
         _crosshairTexture = Texture2D.LoadFromFile(IoUtils.GetTexturePath("Crosshair.png"), "Crosshair");
-        _shader = new Shader(IoUtils.GetShaderPath("shader_crosshair.vert"), IoUtils.GetShaderPath("shader_crosshair.frag"));
         
         _vao = GL.GenVertexArray();
         _vbo = GL.GenBuffer();
@@ -44,22 +42,23 @@ public class Crosshair
         GL.EnableVertexAttribArray(1);
         GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
         
-        _shader.Use();
-        _crosshairTexture.BindStatic(TextureUnit.Texture3);
-        
         GameClient.ClientUnload += OnClientUnload;
     }
 
 
     public void Draw()
     {
+        _crosshairTexture.Bind();
         GL.Enable(EnableCap.Blend);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        _shader.Use();
-        _shader.SetFloat("aspectRatio", GameClient.WindowAspectRatio);
+        
+        ShaderManager.ShaderUi.Use();
+        ShaderManager.ShaderUi.SetFloat("aspectRatio", GameClient.WindowAspectRatio);
+        
         GL.BindVertexArray(_vao);
         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         GL.BindVertexArray(0);
+        
         GL.Disable(EnableCap.Blend);
     }
     
@@ -67,7 +66,6 @@ public class Crosshair
     private void OnClientUnload()
     {
         _crosshairTexture.Dispose();
-        _shader.Dispose();
         
         GL.DeleteBuffer(_vbo);
         GL.DeleteVertexArray(_vao);

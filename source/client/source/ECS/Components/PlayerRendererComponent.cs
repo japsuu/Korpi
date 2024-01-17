@@ -66,7 +66,7 @@ public class PlayerRendererComponent : Component
     public PlayerRendererComponent(PlayerEntity playerEntity)
     {
         _playerEntity = playerEntity;
-        _shader = ShaderManager.PassShader;
+        _shader = ShaderManager.ShaderPlayer;
         _vao = GL.GenVertexArray();
         int vbo = GL.GenBuffer();
         
@@ -90,6 +90,7 @@ public class PlayerRendererComponent : Component
         _shader.Use();
         _shader.SetMatrix4("model", _playerEntity.Transform.GetModelMatrix());
         GL.BindVertexArray(_vao);
+        GL.Enable(EnableCap.CullFace);
         GL.CullFace(CullFaceMode.Front);
         GL.DrawArrays(PrimitiveType.Triangles, 0, Vertices.Length);
         GL.CullFace(CullFaceMode.Back);

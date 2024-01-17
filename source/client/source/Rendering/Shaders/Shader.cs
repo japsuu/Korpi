@@ -25,6 +25,8 @@ public class Shader : IDisposable
         
         CreateAndLinkProgram(vertexShader, fragmentShader);
         
+        Logger.Log($"Successfully compiled and linked shader at vert: '{vertexPath}' and frag: '{fragmentPath}' to {Handle}");
+        
         Cleanup(vertexShader, fragmentShader);
     }
     
