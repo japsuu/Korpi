@@ -15,15 +15,15 @@ public abstract class DebugDrawable
     
     public void DrawObject()
     {
-        ShaderManager.DebugShader.SetMatrix4("model", ModelMatrix);
+        ShaderManager.PositionColorShader.ModelMat.Set(ModelMatrix);
         if (UseVertexColors)
         {
-            ShaderManager.DebugShader.SetVector3("overrideColor", new Vector3(1, 1, 1));
+            ShaderManager.PositionColorShader.ColorModulator.Set(new Vector4(1, 1, 1, 1));
             Draw();
         }
         else
         {
-            ShaderManager.DebugShader.SetVector3("overrideColor", new Vector3(Color.R, Color.G, Color.B));
+            ShaderManager.PositionColorShader.ColorModulator.Set(new Vector4(Color.R, Color.G, Color.B, Color.A));
             Draw();
         }
     }

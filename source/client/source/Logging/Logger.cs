@@ -3,6 +3,7 @@ using Korpi.Client.Configuration;
 
 namespace Korpi.Client.Logging
 {
+    [Obsolete("Use Korpi.Client.Logging.LogFactory instead.")]
     public static class Logger
     {
         private const string LOG_PREFIX = $"[{Constants.CLIENT_NAME}]";

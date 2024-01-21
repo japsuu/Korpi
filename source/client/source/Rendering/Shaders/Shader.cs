@@ -1,236 +1,88 @@
-﻿using Korpi.Client.Logging;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
+using Korpi.Client.Exceptions;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders;
 
-public class Shader : IDisposable
+/// <summary>
+/// Represents a shader object.
+/// </summary>
+public class Shader : GLObject
 {
-    public int Handle { get; private set; }
-    
-    private bool _isDisposed;
-    
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(Shader));
 
-    public Shader(string vertexPath, string fragmentPath)
-    {
-        string vertexShaderSource = File.ReadAllText(vertexPath);
-        string fragmentShaderSource = File.ReadAllText(fragmentPath);
-        
-        (int vertexShader, int fragmentShader) = GenerateShader(vertexShaderSource, fragmentShaderSource);
-
-        if (!TryCompileShader(vertexShader, fragmentShader))
-        {
-            throw new Exception($"Could not compile the shader at vert: '{vertexPath}' and frag: '{fragmentPath}'.");
-        }
-        
-        CreateAndLinkProgram(vertexShader, fragmentShader);
-        
-        Cleanup(vertexShader, fragmentShader);
-    }
-    
-    
-    public void Use()
-    {
-        GL.UseProgram(Handle);
-    }
-    
-    
-    public static int GetShaderAttribLocation(int handle, string attribName)
-    {
-        return GL.GetAttribLocation(handle, attribName);
-    }
-    
-    
     /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
+    /// Specifies the type of this shader.
     /// </summary>
-    public void SetBool(string name, bool value)
+    public readonly ShaderType Type;
+
+    /// <summary>
+    /// Specifies a list of source filenames which are used to improve readability of the the information log in case of an error.
+    /// </summary>
+    public readonly List<string> SourceFiles;
+
+    /// <summary>
+    /// Used to match and replace the source filenames into the information log.
+    /// </summary>
+    private static readonly Regex SourceRegex = new(@"^ERROR: (\d+):", RegexOptions.Multiline);
+
+
+    /// <summary>
+    /// Initializes a new shader object of the given type.
+    /// </summary>
+    /// <param name="type"></param>
+    public Shader(ShaderType type) : base(GL.CreateShader(type))
     {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.Uniform1(location, value ? 1 : 0);
+        Type = type;
+        SourceFiles = new List<string>();
+    }
+
+
+    protected override void Dispose(bool manual)
+    {
+        if (!manual) return;
+        GL.DeleteShader(Handle);
     }
 
 
     /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
+    /// Loads the given source file and compiles the shader.
     /// </summary>
-    public void SetInt(string name, int value)
+    public void CompileSource(string source)
     {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.Uniform1(location, value);
-    }
-    
-    
-    /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
-    /// </summary>
-    public void SetFloat(string name, float value)
-    {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.Uniform1(location, value);
-    }
-    
-    
-    /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
-    /// </summary>
-    public void SetVector2(string name, Vector2 vector)
-    {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.Uniform2(location, vector);
-    }
-    
-    
-    /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
-    /// </summary>
-    public void SetVector3(string name, Vector3 vector)
-    {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.Uniform3(location, vector);
-    }
-    
-    
-    /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
-    /// </summary>
-    public void SetVector4(string name, Vector4 vector)
-    {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.Uniform4(location, vector);
-    }
-    
-    
-    /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
-    /// </summary>
-    public void SetMatrix2(string name, Matrix2 matrix)
-    {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.UniformMatrix2(location, true, ref matrix);
-    }
-    
-    
-    /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
-    /// </summary>
-    public void SetMatrix3(string name, Matrix3 matrix)
-    {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.UniformMatrix3(location, true, ref matrix);
+        GL.ShaderSource(Handle, source);
+        GL.CompileShader(Handle);
+        CheckCompileStatus();
     }
 
 
     /// <summary>
-    /// WARN: If calling this method repeatedly, consider caching the location and using the overload.
+    /// Assert that no compile error occured.
     /// </summary>
-    public void SetMatrix4(string name, Matrix4 matrix)
+    private void CheckCompileStatus()
     {
-        int location = GL.GetUniformLocation(Handle, name);
-        GL.UniformMatrix4(location, true, ref matrix);
-    }
-    
-    
-    public static void SetBool(int location, bool value) => GL.Uniform1(location, value ? 1 : 0);
-    public static void SetInt(int location, int value) => GL.Uniform1(location, value);
-    public static void SetFloat(int location, float value) => GL.Uniform1(location, value);
-    public static void SetVector2(int location, Vector2 vector) => GL.Uniform2(location, vector);
-    public static void SetVector3(int location, Vector3 vector) => GL.Uniform3(location, vector);
-    public static void SetVector4(int location, Vector4 vector) => GL.Uniform4(location, vector);
-    public static void SetMatrix2(int location, Matrix2 matrix) => GL.UniformMatrix2(location, true, ref matrix);
-    public static void SetMatrix3(int location, Matrix3 matrix) => GL.UniformMatrix3(location, true, ref matrix);
-    public static void SetMatrix4(int location, Matrix4 matrix) => GL.UniformMatrix4(location, true, ref matrix);
+        // check compile status
+        GL.GetShader(Handle, ShaderParameter.CompileStatus, out int compileStatus);
+        Logger.DebugFormat("Compile status: {0}", compileStatus);
 
+        // check shader info log
+        string? info = GL.GetShaderInfoLog(Handle);
+        info = SourceRegex.Replace(info, GetSource);
+        if (!string.IsNullOrEmpty(info)) Logger.InfoFormat("Compile log:\n{0}", info);
 
-    private static (int vertexShader, int fragmentShader) GenerateShader(string vertexShaderSource, string fragmentShaderSource)
-    {
-        int vertexShader = GL.CreateShader(ShaderType.VertexShader);
-        GL.ShaderSource(vertexShader, vertexShaderSource);
-
-        int fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-        GL.ShaderSource(fragmentShader, fragmentShaderSource);
-        
-        return (vertexShader, fragmentShader);
+        // log message and throw exception on compile error
+        if (compileStatus == 1) return;
+        const string msg = "Error compiling shader.";
+        Logger.Error(msg);
+        throw new ShaderCompileException(msg, info);
     }
 
 
-    private static bool TryCompileShader(int vertexShader, int fragmentShader)
+    private string GetSource(Match match)
     {
-        bool wasSuccessful = true;
-        GL.CompileShader(vertexShader);
-
-        GL.GetShader(vertexShader, ShaderParameter.CompileStatus, out int success);
-        if (success == 0)
-        {
-            string infoLog = GL.GetShaderInfoLog(vertexShader);
-            Logger.LogError($"Could not compile vertex shader: {infoLog}.");
-            wasSuccessful = false;
-        }
-
-        GL.CompileShader(fragmentShader);
-
-        GL.GetShader(fragmentShader, ShaderParameter.CompileStatus, out success);
-        if (success == 0)
-        {
-            string infoLog = GL.GetShaderInfoLog(fragmentShader);
-            Logger.LogError($"Could not compile fragment shader: {infoLog}.");
-            wasSuccessful = false;
-        }
-        
-        return wasSuccessful;
-    }
-
-
-    private void CreateAndLinkProgram(int vertexShader, int fragmentShader)
-    {
-        Handle = GL.CreateProgram();
-
-        GL.AttachShader(Handle, vertexShader);
-        GL.AttachShader(Handle, fragmentShader);
-
-        GL.LinkProgram(Handle);
-
-        GL.GetProgram(Handle, GetProgramParameterName.LinkStatus, out int success);
-        if (success == 0)
-        {
-            string infoLog = GL.GetProgramInfoLog(Handle);
-            Logger.LogError($"Could not link shader program: {infoLog}.");
-        }
-    }
-
-
-    private void Cleanup(int vertexShader, int fragmentShader)
-    {
-        GL.DetachShader(Handle, vertexShader);
-        GL.DetachShader(Handle, fragmentShader);
-        GL.DeleteShader(fragmentShader);
-        GL.DeleteShader(vertexShader);
-    }
-
-    
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_isDisposed)
-            return;
-        
-        GL.DeleteProgram(Handle);
-
-        _isDisposed = true;
-    }
-
-    
-    ~Shader()
-    {
-        if (_isDisposed == false)
-        {
-            Logger.LogWarning($"[{nameof(Shader)}] GPU Resource leak! Did you forget to call Dispose()?");
-        }
+        int index = int.Parse(match.Groups[1].Value);
+        Debug.Assert(SourceFiles != null, nameof(SourceFiles) + " != null");
+        return index < SourceFiles.Count ? $"ERROR: {SourceFiles[index]}:" : match.ToString();
     }
 }

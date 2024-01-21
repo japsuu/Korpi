@@ -39,8 +39,8 @@ public class ArrayTextureBuilder
     }
     
     
-    public ArrayTexture Build(string texName)
+    public Texture2DArray Build(string texName)
     {
-        return ArrayTexture.LoadFromFiles(_texPaths.ToArray(), texName);
+        return Texture2DArray.LoadFromFiles(_texPaths.ToArray(), texName);
     }
 }

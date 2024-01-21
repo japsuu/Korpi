@@ -16,7 +16,7 @@ public class ChunkMesher
     public static ChunkMesher ThreadLocalInstance => ThreadLocal.Value!;
     
     /// <summary>
-    /// Cache in tyo which the data of the chunk currently being meshed is copied into.
+    /// Cache in to which the data of the chunk currently being meshed is copied into.
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
     private readonly MeshingDataCache _meshingDataCache = new();
@@ -62,7 +62,7 @@ public class ChunkMesher
                 {
                      _meshingDataCache.TryGetData(x, y, z, out BlockState blockState);
                     
-                    if (!blockState.ShouldRender())
+                    if (!blockState.IsRendered)
                         continue;
                     
                     AddFaces(blockState, x, y, z);
@@ -96,10 +96,24 @@ public class ChunkMesher
             if (!_meshingDataCache.TryGetData(x + neighbourOffset.X, y + neighbourOffset.Y, z + neighbourOffset.Z, out BlockState neighbour))
                 continue;
 
-            // If the neighbour is opaque, skip this face.
-            // If the neighbour is empty or transparent, we need to mesh this face.
-            if (neighbour.RenderType == BlockRenderType.Normal)
-                continue;
+            switch (neighbour.RenderType)
+            {
+                case BlockRenderType.None:
+                    break;
+                case BlockRenderType.Opaque:
+                    // If the neighbour is opaque, skip this face.
+                    continue;
+                case BlockRenderType.AlphaClip:
+                    throw new NotImplementedException();
+                case BlockRenderType.Transparent:
+                    // If this block and the neighbour are both transparent and of the same type, skip this face.
+                    if (blockState.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
+                        continue;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(neighbour.RenderType), neighbour.RenderType, null);
+            }
+
 
             // Get the texture index of the block face
             ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);
@@ -113,7 +127,7 @@ public class ChunkMesher
                         
             // Add the face to the meshing buffer
             Vector3i blockPos = new(x, y, z);
-            _meshingBuffer.AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel);
+            _meshingBuffer.AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel, blockState.RenderType);
         }
     }
 

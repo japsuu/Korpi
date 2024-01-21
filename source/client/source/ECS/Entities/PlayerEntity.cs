@@ -86,6 +86,15 @@ public class PlayerEntity : TransformEntity
                 else
                     EnableExternalCamera();
             }
+            
+            // Update the SelectedBlockType
+            if (Input.MouseState.ScrollDelta.Y > 0)
+                SelectedBlockType++;
+            else if (Input.MouseState.ScrollDelta.Y < 0)
+                SelectedBlockType--;
+        
+            // Clamp between 0 and the number of blocks.
+            SelectedBlockType = (ushort)Math.Clamp(SelectedBlockType, 1, BlockRegistry.GetBlockCount() - 1);
 
             if (_isExternalCameraEnabled)
             {
@@ -129,15 +138,6 @@ public class PlayerEntity : TransformEntity
             Transform.WorldPosition += positionDelta;
             Camera.SetPosition(Transform.WorldPosition + CameraOffset);
             Camera.UpdateRotation();
-            
-            // Update the SelectedBlockType
-            if (Input.MouseState.ScrollDelta.Y > 0)
-                SelectedBlockType++;
-            else if (Input.MouseState.ScrollDelta.Y < 0)
-                SelectedBlockType--;
-        
-            // Clamp between 0 and the number of blocks.
-            SelectedBlockType = (ushort)System.Math.Clamp(SelectedBlockType, 1, BlockRegistry.GetBlockCount() - 1);
         }
         Transform.WorldRotation = new Vector3(0, -Camera.YawRadians, 0);
     }

@@ -72,9 +72,6 @@ public struct BlockState
     {
         return InvisibleFaces != 0b_00111111;
     }
-    
-    
-    public bool ShouldRender() => RenderType != BlockRenderType.None;
 
 
     public static bool EqualsNonAlloc(BlockState b1, BlockState b2)

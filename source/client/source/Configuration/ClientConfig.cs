@@ -8,6 +8,8 @@ namespace Korpi.Client.Configuration;
 /// </summary>
 public static class ClientConfig
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ClientConfig));
+    
     /// <summary>
     /// Window configuration.
     /// </summary>
@@ -32,6 +34,7 @@ public static class ClientConfig
     /// <param name="args">CLI arguments</param>
     public static void Initialize(IReadOnlyList<string> args)
     {
+        Logger.Info("Initializing configuration...");
         WindowConfig = new ConfigurationBuilder<IWindowConfig>()
             .UseJsonFile("WindowConfig.json")
             .Build();
@@ -48,15 +51,16 @@ public static class ClientConfig
         if (args.Count > 0 && args[0] == "-photomode")
         {
             isPhotoMode = true;
-            Logger.LogWarning("Running in photo mode...");
+            Logger.Warn("Running in photo mode...");
             if (args.Count > 1)
                 photoModePath = args[1];
             else
-                Logger.LogWarning($"No path specified for photo mode, using default path \"{photoModePath}\".");
+                Logger.Warn($"No path specified for photo mode, using default path \"{photoModePath}\".");
         }
         
         DebugModeConfig = new DebugModeConfig(isPhotoMode, photoModePath);
-
 #endif
+        
+        Logger.Info("Configuration initialized.");
     }
 }

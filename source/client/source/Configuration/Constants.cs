@@ -26,9 +26,9 @@ public static class Constants
     #region IO PATHS
 
     /// <summary>
-    /// Relative path to the shaders directory.
+    /// Relative path to the core shaders directory.
     /// </summary>
-    public const string SHADER_PATH = "assets/shaders/";
+    public const string SHADER_BASE_PATH = "assets/shaders";
 
     /// <summary>
     /// Relative path to the textures directory.
@@ -152,7 +152,7 @@ public static class Constants
     /// <summary>
     /// The radius (in chunks) around the player to load chunks.
     /// </summary>
-    public const int CHUNK_COLUMN_LOAD_RADIUS = 12;
+    public const int CHUNK_COLUMN_LOAD_RADIUS = 3;
     
     /// <summary>
     /// The square of <see cref="CHUNK_COLUMN_LOAD_RADIUS"/>.
@@ -265,7 +265,7 @@ public static class Constants
     /// <summary>
     /// The level of anisotropic filtering to use.
     /// </summary>
-    public const float ANISOTROPIC_FILTERING_LEVEL = 16f;
+    public const int ANISOTROPIC_FILTERING_LEVEL = 16;
 
     #endregion
 

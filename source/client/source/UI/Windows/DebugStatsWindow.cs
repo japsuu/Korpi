@@ -35,6 +35,7 @@ public class DebugStatsWindow : ImGuiWindow
         
         string loadedBlocksApproxFormatted = loadedBlocksApprox.ToString("#,0", _largeNumberFormat);
         string loadedChunksApproxFormatted = loadedChunksApprox.ToString("#,0", _largeNumberFormat);
+        string renderedTris = DebugStats.RenderedTris.ToString("#,0", _largeNumberFormat);
         
         float averageFps = ImGui.GetIO().Framerate;
         float frameTime = 1000f / averageFps;
@@ -52,7 +53,7 @@ public class DebugStatsWindow : ImGuiWindow
             ImGui.Text($"Min: {_minFps:F1} fps");
             ImGui.Text($"Max: {_maxFps:F1} fps");
         }
-        ImGui.Text($"Triangles = {DebugStats.RenderedTris}");
+        ImGui.Text($"Triangles = {renderedTris}");
 
         ImGui.Separator();
         ImGui.Text("Loaded regions");

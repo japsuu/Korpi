@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.Logging;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;
@@ -9,7 +10,9 @@ namespace Korpi.Client.Registries;
 
 public static class TextureRegistry
 {
-    public static ArrayTexture BlockArrayTexture { get; private set; } = null!;
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(TextureRegistry));
+    
+    public static Texture2DArray BlockArrayTexture { get; private set; } = null!;
     
     private static ArrayTextureBuilder? arrayTextureBuilder;
     
@@ -27,8 +30,8 @@ public static class TextureRegistry
     {
         Debug.Assert(arrayTextureBuilder != null, nameof(arrayTextureBuilder) + " != null");
         BlockArrayTexture = arrayTextureBuilder.Build("BlockTextures");
-        // Bind the BlockArrayTexture to texture unit 0.
-        BlockArrayTexture.BindStatic(TextureUnit.Texture0);
+        BlockArrayTexture.Bind(TextureUnit.Texture15);
+        Logger.Info($"Bound block texture array to texture unit {TextureUnit.Texture15}.");
     }
     
     

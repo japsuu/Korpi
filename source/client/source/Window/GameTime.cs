@@ -43,6 +43,11 @@ public static class GameTime
     /// Total number of frames that have passed since the start of the game.
     /// </summary>
     public static uint TotalFrameCount { get; private set; }
+    
+    /// <summary>
+    /// Total number of ticks (fixed update calls) that have passed since the start of the game.
+    /// </summary>
+    public static uint TotalTickCount { get; private set; }
 
     /// <summary>
     /// This value stores how far we are in the current update frame, relative to the fixed update loop.
@@ -145,6 +150,12 @@ public static class GameTime
         // Update the sun direction.
         float sunAngle = MathHelper.DegreesToRadians(DayProgress * 360.0f - 90);
         SunDirection = new Vector3((float)Math.Cos(sunAngle), (float)Math.Sin(sunAngle), 0.0f);
+    }
+
+
+    public static void FixedUpdate()
+    {
+        TotalTickCount++;
     }
 
 

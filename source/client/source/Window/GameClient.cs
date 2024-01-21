@@ -6,9 +6,9 @@ using Korpi.Client.ECS.Entities;
 using Korpi.Client.Logging;
 using Korpi.Client.Modding;
 using Korpi.Client.Registries;
+using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
-using Korpi.Client.Rendering.Skybox;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.UI;
 using Korpi.Client.UI.HUD;
@@ -48,8 +48,8 @@ public class GameClient : GameWindow
 
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
-    private Skybox _skybox = null!;
     private GameWorld _gameWorld = null!;
+    private GameWorldRenderer _gameWorldRenderer = null!;
     private Crosshair _crosshair = null!;
     private PlayerEntity _playerEntity = null!;
 
@@ -71,6 +71,8 @@ public class GameClient : GameWindow
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
             NumberOfSamples = 8,
             Location = new Vector2i(0, 0),
+            APIVersion = new Version(4,2),
+            Profile = ContextProfile.Core,
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
@@ -92,11 +94,9 @@ public class GameClient : GameWindow
         GL.Enable(EnableCap.DebugOutputSynchronous);
 #endif
 
-        GL.Enable(EnableCap.DepthTest); // Enable depth testing.
-        GL.Enable(EnableCap.Multisample); // Enable multisampling.
-        GL.Enable(EnableCap.Blend); // Enable blending for transparent textures.
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.ClearColor(0f, 0f, 0f, 1.0f);
+        GL.Enable(EnableCap.DepthTest);     // Enable depth testing.
+        GL.Enable(EnableCap.Multisample);   // Enable multisampling.
+        GL.ClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
         // Resource initialization.
         GlobalThreadPool.Initialize();
@@ -108,7 +108,7 @@ public class GameClient : GameWindow
         // World initialization.
         GameTime.Initialize();
         _gameWorld = new GameWorld("World1");
-        _skybox = new Skybox(false);
+        _gameWorldRenderer = new GameWorldRenderer(_gameWorld);
 
         // PlayerEntity initialization.
         _playerEntity = new PlayerEntity(new Vector3(0, 165, 0), 0, 0);
@@ -133,7 +133,7 @@ public class GameClient : GameWindow
         base.OnUnload();
         Logger.Log("Shutting down...");
         _shaderManager.Dispose();
-        _skybox.Dispose();
+        _gameWorldRenderer.Dispose();
         _imGuiController.DestroyDeviceObjects();
         TextureRegistry.BlockArrayTexture.Dispose();
         _playerEntity.Disable();
@@ -179,35 +179,24 @@ public class GameClient : GameWindow
     protected override void OnRenderFrame(FrameEventArgs args)
     {
         base.OnRenderFrame(args);
-
-        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
+        
 #if DEBUG
-
         // Set the polygon mode to wireframe if the debug setting is enabled.
         GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.DebugModeConfig.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
 #endif
 
         // Pass all of these matrices to the vertex shaders.
         // We could also multiply them here and then pass, which is faster, but having the separate matrices available is used for some advanced effects.
-        Matrix4 cameraViewMatrix = Camera.RenderingCamera.ViewMatrix;
-
         // IMPORTANT: OpenTK's matrix types are transposed from what OpenGL would expect - rows and columns are reversed.
         // They are then transposed properly when passed to the shader. 
         // This means that we retain the same multiplication order in both OpenTK c# code and GLSL shader code.
         // If you pass the individual matrices to the shader and multiply there, you have to do in the order "model * view * projection".
         // You can think like this: first apply the modelToWorld (aka model) matrix, then apply the worldToView (aka view) matrix, 
         // and finally apply the viewToProjectedSpace (aka projection) matrix.
-        // Matrix4 modelMatrix = Matrix4.Identity * Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(TEST_CUBE_ROTATION_SPEED * _timeSinceStartup));
-        ShaderManager.UpdateViewMatrix(cameraViewMatrix);
+        ShaderManager.UpdateViewMatrix(Camera.RenderingCamera.ViewMatrix);
         ShaderManager.UpdateProjectionMatrix(Camera.RenderingCamera.ProjectionMatrix);
-
-        DrawWorld();
-
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderSkybox)
-#endif
-            _skybox.Draw();
+        
+        _gameWorldRenderer.Draw();
 
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && DebugStats.ChunksInGenerationQueue == 0 && DebugStats.ChunksInMeshingQueue == 0)
@@ -238,6 +227,7 @@ public class GameClient : GameWindow
     /// </summary>
     private void FixedUpdate()
     {
+        GameTime.FixedUpdate();
         GlobalThreadPool.FixedUpdate();
         _gameWorld.FixedUpdate();
     }
@@ -253,6 +243,9 @@ public class GameClient : GameWindow
         
         GlobalThreadPool.Update();
         _gameWorld.Update();
+        
+        if (Input.KeyboardState.IsKeyPressed(Keys.F10))
+            ShaderManager.ReloadAllShaderPrograms();
     }
 
 
@@ -271,15 +264,6 @@ public class GameClient : GameWindow
 
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
             SwitchCursorState();
-    }
-
-
-    private void DrawWorld()
-    {
-        // Enable backface culling.
-        GL.Enable(EnableCap.CullFace);
-        _gameWorld.Draw();
-        GL.Disable(EnableCap.CullFace);
     }
 
 

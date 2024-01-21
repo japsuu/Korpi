@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Logging;
@@ -8,6 +7,7 @@ using Korpi.Client.Mathematics;
 using Korpi.Client.Meshing;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
+using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Rendering.Shaders;
@@ -57,17 +57,18 @@ public class RegionManager
     }
 
 
-    public void Draw()
+    public void DrawChunks(RenderPass pass)
     {
-        ShaderManager.ChunkShader.Use();
-        DebugStats.RenderedTris = 0;
-        
-        foreach (Region column in _existingRegions.Values) // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        foreach (Region column in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
-            column.Draw();
+            column.Draw(pass);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
         }
+    }
+
 
 #if DEBUG
+    public static void DrawDebugBorders()
+    {
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
@@ -81,8 +82,8 @@ public class RegionManager
             Vector2i columnPos = CoordinateUtils.WorldToColumn(Camera.RenderingCamera.Position);
             DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
-#endif
     }
+#endif
 
 
     /// <summary>

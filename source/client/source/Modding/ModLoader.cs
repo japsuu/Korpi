@@ -79,7 +79,7 @@ public static class ModLoader
         throw new NotImplementedException("TODO: Implement default builtin mod.");
         List<YamlBlockData> blocks = new()
         {
-            new YamlBlockData("TestBlock", BlockRenderType.Normal, "TestBlock")
+            new YamlBlockData("TestBlock", BlockRenderType.Opaque, "TestBlock")
         };
 
         YamlMod mod = new("Builtins", Constants.BUILT_IN_MOD_NAMESPACE, "Built-in blocks", "Japsu", blocks.ToArray());

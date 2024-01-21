@@ -4,24 +4,50 @@ using StbImageSharp;
 
 namespace Korpi.Client.Rendering.Textures;
 
-public class Texture2D : Texture
+/// <summary>
+/// Represents a 2D texture.<br/>
+/// Images in this texture all are 2-dimensional. They have width and height, but no depth.
+/// </summary>
+public sealed class Texture2D : Texture
 {
+    public override string Name { get; }
     public override TextureTarget TextureTarget => TextureTarget.Texture2D;
 
+    /// <summary>
+    /// The width of the texture.
+    /// </summary>
+    public int Width { get; private set; }
 
-    private Texture2D(int glHandle, string name) : base(glHandle, name)
+    /// <summary>
+    /// The height of the texture.
+    /// </summary>
+    public int Height { get; private set; }
+
+
+    /// <summary>
+    /// Allocates immutable texture storage with the given parameters.<br/>
+    /// A value of zero for the number of mipmap levels will default to the maximum number of levels possible for the given bitmaps width and height.
+    /// </summary>
+    /// <param name="name">Name of this texture</param>
+    /// <param name="internalFormat">The internal format to allocate.</param>
+    /// <param name="width">The width of the texture.</param>
+    /// <param name="height">The height of the texture.</param>
+    /// <param name="levels">The number of mipmap levels.</param>
+    public Texture2D(string name, SizedInternalFormat internalFormat, int width, int height, int levels = 0) :
+        base(internalFormat, GetLevels(levels, width, height))
     {
-    }
+        Name = name;
+        Width = width;
+        Height = height;
+        GL.BindTexture(TextureTarget, Handle);
+        GL.TexStorage2D((TextureTarget2d)TextureTarget, Levels, InternalFormat, Width, Height);
+        CheckError();
+    }    
     
     
     public static Texture2D LoadFromFile(string path, string texName)
     {
-        // Generate handle
-        int handle = GL.GenTexture();
-
-        // Bind the handle
-        GL.ActiveTexture(TextureUnit.Texture0);
-        GL.BindTexture(TextureTarget.Texture2D, handle);
+        Texture2D texture;
         
         // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
         // so we tell StbImageSharp to flip the image when loading.
@@ -31,24 +57,38 @@ public class Texture2D : Texture
         using (Stream stream = File.OpenRead(path))
         {
             ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+            
+            texture = new Texture2D(texName, SizedInternalFormat.Rgba8, image.Width, image.Height);
 
-            GL.TexImage2D(
-                TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
-                image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
+            GL.TexSubImage2D(
+                TextureTarget.Texture2D,
+                0,
+                0,
+                0,
+                image.Width,
+                image.Height,
+                PixelFormat.Rgba,
+                PixelType.UnsignedByte,
+                image.Data);
         }
 
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+        texture.SetFilter(TextureMinFilter.LinearMipmapLinear, TextureMagFilter.Nearest);
+        texture.SetWrapMode(TextureWrapMode.Repeat);
+        texture.SetParameter(TextureParameterName.TextureMaxAnisotropy, Constants.ANISOTROPIC_FILTERING_LEVEL);
+        texture.GenerateMipMaps();
 
-        // Now, set the wrapping mode. S is for the X axis, and T is for the Y axis.
-        // We set this to Repeat so that textures will repeat when wrapped. Not demonstrated here since the texture coordinates exactly match
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-        
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxAnisotropy, Constants.ANISOTROPIC_FILTERING_LEVEL);
+        return texture;
+    }
 
-        GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-        return new Texture2D(handle, texName);
+    /// <summary>
+    /// Internal constructor used by <see cref="TextureFactory"/> to wrap a Texture2D instance around an already existing texture.
+    /// </summary>
+    internal Texture2D(string name, int textureHandle, SizedInternalFormat internalFormat, int width, int height, int levels) :
+        base(textureHandle, internalFormat, levels)
+    {
+        Name = name;
+        Width = width;
+        Height = height;
     }
 }
