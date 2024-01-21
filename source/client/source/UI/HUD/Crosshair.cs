@@ -8,16 +8,16 @@ namespace Korpi.Client.UI.HUD;
 
 public class Crosshair
 {
-    private static readonly float[] Vertices = 
+    private static readonly float[] Vertices =
     {
-        // Position     // Texture coords
-        -0.025f,  0.025f,  0.0f, 0.0f,
-         0.025f, -0.025f,  1.0f, 1.0f,
-        -0.025f, -0.025f,  0.0f, 1.0f,
-        
-        -0.025f,  0.025f,  0.0f, 0.0f,
-         0.025f, -0.025f,  1.0f, 1.0f,
-         0.025f,  0.025f,  1.0f, 0.0f 
+        // Position              // Texture coords
+        -0.025f,  0.025f, 0.0f,  0.0f, 0.0f, // Top-left corner
+        -0.025f, -0.025f, 0.0f,  0.0f, 1.0f, // Bottom-left corner
+        0.025f, -0.025f, 0.0f,  1.0f, 1.0f, // Bottom-right corner
+
+        0.025f, -0.025f, 0.0f,  1.0f, 1.0f, // Bottom-right corner
+        0.025f,  0.025f, 0.0f,  1.0f, 0.0f, // Top-right corner
+        -0.025f,  0.025f, 0.0f,  0.0f, 0.0f  // Top-left corner
     };
     
     private readonly Texture2D _crosshairTexture;
@@ -37,10 +37,10 @@ public class Crosshair
         GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
         
         GL.EnableVertexAttribArray(0);
-        GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
+        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
         
         GL.EnableVertexAttribArray(1);
-        GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
+        GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
         
         GameClient.ClientUnload += OnClientUnload;
     }
@@ -48,12 +48,11 @@ public class Crosshair
 
     public void Draw()
     {
-        _crosshairTexture.Bind();
         GL.Enable(EnableCap.Blend);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         
-        ShaderManager.ShaderUi.Use();
-        ShaderManager.ShaderUi.SetFloat("aspectRatio", GameClient.WindowAspectRatio);
+        ShaderManager.UiPositionTexShader.Use();
+        _crosshairTexture.Bind(TextureUnit.Texture0);
         
         GL.BindVertexArray(_vao);
         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

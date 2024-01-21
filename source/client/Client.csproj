@@ -27,5 +27,13 @@
     <Content Include="Assets\**">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</Content>
+    <None Remove="log4net.config" />
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\shaders\include\" />
   </ItemGroup>
 </Project>

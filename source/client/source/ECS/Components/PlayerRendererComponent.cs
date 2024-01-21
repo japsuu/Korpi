@@ -1,6 +1,7 @@
 ﻿using Korpi.Client.ECS.Entities;
 using Korpi.Client.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.ECS.Components;
 
@@ -60,13 +61,11 @@ public class PlayerRendererComponent : Component
     
     private readonly PlayerEntity _playerEntity;
     private readonly int _vao;
-    private readonly Shader _shader;
     
     
     public PlayerRendererComponent(PlayerEntity playerEntity)
     {
         _playerEntity = playerEntity;
-        _shader = ShaderManager.ShaderPlayer;
         _vao = GL.GenVertexArray();
         int vbo = GL.GenBuffer();
         
@@ -87,8 +86,10 @@ public class PlayerRendererComponent : Component
 
     protected override void OnDraw()
     {
-        _shader.Use();
-        _shader.SetMatrix4("model", _playerEntity.Transform.GetModelMatrix());
+        ShaderManager.PositionColorShader.Use();
+        ShaderManager.PositionColorShader.ModelMat.Set(_playerEntity.Transform.GetModelMatrix());
+        ShaderManager.PositionColorShader.ColorModulator.Set(new Vector4(1, 1, 1, 1));
+        
         GL.BindVertexArray(_vao);
         GL.Enable(EnableCap.CullFace);
         GL.CullFace(CullFaceMode.Front);

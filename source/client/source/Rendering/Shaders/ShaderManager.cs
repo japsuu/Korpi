@@ -1,4 +1,4 @@
-﻿using Korpi.Client.Utils;
+﻿using Korpi.Client.Rendering.Shaders.ShaderPrograms;
 using Korpi.Client.Window;
 using OpenTK.Mathematics;
 
@@ -6,81 +6,69 @@ namespace Korpi.Client.Rendering.Shaders;
 
 public class ShaderManager : IDisposable
 {
-    public static Shader ShaderPlayer { get; private set; } = null!;
-    public static Shader DebugShader { get; private set; } = null!;
-    public static Shader ShaderBlockOpaque { get; private set; } = null!;
-    public static Shader ShaderBlockCutout { get; private set; } = null!;
-    public static Shader ShaderBlockTranslucent { get; private set; } = null!;
-    public static Shader ShaderComposite { get; private set; } = null!;
-    public static Shader ShaderScreen { get; private set; } = null!;
-    public static Shader ShaderUi { get; private set; } = null!;
-    public static Shader SkyboxShader { get; private set; } = null!;
-    public static Shader CelestialBodyShader { get; private set; } = null!;
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ShaderManager));
     
-    public static Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
-    public static Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
+    public static event Action<Matrix4>? ProjectionMatrixChanged;
+    public static event Action<Matrix4>? ViewMatrixChanged;
+    
+    public static PositionColorShaderProgram PositionColorShader { get; private set; } = null!;
+    public static BlocksOpaqueCutoutShaderProgram BlockOpaqueCutoutShader { get; private set; } = null!;
+    public static BlocksTranslucentShaderProgram BlockTranslucentShader { get; private set; } = null!;
+    public static ScreenCompositeShaderProgram CompositeShader { get; private set; } = null!;
+    public static UiPositionTexShaderProgram UiPositionTexShader { get; private set; } = null!;
+    public static SkyboxShaderProgram SkyboxShader { get; private set; } = null!;
+    public static CubemapShaderProgram CubemapTexShader { get; private set; } = null!;
+
+    private static Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
+    private static Matrix4 ViewMatrix { get; set; } = Matrix4.Identity;
 
 
-    public ShaderManager()
+    public ShaderManager()  // TODO: Implement Uniform Buffer Objects (UBOs) for common uniforms: https://www.khronos.org/opengl/wiki/Uniform_Buffer_Objects
     {
-        ShaderPlayer = new Shader(IoUtils.GetShaderPath("shader_player.vert"), IoUtils.GetShaderPath("shader_player.frag"));
-        DebugShader = new Shader(IoUtils.GetShaderPath("shader_debug.vert"), IoUtils.GetShaderPath("shader_debug.frag"));
-        ShaderBlockOpaque = new Shader(IoUtils.GetShaderPath("blocks_common.vert"), IoUtils.GetShaderPath("blocks_opaque.frag"));
-        ShaderBlockCutout = new Shader(IoUtils.GetShaderPath("blocks_common.vert"), IoUtils.GetShaderPath("blocks_cutout.frag"));
-        ShaderBlockTranslucent = new Shader(IoUtils.GetShaderPath("blocks_common.vert"), IoUtils.GetShaderPath("blocks_translucent.frag"));
-        ShaderComposite = new Shader(IoUtils.GetShaderPath("pass.vert"), IoUtils.GetShaderPath("composite.frag"));
-        ShaderScreen = new Shader(IoUtils.GetShaderPath("screen.vert"), IoUtils.GetShaderPath("screen.frag"));
-        ShaderUi = new Shader(IoUtils.GetShaderPath("shader_ui.vert"), IoUtils.GetShaderPath("shader_ui.frag"));
-        SkyboxShader = new Shader(IoUtils.GetShaderPath("shader_skybox.vert"), IoUtils.GetShaderPath("shader_skybox.frag"));
-        CelestialBodyShader = new Shader(IoUtils.GetShaderPath("shader_celestial_body.vert"), IoUtils.GetShaderPath("shader_celestial_body.frag"));
+        CompileAllShaderPrograms();
+    }
+
+
+    private static void CompileAllShaderPrograms()
+    {
+        Logger.Info("Compiling all shader programs...");
+        PositionColorShader = ShaderProgramFactory.Create<PositionColorShaderProgram>();
+        BlockOpaqueCutoutShader = ShaderProgramFactory.Create<BlocksOpaqueCutoutShaderProgram>();
+        BlockTranslucentShader = ShaderProgramFactory.Create<BlocksTranslucentShaderProgram>();
+        CompositeShader = ShaderProgramFactory.Create<ScreenCompositeShaderProgram>();
+        UiPositionTexShader = ShaderProgramFactory.Create<UiPositionTexShaderProgram>();
+        SkyboxShader = ShaderProgramFactory.Create<SkyboxShaderProgram>();
+        CubemapTexShader = ShaderProgramFactory.Create<CubemapShaderProgram>();
+        Logger.Info("All shader programs compiled.");
+    }
+
+
+    public static void ReloadAllShaderPrograms()
+    {
+        Logger.Info("Reloading all shader programs...");
+        PositionColorShader.Dispose();
+        BlockOpaqueCutoutShader.Dispose();
+        BlockTranslucentShader.Dispose();
+        CompositeShader.Dispose();
+        UiPositionTexShader.Dispose();
+        SkyboxShader.Dispose();
+        CubemapTexShader.Dispose();
+        
+        CompileAllShaderPrograms();
     }
     
     
     public static void UpdateProjectionMatrix(Matrix4 projectionMatrix)
     {
         ProjectionMatrix = projectionMatrix;
-        
-        ShaderPlayer.Use();
-        ShaderPlayer.SetMatrix4("projection", projectionMatrix);
-        
-        DebugShader.Use();
-        DebugShader.SetMatrix4("projection", projectionMatrix);
-        
-        ShaderBlockOpaque.Use();
-        ShaderBlockOpaque.SetMatrix4("projection", projectionMatrix);
-        
-        ShaderBlockCutout.Use();
-        ShaderBlockCutout.SetMatrix4("projection", projectionMatrix);
-        
-        ShaderBlockTranslucent.Use();
-        ShaderBlockTranslucent.SetMatrix4("projection", projectionMatrix);
-        
-        SkyboxShader.Use();
-        SkyboxShader.SetMatrix4("projection", projectionMatrix);
-        
-        CelestialBodyShader.Use();
-        CelestialBodyShader.SetMatrix4("projection", projectionMatrix);
+        ProjectionMatrixChanged?.Invoke(projectionMatrix);
     }
     
     
     public static void UpdateViewMatrix(Matrix4 viewMatrix)
     {
         ViewMatrix = viewMatrix;
-        
-        ShaderPlayer.Use();
-        ShaderPlayer.SetMatrix4("view", viewMatrix);
-        
-        DebugShader.Use();
-        DebugShader.SetMatrix4("view", viewMatrix);
-        
-        ShaderBlockOpaque.Use();
-        ShaderBlockOpaque.SetMatrix4("view", viewMatrix);
-        
-        ShaderBlockCutout.Use();
-        ShaderBlockCutout.SetMatrix4("view", viewMatrix);
-        
-        ShaderBlockTranslucent.Use();
-        ShaderBlockTranslucent.SetMatrix4("view", viewMatrix);
+        ViewMatrixChanged?.Invoke(viewMatrix);
     }
     
     
@@ -109,15 +97,13 @@ public class ShaderManager : IDisposable
     
     public void Dispose()
     {
-        DebugShader.Dispose();
-        ShaderBlockOpaque.Dispose();
-        ShaderBlockCutout.Dispose();
-        ShaderBlockTranslucent.Dispose();
-        ShaderComposite.Dispose();
-        ShaderScreen.Dispose();
-        ShaderUi.Dispose();
+        PositionColorShader.Dispose();
+        BlockOpaqueCutoutShader.Dispose();
+        BlockTranslucentShader.Dispose();
+        CompositeShader.Dispose();
+        UiPositionTexShader.Dispose();
         SkyboxShader.Dispose();
-        CelestialBodyShader.Dispose();
+        CubemapTexShader.Dispose();
         
         GC.SuppressFinalize(this);
     }

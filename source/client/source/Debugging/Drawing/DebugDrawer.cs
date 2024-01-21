@@ -60,7 +60,7 @@ public static class DebugDrawer
 
     public static void Draw()
     {
-        ShaderManager.DebugShader.Use();
+        ShaderManager.PositionColorShader.Use();
 
         foreach (DebugDrawable drawable in Drawables)
             drawable.DrawObject();

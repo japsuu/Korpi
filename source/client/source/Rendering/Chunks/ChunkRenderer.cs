@@ -56,11 +56,10 @@ public class ChunkRenderer : IDisposable
 
     public void Draw(RenderPass pass)
     {
-        ShaderManager.ShaderBlockOpaque.SetMatrix4("model", _modelMatrix);
-
         switch (pass)
         {
             case RenderPass.Opaque:
+                ShaderManager.BlockOpaqueCutoutShader.ModelMat.Set(_modelMatrix);
                 GL.BindVertexArray(_opaqueMeshVAO);
                 // Draw opaque faces.
                 if (_opaqueIndicesCount > 0)
@@ -70,6 +69,7 @@ public class ChunkRenderer : IDisposable
                 }
                 break;
             case RenderPass.Transparent:
+                ShaderManager.BlockTranslucentShader.ModelMat.Set(_modelMatrix);
                 GL.BindVertexArray(_transparentMeshVAO);
                 // Draw transparent faces.
                 if (_transparentIndicesCount > 0)

@@ -93,18 +93,9 @@ public abstract class Texture : GLObject, IHasName
     /// <summary>
     /// Binds the texture to the current texture unit at its default texture target.
     /// </summary>
-    public void Bind()
+    private void Bind()
     {
         GL.BindTexture(TextureTarget, Handle);
-    }
-
-
-    /// <summary>
-    /// Unbinds the texture from the default texture unit.
-    /// </summary>
-    public void Unbind()
-    {
-        GL.BindTexture(TextureTarget, 0);
     }
 
 
@@ -114,17 +105,17 @@ public abstract class Texture : GLObject, IHasName
     /// <param name="unit">The texture unit to bind to.</param>
     public void Bind(TextureUnit unit)
     {
-        if (StaticTextureBindings.IsTextureUnitStaticallyBound(unit))
-            throw new InvalidOperationException($"Texture unit {unit} is already statically bound to {StaticTextureBindings.GetTextureNameForUnit(unit)}.");
-        
         GL.ActiveTexture(unit);
         Bind();
     }
-    
-    
-    public void BindStatic(TextureUnit unit)
+
+
+    /// <summary>
+    /// Unbinds the texture from the default texture unit.
+    /// </summary>
+    public void Unbind()
     {
-        StaticTextureBindings.BindTexture(this, unit);
+        GL.BindTexture(TextureTarget, 0);
     }
 
 
@@ -155,8 +146,9 @@ public abstract class Texture : GLObject, IHasName
     /// </summary>
     public void GenerateMipMaps()
     {
-        if (!SupportsMipmaps) throw new InvalidOperationException("Texture does not support mipmaps.");
-        Bind();
+        if (!SupportsMipmaps)
+            throw new InvalidOperationException("Texture does not support mipmaps.");
+        Bind(TextureUnit.Texture0);
         GL.GenerateMipmap((GenerateMipmapTarget)TextureTarget);
         AssertUtility.Assert("Could not generate mipmaps.");
     }

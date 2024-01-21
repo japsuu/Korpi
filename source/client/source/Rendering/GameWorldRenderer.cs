@@ -1,9 +1,13 @@
-﻿using Korpi.Client.Debugging;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Debugging;
 using Korpi.Client.Logging;
+using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.Window;
 using Korpi.Client.World;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering;
 
@@ -13,20 +17,29 @@ public class GameWorldRenderer : IDisposable
     private static readonly float[] OneFiller = { 1.0f, 1.0f, 1.0f, 1.0f };
     
     private readonly GameWorld _world;
-    private readonly int _opaqueFbo;
-    private readonly int _opaqueTexture;
-    private readonly int _depthTexture;
-    private readonly int _transparentFbo;
-    private readonly int _accumTexture;
-    private readonly int _revealTexture;
     private readonly ScreenQuad _screenQuad;
+    private readonly Skybox _skybox;
+    private int _opaqueFbo;
+    private int _transparentFbo;
+    private int _opaqueTexture;
+    private int _depthTexture;
+    private int _accumTexture;
+    private int _revealTexture;
 
 
     public GameWorldRenderer(GameWorld world)
     {
         _world = world;
         _screenQuad = new ScreenQuad();
+        _skybox = new Skybox(false);
+        GameClient.ClientResized += OnWindowResize;
         
+        Initialize();
+    }
+
+
+    private void Initialize()
+    {
         // Setup framebuffers
         _opaqueFbo = GL.GenFramebuffer();
         _transparentFbo = GL.GenFramebuffer();
@@ -98,11 +111,30 @@ public class GameWorldRenderer : IDisposable
     }
 
 
+    private void OnWindowResize()
+    {
+        // Delete old textures
+        GL.DeleteTexture(_opaqueTexture);
+        GL.DeleteTexture(_depthTexture);
+        GL.DeleteTexture(_accumTexture);
+        GL.DeleteTexture(_revealTexture);
+        
+        // Delete old framebuffers
+        GL.DeleteFramebuffer(_opaqueFbo);
+        GL.DeleteFramebuffer(_transparentFbo);
+        
+        // Reinitialize
+        Initialize();
+    }
+
+
     public void Draw()
     {
         DebugStats.RenderedTris = 0;
-        
+
         DrawChunksOpaquePass();
+
+        DrawSkybox();
 
         DrawChunksTransparentPass();
         
@@ -131,7 +163,8 @@ public class GameWorldRenderer : IDisposable
         GL.BindFramebuffer(FramebufferTarget.Framebuffer, _opaqueFbo);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         
-        ShaderManager.ShaderBlockOpaque.Use();
+        ShaderManager.BlockOpaqueCutoutShader.Use();
+        // ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector4.One);
         
         _world.RegionManager.DrawChunks(RenderPass.Opaque);
     }
@@ -151,7 +184,9 @@ public class GameWorldRenderer : IDisposable
         GL.ClearBuffer(ClearBuffer.Color, 0, ZeroFiller);
         GL.ClearBuffer(ClearBuffer.Color, 1, OneFiller);
         
-        ShaderManager.ShaderBlockTranslucent.Use();
+        ShaderManager.BlockTranslucentShader.Use();
+        // ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector4.One);
+        ShaderManager.BlockTranslucentShader.CameraPosition.Set(Camera.RenderingCamera.Position);
         
         _world.RegionManager.DrawChunks(RenderPass.Transparent);
     }
@@ -167,7 +202,7 @@ public class GameWorldRenderer : IDisposable
         GL.BindFramebuffer(FramebufferTarget.Framebuffer, _opaqueFbo);
         
         // Use composite shader
-        ShaderManager.ShaderComposite.Use();
+        ShaderManager.CompositeShader.Use();
         
         // Draw screen quad
         GL.ActiveTexture(TextureUnit.Texture0);
@@ -175,6 +210,15 @@ public class GameWorldRenderer : IDisposable
         GL.ActiveTexture(TextureUnit.Texture1);
         GL.BindTexture(TextureTarget.Texture2D, _revealTexture);
         _screenQuad.Draw();
+    }
+
+
+    private void DrawSkybox()
+    {
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.RenderSkybox)
+#endif
+            _skybox.Draw();
     }
 
 
@@ -190,7 +234,8 @@ public class GameWorldRenderer : IDisposable
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
         
         // Use screen shader
-        ShaderManager.ShaderScreen.Use();
+        ShaderManager.UiPositionTexShader.Use();
+        //ShaderManager.UiPositionTexShader.ColorModulator.Set(Vector4.One);
         
         // Draw final screen quad
         GL.ActiveTexture(TextureUnit.Texture0);
@@ -208,82 +253,6 @@ public class GameWorldRenderer : IDisposable
         GL.DeleteTexture(_accumTexture);
         GL.DeleteTexture(_revealTexture);
         _screenQuad.Dispose();
-    }
-}
-
-
-internal class ScreenQuad : IDisposable
-{
-    private static readonly float[] QuadVertices =
-    {
-        // positions		// uv
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,   1.0f, 1.0f,
-
-        1.0f, 1.0f, 0.0f,   1.0f, 1.0f,
-        -1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f
-    };
-
-    private readonly int _vao;
-    private readonly int _vbo;
-
-
-    public ScreenQuad()
-    {
-        _vao = GL.GenVertexArray();
-        _vbo = GL.GenBuffer();
-
-        GL.BindVertexArray(_vao);
-
-        GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-        GL.BufferData(BufferTarget.ArrayBuffer, QuadVertices.Length * sizeof(float), QuadVertices, BufferUsageHint.StaticDraw);
-
-        GL.EnableVertexAttribArray(0);
-        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
-
-        GL.EnableVertexAttribArray(1);
-        GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
-
-        GL.BindVertexArray(0);
-    }
-    
-    
-    public void Draw()
-    {
-        GL.BindVertexArray(_vao);
-        GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-        GL.BindVertexArray(0);
-    }
-    
-    
-    private void ReleaseUnmanagedResources()
-    {
-        GL.DeleteVertexArray(_vao);
-        GL.DeleteBuffer(_vbo);
-    }
-
-
-    protected virtual void Dispose(bool disposing)
-    {
-        ReleaseUnmanagedResources();
-        if (disposing)
-        {
-            // Release managed resources here
-        }
-    }
-
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-
-    ~ScreenQuad()
-    {
-        Dispose(false);
+        _skybox.Dispose();
     }
 }

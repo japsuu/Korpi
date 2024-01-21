@@ -16,6 +16,7 @@ namespace Korpi.Client.Registries;
 public static class BlockRegistry
 {
     private static readonly List<Block> Values = new();
+    private static readonly List<BlockState> DefaultStateValues = new();
     private static readonly Dictionary<string, Block> NameToValue = new();
     private static ushort nextId;
     
@@ -53,7 +54,15 @@ public static class BlockRegistry
     
     public static Block GetBlock(ushort id)
     {
+        Debug.Assert(id < Values.Count, $"Block with ID {id} is not registered.");
         return Values[id];
+    }
+    
+    
+    public static BlockState GetBlockDefaultState(ushort id)
+    {
+        Debug.Assert(id < DefaultStateValues.Count, $"Block with ID {id} is not registered.");
+        return DefaultStateValues[id];
     }
     
     
@@ -80,6 +89,8 @@ public static class BlockRegistry
     private static Block RegisterNewBlock(string nameSpace, string folderPath, YamlBlockData data)
     {
         string namespacedName = nameSpace + ":" + data.Name!.ToLower();
+        // Replace spaces with underscores
+        namespacedName = namespacedName.Replace(' ', '_');
         
         if (NameToValue.ContainsKey(namespacedName))
             throw new IdClashException($"Block with name {namespacedName} is already registered.");
@@ -94,6 +105,7 @@ public static class BlockRegistry
         Block block = new(nextId, data.Name!.ToLower(), data.RenderType, textures);
         
         Values.Add(block);
+        DefaultStateValues.Add(block.GetDefaultState());
         NameToValue.Add(namespacedName, block);
         
         nextId++;

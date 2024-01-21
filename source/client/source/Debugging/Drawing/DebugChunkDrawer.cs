@@ -74,10 +74,11 @@ public static class DebugChunkDrawer
 
     public static void DrawChunkBorders(Vector3i pos)
     {
-        ShaderManager.DebugShader.Use();
+        ShaderManager.PositionColorShader.Use();
         
         Matrix4 modelMatrix = Matrix4.CreateTranslation(pos);
-        ShaderManager.DebugShader.SetMatrix4("model", modelMatrix);
+        ShaderManager.PositionColorShader.ModelMat.Set(modelMatrix);
+        ShaderManager.PositionColorShader.ColorModulator.Set(new Vector4(1, 1, 1, 1));
         
         GL.BindVertexArray(chunkVAO);
         GL.DrawElements(PrimitiveType.LineStrip, chunkIndices.Length, DrawElementsType.UnsignedInt, 0);
@@ -87,10 +88,11 @@ public static class DebugChunkDrawer
 
     public static void DrawChunkColumnBorders(Vector2i pos)
     {
-        ShaderManager.DebugShader.Use();
+        ShaderManager.PositionColorShader.Use();
         
         Matrix4 modelMatrix = Matrix4.CreateTranslation(new Vector3(pos.X, 0, pos.Y));
-        ShaderManager.DebugShader.SetMatrix4("model", modelMatrix);
+        ShaderManager.PositionColorShader.ModelMat.Set(modelMatrix);
+        ShaderManager.PositionColorShader.ColorModulator.Set(new Vector4(1, 1, 1, 1));
         
         GL.BindVertexArray(columnVAO);
         GL.DrawElements(PrimitiveType.LineStrip, columnIndices.Length, DrawElementsType.UnsignedInt, 0);
