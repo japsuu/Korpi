@@ -36,11 +36,16 @@ public class SimplexTerrainGenerator : ITerrainGenerator
     }
 
 
+    public bool WillProcessChunk(Chunk chunk)
+    {
+        // Skip chunks above the terrain.
+        return chunk.Bottom <= TERRAIN_HEIGHT_MAX;
+    }
+
+
     public void ProcessChunk(in Chunk chunk)
     {
         DebugStats.StartChunkGeneration();
-        if (chunk.Bottom > TERRAIN_HEIGHT_MAX)  // Skip chunks above the terrain.
-            return;
         
         bool isChunkCompletelyBelowSurface = chunk.Top < TERRAIN_HEIGHT_MIN;
 

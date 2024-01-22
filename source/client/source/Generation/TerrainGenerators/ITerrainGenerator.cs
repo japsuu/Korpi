@@ -13,4 +13,13 @@ public interface ITerrainGenerator
     /// This function is expected to be thread-safe as generation is executed on the pool.
     /// </summary>
     public void ProcessChunk(in Chunk chunk);
+
+
+    /// <summary>
+    /// Lightweight method to check if this chunk would be processed by this generator.
+    /// For example if the chunk is full of air, it would be skipped by the terrain generator.
+    /// </summary>
+    /// <param name="chunk">The chunk to check.</param>
+    /// <returns>True if the chunk would be processed by this generator, false otherwise.</returns>
+    public bool WillProcessChunk(Chunk chunk);
 }

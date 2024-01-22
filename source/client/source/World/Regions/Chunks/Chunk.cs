@@ -285,8 +285,16 @@ public class Chunk
             case ChunkState.UNINITIALIZED:
                 break;
             case ChunkState.GENERATING_TERRAIN:
-                Interlocked.Increment(ref _currentJobId);
-                GlobalThreadPool.DispatchJob(new GenerationJob(_currentJobId, this, () => ChangeState(ChunkState.GENERATING_DECORATION)), WorkItemPriority.Normal);
+                if (GameWorld.CurrentGameWorld.TerrainGenerator.WillProcessChunk(this))
+                {
+                    Interlocked.Increment(ref _currentJobId);
+                    GlobalThreadPool.DispatchJob(
+                        new GenerationJob(_currentJobId, this, () => ChangeState(ChunkState.GENERATING_DECORATION)), WorkItemPriority.Normal);
+                }
+                else
+                {
+                    ChangeState(ChunkState.GENERATING_DECORATION);
+                }
                 break;
             case ChunkState.GENERATING_DECORATION:
                 ChangeState(ChunkState.GENERATING_LIGHTING);
