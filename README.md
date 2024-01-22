@@ -84,7 +84,7 @@ A non-exhaustive list of currently implemented features. Updated every once in a
 
 Technical documentation and additional information about the implementation of Korpi can be found in the [official documentation](https://japsuu.github.io/Korpi/).
 
-The full API Documentation is available on the [official API documentation](https://japsuu.github.io/Korpi/api/Korpi.Client.html) or inline from your favourite IDE.
+The full API Documentation is available on the [official API documentation](https://japsuu.github.io/Korpi/api/index.html) or inline from your favourite IDE.
 
 ## Building from source
 To build Korpi from source you just need to clone the git repo and open `Korpi.sln` in your favourite IDE.
