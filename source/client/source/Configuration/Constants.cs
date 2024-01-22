@@ -152,7 +152,7 @@ public static class Constants
     /// <summary>
     /// The radius (in chunks) around the player to load chunks.
     /// </summary>
-    public const int CHUNK_COLUMN_LOAD_RADIUS = 3;
+    public const int CHUNK_COLUMN_LOAD_RADIUS = 8;
     
     /// <summary>
     /// The square of <see cref="CHUNK_COLUMN_LOAD_RADIUS"/>.

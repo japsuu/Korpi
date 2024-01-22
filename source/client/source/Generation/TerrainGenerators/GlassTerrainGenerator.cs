@@ -37,6 +37,13 @@ public class GlassTerrainGenerator : ITerrainGenerator
     }
 
 
+    public bool WillProcessChunk(Chunk chunk)
+    {
+        // Skip chunks above the terrain.
+        return chunk.Bottom <= TERRAIN_HEIGHT_MAX;
+    }
+
+
     public void ProcessChunk(in Chunk chunk)
     {
         DebugStats.StartChunkGeneration();

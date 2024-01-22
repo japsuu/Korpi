@@ -25,9 +25,9 @@ public class NoclipCamera : Camera
         
         UpdateRotation();
 
-        if (Input.KeyboardState.IsKeyDown(Keys.LeftControl))
+        if (Input.KeyboardState.IsKeyDown(Keys.LeftAlt))
             UpdateFov();
-        else
+        if (Input.KeyboardState.IsKeyDown(Keys.LeftControl))
             UpdateFlySpeed();
     }
 

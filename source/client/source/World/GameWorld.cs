@@ -34,7 +34,7 @@ public class GameWorld
     {
         _name = name;
         RegionManager = new RegionManager();
-        TerrainGenerator = SimplexTerrainGenerator.Default();
+        TerrainGenerator = FlatTerrainGenerator.Default();
         EntityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
