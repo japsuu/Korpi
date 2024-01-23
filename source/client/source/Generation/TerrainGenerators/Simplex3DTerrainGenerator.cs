@@ -19,7 +19,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     private const int MIN_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_SIDE_LENGTH;
     private const int MAX_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS - Constants.CHUNK_SIDE_LENGTH;
 
-    private float _terrainBaseHeight = 64;          // The base height of the terrain, in blocks.
+    private float _terrainBaseHeight = 256;          // The base height of the terrain, in blocks.
     private float _terrainHeightMaxOffset = 64;    // The maximum how much the terrain height may be offset from the base height, in blocks.
     private float _minSquash = 2f;
     private float _maxSquash = 8f;
