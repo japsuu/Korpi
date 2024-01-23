@@ -13,15 +13,15 @@ namespace Korpi.Client.Generation.TerrainGenerators;
 /// </summary>
 public class Simplex3DTerrainGenerator : ITerrainGenerator
 {
-    private const int BRICK_SIZE = 4;
-    private const int BRICK_COUNT = Constants.CHUNK_SIDE_LENGTH / BRICK_SIZE;
+    private const int NOISE_SAMPLE_BRICK_SIZE = 4;
+    private const int BRICK_COUNT = Constants.CHUNK_SIDE_LENGTH / NOISE_SAMPLE_BRICK_SIZE;
     
     private const int MIN_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_SIDE_LENGTH;
     private const int MAX_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS - Constants.CHUNK_SIDE_LENGTH;
 
     private float _terrainBaseHeight = 256;          // The base height of the terrain, in blocks.
     private float _terrainHeightMaxOffset = 64;    // The maximum how much the terrain height may be offset from the base height, in blocks.
-    private float _minSquash = 2f;
+    private float _minSquash = 0.5f;
     private float _maxSquash = 8f;
 
     private readonly FastNoiseLite _densityNoise; // FNL seems to be thread safe, as long as you don't change the seed/other settings while generating.
@@ -60,7 +60,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         
         _heightNoise = new FastNoiseLite();
         _heightNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        _heightNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
+        _heightNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
         _densityNoise.SetFractalOctaves(3);
         _densityNoise.SetFractalLacunarity(2);
         _densityNoise.SetFractalGain(0.5f);
@@ -104,21 +104,21 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         // Process each brick in the chunk.
         for (int brickZ = 0; brickZ < BRICK_COUNT; brickZ++)
         {
-            int brickZChunk = brickZ * BRICK_SIZE;
+            int brickZChunk = brickZ * NOISE_SAMPLE_BRICK_SIZE;
             int brickWorldZ = chunk.Position.Z + brickZChunk;
             for (int brickY = 0; brickY < BRICK_COUNT; brickY++)
             {
-                int brickYChunk = brickY * BRICK_SIZE;
+                int brickYChunk = brickY * NOISE_SAMPLE_BRICK_SIZE;
                 int brickWorldY = chunk.Position.Y + brickYChunk;
                 for (int brickX = 0; brickX < BRICK_COUNT; brickX++)
                 {
-                    int brickXChunk = brickX * BRICK_SIZE;
+                    int brickXChunk = brickX * NOISE_SAMPLE_BRICK_SIZE;
                     int brickWorldX = chunk.Position.X + brickXChunk;
 
                     // Sample the noise at each corner of the brick.
-                    int brickWorldXExt = brickWorldX + BRICK_SIZE;
-                    int brickWorldYExt = brickWorldY + BRICK_SIZE;
-                    int brickWorldZExt = brickWorldZ + BRICK_SIZE;
+                    int brickWorldXExt = brickWorldX + NOISE_SAMPLE_BRICK_SIZE;
+                    int brickWorldYExt = brickWorldY + NOISE_SAMPLE_BRICK_SIZE;
+                    int brickWorldZExt = brickWorldZ + NOISE_SAMPLE_BRICK_SIZE;
                     float density000 = _densityNoise.GetNoise(brickWorldX, brickWorldY, brickWorldZ);
                     float density100 = _densityNoise.GetNoise(brickWorldXExt, brickWorldY, brickWorldZ);
                     float density010 = _densityNoise.GetNoise(brickWorldX, brickWorldYExt, brickWorldZ);
@@ -145,19 +145,19 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
                     float squash111 = _squashNoise.GetNoise(brickWorldXExt, brickWorldYExt, brickWorldZExt);
 
                     // Process each block within the brick.
-                    for (int blockZ = 0; blockZ < BRICK_SIZE; blockZ++)
+                    for (int blockZ = 0; blockZ < NOISE_SAMPLE_BRICK_SIZE; blockZ++)
                     {
                         int worldZ = brickWorldZ + blockZ;
-                        for (int blockY = 0; blockY < BRICK_SIZE; blockY++)
+                        for (int blockY = 0; blockY < NOISE_SAMPLE_BRICK_SIZE; blockY++)
                         {
                             int worldY = brickWorldY + blockY;
-                            for (int blockX = 0; blockX < BRICK_SIZE; blockX++)
+                            for (int blockX = 0; blockX < NOISE_SAMPLE_BRICK_SIZE; blockX++)
                             {
                                 int worldX = brickWorldX + blockX;
                                 // Calculate the relative position of the block within its brick.
-                                float rx = blockX / (float)BRICK_SIZE;
-                                float ry = blockY / (float)BRICK_SIZE;
-                                float rz = blockZ / (float)BRICK_SIZE;
+                                float rx = blockX / (float)NOISE_SAMPLE_BRICK_SIZE;
+                                float ry = blockY / (float)NOISE_SAMPLE_BRICK_SIZE;
+                                float rz = blockZ / (float)NOISE_SAMPLE_BRICK_SIZE;
 
                                 // Interpolate the noise value for the block's position.
                                 float density = TrilinearInterpolate(
@@ -202,6 +202,8 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
                 }
             }
         }
+        
+        DecorateSurface(chunk);
 
         DebugStats.StopChunkGeneration();
     }
@@ -244,6 +246,45 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         {
             ChunkBlockPosition pos = new(chunkX, chunkY, chunkZ);
             chunk.SetBlockState(pos, stone, out _, false);
+        }
+    }
+
+
+    private void DecorateSurface(Chunk chunk)   // TODO: Use a chunk heightmap
+    {
+        if (!chunk.ContainsRenderedBlocks)
+            return;
+
+        BlockState dirtBlockState = BlockRegistry.GetBlockDefaultState(2);
+        
+        for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
+        {
+            for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
+            {
+                int surfaceBlocksSet = 0;
+                int encounteredSolidBlocks = 0;
+                for (int y = Constants.CHUNK_SIDE_LENGTH - 1; y >= 0; y--)
+                {
+                    ChunkBlockPosition pos = new ChunkBlockPosition(x, y, z);
+                    BlockState blockState = chunk.GetBlockState(pos);
+
+                    if (blockState.IsAir)
+                    {
+                        surfaceBlocksSet = 0;
+                        continue;
+                    }
+                    encounteredSolidBlocks++;
+                    
+                    if (surfaceBlocksSet >= 3)
+                        continue;
+
+                    chunk.SetBlockState(pos, dirtBlockState, out _, false);
+
+                    surfaceBlocksSet++;
+                    if (encounteredSolidBlocks > 10)
+                        break;
+                }
+            }
         }
     }
 

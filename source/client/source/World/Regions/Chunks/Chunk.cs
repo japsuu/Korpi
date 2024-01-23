@@ -21,9 +21,7 @@ public class Chunk
     
     // State machine
     private ChunkState _currentState;
-
     private long _currentJobId;
-    private bool _containsRenderedBlocks;
     private bool _hasBeenMeshed;
     private ChunkOffsets.NeighbourOffsetFlags _neighboursToMeshDirty;
     private bool HasBeenGenerated => _currentState >= ChunkState.WAITING_FOR_MESHING;
@@ -52,6 +50,11 @@ public class Chunk
     /// Id of the job last executed on this chunk.
     /// </summary>
     public long CurrentJobId => Interlocked.Read(ref _currentJobId);
+    
+    /// <summary>
+    /// True if this chunk contains rendered blocks, false otherwise.
+    /// </summary>
+    public bool ContainsRenderedBlocks { get; private set; }
 
 
     public Chunk(Vector3i position)
@@ -60,7 +63,7 @@ public class Chunk
         Top = position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
         Bottom = position.Y;
         
-        _containsRenderedBlocks = false;
+        ContainsRenderedBlocks = false;
         ThreadLock = new ReaderWriterLockSlim();
         
         GameWorld.WorldEventPublished += WorldEventHandler;
@@ -182,7 +185,7 @@ public class Chunk
     public void SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock, bool delayedMeshDirtying)
     {
         _blockStorage.SetBlock(position, block, out oldBlock);
-        _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+        ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
 
         bool isChunkReady = _currentState == ChunkState.READY;
         bool renderedBlockChanged = oldBlock.IsRendered || block.IsRendered;
@@ -260,7 +263,7 @@ public class Chunk
 
     private void SetMeshDirty()
     {
-        if (!_containsRenderedBlocks)
+        if (!ContainsRenderedBlocks)
             return;
 
         if (_currentState != ChunkState.WAITING_FOR_MESHING)
@@ -307,7 +310,7 @@ public class Chunk
                 ChangeState(ChunkState.WAITING_FOR_MESHING);
                 break;
             case ChunkState.WAITING_FOR_MESHING:
-                if (_containsRenderedBlocks)
+                if (ContainsRenderedBlocks)
                 {
                     Debug.Assert(HasBeenGenerated, "Chunk contains rendered blocks but has not been generated.");
                     
