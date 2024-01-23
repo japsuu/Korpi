@@ -34,7 +34,7 @@ public class GameWorld
     {
         _name = name;
         RegionManager = new RegionManager();
-        TerrainGenerator = FlatTerrainGenerator.Default();
+        TerrainGenerator = Simplex3DTerrainGenerator.Default();
         EntityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
@@ -109,6 +109,12 @@ public class GameWorld
     public static void ReloadAllChunks()
     {
         PublishWorldEvent(WorldEvent.RELOAD_ALL_CHUNKS);
+    }
+
+
+    public static void RegenerateAllChunks()
+    {
+        PublishWorldEvent(WorldEvent.REGENERATE_ALL_CHUNKS);
     }
     
     

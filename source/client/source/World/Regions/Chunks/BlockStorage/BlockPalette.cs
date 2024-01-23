@@ -27,13 +27,13 @@ public class BlockPalette : IBlockStorage
     /// The palette of different blocks.
     /// Contains one entry for each unique block in the chunk.
     /// </summary>
-    private PaletteEntry[] _palette;
+    private PaletteEntry[] _palette = null!;
     
     /// <summary>
     /// The data buffer.
     /// Holds the indices of the blocks in <see cref="_palette"/>.
     /// </summary>
-    private BitBuffer _indices;
+    private BitBuffer _indices = null!;
     
     public int RenderedBlockCount { get; private set; }
 
@@ -41,6 +41,18 @@ public class BlockPalette : IBlockStorage
     public BlockPalette()
     {
         _sizeInBlocks = Constants.CHUNK_SIDE_LENGTH_CUBED;
+        Initialize();
+    }
+
+
+    public void Clear()
+    {
+        Initialize();
+    }
+
+
+    private void Initialize()
+    {
         _palette = new PaletteEntry[]
         {
             new(_sizeInBlocks, BlockRegistry.Air.GetDefaultState()),
@@ -48,7 +60,7 @@ public class BlockPalette : IBlockStorage
         };
         _indexLengthInBits = 1;
         _uniqueEntriesCount = 1;
-        _indices = new BitBuffer(_sizeInBlocks * _indexLengthInBits);    // The length is in bits, not bytes!
+        _indices = new BitBuffer(_sizeInBlocks * _indexLengthInBits);   // The length is in bits, not bytes!
     }
 
 

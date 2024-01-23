@@ -12,6 +12,7 @@ public class DebugModeConfig
     public bool RenderRegionBorders;
     public bool RenderChunkMeshState;
     public bool RenderSkybox = true;
+    public bool RenderCrosshair = true;
     public bool RenderRaycastPath;
     public bool RenderRaycastHit;
     public bool RenderRaycastHitBlock = true;

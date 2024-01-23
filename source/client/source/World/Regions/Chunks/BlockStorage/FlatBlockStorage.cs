@@ -31,4 +31,11 @@ public class FlatBlockStorage : IBlockStorage
     {
         return _blocks[position.Index];
     }
+
+
+    public void Clear()
+    {
+        Array.Clear(_blocks, 0, _blocks.Length);
+        RenderedBlockCount = 0;
+    }
 }

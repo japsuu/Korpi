@@ -147,12 +147,12 @@ public static class Constants
     /// <summary>
     /// Whether or not to load chunks in a circular or rectangular region around the player.
     /// </summary>
-    public const bool CIRCULAR_LOAD_REGION = true;
+    public const bool CIRCULAR_LOAD_REGION = false;
     
     /// <summary>
     /// The radius (in chunks) around the player to load chunks.
     /// </summary>
-    public const int CHUNK_COLUMN_LOAD_RADIUS = 8;
+    public const int CHUNK_COLUMN_LOAD_RADIUS = 14;
     
     /// <summary>
     /// The square of <see cref="CHUNK_COLUMN_LOAD_RADIUS"/>.
@@ -177,7 +177,7 @@ public static class Constants
     /// <summary>
     /// The amount of real seconds that pass per in-game day.
     /// </summary>
-    public const int REAL_SECONDS_PER_GAME_DAY = 1200 / 40;
+    public const int REAL_SECONDS_PER_GAME_DAY = 60*20;
     
     /// <summary>
     /// The amount of in-game days that pass per in-game month.

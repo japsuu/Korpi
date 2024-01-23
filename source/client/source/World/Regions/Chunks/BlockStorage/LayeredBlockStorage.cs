@@ -108,4 +108,13 @@ public class LayeredBlockStorage : IBlockStorage
 
         return layer.GetBlock(x, z);
     }
+
+
+    public void Clear()
+    {
+        for (int i = 0; i < _layers.Length; i++)
+        {
+            _layers[i] = null;
+        }
+    }
 }

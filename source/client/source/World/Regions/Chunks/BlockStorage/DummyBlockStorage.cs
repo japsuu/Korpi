@@ -18,4 +18,10 @@ public class DummyBlockStorage : IBlockStorage
     {
         return BlockRegistry.Air.GetDefaultState();
     }
+
+
+    public void Clear()
+    {
+        
+    }
 }

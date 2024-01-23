@@ -7,7 +7,7 @@ public static class ImGuiWindowManager
 {
     private static readonly Dictionary<ImGuiWindow, string> RegisteredWindows = new();
     
-    private static bool shouldRenderWindows = true;
+    private static bool shouldRenderWindows = false;
     
     
     public static void CreateDefaultWindows()
@@ -15,6 +15,7 @@ public static class ImGuiWindowManager
         MemoryProfilerWindow unused = new();
 #if DEBUG
         RenderingWindow unused1 = new();
+        GenerationWindow unused5 = new();
 #endif
         CameraWindow unused2 = new();
         DebugTextWindow unused3 = new();

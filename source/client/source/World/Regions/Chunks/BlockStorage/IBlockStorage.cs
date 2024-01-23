@@ -19,7 +19,7 @@ public interface IBlockStorage
     /// <param name="position">Position of the block relative to the chunk.</param>
     /// <param name="block">The block to set.</param>
     /// <param name="oldBlock">The old block that existed in the given location</param>
-    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock);
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock);   //TODO: Add variant without out parameter
 
     /// <summary>
     /// Gets the block at the given position.
@@ -27,4 +27,9 @@ public interface IBlockStorage
     /// <param name="position">Position of the block relative to the chunk.</param>
     /// <returns>The block at the given position. Air if none exists.</returns>
     public BlockState GetBlock(ChunkBlockPosition position);
+    
+    /// <summary>
+    /// Initializes the block storage with air blocks.
+    /// </summary>
+    public void Clear();
 }

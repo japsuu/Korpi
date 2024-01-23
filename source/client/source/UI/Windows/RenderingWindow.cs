@@ -41,6 +41,7 @@ public class RenderingWindow : ImGuiWindow
         if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.DebugModeConfig.EnableAmbientOcclusion))
             GameWorld.ReloadAllChunks();
         ImGui.Checkbox("Enable skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
+        ImGui.Checkbox("Enable crosshair", ref ClientConfig.DebugModeConfig.RenderCrosshair);
 
         ImGui.Separator();
         ImGui.Checkbox("Draw raycast path", ref ClientConfig.DebugModeConfig.RenderRaycastPath);

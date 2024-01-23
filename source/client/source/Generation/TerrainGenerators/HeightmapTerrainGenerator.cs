@@ -9,7 +9,7 @@ using OpenTK.Mathematics;
 
 namespace Korpi.Client.Generation.TerrainGenerators;
 
-public class SimplexTerrainGenerator : ITerrainGenerator
+public class HeightmapTerrainGenerator : ITerrainGenerator
 {
     private const int SEA_LEVEL = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 4 + 16;
     private const int TERRAIN_HEIGHT_MIN = SEA_LEVEL - 16;
@@ -19,7 +19,7 @@ public class SimplexTerrainGenerator : ITerrainGenerator
     private readonly FastNoiseLite _caveNoise;
 
 
-    private SimplexTerrainGenerator()
+    private HeightmapTerrainGenerator()
     {
         _heightmapNoise = new FastNoiseLite();
         _heightmapNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
@@ -27,12 +27,17 @@ public class SimplexTerrainGenerator : ITerrainGenerator
         _caveNoise = new FastNoiseLite();
         _caveNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         _caveNoise.SetFractalType(FastNoiseLite.FractalType.FBm); // Fractal Brownian Motion for a rough, natural look
+        _caveNoise.SetFractalOctaves(4);
+        _caveNoise.SetFractalLacunarity(2);
+        _caveNoise.SetFractalGain(0.5f);
+        _caveNoise.SetFrequency(0.01f);
+        _caveNoise.SetSeed(0);
     }
 
 
-    public static SimplexTerrainGenerator Default()
+    public static HeightmapTerrainGenerator Default()
     {
-        return new SimplexTerrainGenerator();
+        return new HeightmapTerrainGenerator();
     }
 
 

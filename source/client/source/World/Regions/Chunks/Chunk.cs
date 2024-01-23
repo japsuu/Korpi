@@ -76,6 +76,10 @@ public class Chunk
                 break;
             case WorldEvent.LOAD_REGION_CHANGED:
                 break;
+            case WorldEvent.REGENERATE_ALL_CHUNKS:
+                _blockStorage.Clear();
+                ChangeState(ChunkState.GENERATING_TERRAIN);
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(worldEvent), worldEvent, null);
         }
@@ -395,8 +399,10 @@ public class Chunk
             // Assert that the neighbour position is not below -Constants.CHUNK_SIDE_LENGTH. This exists because of the next check.
             Debug.Assert(neighbourPos.Y >= -Constants.CHUNK_SIDE_LENGTH, "I see you've implemented infinite world height. Good luck with that. Remove this assert if you know what you're doing.");
             
-            // Do not check chunks below the world, as they cannot generate. Without this check, the bottom-most chunks would never mesh.
+            // Do not check chunks below or on top of the world, as they cannot generate. Without this check, the bottom(or top)-most chunks would never mesh.
             if (neighbourPos.Y <= -Constants.CHUNK_SIDE_LENGTH)
+                continue;
+            if (neighbourPos.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
                 continue;
             
             Chunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
