@@ -28,7 +28,7 @@ public static class GlobalThreadPool
     /// The number of invocations executed on the main thread from the throttled queue per tick.
     /// Dynamically adjusted based on performance.
     /// </summary>
-    private static int throttledUpdatesPerTick;
+    private static int throttledUpdatesPerTick = MAX_THROTTLED_UPDATES_PER_TICK;
 
     /// <summary>
     /// The thread pool.
@@ -74,7 +74,7 @@ public static class GlobalThreadPool
 
     public static void FixedUpdate()
     {
-        throttledUpdatesPerTick = DynamicPerformance.GetDynamic(MIN_THROTTLED_UPDATES_PER_TICK, MAX_THROTTLED_UPDATES_PER_TICK);
+        // throttledUpdatesPerTick = DynamicPerformance.GetDynamic(MIN_THROTTLED_UPDATES_PER_TICK, MAX_THROTTLED_UPDATES_PER_TICK); //TODO: Research if this is needed.
         Debugging.DebugStats.ItemsInMainThreadThrottledQueue = (ulong)mainQueueThrottled.Count;
         Debugging.DebugStats.MainThreadThrottledQueueItemsPerTick = (ulong)throttledUpdatesPerTick;
 

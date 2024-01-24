@@ -56,7 +56,7 @@ public class GameWorld
     {
         RegionManager.Tick();
         EntityManager.FixedUpdate();
-        DebugStats.LoadedRegionCount = RegionManager.LoadedRegionsCount;
+        DebugStats.LoadedChunkCount = RegionManager.LoadedChunksCount;
     }
 
 

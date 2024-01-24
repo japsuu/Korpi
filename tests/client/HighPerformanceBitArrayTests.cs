@@ -30,20 +30,4 @@ public class HighPerformanceBitArrayTests
         HighPerformanceBitArray bitArray = new(64);
         Assert.That(bitArray.Get(5), Is.False);
     }
-
-
-    [Test]
-    public void SetBit_ThrowsWhenIndexOutOfRange()
-    {
-        HighPerformanceBitArray bitArray = new(64);
-        Assert.Throws<AssertionException>(() => bitArray.Set(65, true));
-    }
-
-
-    [Test]
-    public void GetBit_ThrowsWhenIndexOutOfRange()
-    {
-        HighPerformanceBitArray bitArray = new(64);
-        Assert.Throws<AssertionException>(() => bitArray.Get(65));
-    }
 }

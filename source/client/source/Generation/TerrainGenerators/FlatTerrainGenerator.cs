@@ -24,14 +24,7 @@ public class FlatTerrainGenerator : ITerrainGenerator
     }
 
 
-    public bool WillProcessChunk(SubChunk subChunk)
-    {
-        // Skip chunks above the terrain.
-        return subChunk.Bottom <= TERRAIN_HEIGHT;
-    }
-
-
-    public void ProcessChunk(in SubChunk subChunk)
+    public void ProcessChunk(in Chunk subChunk)
     {
         DebugStats.StartChunkGeneration();
         
@@ -48,8 +41,7 @@ public class FlatTerrainGenerator : ITerrainGenerator
                     if (worldY > TERRAIN_HEIGHT)
                         continue;
                     
-                    SubChunkBlockPosition pos = new(x, y, z);
-                    subChunk.SetBlockState(pos, stone, out _, false);
+                    subChunk.SetBlockState(x, y, z, stone, out _, false);
                 }
             }
         }

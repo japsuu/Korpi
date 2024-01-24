@@ -148,7 +148,7 @@ public class GameClient : GameWindow
         double deltaTime = args.Time;
         _fixedFrameAccumulator += deltaTime;
         
-        DynamicPerformance.Update(deltaTime);
+        // DynamicPerformance.Update(deltaTime);
  
         while (_fixedFrameAccumulator >= Constants.FIXED_DELTA_TIME)
         {
@@ -208,9 +208,9 @@ public class GameClient : GameWindow
         }
 
         DebugDrawer.Draw();
-#endif
 
         if (ClientConfig.DebugModeConfig.RenderCrosshair)
+#endif
             _crosshair.Draw();
 
         DrawImGui();

@@ -84,19 +84,11 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     }
 
 
-    // Skip chunks above the terrain.
-    public bool WillProcessChunk(Chunk chunk)
-    {
-        // return chunk.Bottom <= TERRAIN_HEIGHT_MAX;
-        return true;
-    }
-
-
     public void ProcessChunk(in Chunk chunk)
     {
         DebugStats.StartChunkGeneration();
 
-        if (chunk.X < 7 * Constants.SUBCHUNK_SIDE_LENGTH)
+        if (chunk.Position.X < 7 * Constants.SUBCHUNK_SIDE_LENGTH)
             return;
 
         BlockState stone = BlockRegistry.GetBlockDefaultState(1);
@@ -105,14 +97,14 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         for (int brickZ = 0; brickZ < BRICK_COUNT_H; brickZ++)
         {
             int brickZChunk = brickZ * NOISE_SAMPLE_BRICK_SIZE;
-            int brickWorldZ = chunk.Z + brickZChunk;
+            int brickWorldZ = chunk.Position.Y + brickZChunk;
             for (int brickY = 0; brickY < BRICK_COUNT_V; brickY++)
             {
                 int brickWorldY = brickY * NOISE_SAMPLE_BRICK_SIZE;
                 for (int brickX = 0; brickX < BRICK_COUNT_H; brickX++)
                 {
                     int brickXChunk = brickX * NOISE_SAMPLE_BRICK_SIZE;
-                    int brickWorldX = chunk.X + brickXChunk;
+                    int brickWorldX = chunk.Position.X + brickXChunk;
 
                     // Sample the noise at each corner of the brick.
                     int brickWorldXExt = brickWorldX + NOISE_SAMPLE_BRICK_SIZE;
@@ -248,7 +240,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     }
 
 
-    private void DecorateSurface(Chunk chunk)   // TODO: Use a chunk heightmap
+    private void DecorateSurface(Chunk chunk)
     {
         BlockState dirtBlockState = BlockRegistry.GetBlockDefaultState(2);
         
@@ -258,7 +250,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
             {
                 int surfaceBlocksSet = 0;
                 int encounteredSolidBlocks = 0;
-                for (int y = Constants.SUBCHUNK_SIDE_LENGTH - 1; y >= 0; y--)
+                for (int y = chunk.GetHighestBlock(x, z); y >= 0; y--)
                 {
                     BlockState blockState = chunk.GetBlockState(x, y, z);
 
@@ -285,7 +277,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
 
     private float GetTerrainHeight(float noise)
     {
-        float heightFactor = noise; //TODO: Implement
+        float heightFactor = noise; //TODO: Implement with curves.
         
         return _terrainBaseHeight + heightFactor * _terrainHeightMaxOffset;
     }
@@ -293,7 +285,6 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
 
     private float GetSquash(float squash)
     {
-        // return 1000;
         squash = (squash + 1) / 2; // squash is now between 0 and 1
         squash = squash * (_maxSquash - _minSquash) + _minSquash; // squash is now between minSquash and maxSquash
         return squash;

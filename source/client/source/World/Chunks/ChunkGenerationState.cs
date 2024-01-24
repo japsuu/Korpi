@@ -1,9 +1,9 @@
 ﻿namespace Korpi.Client.World.Chunks;
 
 /// <summary>
-/// Represents the state of the chunk.
+/// Represents the state of a chunk.
 /// </summary>
-public enum ChunkState
+public enum ChunkGenerationState
 {
     /// <summary>
     /// The chunk is uninitialized.
@@ -24,16 +24,6 @@ public enum ChunkState
     /// The chunk is queued for lighting generation.
     /// </summary>
     GENERATING_LIGHTING,
-
-    /// <summary>
-    /// The chunk is waiting for neighbouring chunks to be generated.
-    /// </summary>
-    WAITING_FOR_MESHING,
-
-    /// <summary>
-    /// The chunk is queued for meshing.
-    /// </summary>
-    MESHING,
 
     /// <summary>
     /// The chunk is ready.

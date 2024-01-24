@@ -2,8 +2,6 @@
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
-using Korpi.Client.Generation.Jobs;
-using Korpi.Client.Logging;
 using Korpi.Client.Meshing.Jobs;
 using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
@@ -17,19 +15,24 @@ namespace Korpi.Client.World.Chunks;
 
 public class SubChunk
 {
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(SubChunk));
+    
     private readonly IBlockStorage _blockStorage = new BlockPalette();
     
-    // State machine
-    private ChunkState _currentState;
     private long _currentJobId;
     private bool _hasBeenMeshed;
+    private ChunkMeshState _currentMeshState;
     private ChunkOffsets.NeighbourOffsetFlags _neighboursToMeshDirty;
-    private bool HasBeenGenerated => _currentState >= ChunkState.WAITING_FOR_MESHING;
-    
+
     /// <summary>
-    /// Position of this chunk in the world.
+    /// Position of this subchunk in the world.
     /// </summary>
     public readonly Vector3i Position;
+
+    /// <summary>
+    /// Position of the chunk which contains this subchunk in the world.
+    /// </summary>
+    public readonly Vector2i ChunkPosition;
     
     /// <summary>
     /// Highest possible Y value in this chunk.
@@ -50,42 +53,24 @@ public class SubChunk
     /// Id of the job last executed on this chunk.
     /// </summary>
     public long CurrentJobId => Interlocked.Read(ref _currentJobId);
-    
+
     /// <summary>
     /// True if this chunk contains rendered blocks, false otherwise.
     /// </summary>
-    public bool ContainsRenderedBlocks { get; private set; }
+    private bool _containsRenderedBlocks;
+
+    private bool HasBeenGenerated => _currentMeshState > ChunkMeshState.UNINITIALIZED;
 
 
     public SubChunk(Vector3i position)
     {
         Position = position;
+        ChunkPosition = new Vector2i(position.X, position.Z);
         Top = position.Y + Constants.SUBCHUNK_SIDE_LENGTH - 1;
         Bottom = position.Y;
         
-        ContainsRenderedBlocks = false;
+        _containsRenderedBlocks = false;
         ThreadLock = new ReaderWriterLockSlim();
-        
-        GameWorld.WorldEventPublished += WorldEventHandler;
-    }
-
-
-    private void WorldEventHandler(WorldEvent worldEvent)
-    {
-        switch (worldEvent)
-        {
-            case WorldEvent.RELOAD_ALL_CHUNKS:
-                SetMeshDirty();
-                break;
-            case WorldEvent.LOAD_REGION_CHANGED:
-                break;
-            case WorldEvent.REGENERATE_ALL_CHUNKS:
-                _blockStorage.Clear();
-                ChangeState(ChunkState.GENERATING_TERRAIN);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(worldEvent), worldEvent, null);
-        }
     }
 
 
@@ -157,55 +142,13 @@ public class SubChunk
 
     public void Load()
     {
-        ChangeState(ChunkState.GENERATING_TERRAIN);
+        
     }
 
 
     public void Unload()
     {
         ChunkRendererStorage.RemoveChunkMesh(Position);
-        ChangeState(ChunkState.UNINITIALIZED);
-    }
-
-
-    /// <summary>
-    /// Sets the block at the given position.
-    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
-    /// <code>
-    /// for z in range:
-    ///     for y in range:
-    ///         for x in range:
-    ///             block = BlockMap[x, y, z].
-    /// </code>
-    /// </summary>
-    /// <param name="position">SubChunk-relative position of the block</param>
-    /// <param name="block">Block to set</param>
-    /// <param name="delayedMeshDirtying">If true, the chunk mesh will not be marked dirty until <see cref="ExecuteDelayedMeshDirtying"/> is called.
-    /// Has only effect if <see cref="_currentState"/> is <see cref="ChunkState.READY"/></param>
-    public void SetBlockState(SubChunkBlockPosition position, BlockState block, bool delayedMeshDirtying)
-    {
-        _blockStorage.SetBlock(position, block, out BlockState oldBlock);
-        ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
-
-        bool isChunkReady = _currentState == ChunkState.READY;
-        bool renderedBlockChanged = oldBlock.IsRendered || block.IsRendered;
-        
-        // Only consider re-meshing if the chunk has been meshed before, is not meshed currently, and a rendered block was changed.
-        // NOTE: MIGHT cause mesh desync issues when settings blocks on chunk borders, but this needs to be tested.
-        // If multiple blocks are set with delayedMeshDirtying=false, only the first block would update the _neighboursToMeshDirty mask.
-        // This is because SetSelfAndNeighboursMeshDirty would be called for the first block, changing chunk state and changing _currentState.
-        if (!isChunkReady || !renderedBlockChanged)
-            return;
-        
-        // Cache the neighbours that would be affected by this change to dirty them,
-        // either when ExecuteDelayedMeshDirtying is called or if delayedMeshDirtying is false
-        ChunkOffsets.NeighbourOffsetFlags affectedNeighbours = ChunkOffsets.CalculateNeighboursFromOtherChunks(position);
-        _neighboursToMeshDirty |= affectedNeighbours;
-        
-        if (delayedMeshDirtying)
-            return;
-        
-        SetSelfAndNeighboursMeshDirty(_neighboursToMeshDirty);
     }
 
 
@@ -223,19 +166,19 @@ public class SubChunk
     /// <param name="block">Block to set</param>
     /// <param name="oldBlock">Old block at the given position</param>
     /// <param name="delayedMeshDirtying">If true, the chunk mesh will not be marked dirty until <see cref="ExecuteDelayedMeshDirtying"/> is called.
-    /// Has only effect if <see cref="_currentState"/> is <see cref="ChunkState.READY"/></param>
+    /// Has only effect if <see cref="_currentMeshState"/> is <see cref="ChunkGenerationState.READY"/></param>
     public void SetBlockState(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock, bool delayedMeshDirtying)
     {
         _blockStorage.SetBlock(position, block, out oldBlock);
-        ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+        _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
 
-        bool isChunkReady = _currentState == ChunkState.READY;
+        bool isChunkReady = _currentMeshState == ChunkMeshState.READY;
         bool renderedBlockChanged = oldBlock.IsRendered || block.IsRendered;
         
         // Only consider re-meshing if the chunk has been meshed before, is not meshed currently, and a rendered block was changed.
         // NOTE: MIGHT cause mesh desync issues when settings blocks on chunk borders, but this needs to be tested.
         // If multiple blocks are set with delayedMeshDirtying=false, only the first block would update the _neighboursToMeshDirty mask.
-        // This is because SetSelfAndNeighboursMeshDirty would be called for the first block, changing chunk state and changing _currentState.
+        // This is because SetSelfAndNeighboursMeshDirty would be called for the first block, changing chunk state and changing _currentMeshState.
         if (!isChunkReady || !renderedBlockChanged)
             return;
         
@@ -252,7 +195,7 @@ public class SubChunk
 
 
     /// <summary>
-    /// Indexes to the block at the given position.
+    /// Gets the block at the given position.
     /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
     /// <code>
     /// for z in range:
@@ -278,6 +221,93 @@ public class SubChunk
     }
 
 
+    internal void ChangeState(ChunkMeshState newState)
+    {
+        if (_currentMeshState == newState && newState != ChunkMeshState.UNINITIALIZED)
+        {
+            Logger.Warn($"SubChunk {Position} tried to change to state {newState} but is already in that state.");
+            return;
+        }
+        ChunkMeshState previousState = _currentMeshState;
+        OnExitState(previousState);
+        _currentMeshState = newState;
+        OnEnterState(newState);
+    }
+
+
+    private void OnEnterState(ChunkMeshState newState)
+    {
+        switch (newState)
+        {
+            case ChunkMeshState.UNINITIALIZED:
+                break;
+            case ChunkMeshState.WAITING_FOR_NEIGHBOURS:
+                if (_containsRenderedBlocks)
+                {
+                    Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
+                    
+                    // If the chunk contains rendered blocks, wait for neighbours to be generated before meshing
+                    if (Chunk.AreAllNeighboursGenerated(ChunkPosition, false))
+                        ChangeState(ChunkMeshState.MESHING);
+                }
+                else
+                {
+                    // Skip meshing if the chunk is empty
+                    ChangeState(ChunkMeshState.READY);
+                }
+                break;
+            case ChunkMeshState.MESHING:
+                Interlocked.Increment(ref _currentJobId);
+                GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY)), WorkItemPriority.High);
+                break;
+            case ChunkMeshState.READY:
+                _hasBeenMeshed = true;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+        }
+    }
+
+
+    private void ExecuteCurrentState()
+    {
+        switch (_currentMeshState)
+        {
+            case ChunkMeshState.UNINITIALIZED:
+                break;
+            case ChunkMeshState.WAITING_FOR_NEIGHBOURS:
+                Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
+                if (Chunk.AreAllNeighboursGenerated(ChunkPosition, false))
+                    ChangeState(ChunkMeshState.MESHING);
+                break;
+            case ChunkMeshState.MESHING:
+                break;
+            case ChunkMeshState.READY:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+
+    private void OnExitState(ChunkMeshState previousState)
+    {
+        switch (previousState)
+        {
+            case ChunkMeshState.UNINITIALIZED:
+                break;
+            case ChunkMeshState.WAITING_FOR_NEIGHBOURS:
+                break;
+            case ChunkMeshState.MESHING:
+                break;
+            case ChunkMeshState.READY:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(previousState), previousState, null);
+        }
+    }
+
+
     private void SetSelfAndNeighboursMeshDirty(ChunkOffsets.NeighbourOffsetFlags neighbours)
     {
         SetMeshDirty();
@@ -294,7 +324,9 @@ public class SubChunk
         foreach (Vector3i vector in ChunkOffsets.OffsetsAsChunkVectors(flags))
         {
             Vector3i neighbourPos = Position + vector;
-            SubChunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
+            if (neighbourPos.Y < 0 || neighbourPos.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+                continue;
+            SubChunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetSubChunkAt(neighbourPos);
 
             neighbourChunk?.SetMeshDirty();
         }
@@ -303,168 +335,20 @@ public class SubChunk
     }
 
 
-    private void SetMeshDirty()
+    internal void SetMeshDirty()
     {
-        if (!ContainsRenderedBlocks)
+        if (!_containsRenderedBlocks)
             return;
 
-        if (_currentState != ChunkState.WAITING_FOR_MESHING)
-            ChangeState(ChunkState.WAITING_FOR_MESHING);
+        if (_currentMeshState != ChunkMeshState.WAITING_FOR_NEIGHBOURS)
+            ChangeState(ChunkMeshState.WAITING_FOR_NEIGHBOURS);
     }
 
 
-    private void ChangeState(ChunkState newState)
+    internal void Reset()
     {
-        if (_currentState == newState)
-        {
-            Logger.LogWarning($"SubChunk {Position} tried to change to state {newState} but is already in that state.");
-            return;
-        }
-        ChunkState previousState = _currentState;
-        OnExitState(previousState);
-        _currentState = newState;
-        OnEnterState(newState);
-    }
-
-
-    private void OnEnterState(ChunkState newState)
-    {
-        switch (newState)
-        {
-            case ChunkState.UNINITIALIZED:
-                break;
-            case ChunkState.GENERATING_TERRAIN:
-                if (GameWorld.CurrentGameWorld.TerrainGenerator.WillProcessChunk(this))
-                {
-                    Interlocked.Increment(ref _currentJobId);
-                    GlobalThreadPool.DispatchJob(
-                        new GenerationJob(_currentJobId, this, () => ChangeState(ChunkState.GENERATING_DECORATION)), WorkItemPriority.Normal);
-                }
-                else
-                {
-                    ChangeState(ChunkState.GENERATING_DECORATION);
-                }
-                break;
-            case ChunkState.GENERATING_DECORATION:
-                ChangeState(ChunkState.GENERATING_LIGHTING);
-                break;
-            case ChunkState.GENERATING_LIGHTING:
-                ChangeState(ChunkState.WAITING_FOR_MESHING);
-                break;
-            case ChunkState.WAITING_FOR_MESHING:
-                if (ContainsRenderedBlocks)
-                {
-                    Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
-                    
-                    // If the chunk contains rendered blocks, wait for neighbours to be generated before meshing
-                    if (AreAllNeighboursGenerated(false))
-                        ChangeState(ChunkState.MESHING);
-                }
-                else
-                {
-                    // Skip meshing if the chunk is empty
-                    ChangeState(ChunkState.READY);
-                }
-                break;
-            case ChunkState.MESHING:
-                Interlocked.Increment(ref _currentJobId);
-                GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkState.READY)), WorkItemPriority.High);
-                break;
-            case ChunkState.READY:
-                _hasBeenMeshed = true;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
-        }
-    }
-
-
-    private void ExecuteCurrentState()
-    {
-        switch (_currentState)
-        {
-            case ChunkState.UNINITIALIZED:
-                break;
-            case ChunkState.GENERATING_TERRAIN:
-                break;
-            case ChunkState.GENERATING_DECORATION:
-                break;
-            case ChunkState.GENERATING_LIGHTING:
-                break;
-            case ChunkState.WAITING_FOR_MESHING:
-                Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
-                if (AreAllNeighboursGenerated(false))
-                    ChangeState(ChunkState.MESHING);
-                break;
-            case ChunkState.MESHING:
-                break;
-            case ChunkState.READY:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
-
-    private void OnExitState(ChunkState previousState)
-    {
-        switch (previousState)
-        {
-            case ChunkState.UNINITIALIZED:
-                break;
-            case ChunkState.GENERATING_TERRAIN:
-                break;
-            case ChunkState.GENERATING_DECORATION:
-                break;
-            case ChunkState.GENERATING_LIGHTING:
-                break;
-            case ChunkState.WAITING_FOR_MESHING:
-                break;
-            case ChunkState.MESHING:
-                break;
-            case ChunkState.READY:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(previousState), previousState, null);
-        }
-    }
-
-
-    /// <summary>
-    /// Checks if all neighbouring chunks of this chunk are generated.
-    /// </summary>
-    /// <param name="excludeMissingChunks">If true, chunks that are not loaded are excluded from neighbourhood checks</param>
-    /// <returns>True if all neighbouring chunks are generated, false otherwise</returns>
-    private bool AreAllNeighboursGenerated(bool excludeMissingChunks)
-    {
-        foreach (Vector3i chunkOffset in ChunkOffsets.ChunkNeighbourOffsets)
-        {
-            Vector3i neighbourPos = Position + chunkOffset;
-            
-            // Assert that the neighbour position is not below -Constants.SUBCHUNK_SIDE_LENGTH. This exists because of the next check.
-            Debug.Assert(neighbourPos.Y >= -Constants.SUBCHUNK_SIDE_LENGTH, "I see you've implemented infinite world height. Good luck with that. Remove this assert if you know what you're doing.");
-            
-            // Do not check chunks below or on top of the world, as they cannot generate. Without this check, the bottom(or top)-most chunks would never mesh.
-            if (neighbourPos.Y <= -Constants.SUBCHUNK_SIDE_LENGTH)
-                continue;
-            if (neighbourPos.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
-                continue;
-            
-            SubChunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
-
-            if (neighbourChunk == null)
-            {
-                if (!excludeMissingChunks)
-                    return false;
-            }
-            else
-            {
-                if (!neighbourChunk.HasBeenGenerated)
-                    return false;
-            }
-        }
-        
-        return true;
+        _blockStorage.Clear();
+        ChangeState(ChunkMeshState.UNINITIALIZED);
     }
 
 
@@ -477,32 +361,14 @@ public class SubChunk
         const float halfAChunk = Constants.SUBCHUNK_SIDE_LENGTH / 2f;
         Vector3 centerOffset = new(halfAChunk, 0, halfAChunk);
 
-        Color4 color = Color4.White;
-        switch (_currentState)
+        Color4 color = _currentMeshState switch
         {
-            case ChunkState.UNINITIALIZED:
-                break;
-            case ChunkState.GENERATING_TERRAIN:
-                color = Color4.Red;
-                break;
-            case ChunkState.GENERATING_DECORATION:
-                color = Color4.Blue;
-                break;
-            case ChunkState.GENERATING_LIGHTING:
-                color = Color4.Yellow;
-                break;
-            case ChunkState.WAITING_FOR_MESHING:
-                color = Color4.Orange;
-                break;
-            case ChunkState.MESHING:
-                color = Color4.Cyan;
-                break;
-            case ChunkState.READY:
-                color = Color4.Green;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            ChunkMeshState.UNINITIALIZED => Color4.Red,
+            ChunkMeshState.WAITING_FOR_NEIGHBOURS => Color4.Orange,
+            ChunkMeshState.MESHING => Color4.Yellow,
+            ChunkMeshState.READY => Color4.Green,
+            _ => throw new ArgumentOutOfRangeException()
+        };
         DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.SUBCHUNK_SIDE_LENGTH, color);
     }
 #endif

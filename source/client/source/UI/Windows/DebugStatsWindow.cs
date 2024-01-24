@@ -30,12 +30,12 @@ public class DebugStatsWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        uint loadedChunksApprox = (uint)DebugStats.LoadedRegionCount * Constants.CHUNK_HEIGHT_SUBCHUNKS;
+        uint loadedSubchunksApprox = (uint)DebugStats.LoadedChunkCount * Constants.CHUNK_HEIGHT_SUBCHUNKS;
         const uint chunkSizeCubed = Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
-        uint loadedBlocksApprox = loadedChunksApprox * chunkSizeCubed;
+        uint loadedBlocksApprox = loadedSubchunksApprox * chunkSizeCubed;
         
         string loadedBlocksApproxFormatted = loadedBlocksApprox.ToString("#,0", _largeNumberFormat);
-        string loadedChunksApproxFormatted = loadedChunksApprox.ToString("#,0", _largeNumberFormat);
+        string loadedSubchunksApproxFormatted = loadedSubchunksApprox.ToString("#,0", _largeNumberFormat);
         string renderedTris = DebugStats.RenderedTris.ToString("#,0", _largeNumberFormat);
         
         float averageFps = ImGui.GetIO().Framerate;
@@ -58,13 +58,14 @@ public class DebugStatsWindow : ImGuiWindow
 
         ImGui.Separator();
         ImGui.Text("Loaded regions");
+        ImGui.Text($"Loaded chunks = {DebugStats.LoadedChunkCount}");
+        ImGui.Text($"Loaded subchunks (approx) = {loadedSubchunksApproxFormatted}");
         ImGui.Text($"Loaded blocks (approx) = {loadedBlocksApproxFormatted}");
-        ImGui.Text($"Loaded chunks (approx) = {loadedChunksApproxFormatted}");
-        ImGui.Text($"Loaded regions = {DebugStats.LoadedRegionCount}");
 
         ImGui.Separator();
         ImGui.Text("Global Thread Pool");
         ImGui.Text($"Threads = {GlobalThreadPool.ThreadCount}");
+        ImGui.Text($"Available Threads = {DebugStats.AvailableThreads}");
         ImGui.Text($"In queue = {DebugStats.ItemsInMainThreadQueue}");
         ImGui.Text($"In queue (throttled) = {DebugStats.ItemsInMainThreadThrottledQueue}");
         ImGui.Text($"Throttled items per tick = {DebugStats.MainThreadThrottledQueueItemsPerTick}");

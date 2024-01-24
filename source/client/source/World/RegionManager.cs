@@ -32,7 +32,7 @@ public class RegionManager
     /// </summary>
     private List<Vector2i> _regionLoadSpiral = null!;
 
-    public int LoadedRegionsCount => _existingRegions.Count;
+    public int LoadedChunksCount => _existingRegions.Count;
 
 
     public RegionManager()
@@ -71,7 +71,7 @@ public class RegionManager
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector3i chunkPos = CoordinateUtils.WorldToChunk(Camera.RenderingCamera.Position);
+            Vector3i chunkPos = CoordinateUtils.WorldToSubChunk(Camera.RenderingCamera.Position);
             DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
@@ -100,21 +100,35 @@ public class RegionManager
 
     
     /// <summary>
-    /// Gets the chunk at the given position.
+    /// Gets the subchunk at the given position.
     /// Thread safe.
     /// </summary>
     /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
-    public SubChunk? GetChunkAt(Vector3i position)
+    public SubChunk? GetSubChunkAt(Vector3i position)
     {
         Vector2i chunkColumnPos = CoordinateUtils.WorldToColumn(position);
 
         if (!_existingRegions.TryGetValue(chunkColumnPos, out Chunk? column))
-            //Logger.LogWarning($"Tried to get unloaded Chunk at {position} ({chunkColumnPos})!");
             return null;
         
-        Debug.Assert(position.Y < 0 || position.Y >= Constants.CHUNK_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
+        Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
 
-        return column.GetChunkAtHeight(position.Y);
+        return column.GetSubchunkAtHeight(position.Y);
+    }
+
+    
+    /// <summary>
+    /// Gets the chunk at the given position.
+    /// Thread safe.
+    /// </summary>
+    /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
+    public Chunk? GetChunkAt(Vector2i chunkPos)
+    {
+        Debug.Assert(chunkPos.X % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the X coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
+        Debug.Assert(chunkPos.Y % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the Y coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
+
+        _existingRegions.TryGetValue(chunkPos, out Chunk? chunk);
+        return chunk;
     }
 
 
@@ -127,7 +141,7 @@ public class RegionManager
     /// <param name="cache">Array to fill with BlockState data</param>
     public void FillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache)
     {
-        SubChunk? loadedChunk = GetChunkAt(chunkOriginPos);
+        SubChunk? loadedChunk = GetSubChunkAt(chunkOriginPos);
 
         if (loadedChunk == null)
             throw new InvalidOperationException($"Tried to fill meshing cache at {chunkOriginPos}, but the chunk was not loaded!");
@@ -147,7 +161,10 @@ public class RegionManager
     /// <returns></returns>
     public BlockState GetBlockStateAtWorld(Vector3i worldPosition)
     {
-        SubChunk? chunk = GetChunkAt(worldPosition);
+        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+            return BlockRegistry.Air.GetDefaultState();
+        
+        SubChunk? chunk = GetSubChunkAt(worldPosition);
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
@@ -165,7 +182,10 @@ public class RegionManager
     /// <returns></returns>
     public BlockState SetBlockStateAtWorld(Vector3i worldPosition, BlockState blockState)
     {
-        SubChunk? chunk = GetChunkAt(worldPosition);
+        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+            return BlockRegistry.Air.GetDefaultState();
+        
+        SubChunk? chunk = GetSubChunkAt(worldPosition);
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
@@ -239,7 +259,7 @@ public class RegionManager
     {
         foreach (Vector2i columnPos in _regionsToLoad)
         {
-            Chunk column = new(columnPos.X, columnPos.Y);
+            Chunk column = new(columnPos);
             column.Load();
             if (!_existingRegions.TryAdd(columnPos, column))
                 Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");

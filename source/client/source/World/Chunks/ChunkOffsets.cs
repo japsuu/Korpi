@@ -93,7 +93,7 @@ public static class ChunkOffsets
     /// <summary>
     /// Contains the offsets of all 8 neighbouring columns of a column.
     /// </summary>
-    public static readonly Vector2i[] RegionNeighbourOffsets =
+    public static readonly Vector2i[] ChunkNeighbourOffsets =
     {
         // 4 Corners
         new(1 * Constants.SUBCHUNK_SIDE_LENGTH, 1 * Constants.SUBCHUNK_SIDE_LENGTH),
@@ -109,9 +109,9 @@ public static class ChunkOffsets
     };
 
     /// <summary>
-    /// Contains the offsets of all 26 neighbouring chunks of a chunk.
+    /// Contains the offsets of all 26 neighbouring chunks of a subchunk.
     /// </summary>
-    public static readonly Vector3i[] ChunkNeighbourOffsets;
+    public static readonly Vector3i[] SubChunkNeighbourOffsets;
     
     
     /// <summary>
@@ -143,7 +143,7 @@ public static class ChunkOffsets
         
         for (int i = 0; i < 26; i++)
         {
-            Vector3i offset = ChunkNeighbourOffsets[i];
+            Vector3i offset = SubChunkNeighbourOffsets[i];
             if (flags.HasFlag((NeighbourOffsetFlags)(1 << i)))
             {
                 yield return offset;
@@ -243,10 +243,10 @@ public static class ChunkOffsets
 
     static ChunkOffsets()
     {
-        ChunkNeighbourOffsets = new Vector3i[26];
+        SubChunkNeighbourOffsets = new Vector3i[26];
         for (int i = 0; i < 26; i++)
         {
-            ChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.SUBCHUNK_SIDE_LENGTH;
+            SubChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.SUBCHUNK_SIDE_LENGTH;
         }
     }
 }

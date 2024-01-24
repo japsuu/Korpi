@@ -39,7 +39,7 @@ public class ChunkHeightmap
         _blockmap.Set(blockIndex, false);
         
         if (y == _heightmap[columnIndex])
-            _heightmap[columnIndex] = GetHighestBlockInColumn(columnIndex);
+            _heightmap[columnIndex] = GetHighestBlockInColumn(x, z);
     }
     
     
@@ -50,11 +50,12 @@ public class ChunkHeightmap
     }
 
 
-    private int GetHighestBlockInColumn(int heightmapIndex)
+    private int GetHighestBlockInColumn(int x, int z)
     {
         for (int y = Constants.SUBCHUNK_SIDE_LENGTH - 1; y >= 0; y--)
         {
-            if (_blockmap.Get(y + heightmapIndex * Constants.SUBCHUNK_SIDE_LENGTH))
+            int blockIndex = GetBlockIndex(x, y, z);
+            if (_blockmap.Get(blockIndex))
                 return y;
         }
         return -1;
