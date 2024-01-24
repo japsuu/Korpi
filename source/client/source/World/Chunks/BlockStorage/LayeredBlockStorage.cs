@@ -1,8 +1,8 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Client.Registries;
-using Korpi.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.World.Chunks.Blocks;
 
-namespace Korpi.Client.World.Regions.Chunks.BlockStorage;
+namespace Korpi.Client.World.Chunks.BlockStorage;
 
 /// <summary>
 /// Stores <see cref="BlockLayer"/>s, which in turn store the blocks in a flat array
@@ -36,7 +36,7 @@ public class LayeredBlockStorage : IBlockStorage
                 if (block != _singleBlock)
                 {
                     _hasOnlyOneBlockType = false;
-                    _blocks = new BlockState[Constants.CHUNK_SIDE_LENGTH_SQUARED];
+                    _blocks = new BlockState[Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH];
                     _blocks[GetIndex(x, z)] = block;
                 }
             }
@@ -59,16 +59,16 @@ public class LayeredBlockStorage : IBlockStorage
         private int GetIndex(int x, int z)
         {
             // Calculate the index in a way that minimizes cache trashing.
-            return x + Constants.CHUNK_SIDE_LENGTH * z;
+            return x + Constants.SUBCHUNK_SIDE_LENGTH * z;
         }
     }
     
-    private readonly BlockLayer?[] _layers = new BlockLayer[Constants.CHUNK_SIDE_LENGTH];
+    private readonly BlockLayer?[] _layers = new BlockLayer[Constants.SUBCHUNK_SIDE_LENGTH];
     
     public int RenderedBlockCount { get; private set; }
     
     
-    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+    public void SetBlock(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
         int x = position.X;
         int y = position.Y;
@@ -96,7 +96,7 @@ public class LayeredBlockStorage : IBlockStorage
     }
 
 
-    public BlockState GetBlock(ChunkBlockPosition position)
+    public BlockState GetBlock(SubChunkBlockPosition position)
     {
         int x = position.X;
         int y = position.Y;

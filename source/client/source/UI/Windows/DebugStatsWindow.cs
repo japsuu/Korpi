@@ -30,8 +30,9 @@ public class DebugStatsWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        uint loadedChunksApprox = (uint)DebugStats.LoadedRegionCount * Constants.CHUNK_COLUMN_HEIGHT;
-        uint loadedBlocksApprox = loadedChunksApprox * Constants.CHUNK_SIDE_LENGTH_CUBED;
+        uint loadedChunksApprox = (uint)DebugStats.LoadedRegionCount * Constants.CHUNK_HEIGHT_SUBCHUNKS;
+        const uint chunkSizeCubed = Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
+        uint loadedBlocksApprox = loadedChunksApprox * chunkSizeCubed;
         
         string loadedBlocksApproxFormatted = loadedBlocksApprox.ToString("#,0", _largeNumberFormat);
         string loadedChunksApproxFormatted = loadedChunksApprox.ToString("#,0", _largeNumberFormat);

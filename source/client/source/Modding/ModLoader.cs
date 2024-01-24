@@ -4,7 +4,7 @@ using Korpi.Client.Logging;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Registries;
 using Korpi.Client.Utils;
-using Korpi.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.World.Chunks.Blocks;
 
 namespace Korpi.Client.Modding;
 

@@ -1,4 +1,4 @@
-﻿using Korpi.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Physics;

@@ -1,7 +1,7 @@
 ﻿using Korpi.Client.Configuration;
 using OpenTK.Mathematics;
 
-namespace Korpi.Client.World.Regions.Chunks;
+namespace Korpi.Client.World.Chunks;
 
 public static class ChunkOffsets
 {
@@ -96,16 +96,16 @@ public static class ChunkOffsets
     public static readonly Vector2i[] RegionNeighbourOffsets =
     {
         // 4 Corners
-        new(1 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
-        new(-1 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
-        new(-1 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
-        new(1 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
+        new(1 * Constants.SUBCHUNK_SIDE_LENGTH, 1 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(-1 * Constants.SUBCHUNK_SIDE_LENGTH, 1 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(-1 * Constants.SUBCHUNK_SIDE_LENGTH, -1 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(1 * Constants.SUBCHUNK_SIDE_LENGTH, -1 * Constants.SUBCHUNK_SIDE_LENGTH),
 
         // 4 Faces
-        new(1 * Constants.CHUNK_SIDE_LENGTH, 0 * Constants.CHUNK_SIDE_LENGTH),
-        new(0 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
-        new(-1 * Constants.CHUNK_SIDE_LENGTH, 0 * Constants.CHUNK_SIDE_LENGTH),
-        new(0 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
+        new(1 * Constants.SUBCHUNK_SIDE_LENGTH, 0 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(0 * Constants.SUBCHUNK_SIDE_LENGTH, 1 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(-1 * Constants.SUBCHUNK_SIDE_LENGTH, 0 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(0 * Constants.SUBCHUNK_SIDE_LENGTH, -1 * Constants.SUBCHUNK_SIDE_LENGTH),
     };
 
     /// <summary>
@@ -158,13 +158,13 @@ public static class ChunkOffsets
     /// </summary>
     /// <param name="position">Position of the block that was changed</param>
     /// <returns>Flags indicating which neighbouring chunks are affected</returns>
-    public static NeighbourOffsetFlags CalculateNeighboursFromOtherChunks(ChunkBlockPosition position)
+    public static NeighbourOffsetFlags CalculateNeighboursFromOtherChunks(SubChunkBlockPosition position)
     {
-        bool isXPositive = position.X == Constants.CHUNK_SIDE_LENGTH_MAX_INDEX;
+        bool isXPositive = position.X == Constants.SUBCHUNK_SIDE_LENGTH - 1;
         bool isXNegative = position.X == 0;
-        bool isYPositive = position.Y == Constants.CHUNK_SIDE_LENGTH_MAX_INDEX;
+        bool isYPositive = position.Y == Constants.SUBCHUNK_SIDE_LENGTH - 1;
         bool isYNegative = position.Y == 0;
-        bool isZPositive = position.Z == Constants.CHUNK_SIDE_LENGTH_MAX_INDEX;
+        bool isZPositive = position.Z == Constants.SUBCHUNK_SIDE_LENGTH - 1;
         bool isZNegative = position.Z == 0;
         
         NeighbourOffsetFlags affectedNeighbours = NeighbourOffsetFlags.None;
@@ -246,7 +246,7 @@ public static class ChunkOffsets
         ChunkNeighbourOffsets = new Vector3i[26];
         for (int i = 0; i < 26; i++)
         {
-            ChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.CHUNK_SIDE_LENGTH;
+            ChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.SUBCHUNK_SIDE_LENGTH;
         }
     }
 }

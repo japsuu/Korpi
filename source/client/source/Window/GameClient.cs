@@ -111,7 +111,7 @@ public class GameClient : GameWindow
         _gameWorldRenderer = new GameWorldRenderer(_gameWorld);
 
         // PlayerEntity initialization.
-        _playerEntity = new PlayerEntity(new Vector3(0, Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 2f, 0), 0, 0);
+        _playerEntity = new PlayerEntity(new Vector3(0, Constants.CHUNK_HEIGHT_BLOCKS / 2f, 0), 0, 0);
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
             PhotoModeCamera.Create(new Vector3(0, 256, 48), -30, -100);

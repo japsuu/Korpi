@@ -9,13 +9,13 @@ using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Pooling;
-using Korpi.Client.World.Regions.Chunks.Blocks;
-using Korpi.Client.World.Regions.Chunks.BlockStorage;
+using Korpi.Client.World.Chunks.Blocks;
+using Korpi.Client.World.Chunks.BlockStorage;
 using OpenTK.Mathematics;
 
-namespace Korpi.Client.World.Regions.Chunks;
+namespace Korpi.Client.World.Chunks;
 
-public class Chunk
+public class SubChunk
 {
     private readonly IBlockStorage _blockStorage = new BlockPalette();
     
@@ -57,10 +57,10 @@ public class Chunk
     public bool ContainsRenderedBlocks { get; private set; }
 
 
-    public Chunk(Vector3i position)
+    public SubChunk(Vector3i position)
     {
         Position = position;
-        Top = position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
+        Top = position.Y + Constants.SUBCHUNK_SIDE_LENGTH - 1;
         Bottom = position.Y;
         
         ContainsRenderedBlocks = false;
@@ -128,7 +128,7 @@ public class Chunk
     private bool IsOnFrustum(Frustum viewFrustum)
     {
         Vector3 min = Position;
-        Vector3 max = Position + new Vector3(Constants.CHUNK_SIDE_LENGTH);
+        Vector3 max = Position + new Vector3(Constants.SUBCHUNK_SIDE_LENGTH);
 
         foreach (FrustumPlane plane in viewFrustum.Planes)
         {
@@ -163,12 +163,13 @@ public class Chunk
 
     public void Unload()
     {
+        ChunkRendererStorage.RemoveChunkMesh(Position);
         ChangeState(ChunkState.UNINITIALIZED);
     }
 
 
     /// <summary>
-    /// Indexes to the block at the given position.
+    /// Sets the block at the given position.
     /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
     /// <code>
     /// for z in range:
@@ -177,12 +178,53 @@ public class Chunk
     ///             block = BlockMap[x, y, z].
     /// </code>
     /// </summary>
-    /// <param name="position">Chunk-relative position of the block</param>
+    /// <param name="position">SubChunk-relative position of the block</param>
+    /// <param name="block">Block to set</param>
+    /// <param name="delayedMeshDirtying">If true, the chunk mesh will not be marked dirty until <see cref="ExecuteDelayedMeshDirtying"/> is called.
+    /// Has only effect if <see cref="_currentState"/> is <see cref="ChunkState.READY"/></param>
+    public void SetBlockState(SubChunkBlockPosition position, BlockState block, bool delayedMeshDirtying)
+    {
+        _blockStorage.SetBlock(position, block, out BlockState oldBlock);
+        ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+
+        bool isChunkReady = _currentState == ChunkState.READY;
+        bool renderedBlockChanged = oldBlock.IsRendered || block.IsRendered;
+        
+        // Only consider re-meshing if the chunk has been meshed before, is not meshed currently, and a rendered block was changed.
+        // NOTE: MIGHT cause mesh desync issues when settings blocks on chunk borders, but this needs to be tested.
+        // If multiple blocks are set with delayedMeshDirtying=false, only the first block would update the _neighboursToMeshDirty mask.
+        // This is because SetSelfAndNeighboursMeshDirty would be called for the first block, changing chunk state and changing _currentState.
+        if (!isChunkReady || !renderedBlockChanged)
+            return;
+        
+        // Cache the neighbours that would be affected by this change to dirty them,
+        // either when ExecuteDelayedMeshDirtying is called or if delayedMeshDirtying is false
+        ChunkOffsets.NeighbourOffsetFlags affectedNeighbours = ChunkOffsets.CalculateNeighboursFromOtherChunks(position);
+        _neighboursToMeshDirty |= affectedNeighbours;
+        
+        if (delayedMeshDirtying)
+            return;
+        
+        SetSelfAndNeighboursMeshDirty(_neighboursToMeshDirty);
+    }
+
+
+    /// <summary>
+    /// Sets the block at the given position and returns the old block.
+    /// If looping through a lot of blocks, make sure to iterate in z,y,x order to preserve cache locality:
+    /// <code>
+    /// for z in range:
+    ///     for y in range:
+    ///         for x in range:
+    ///             block = BlockMap[x, y, z].
+    /// </code>
+    /// </summary>
+    /// <param name="position">SubChunk-relative position of the block</param>
     /// <param name="block">Block to set</param>
     /// <param name="oldBlock">Old block at the given position</param>
     /// <param name="delayedMeshDirtying">If true, the chunk mesh will not be marked dirty until <see cref="ExecuteDelayedMeshDirtying"/> is called.
     /// Has only effect if <see cref="_currentState"/> is <see cref="ChunkState.READY"/></param>
-    public void SetBlockState(ChunkBlockPosition position, BlockState block, out BlockState oldBlock, bool delayedMeshDirtying)
+    public void SetBlockState(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock, bool delayedMeshDirtying)
     {
         _blockStorage.SetBlock(position, block, out oldBlock);
         ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
@@ -219,7 +261,7 @@ public class Chunk
     ///          block = BlockMap[x, y, z]
     /// </code>
     /// </summary>
-    public BlockState GetBlockState(ChunkBlockPosition position)
+    public BlockState GetBlockState(SubChunkBlockPosition position)
     {
         return _blockStorage.GetBlock(position);
     }
@@ -252,7 +294,7 @@ public class Chunk
         foreach (Vector3i vector in ChunkOffsets.OffsetsAsChunkVectors(flags))
         {
             Vector3i neighbourPos = Position + vector;
-            Chunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
+            SubChunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
 
             neighbourChunk?.SetMeshDirty();
         }
@@ -275,7 +317,7 @@ public class Chunk
     {
         if (_currentState == newState)
         {
-            Logger.LogWarning($"Chunk {Position} tried to change to state {newState} but is already in that state.");
+            Logger.LogWarning($"SubChunk {Position} tried to change to state {newState} but is already in that state.");
             return;
         }
         ChunkState previousState = _currentState;
@@ -312,7 +354,7 @@ public class Chunk
             case ChunkState.WAITING_FOR_MESHING:
                 if (ContainsRenderedBlocks)
                 {
-                    Debug.Assert(HasBeenGenerated, "Chunk contains rendered blocks but has not been generated.");
+                    Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
                     
                     // If the chunk contains rendered blocks, wait for neighbours to be generated before meshing
                     if (AreAllNeighboursGenerated(false))
@@ -350,7 +392,7 @@ public class Chunk
             case ChunkState.GENERATING_LIGHTING:
                 break;
             case ChunkState.WAITING_FOR_MESHING:
-                Debug.Assert(HasBeenGenerated, "Chunk contains rendered blocks but has not been generated.");
+                Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
                 if (AreAllNeighboursGenerated(false))
                     ChangeState(ChunkState.MESHING);
                 break;
@@ -399,16 +441,16 @@ public class Chunk
         {
             Vector3i neighbourPos = Position + chunkOffset;
             
-            // Assert that the neighbour position is not below -Constants.CHUNK_SIDE_LENGTH. This exists because of the next check.
-            Debug.Assert(neighbourPos.Y >= -Constants.CHUNK_SIDE_LENGTH, "I see you've implemented infinite world height. Good luck with that. Remove this assert if you know what you're doing.");
+            // Assert that the neighbour position is not below -Constants.SUBCHUNK_SIDE_LENGTH. This exists because of the next check.
+            Debug.Assert(neighbourPos.Y >= -Constants.SUBCHUNK_SIDE_LENGTH, "I see you've implemented infinite world height. Good luck with that. Remove this assert if you know what you're doing.");
             
             // Do not check chunks below or on top of the world, as they cannot generate. Without this check, the bottom(or top)-most chunks would never mesh.
-            if (neighbourPos.Y <= -Constants.CHUNK_SIDE_LENGTH)
+            if (neighbourPos.Y <= -Constants.SUBCHUNK_SIDE_LENGTH)
                 continue;
-            if (neighbourPos.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
+            if (neighbourPos.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
                 continue;
             
-            Chunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
+            SubChunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
 
             if (neighbourChunk == null)
             {
@@ -432,7 +474,7 @@ public class Chunk
         if (!ClientConfig.DebugModeConfig.RenderChunkMeshState)
             return;
         
-        const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;
+        const float halfAChunk = Constants.SUBCHUNK_SIDE_LENGTH / 2f;
         Vector3 centerOffset = new(halfAChunk, 0, halfAChunk);
 
         Color4 color = Color4.White;
@@ -461,7 +503,7 @@ public class Chunk
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.CHUNK_SIDE_LENGTH, color);
+        DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.SUBCHUNK_SIDE_LENGTH, color);
     }
 #endif
 }

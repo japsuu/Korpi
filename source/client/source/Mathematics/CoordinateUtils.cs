@@ -15,9 +15,9 @@ public static class CoordinateUtils
     public static Vector3i WorldToChunk(Vector3 position)
     {
         return new Vector3i(
-            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            (int)System.Math.Floor(position.Y) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            (int)System.Math.Floor(position.X) & ~Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            (int)System.Math.Floor(position.Y) & ~Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            (int)System.Math.Floor(position.Z) & ~Constants.SUBCHUNK_SIDE_LENGTH - 1
         );
     }
     
@@ -31,9 +31,9 @@ public static class CoordinateUtils
     public static Vector3i WorldToChunk(Vector3i position)
     {
         return new Vector3i(
-            position.X & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Y & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Z & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            position.X & ~Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            position.Y & ~Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            position.Z & ~Constants.SUBCHUNK_SIDE_LENGTH - 1
         );
     }
         
@@ -47,8 +47,8 @@ public static class CoordinateUtils
     public static Vector2i WorldToColumn(Vector3i position)
     {
         return new Vector2i(
-            position.X & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Z & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            position.X & ~Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            position.Z & ~Constants.SUBCHUNK_SIDE_LENGTH - 1
         );
     }
         
@@ -62,8 +62,8 @@ public static class CoordinateUtils
     public static Vector2i WorldToColumn(Vector3 position)
     {
         return new Vector2i(
-            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            (int)System.Math.Floor(position.X) & ~Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            (int)System.Math.Floor(position.Z) & ~Constants.SUBCHUNK_SIDE_LENGTH - 1
         );
     }
     
@@ -77,9 +77,9 @@ public static class CoordinateUtils
     public static Vector3i WorldToChunkRelative(Vector3i position)
     {
         return new Vector3i(
-            position.X & Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Y & Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Z & Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            position.X & Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            position.Y & Constants.SUBCHUNK_SIDE_LENGTH - 1,
+            position.Z & Constants.SUBCHUNK_SIDE_LENGTH - 1
         );
     }
 }

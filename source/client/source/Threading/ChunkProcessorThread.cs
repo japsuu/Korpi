@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using ConcurrentCollections;
 using Korpi.Client.World;
-using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Threading;
@@ -49,7 +49,7 @@ public abstract class ChunkProcessorThread<T> : IDisposable
             if (!_inputQueue.TryDequeue(out Vector3i chunkPos))
                 continue;
             
-            Chunk? chunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(chunkPos);
+            SubChunk? chunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(chunkPos);
             if (chunk == null)
                 continue;
                 
@@ -63,7 +63,7 @@ public abstract class ChunkProcessorThread<T> : IDisposable
     protected virtual void InitializeThread() { }
 
 
-    protected abstract T ProcessChunk(Chunk chunk);
+    protected abstract T ProcessChunk(SubChunk subChunk);
 
 
     private void ReleaseUnmanagedResources()

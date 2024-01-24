@@ -2,9 +2,8 @@
 using Korpi.Client.Debugging;
 using Korpi.Client.Mathematics.Noise;
 using Korpi.Client.Registries;
-using Korpi.Client.World;
-using Korpi.Client.World.Regions.Chunks;
-using Korpi.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.World.Chunks;
+using Korpi.Client.World.Chunks.Blocks;
 
 namespace Korpi.Client.Generation.TerrainGenerators;
 
@@ -14,10 +13,11 @@ namespace Korpi.Client.Generation.TerrainGenerators;
 public class Simplex3DTerrainGenerator : ITerrainGenerator
 {
     private const int NOISE_SAMPLE_BRICK_SIZE = 4;
-    private const int BRICK_COUNT = Constants.CHUNK_SIDE_LENGTH / NOISE_SAMPLE_BRICK_SIZE;
+    private const int BRICK_COUNT_H = Constants.SUBCHUNK_SIDE_LENGTH / NOISE_SAMPLE_BRICK_SIZE;
+    private const int BRICK_COUNT_V = Constants.CHUNK_HEIGHT_BLOCKS / NOISE_SAMPLE_BRICK_SIZE;
     
-    private const int MIN_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_SIDE_LENGTH;
-    private const int MAX_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS - Constants.CHUNK_SIDE_LENGTH;
+    private const int MIN_ALLOWED_TERRAIN_HEIGHT = Constants.SUBCHUNK_SIDE_LENGTH;
+    private const int MAX_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_HEIGHT_BLOCKS - Constants.SUBCHUNK_SIDE_LENGTH;
 
     private float _terrainBaseHeight = 256;          // The base height of the terrain, in blocks.
     private float _terrainHeightMaxOffset = 64;    // The maximum how much the terrain height may be offset from the base height, in blocks.
@@ -96,24 +96,23 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     {
         DebugStats.StartChunkGeneration();
 
-        if (chunk.Position.X < 7 * Constants.CHUNK_SIDE_LENGTH)
+        if (chunk.X < 7 * Constants.SUBCHUNK_SIDE_LENGTH)
             return;
 
         BlockState stone = BlockRegistry.GetBlockDefaultState(1);
 
         // Process each brick in the chunk.
-        for (int brickZ = 0; brickZ < BRICK_COUNT; brickZ++)
+        for (int brickZ = 0; brickZ < BRICK_COUNT_H; brickZ++)
         {
             int brickZChunk = brickZ * NOISE_SAMPLE_BRICK_SIZE;
-            int brickWorldZ = chunk.Position.Z + brickZChunk;
-            for (int brickY = 0; brickY < BRICK_COUNT; brickY++)
+            int brickWorldZ = chunk.Z + brickZChunk;
+            for (int brickY = 0; brickY < BRICK_COUNT_V; brickY++)
             {
-                int brickYChunk = brickY * NOISE_SAMPLE_BRICK_SIZE;
-                int brickWorldY = chunk.Position.Y + brickYChunk;
-                for (int brickX = 0; brickX < BRICK_COUNT; brickX++)
+                int brickWorldY = brickY * NOISE_SAMPLE_BRICK_SIZE;
+                for (int brickX = 0; brickX < BRICK_COUNT_H; brickX++)
                 {
                     int brickXChunk = brickX * NOISE_SAMPLE_BRICK_SIZE;
-                    int brickWorldX = chunk.Position.X + brickXChunk;
+                    int brickWorldX = chunk.X + brickXChunk;
 
                     // Sample the noise at each corner of the brick.
                     int brickWorldXExt = brickWorldX + NOISE_SAMPLE_BRICK_SIZE;
@@ -192,7 +191,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
                                     rx, ry, rz);
                                 
                                 int chunkX = brickXChunk + blockX;
-                                int chunkY = brickYChunk + blockY;
+                                int chunkY = brickWorldY + blockY;
                                 int chunkZ = brickZChunk + blockZ;
 
                                 GenerateTerrain(chunk, worldX, worldY, worldZ, chunkX, chunkY, chunkZ, density, height, squash, stone);
@@ -244,29 +243,24 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         // Place terrain if density is above 0.
         if (densityNoise > 0)
         {
-            ChunkBlockPosition pos = new(chunkX, chunkY, chunkZ);
-            chunk.SetBlockState(pos, stone, out _, false);
+            chunk.SetBlockState(chunkX, chunkY, chunkZ, stone, out _, false);
         }
     }
 
 
     private void DecorateSurface(Chunk chunk)   // TODO: Use a chunk heightmap
     {
-        if (!chunk.ContainsRenderedBlocks)
-            return;
-
         BlockState dirtBlockState = BlockRegistry.GetBlockDefaultState(2);
         
-        for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
+        for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
         {
-            for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
+            for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
             {
                 int surfaceBlocksSet = 0;
                 int encounteredSolidBlocks = 0;
-                for (int y = Constants.CHUNK_SIDE_LENGTH - 1; y >= 0; y--)
+                for (int y = Constants.SUBCHUNK_SIDE_LENGTH - 1; y >= 0; y--)
                 {
-                    ChunkBlockPosition pos = new ChunkBlockPosition(x, y, z);
-                    BlockState blockState = chunk.GetBlockState(pos);
+                    BlockState blockState = chunk.GetBlockState(x, y, z);
 
                     if (blockState.IsAir)
                     {
@@ -278,7 +272,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
                     if (surfaceBlocksSet >= 3)
                         continue;
 
-                    chunk.SetBlockState(pos, dirtBlockState, out _, false);
+                    chunk.SetBlockState(x, y, z, dirtBlockState, out _, false);
 
                     surfaceBlocksSet++;
                     if (encounteredSolidBlocks > 10)

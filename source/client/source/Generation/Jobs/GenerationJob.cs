@@ -3,7 +3,7 @@ using Korpi.Client.Logging;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World;
-using Korpi.Client.World.Regions.Chunks;
+using Korpi.Client.World.Chunks;
 
 namespace Korpi.Client.Generation.Jobs;
 

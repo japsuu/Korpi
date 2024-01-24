@@ -90,55 +90,29 @@ public static class Constants
     #region CHUNK SIZE
 
     /// <summary>
-    /// The length of one side of a chunk in blocks.
+    /// The length of one side of a subchunk in blocks.
     /// </summary>
-    public const int CHUNK_SIDE_LENGTH = 32;
+    public const int SUBCHUNK_SIDE_LENGTH = 32;
 
     /// <summary>
-    /// The amount of bits needed to represent <see cref="CHUNK_SIDE_LENGTH"/>.
+    /// The amount of bits needed to represent <see cref="SUBCHUNK_SIDE_LENGTH"/>.
     /// </summary>
-    public const int CHUNK_SIDE_BITS = 5;
+    public const int SUBCHUNK_SIDE_BITS = 5;
 
     /// <summary>
-    /// The amount of bits needed to represent <see cref="CHUNK_SIDE_LENGTH"/> doubled.
+    /// The amount of subchunks in a chunk.
     /// </summary>
-    public const int CHUNK_SIDE_BITS_DOUBLED = CHUNK_SIDE_BITS * 2;
+    public const int CHUNK_HEIGHT_SUBCHUNKS = 16;
     
     /// <summary>
-    /// <see cref="CHUNK_SIDE_LENGTH"/> minus one.
-    /// The bitmask used to get the remainder of a block's position in a chunk.
+    /// The height of a chunk in blocks.
     /// </summary>
-    public const int CHUNK_SIDE_LENGTH_MAX_INDEX = CHUNK_SIDE_LENGTH - 1;
+    public const int CHUNK_HEIGHT_BLOCKS = CHUNK_HEIGHT_SUBCHUNKS * SUBCHUNK_SIDE_LENGTH;
     
     /// <summary>
-    /// The square of <see cref="CHUNK_SIDE_LENGTH"/>.
+    /// The count of block in a chunk.
     /// </summary>
-    public const int CHUNK_SIDE_LENGTH_SQUARED = CHUNK_SIDE_LENGTH * CHUNK_SIDE_LENGTH;
-    
-    /// <summary>
-    /// The cube of <see cref="CHUNK_SIDE_LENGTH"/>.
-    /// </summary>
-    public const int CHUNK_SIDE_LENGTH_CUBED = CHUNK_SIDE_LENGTH * CHUNK_SIDE_LENGTH * CHUNK_SIDE_LENGTH;
-    
-    /// <summary>
-    /// The log2 of <see cref="CHUNK_SIDE_LENGTH"/>.
-    /// </summary>
-    public const int CHUNK_SIDE_LENGTH_LOG2 = 5;
-    
-    /// <summary>
-    /// The log2 of <see cref="CHUNK_SIDE_LENGTH"/> doubled.
-    /// </summary>
-    public const int CHUNK_SIDE_LENGTH_LOG2_DOUBLED = 10;
-
-    /// <summary>
-    /// The amount of chunks in a vertical column.
-    /// </summary>
-    public const int CHUNK_COLUMN_HEIGHT = 16;
-    
-    /// <summary>
-    /// The height of a vertical chunk column in blocks.
-    /// </summary>
-    public const int CHUNK_COLUMN_HEIGHT_BLOCKS = CHUNK_COLUMN_HEIGHT * CHUNK_SIDE_LENGTH;
+    public const int CHUNK_BLOCKS_COUNT = SUBCHUNK_SIDE_LENGTH * SUBCHUNK_SIDE_LENGTH * CHUNK_HEIGHT_BLOCKS;
 
     #endregion
 
@@ -152,23 +126,13 @@ public static class Constants
     /// <summary>
     /// The radius (in chunks) around the player to load chunks.
     /// </summary>
-    public const int CHUNK_COLUMN_LOAD_RADIUS = 14;
-    
-    /// <summary>
-    /// The square of <see cref="CHUNK_COLUMN_LOAD_RADIUS"/>.
-    /// </summary>
-    public const int CHUNK_COLUMN_LOAD_RADIUS_SQUARED = CHUNK_COLUMN_LOAD_RADIUS * CHUNK_COLUMN_LOAD_RADIUS;
+    public const int CHUNK_LOAD_RADIUS = 14;
     
     /// <summary>
     /// The radius (in chunks) around the player to unload chunks.
-    /// Should be greater than <see cref="CHUNK_COLUMN_LOAD_RADIUS"/>.
+    /// Should be greater than <see cref="CHUNK_LOAD_RADIUS"/>.
     /// </summary>
-    public const int CHUNK_COLUMN_UNLOAD_RADIUS = CHUNK_COLUMN_LOAD_RADIUS + 3;
-    
-    /// <summary>
-    /// The square of <see cref="CHUNK_COLUMN_UNLOAD_RADIUS"/>.
-    /// </summary>
-    public const int CHUNK_COLUMN_UNLOAD_RADIUS_SQUARED = CHUNK_COLUMN_UNLOAD_RADIUS * CHUNK_COLUMN_UNLOAD_RADIUS;
+    public const int CHUNK_UNLOAD_RADIUS = CHUNK_LOAD_RADIUS + 3;
 
     #endregion
 

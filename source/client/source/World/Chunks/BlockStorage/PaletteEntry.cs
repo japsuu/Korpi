@@ -1,6 +1,6 @@
-﻿using Korpi.Client.World.Regions.Chunks.Blocks;
+﻿using Korpi.Client.World.Chunks.Blocks;
 
-namespace Korpi.Client.World.Regions.Chunks.BlockStorage;
+namespace Korpi.Client.World.Chunks.BlockStorage;
 
 public struct PaletteEntry
 {

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Utils;
 
-namespace Korpi.Client.World.Regions.Chunks.Blocks;
+namespace Korpi.Client.World.Chunks.Blocks;
 
 /// <summary>
 /// 9-bit RGB333 color value.

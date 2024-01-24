@@ -1,4 +1,4 @@
-﻿namespace Korpi.Client.World.Regions.Chunks;
+﻿namespace Korpi.Client.World.Chunks;
 
 /// <summary>
 /// Represents the state of the chunk.

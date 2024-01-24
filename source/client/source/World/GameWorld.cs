@@ -10,7 +10,7 @@ using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Window;
-using Korpi.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;

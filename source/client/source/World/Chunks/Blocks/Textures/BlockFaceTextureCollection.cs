@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Korpi.Client.World.Regions.Chunks.Blocks.Textures;
+namespace Korpi.Client.World.Chunks.Blocks.Textures;
 
 /// <summary>
 /// Contains textures for all faces of a <see cref="Block"/>.
