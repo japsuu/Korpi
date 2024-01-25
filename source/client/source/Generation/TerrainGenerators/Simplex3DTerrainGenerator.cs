@@ -88,8 +88,8 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     {
         DebugStats.StartChunkGeneration();
 
-        if (chunk.Position.X < 7 * Constants.SUBCHUNK_SIDE_LENGTH)
-            return;
+        // if (chunk.Position.X < 7 * Constants.SUBCHUNK_SIDE_LENGTH)
+        //     return;
 
         BlockState stone = BlockRegistry.GetBlockDefaultState(1);
 
