@@ -132,31 +132,35 @@ public class GameWorldRenderer : IDisposable
     {
         DebugStats.RenderedTris = 0;
 
-        DrawChunksOpaquePass();
+        using (new ProfileScope("DrawChunksOpaquePass"))
+            DrawChunksOpaquePass();
 
         DrawSkybox();
 
-        DrawChunksTransparentPass();
+        using (new ProfileScope("DrawChunksTransparentPass"))
+            DrawChunksTransparentPass();
         
-        DrawChunksCompositePass();
+        using (new ProfileScope("DrawChunksCompositePass"))
+            DrawChunksCompositePass();
         
-        DrawToBackbuffer();
+        using (new ProfileScope("DrawToBackbuffer"))
+            DrawToBackbuffer();
 
 #if DEBUG
         RegionManager.DrawDebugBorders();
 #endif
-        
-        _world.EntityManager.Draw();
+        using (new ProfileScope("EntityManager.Draw"))
+            _world.EntityManager.Draw();
     }
 
 
     private void DrawChunksOpaquePass()
     {
-        GL.Enable(EnableCap.CullFace);      // Cull backfaces
-        GL.Enable(EnableCap.DepthTest);     // Enable depth testing
-        GL.DepthFunc(DepthFunction.Less);   // Draw fragments that are closer to the camera
-        GL.DepthMask(true);             // Enable writing to the depth buffer
-        GL.Disable(EnableCap.Blend);        // Disable blending
+        GL.Enable(EnableCap.CullFace); // Cull backfaces
+        GL.Enable(EnableCap.DepthTest); // Enable depth testing
+        GL.DepthFunc(DepthFunction.Less); // Draw fragments that are closer to the camera
+        GL.DepthMask(true); // Enable writing to the depth buffer
+        GL.Disable(EnableCap.Blend); // Disable blending
         GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         
         // Bind opaque framebuffer to render solid objects

@@ -72,8 +72,10 @@ public class GameClient : GameWindow
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
             NumberOfSamples = 8,
             Location = new Vector2i(0, 0),
-            APIVersion = new Version(4,2),
+            API = ContextAPI.OpenGL,
             Profile = ContextProfile.Core,
+            APIVersion = new Version(4,2),
+            // WindowState = WindowState.Fullscreen,
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
@@ -144,8 +146,8 @@ public class GameClient : GameWindow
 
     protected override void OnUpdateFrame(FrameEventArgs args)
     {
-        KorpiProfiler.StartFrame();
-        KorpiProfiler.Start("UpdateLoop");
+        KorpiProfiler.BeginFrame();
+        KorpiProfiler.Begin("UpdateLoop");
         base.OnUpdateFrame(args);
         
         double deltaTime = args.Time;
@@ -186,7 +188,7 @@ public class GameClient : GameWindow
 
     protected override void OnRenderFrame(FrameEventArgs args)
     {
-        KorpiProfiler.Start("DrawLoop");
+        KorpiProfiler.Begin("DrawLoop");
         base.OnRenderFrame(args);
         
 #if DEBUG
@@ -234,7 +236,8 @@ public class GameClient : GameWindow
 
     private void DrawWorld()
     {
-        _gameWorldRenderer.Draw();
+        using (new ProfileScope("GameWorldRenderer.Draw"))
+            _gameWorldRenderer.Draw();
 
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && DebugStats.ChunksInGenerationQueue == 0 && DebugStats.ChunksInMeshingQueue == 0)
@@ -257,8 +260,11 @@ public class GameClient : GameWindow
     private void FixedUpdate()
     {
         GameTime.FixedUpdate();
-        GlobalThreadPool.FixedUpdate();
-        _gameWorld.FixedUpdate();
+        using (new ProfileScope("GlobalThreadPool.FixedUpdate"))
+            GlobalThreadPool.FixedUpdate();
+        
+        using (new ProfileScope("GameWorld.FixedUpdate"))
+            _gameWorld.FixedUpdate();
     }
 
 
@@ -270,8 +276,11 @@ public class GameClient : GameWindow
     {
         UpdateGui();
         
-        GlobalThreadPool.Update();
-        _gameWorld.Update();
+        using (new ProfileScope("GlobalThreadPool.Update"))
+            GlobalThreadPool.Update();
+        
+        using (new ProfileScope("GameWorld.Update"))
+            _gameWorld.Update();
         
         if (Input.KeyboardState.IsKeyPressed(Keys.F10))
             ShaderManager.ReloadAllShaderPrograms();

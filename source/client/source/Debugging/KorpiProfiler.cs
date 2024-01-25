@@ -3,87 +3,109 @@
 namespace Korpi.Client.Debugging;
 
 /// <summary>
-/// A scope that can be used to profile code.
-/// Wrap the code you want to profile in a using statement.
-/// </summary>
-public sealed class ProfileScope : IDisposable
-{
-    public ProfileScope(string name)
-    {
-        KorpiProfiler.Start(name);
-    }
-
-    public void Dispose()
-    {
-        KorpiProfiler.End();
-    }
-}
-
-/// <summary>
 /// A simple profiler that can be used to measure the duration of code execution.
+/// This is not optimized, and will allocate huge amounts of memory if used incorrectly.
 /// NOTE: This is not thread-safe.
 /// </summary>
 public static class KorpiProfiler
 {
-    private static Profile? lastFrame;
+    private const bool ENABLE_PROFILING = true;
+    public static bool IsProfilingEnabled = false;
+    
     private static readonly Stack<Profile> Profiles = new();
+    private static Profile? lastFrame;
+    private static bool internalEnabled;
     
     
     public static Profile? GetLastFrame() => lastFrame;
 
 
-    public static void StartFrame()
+    public static void BeginFrame()
     {
-        Start("Frame");
+        if (!ENABLE_PROFILING)
+            return;
+
+        if (internalEnabled != IsProfilingEnabled)
+        {
+            internalEnabled = IsProfilingEnabled;
+            if (!internalEnabled)
+                Profiles.Clear();
+        }
+        Begin("Frame");
     }
 
 
-    public static void Start(string name)
+    public static void Begin(string name)
     {
+        if (!internalEnabled || !ENABLE_PROFILING)
+            return;
+
         if (Profiles.Count == 0 && name != "Frame")
-            throw new InvalidOperationException("Cannot call Start before StartFrame.");
+            throw new InvalidOperationException("Cannot call Begin before BeginFrame.");
         
-        Profiles.Push(new Profile(name, Stopwatch.StartNew()));
+        Profiles.Push(new Profile(name, Stopwatch.StartNew(), 0));
+    }
+
+
+    public static void BeginConditional(string name, float discardIfDurationLessThanMillis)
+    {
+        if (!internalEnabled || !ENABLE_PROFILING)
+            return;
+
+        if (Profiles.Count == 0 && name != "Frame")
+            throw new InvalidOperationException("Cannot call Begin before BeginFrame.");
+        
+        Profiles.Push(new Profile(name, Stopwatch.StartNew(), discardIfDurationLessThanMillis));
     }
 
 
     public static void End()
     {
+        if (!internalEnabled || !ENABLE_PROFILING)
+            return;
+
         if (Profiles.Count == 1)
-            throw new InvalidOperationException("Cannot call End without a matching Start.");
+            throw new InvalidOperationException("Cannot call End without a matching Begin.");
 
         Profile profile = Profiles.Pop();
         profile.Stopwatch.Stop();
-        profile.Duration = profile.Stopwatch.Elapsed;
+        profile.DurationMillis = profile.Stopwatch.Elapsed.TotalMilliseconds;
+        
+        if (profile.DiscardIfDurationLessThan > 0 && profile.DurationMillis < profile.DiscardIfDurationLessThan)
+            return;
 
-        if (Profiles.Count > 0)
-            Profiles.Peek().Children.Add(profile);
+        Profiles.Peek().Children.Add(profile);
     }
     
     
     public static void EndFrame()
     {
+        if (!internalEnabled || !ENABLE_PROFILING)
+            return;
+
         if (Profiles.Count > 1)
             throw new InvalidOperationException("Cannot end frame while there are active profiles.");
 
         Profile profile = Profiles.Pop();
         profile.Stopwatch.Stop();
-        profile.Duration = profile.Stopwatch.Elapsed;
+        profile.DurationMillis = profile.Stopwatch.Elapsed.TotalMilliseconds;
         lastFrame = profile;
     }
 }
 
 public class Profile
 {
-    public readonly string Name;
+    public string Name;
     public readonly Stopwatch Stopwatch;
     public readonly List<Profile> Children = new();
-    public TimeSpan Duration { get; set; }
+    public readonly float DiscardIfDurationLessThan;
+    public double DurationMillis;
 
 
-    public Profile(string name, Stopwatch stopwatch)
+    public Profile(string name, Stopwatch stopwatch, float discardIfDurationLessThan)
     {
         Name = name;
         Stopwatch = stopwatch;
+        DiscardIfDurationLessThan = discardIfDurationLessThan;
     }
 }

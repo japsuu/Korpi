@@ -42,8 +42,10 @@ public class ProfilerWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
+        ImGui.Checkbox("Enabled", ref KorpiProfiler.IsProfilingEnabled);
+        
         Profile? lastFrame = KorpiProfiler.GetLastFrame();
-        if (lastFrame == null)
+        if (lastFrame == null || !KorpiProfiler.IsProfilingEnabled)
             return;
 
         if (!_paused)
@@ -70,7 +72,7 @@ public class ProfilerWindow : ImGuiWindow
             _frameProfiles.Dequeue();
         _selectedProfile = lastFrame;
         
-        _frameTimes.Enqueue(new FrameTime((float)lastFrame.Duration.TotalMilliseconds));
+        _frameTimes.Enqueue(new FrameTime((float)lastFrame.DurationMillis));
         if (_avgFrameTimeBufferSeconds.Seconds < 1)
         {
             if (_frameTimes.Count > _maxFrameProfilesCount)
@@ -96,19 +98,21 @@ public class ProfilerWindow : ImGuiWindow
             return;
         
         Profile profile = _frameProfiles.ElementAt(sampleIndex);
-        if (_autoPauseMillisThreshold <= 0 || profile.Duration.TotalMilliseconds < _autoPauseMillisThreshold)
+        if (_autoPauseMillisThreshold <= 0 || profile.DurationMillis < _autoPauseMillisThreshold)
             return;
         
         _paused = true;
         _wasAutoPaused = true;
-        _selectedProfile = profile;
+        
+        // Select the profile that has the highest frame time.
+        _selectedProfile = _frameProfiles.Aggregate((p1, p2) => p1.DurationMillis > p2.DurationMillis ? p1 : p2);
     }
 
 
     private void DrawHistogram()
     {
         // Convert the durations of the frame profiles to an array of floats.
-        float[] durations = _frameProfiles.Select(p => (float)p.Duration.TotalMilliseconds).ToArray();
+        float[] durations = _frameProfiles.Select(p => (float)p.DurationMillis).ToArray();
 
         // Draw a histogram of the frame profile durations.
         if (durations.Length <= 0)
@@ -133,7 +137,7 @@ public class ProfilerWindow : ImGuiWindow
             hoveredIndex = Math.Clamp(hoveredIndex, 0, durations.Length - 1);
 
             Profile hoveredProfile = _frameProfiles.ElementAt(hoveredIndex);
-            ImGui.SetTooltip($"Frame {hoveredIndex + 1}\nDuration: {hoveredProfile.Duration.TotalMilliseconds:F4} ms");
+            ImGui.SetTooltip($"Frame {hoveredIndex + 1}\nDuration: {hoveredProfile.DurationMillis:F4} ms");
         }
 
         // Select a frame profile when clicking on the histogram.
@@ -155,7 +159,7 @@ public class ProfilerWindow : ImGuiWindow
     private static void DrawProfileInfo(Profile profile)
     {
         // Calculate the color based on the duration of the profile.
-        float t = Math.Clamp((float)profile.Duration.TotalMilliseconds / 33.3f, 0.0f, 1.0f);
+        float t = Math.Clamp((float)profile.DurationMillis / 33.3f, 0.0f, 1.0f);
         System.Numerics.Vector4 color = System.Numerics.Vector4.Lerp(
             new System.Numerics.Vector4(0.0f, 1.0f, 0.0f, 1.0f),  // Green
             new System.Numerics.Vector4(1.0f, 0.0f, 0.0f, 1.0f),  // Red
@@ -165,7 +169,7 @@ public class ProfilerWindow : ImGuiWindow
         // Draw the profile name and duration with the calculated color.
         ImGui.TextColored(color, profile.Name);
         ImGui.SameLine();
-        ImGui.TextColored(color, $"{profile.Duration.TotalMilliseconds:F4} ms");
+        ImGui.TextColored(color, $"{profile.DurationMillis:F4} ms");
 
         if (profile.Children.Count <= 0)
             return;
@@ -314,7 +318,7 @@ public class ProfilerWindow : ImGuiWindow
             return;
 
         string indent = new('\t', indentLevel);
-        writer.WriteLine($"{indent}{profile.Name}: {profile.Duration.TotalMilliseconds:F4} ms");
+        writer.WriteLine($"{indent}{profile.Name}: {profile.DurationMillis:F4} ms");
 
         foreach (Profile child in profile.Children)
             ExportProfileData(child, writer, indentLevel + 1);

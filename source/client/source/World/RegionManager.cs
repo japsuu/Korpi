@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using Korpi.Client.Configuration;
-using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Logging;
 using Korpi.Client.Mathematics;
@@ -9,8 +8,6 @@ using Korpi.Client.Meshing;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
-using Korpi.Client.Rendering.Cameras;
-using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.World.Chunks;
 using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
@@ -58,9 +55,9 @@ public class RegionManager
 
     public void DrawChunks(RenderPass pass)
     {
-        foreach (Chunk column in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        foreach (Chunk chunk in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
-            column.Draw(pass);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
+            chunk.Draw(pass);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
         }
     }
 
