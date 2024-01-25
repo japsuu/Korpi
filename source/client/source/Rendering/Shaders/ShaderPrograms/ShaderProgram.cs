@@ -120,9 +120,7 @@ public class ShaderProgram : GLObject
     /// </summary>
     public void AssertActive()
     {
-#if DEBUG
         GL.GetInteger(GetPName.CurrentProgram, out int activeHandle);
         if (activeHandle != Handle) throw new ObjectNotBoundException("ShaderProgram object is not currently active.");
-#endif
     }
 }

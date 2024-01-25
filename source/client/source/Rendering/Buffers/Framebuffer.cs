@@ -163,10 +163,8 @@ public class Framebuffer : GLObject
     /// <param name="target">The framebuffer target to bind to.</param>
     public void CheckState(FramebufferTarget target)
     {
-#if DEBUG
         AssertUtility.Assert("Error on framebuffer attach/detach");
         AssertUtility.Assert(GL.CheckFramebufferStatus(target), FramebufferErrorCode.FramebufferComplete, "Framebuffer is not framebuffer complete.");
-#endif
     }
 
 
@@ -176,7 +174,6 @@ public class Framebuffer : GLObject
     /// <param name="target">The framebuffer target to bind to.</param>
     public void AssertActive(FramebufferTarget target)
     {
-#if DEBUG
         GetPName binding = target switch
         {
             FramebufferTarget.ReadFramebuffer => GetPName.ReadFramebufferBinding,
@@ -187,6 +184,5 @@ public class Framebuffer : GLObject
 
         GL.GetInteger(binding, out int activeHandle);
         if (activeHandle != Handle) throw new ObjectNotBoundException("Can not access an unbound framebuffer. Call Framebuffer.Bind() first.");
-#endif
     }
 }
