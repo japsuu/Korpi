@@ -4,6 +4,8 @@ namespace Korpi.Client.UI.Windows;
 
 public abstract class ImGuiWindow
 {
+    protected static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ImGuiWindow));
+    
     protected ImGuiWindowFlags Flags = ImGuiWindowFlags.None;
     
     public abstract string Title { get; }

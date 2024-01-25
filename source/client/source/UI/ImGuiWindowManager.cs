@@ -20,6 +20,7 @@ public static class ImGuiWindowManager
         CameraWindow unused2 = new();
         DebugTextWindow unused3 = new();
         DebugStatsWindow unused4 = new();
+        ProfilerWindow unused6 = new();
     }
 
 

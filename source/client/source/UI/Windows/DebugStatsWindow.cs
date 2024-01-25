@@ -10,7 +10,7 @@ namespace Korpi.Client.UI.Windows;
 
 public class DebugStatsWindow : ImGuiWindow
 {
-    private const int CALCULATE_MIN_MAX_FPS_AFTER_FRAMES = 1000;
+    private const int CALCULATE_MIN_MAX_FPS_AFTER_FRAMES = 2000;
     
     public override string Title => "Debug Stats";
 

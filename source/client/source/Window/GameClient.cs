@@ -3,7 +3,6 @@ using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
-using Korpi.Client.Logging;
 using Korpi.Client.Modding;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
@@ -26,6 +25,8 @@ namespace Korpi.Client.Window;
 /// </summary>
 public class GameClient : GameWindow
 {
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameClient));
+    
     /// <summary>
     /// Called before <see cref="OnLoad"/> is exited.
     /// </summary>
@@ -82,8 +83,8 @@ public class GameClient : GameWindow
     protected override void OnLoad()
     {
         base.OnLoad();
-        Logger.Log($"Starting v{Constants.CLIENT_VERSION}...");
-
+        Logger.Info($"Starting v{Constants.CLIENT_VERSION}...");
+        
         WindowWidth = ClientSize.X;
         WindowHeight = ClientSize.Y;
         WindowAspectRatio = ClientSize.X / (float)ClientSize.Y;
@@ -124,14 +125,14 @@ public class GameClient : GameWindow
         ImGuiWindowManager.CreateDefaultWindows();
 
         ClientLoad?.Invoke();
-        Logger.Log("Started.");
+        Logger.Info("Started.");
     }
 
 
     protected override void OnUnload()
     {
         base.OnUnload();
-        Logger.Log("Shutting down...");
+        Logger.Info("Shutting down...");
         _shaderManager.Dispose();
         _gameWorldRenderer.Dispose();
         _imGuiController.DestroyDeviceObjects();
@@ -143,6 +144,8 @@ public class GameClient : GameWindow
 
     protected override void OnUpdateFrame(FrameEventArgs args)
     {
+        KorpiProfiler.StartFrame();
+        KorpiProfiler.Start("UpdateLoop");
         base.OnUpdateFrame(args);
         
         double deltaTime = args.Time;
@@ -150,34 +153,40 @@ public class GameClient : GameWindow
         
         // DynamicPerformance.Update(deltaTime);
  
-        while (_fixedFrameAccumulator >= Constants.FIXED_DELTA_TIME)
+        using (new ProfileScope("FixedUpdate"))
         {
-            FixedUpdate();
-            _fixedFrameAccumulator -= Constants.FIXED_DELTA_TIME;
+            while (_fixedFrameAccumulator >= Constants.FIXED_DELTA_TIME)
+            {
+                FixedUpdate();
+                _fixedFrameAccumulator -= Constants.FIXED_DELTA_TIME;
+            }
         }
  
         double fixedAlpha = _fixedFrameAccumulator / Constants.FIXED_DELTA_TIME;
         
         if (deltaTime > Constants.MAX_DELTA_TIME)
         {
-            Logger.LogWarning($"Detected large frame hitch ({1f/deltaTime:F2}fps, {deltaTime:F2}s)! Delta time was clamped to {Constants.MAX_DELTA_TIME:F2} seconds.");
+            Logger.Warn($"Detected large frame hitch ({1f/deltaTime:F2}fps, {deltaTime:F2}s)! Delta time was clamped to {Constants.MAX_DELTA_TIME:F2} seconds.");
             deltaTime = Constants.MAX_DELTA_TIME;
         }
         else if (deltaTime > Constants.DELTA_TIME_SLOW_THRESHOLD)
         {
-            Logger.LogWarning($"Detected frame hitch ({deltaTime:F2}s)!");
+            Logger.Warn($"Detected frame hitch ({deltaTime:F2}s)!");
             deltaTime = Constants.MAX_DELTA_TIME;
         }
         
         GameTime.Update(deltaTime, fixedAlpha);
         Input.Update(KeyboardState, MouseState);
 
-        Update();
+        using (new ProfileScope("Update"))
+            Update();
+        KorpiProfiler.End();
     }
 
 
     protected override void OnRenderFrame(FrameEventArgs args)
     {
+        KorpiProfiler.Start("DrawLoop");
         base.OnRenderFrame(args);
         
 #if DEBUG
@@ -196,6 +205,35 @@ public class GameClient : GameWindow
         ShaderManager.UpdateViewMatrix(Camera.RenderingCamera.ViewMatrix);
         ShaderManager.UpdateProjectionMatrix(Camera.RenderingCamera.ProjectionMatrix);
         
+        using (new ProfileScope("DrawWorld"))
+            DrawWorld();
+
+        using (new ProfileScope("DrawUi"))
+            DrawUi();
+
+        if (Input.KeyboardState.IsKeyPressed(Keys.F2))
+            ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
+
+        using (new ProfileScope("SwapBuffers"))
+            SwapBuffers();
+        KorpiProfiler.End();
+        KorpiProfiler.EndFrame();
+    }
+
+
+    private void DrawUi()
+    {
+#if DEBUG
+        if (ClientConfig.DebugModeConfig.RenderCrosshair)
+#endif
+            _crosshair.Draw();
+
+        DrawImGui();
+    }
+
+
+    private void DrawWorld()
+    {
         _gameWorldRenderer.Draw();
 
 #if DEBUG
@@ -206,19 +244,9 @@ public class GameClient : GameWindow
             Close();
             return;
         }
+#endif
 
         DebugDrawer.Draw();
-
-        if (ClientConfig.DebugModeConfig.RenderCrosshair)
-#endif
-            _crosshair.Draw();
-
-        DrawImGui();
-
-        if (Input.KeyboardState.IsKeyPressed(Keys.F2))
-            ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
-
-        SwapBuffers();
     }
 
 
@@ -345,7 +373,7 @@ public class GameClient : GameWindow
         // also use the new function Marshal.PtrToStringUTF8 since .NET Core 1.1.
         string message = Marshal.PtrToStringAnsi(pMessage, length);
         
-        Logger.LogOpenGl($"[{severity} source={source} type={type} id={id}] {message}");
+        Logger.OpenGl($"[{severity} source={source} type={type} id={id}] {message}");
 
         if (type == DebugType.DebugTypeError)
             throw new Exception(message);
