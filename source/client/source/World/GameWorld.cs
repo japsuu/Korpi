@@ -90,13 +90,9 @@ public class GameWorld
             DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.5f, Color4.Red);
         
         if (ClientConfig.DebugModeConfig.RenderRaycastHitBlock)
-#else
+#endif
             if (!raycastResult.BlockState.IsAir)
                 DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
-
-        if (!raycastResult.BlockState.IsAir)
-            DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
-#endif
         
         return raycastResult.BlockState;
     }
