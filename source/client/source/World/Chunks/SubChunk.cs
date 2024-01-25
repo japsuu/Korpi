@@ -109,7 +109,7 @@ public class SubChunk
     }
 
 
-    private bool IsOnFrustum(Frustum viewFrustum)
+    public bool IsOnFrustum(Frustum viewFrustum)
     {
         Vector3 min = Position;
         Vector3 max = Position + new Vector3(Constants.SUBCHUNK_SIDE_LENGTH);

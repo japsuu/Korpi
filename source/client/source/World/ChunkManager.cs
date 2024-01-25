@@ -1,8 +1,6 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
-using Korpi.Client.Logging;
 using Korpi.Client.Mathematics;
 using Korpi.Client.Meshing;
 using Korpi.Client.Physics;
@@ -19,7 +17,10 @@ namespace Korpi.Client.World;
 /// </summary>
 public class ChunkManager
 {
-    private readonly Dictionary<Vector2i, Chunk> _existingChunks = new();
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkManager));
+    
+    private readonly Dictionary<Vector2i, Chunk> _loadedChunks = new();
+    private readonly SortedSet<Chunk> _loadedSortedChunks = new SortedSet<Chunk>(new ChunkDistanceComparer());
     private readonly List<Vector2i> _chunksToLoad = new();
     private readonly List<Vector2i> _chunksToUnload = new();
 
@@ -29,7 +30,7 @@ public class ChunkManager
     /// </summary>
     private List<Vector2i> _chunkLoadSpiral = null!;
 
-    public int LoadedChunksCount => _existingChunks.Count;
+    public int LoadedChunksCount => _loadedChunks.Count;
 
 
     public ChunkManager()
@@ -46,7 +47,7 @@ public class ChunkManager
         LoadChunks();
 
         // Tick all loaded columns
-        foreach (Chunk chunk in _existingChunks.Values)
+        foreach (Chunk chunk in _loadedSortedChunks)
         {
             chunk.Tick();
         }
@@ -55,9 +56,9 @@ public class ChunkManager
 
     public void DrawChunks(RenderPass pass)
     {
-        foreach (Chunk chunk in _existingChunks.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        foreach (Chunk chunk in _loadedSortedChunks)
         {
-            chunk.Draw(pass);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
+            chunk.Draw(pass);
         }
     }
 
@@ -92,7 +93,7 @@ public class ChunkManager
     {
         Vector2i columnPos = new(chunkPos.X, chunkPos.Z);
         
-        return _existingChunks.ContainsKey(columnPos);
+        return _loadedChunks.ContainsKey(columnPos);
     }
 
     
@@ -105,7 +106,7 @@ public class ChunkManager
     {
         Vector2i chunkColumnPos = CoordinateUtils.WorldToColumn(position);
 
-        if (!_existingChunks.TryGetValue(chunkColumnPos, out Chunk? column))
+        if (!_loadedChunks.TryGetValue(chunkColumnPos, out Chunk? column))
             return null;
         
         Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
@@ -124,7 +125,7 @@ public class ChunkManager
         Debug.Assert(chunkPos.X % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the X coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
         Debug.Assert(chunkPos.Y % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the Y coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
 
-        _existingChunks.TryGetValue(chunkPos, out Chunk? chunk);
+        _loadedChunks.TryGetValue(chunkPos, out Chunk? chunk);
         return chunk;
     }
 
@@ -197,7 +198,7 @@ public class ChunkManager
     {
         _chunksToUnload.Clear();
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
-        foreach ((Vector2i position, Chunk? chunk) in _existingChunks)
+        foreach ((Vector2i position, Chunk? chunk) in _loadedChunks)
         {
             Vector2i normalizedColumnPos = (position - originColumnPos) / Constants.SUBCHUNK_SIDE_LENGTH;
             if (Constants.CIRCULAR_LOAD_REGION)
@@ -225,10 +226,11 @@ public class ChunkManager
     {
         foreach (Vector2i chunkPos in _chunksToUnload)
         {
-            if (!_existingChunks.Remove(chunkPos, out Chunk? chunk))
+            if (!_loadedChunks.Remove(chunkPos, out Chunk? chunk))
                 continue;
             
             chunk.Unload();
+            _loadedSortedChunks.Remove(chunk);
         }
     }
 
@@ -244,7 +246,7 @@ public class ChunkManager
         foreach (Vector2i spiralPos in _chunkLoadSpiral)
         {
             Vector2i columnPos = originColumnPos + spiralPos;
-            if (_existingChunks.ContainsKey(columnPos))
+            if (_loadedChunks.ContainsKey(columnPos))
                 continue;
 
             _chunksToLoad.Add(columnPos);
@@ -254,12 +256,13 @@ public class ChunkManager
 
     private void LoadChunks()
     {
-        foreach (Vector2i columnPos in _chunksToLoad)
+        foreach (Vector2i chunkPos in _chunksToLoad)
         {
-            Chunk column = new(columnPos);
-            column.Load();
-            if (!_existingChunks.TryAdd(columnPos, column))
-                Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");
+            Chunk chunk = new(chunkPos);
+            chunk.Load();
+            if (!_loadedChunks.TryAdd(chunkPos, chunk))
+                Logger.Error($"Failed to add chunk column at {chunkPos} to loaded columns!");
+            _loadedSortedChunks.Add(chunk);
         }
     }
 
@@ -285,7 +288,7 @@ public class ChunkManager
             _chunkLoadSpiral.Add(pos * Constants.SUBCHUNK_SIDE_LENGTH);
         }
 
-        Logger.Log($"Precomputed column load spiral for render distance {Constants.CHUNK_LOAD_RADIUS}, for {_chunkLoadSpiral.Count} columns.");
+        Logger.Info($"Precomputed column load spiral for render distance {Constants.CHUNK_LOAD_RADIUS}, for {_chunkLoadSpiral.Count} columns.");
     }
 
 
@@ -387,5 +390,31 @@ public class ChunkManager
 
         Vector3 rayEnd = startPos + direction * maxDistance;
         return new RaycastResult(false, rayEnd, blockPos, 0, BlockRegistry.Air.GetDefaultState());
+    }
+    
+    
+    private class ChunkDistanceComparer : IComparer<Chunk>
+    {
+        public int Compare(Chunk x, Chunk y)
+        {
+            Vector3 playerPosition = PlayerEntity.LocalPlayerEntity.Transform.LocalPosition;
+            float xDistance = (x.Position - playerPosition.Xz).LengthSquared;
+            float yDistance = (y.Position - playerPosition.Xz).LengthSquared;
+
+            int distanceComparison = xDistance.CompareTo(yDistance);
+            if (distanceComparison != 0)
+            {
+                return distanceComparison;
+            }
+
+            // If the distances are equal, compare the chunks' positions
+            int xComparison = x.Position.X.CompareTo(y.Position.X);
+            if (xComparison != 0)
+            {
+                return xComparison;
+            }
+
+            return x.Position.Y.CompareTo(y.Position.Y);
+        }
     }
 }
