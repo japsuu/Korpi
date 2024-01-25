@@ -19,7 +19,7 @@ public class GameWorld
 
     public static event Action<WorldEvent>? WorldEventPublished;
     
-    public readonly RegionManager RegionManager;      // TODO: Make private, or wrap around a function
+    public readonly ChunkManager ChunkManager;      // TODO: Make private, or wrap around a function
     public readonly ITerrainGenerator TerrainGenerator;
     public readonly EntityManager EntityManager;
 
@@ -29,7 +29,7 @@ public class GameWorld
     public GameWorld(string name)
     {
         _name = name;
-        RegionManager = new RegionManager();
+        ChunkManager = new ChunkManager();
         TerrainGenerator = Simplex3DTerrainGenerator.Default();
         EntityManager = new EntityManager();
         
@@ -50,16 +50,16 @@ public class GameWorld
     
     public void FixedUpdate()
     {
-        RegionManager.Tick();
+        ChunkManager.Tick();
         EntityManager.FixedUpdate();
-        DebugStats.LoadedChunkCount = RegionManager.LoadedChunksCount;
+        DebugStats.LoadedChunkCount = ChunkManager.LoadedChunksCount;
     }
 
 
     public BlockState RaycastWorld(Vector3 start, Vector3 direction, float maxDistance)
     {
         Ray ray = new Ray(start, direction);
-        RaycastResult raycastResult = RegionManager.RaycastBlocks(ray, maxDistance);
+        RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
 
         if (!GameClient.IsPlayerInGui)
         {
@@ -67,14 +67,14 @@ public class GameWorld
             {
                 if (raycastResult.Hit)
                 {
-                    RegionManager.SetBlockStateAtWorld(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
+                    ChunkManager.SetBlockStateAtWorld(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
                 }
             }
             else if (Input.MouseState.IsButtonPressed(MouseButton.Right))
             {
                 if (raycastResult.Hit)
                 {
-                    RegionManager.SetBlockStateAtWorld(
+                    ChunkManager.SetBlockStateAtWorld(
                         raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(),
                         BlockRegistry.GetBlock(PlayerEntity.SelectedBlockType).GetDefaultState());
                 }

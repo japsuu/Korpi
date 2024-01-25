@@ -320,7 +320,7 @@ public class SubChunk
             Vector3i neighbourPos = Position + vector;
             if (neighbourPos.Y < 0 || neighbourPos.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
                 continue;
-            SubChunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetSubChunkAt(neighbourPos);
+            SubChunk? neighbourChunk = GameWorld.CurrentGameWorld.ChunkManager.GetSubChunkAt(neighbourPos);
 
             neighbourChunk?.SetMeshDirty();
         }

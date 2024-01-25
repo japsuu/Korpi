@@ -276,7 +276,7 @@ public class Chunk
         {
             Vector2i neighbourPos = centerPosition + chunkOffset;
             
-            Chunk? neighbourChunk = GameWorld.CurrentGameWorld.RegionManager.GetChunkAt(neighbourPos);
+            Chunk? neighbourChunk = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(neighbourPos);
 
             if (neighbourChunk == null)
             {

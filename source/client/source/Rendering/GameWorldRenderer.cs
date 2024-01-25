@@ -147,7 +147,7 @@ public class GameWorldRenderer : IDisposable
             DrawToBackbuffer();
 
 #if DEBUG
-        RegionManager.DrawDebugBorders();
+        ChunkManager.DrawDebugBorders();
 #endif
         using (new ProfileScope("EntityManager.Draw"))
             _world.EntityManager.Draw();
@@ -170,7 +170,7 @@ public class GameWorldRenderer : IDisposable
         ShaderManager.BlockOpaqueCutoutShader.Use();
         // ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector4.One);
         
-        _world.RegionManager.DrawChunks(RenderPass.Opaque);
+        _world.ChunkManager.DrawChunks(RenderPass.Opaque);
     }
 
 
@@ -192,7 +192,7 @@ public class GameWorldRenderer : IDisposable
         // ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector4.One);
         ShaderManager.BlockTranslucentShader.CameraPosition.Set(Camera.RenderingCamera.Position);
         
-        _world.RegionManager.DrawChunks(RenderPass.Transparent);
+        _world.ChunkManager.DrawChunks(RenderPass.Transparent);
     }
 
 

@@ -15,47 +15,47 @@ using OpenTK.Mathematics;
 namespace Korpi.Client.World;
 
 /// <summary>
-/// Manages all loaded <see cref="SubChunk"/>s and chunk columns (<see cref="Chunk"/>s).
+/// Manages all loaded <see cref="Chunk"/>s.
 /// </summary>
-public class RegionManager
+public class ChunkManager
 {
-    private readonly ConcurrentDictionary<Vector2i, Chunk> _existingRegions = new();
-    private readonly List<Vector2i> _regionsToLoad = new();
+    private readonly Dictionary<Vector2i, Chunk> _existingChunks = new();
+    private readonly List<Vector2i> _chunksToLoad = new();
     private readonly List<Vector2i> _chunksToUnload = new();
 
     /// <summary>
     /// Precomputed spiral of chunk column positions to load.
     /// The spiral is centered around the world origin, so manual offsetting is required.
     /// </summary>
-    private List<Vector2i> _regionLoadSpiral = null!;
+    private List<Vector2i> _chunkLoadSpiral = null!;
 
-    public int LoadedChunksCount => _existingRegions.Count;
+    public int LoadedChunksCount => _existingChunks.Count;
 
 
-    public RegionManager()
+    public ChunkManager()
     {
-        PrecomputeRegionLoadSpiral();
+        PrecomputeChunkLoadSpiral();
     }
 
 
     public void Tick()
     {
-        FindRegionsToUnload(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
+        FindChunksToUnload(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
         UnloadChunks();
-        FindRegionsToLoad(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
-        LoadRegions();
+        FindChunksToLoad(PlayerEntity.LocalPlayerEntity.Transform.LocalPosition);
+        LoadChunks();
 
         // Tick all loaded columns
-        foreach (Chunk region in _existingRegions.Values)
+        foreach (Chunk chunk in _existingChunks.Values)
         {
-            region.Tick();
+            chunk.Tick();
         }
     }
 
 
     public void DrawChunks(RenderPass pass)
     {
-        foreach (Chunk chunk in _existingRegions.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
+        foreach (Chunk chunk in _existingChunks.Values)      // TODO: Instead of doing this, loop the renderer storage and draw all those meshes
         {
             chunk.Draw(pass);                     //TODO: Draw chunks in order of distance to player, to reduce overdraw
         }
@@ -90,9 +90,9 @@ public class RegionManager
     /// <returns>Returns true if a chunk exists at the given position, false otherwise</returns>
     public bool ChunkExistsAt(Vector3i chunkPos)
     {
-        Vector2i columnPos = new Vector2i(chunkPos.X, chunkPos.Z);
+        Vector2i columnPos = new(chunkPos.X, chunkPos.Z);
         
-        return _existingRegions.TryGetValue(columnPos, out Chunk? column);
+        return _existingChunks.ContainsKey(columnPos);
     }
 
     
@@ -105,7 +105,7 @@ public class RegionManager
     {
         Vector2i chunkColumnPos = CoordinateUtils.WorldToColumn(position);
 
-        if (!_existingRegions.TryGetValue(chunkColumnPos, out Chunk? column))
+        if (!_existingChunks.TryGetValue(chunkColumnPos, out Chunk? column))
             return null;
         
         Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
@@ -124,7 +124,7 @@ public class RegionManager
         Debug.Assert(chunkPos.X % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the X coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
         Debug.Assert(chunkPos.Y % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the Y coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
 
-        _existingRegions.TryGetValue(chunkPos, out Chunk? chunk);
+        _existingChunks.TryGetValue(chunkPos, out Chunk? chunk);
         return chunk;
     }
 
@@ -193,13 +193,13 @@ public class RegionManager
     }
 
 
-    private void FindRegionsToUnload(Vector3 playerPos)
+    private void FindChunksToUnload(Vector3 playerPos)
     {
         _chunksToUnload.Clear();
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
-        foreach (KeyValuePair<Vector2i, Chunk> pair in _existingRegions)
+        foreach ((Vector2i position, Chunk? chunk) in _existingChunks)
         {
-            Vector2i normalizedColumnPos = (pair.Key - originColumnPos) / Constants.SUBCHUNK_SIDE_LENGTH;
+            Vector2i normalizedColumnPos = (position - originColumnPos) / Constants.SUBCHUNK_SIDE_LENGTH;
             if (Constants.CIRCULAR_LOAD_REGION)
             {
                 bool inRange = normalizedColumnPos.X * normalizedColumnPos.X + normalizedColumnPos.Y * normalizedColumnPos.Y <=
@@ -214,60 +214,60 @@ public class RegionManager
                 if (inRange)
                     continue;
             }
-            Chunk chunk = pair.Value;
+
             if (chunk.ReadyToUnload())
-                _chunksToUnload.Add(pair.Key);
+                _chunksToUnload.Add(position);
         }
     }
 
 
     private void UnloadChunks()
     {
-        foreach (Vector2i columnPos in _chunksToUnload)
+        foreach (Vector2i chunkPos in _chunksToUnload)
         {
-            if (!_existingRegions.TryRemove(columnPos, out Chunk? column))
+            if (!_existingChunks.Remove(chunkPos, out Chunk? chunk))
                 continue;
             
-            column.Unload();
+            chunk.Unload();
         }
     }
 
 
-    private void FindRegionsToLoad(Vector3 playerPos)
+    private void FindChunksToLoad(Vector3 playerPos)
     {
-        _regionsToLoad.Clear();
+        _chunksToLoad.Clear();
 
         // Get the column position where the loading should start
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
 
         // Load columns in a square around the origin column in a spiral pattern.
-        foreach (Vector2i spiralPos in _regionLoadSpiral)
+        foreach (Vector2i spiralPos in _chunkLoadSpiral)
         {
             Vector2i columnPos = originColumnPos + spiralPos;
-            if (_existingRegions.ContainsKey(columnPos))
+            if (_existingChunks.ContainsKey(columnPos))
                 continue;
 
-            _regionsToLoad.Add(columnPos);
+            _chunksToLoad.Add(columnPos);
         }
     }
 
 
-    private void LoadRegions()
+    private void LoadChunks()
     {
-        foreach (Vector2i columnPos in _regionsToLoad)
+        foreach (Vector2i columnPos in _chunksToLoad)
         {
             Chunk column = new(columnPos);
             column.Load();
-            if (!_existingRegions.TryAdd(columnPos, column))
+            if (!_existingChunks.TryAdd(columnPos, column))
                 Logger.LogError($"Failed to add chunk column at {columnPos} to loaded columns!");
         }
     }
 
 
-    private void PrecomputeRegionLoadSpiral()
+    private void PrecomputeChunkLoadSpiral()
     {
         const int size = Constants.CHUNK_LOAD_RADIUS * 2 + 1;
-        _regionLoadSpiral = new List<Vector2i>
+        _chunkLoadSpiral = new List<Vector2i>
         {
             new(0, 0)
         };
@@ -282,10 +282,10 @@ public class RegionManager
                 if (!inRange)
                     continue;
             }
-            _regionLoadSpiral.Add(pos * Constants.SUBCHUNK_SIDE_LENGTH);
+            _chunkLoadSpiral.Add(pos * Constants.SUBCHUNK_SIDE_LENGTH);
         }
 
-        Logger.Log($"Precomputed column load spiral for render distance {Constants.CHUNK_LOAD_RADIUS}, for {_regionLoadSpiral.Count} columns.");
+        Logger.Log($"Precomputed column load spiral for render distance {Constants.CHUNK_LOAD_RADIUS}, for {_chunkLoadSpiral.Count} columns.");
     }
 
 

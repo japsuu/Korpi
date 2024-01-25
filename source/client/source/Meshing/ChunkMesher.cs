@@ -47,7 +47,7 @@ public class ChunkMesher
         if (subChunk.Position == new Vector3i(0, 4*Constants.SUBCHUNK_SIDE_LENGTH, 0))
             MeasureProfiler.StartCollectingData();
         DebugStats.StartChunkMeshing();
-        GameWorld.CurrentGameWorld.RegionManager.FillMeshingCache(subChunk.Position, _meshingDataCache);
+        GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(subChunk.Position, _meshingDataCache);
         
         _meshingDataCache.AcquireNeighbourReadLocks();
         

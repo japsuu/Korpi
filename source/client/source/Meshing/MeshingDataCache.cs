@@ -27,7 +27,7 @@ public class MeshingDataCache
             Vector3i position = subChunk.Position + offset;
             if (position.Y < 0 || position.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
                 continue;
-            SubChunk? neighbour = GameWorld.CurrentGameWorld.RegionManager.GetSubChunkAt(position);
+            SubChunk? neighbour = GameWorld.CurrentGameWorld.ChunkManager.GetSubChunkAt(position);
             if (neighbour == null)
                 continue;
             _neighbourChunks.Add(offset, neighbour);

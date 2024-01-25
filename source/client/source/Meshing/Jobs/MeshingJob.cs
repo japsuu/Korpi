@@ -42,7 +42,7 @@ public class MeshingJob : KorpiJob
             return;
         }
 
-        if (!GameWorld.CurrentGameWorld.RegionManager.ChunkExistsAt(_subChunk.Position))
+        if (!GameWorld.CurrentGameWorld.ChunkManager.ChunkExistsAt(_subChunk.Position))
         {
             Logger.LogWarning($"Aborting meshing job with ID {_id} because subChunk at position {_subChunk.Position} no longer exists.");
             SignalCompletion(JobCompletionState.Aborted);
