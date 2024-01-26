@@ -6,6 +6,7 @@ using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.Window;
 using Korpi.Client.World;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering;
 
@@ -164,7 +165,7 @@ public class GameWorldRenderer : IDisposable
         
         ShaderManager.BlockOpaqueCutoutShader.Use();
         ShaderManager.BlockOpaqueCutoutShader.SunDirection.Set(GameTime.SunDirection);
-        // ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector4.One);
+        ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector3.One);
         
         _world.ChunkManager.DrawChunks(RenderPass.Opaque);
     }
@@ -186,7 +187,7 @@ public class GameWorldRenderer : IDisposable
         
         ShaderManager.BlockTranslucentShader.Use();
         ShaderManager.BlockTranslucentShader.SunDirection.Set(GameTime.SunDirection);
-        // ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector4.One);
+        ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector3.One);
         
         _world.ChunkManager.DrawChunks(RenderPass.Transparent);
     }

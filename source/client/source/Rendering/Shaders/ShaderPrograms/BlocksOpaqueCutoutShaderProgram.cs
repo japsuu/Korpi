@@ -26,7 +26,7 @@ public class BlocksOpaqueCutoutShaderProgram : MvpShaderProgram
     // /// The color modulator is used to tint the texture.
     // /// Can be used for effects like global illumination.
     // /// </summary>
-    // public Uniform<Vector4> ColorModulator { get; protected set; } = null!;
+    public Uniform<Vector3> ColorModulator { get; protected set; } = null!;
     
     /// <summary>
     /// Block array texture.

@@ -6,11 +6,10 @@ uniform mat4 ModelMat;
 uniform mat4 ViewMat;
 uniform mat4 ProjMat;
 uniform vec3 SunDirection;
+uniform vec3 ColorModulator;
 
 out vec3 UV;
-out vec3 AOColor;   // TODO: Could be reduced to a single float, or packed with FaceShading.
-out float FaceShading;
-out vec3 FragPosition;
+out vec3 VertexColor;
 
 vec2 textureCoords[4] = vec2[](
     vec2(0.0, 0.0),
@@ -61,10 +60,8 @@ void main()
     float dotProduct = dot(faceNormal, SunDirection);
     float shading = dotProduct * 0.5 + 0.5;
     shading = shading * 0.3 + 0.7;  // Scale shading to range [0.7, 1]
-    FaceShading = shading;
     
-    AOColor = aoColors[aoIndex];
+    VertexColor = aoColors[aoIndex] * ColorModulator * shading;
     UV = vec3(textureCoords[uvIndex], textureIndex);
-    FragPosition = (vec4(position, 1.0) * ModelMat * ViewMat * ProjMat).xyz;
     gl_Position = vec4(position, 1.0) * ModelMat * ViewMat * ProjMat;
 }
