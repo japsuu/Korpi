@@ -5,9 +5,10 @@ layout (location = 0) in uvec2 InData;
 uniform mat4 ModelMat;
 uniform mat4 ViewMat;
 uniform mat4 ProjMat;
+uniform vec3 SunDirection;
 
 out vec3 UV;
-out vec3 AOColor;
+out vec3 AOColor;   // TODO: Could be reduced to a single float, or packed with FaceShading.
 out float FaceShading;
 out vec3 FragPosition;
 
@@ -25,9 +26,13 @@ vec3 aoColors[4] = vec3[](
     vec3(1.0, 1.0, 1.0)
 );
 
-float face_shading[6] = float[6](
-    0.8, 1.0, 0.5,  //  X,  Y,  Z
-    0.5, 0.5, 0.8   // -X, -Y, -Z
+vec3 face_normals[6] = vec3[6](
+    vec3( 1.0,  0.0,  0.0),  //  X
+    vec3( 0.0,  1.0,  0.0),  //  Y
+    vec3( 0.0,  0.0,  1.0),  //  Z
+    vec3(-1.0,  0.0,  0.0),  // -X
+    vec3( 0.0, -1.0,  0.0),  // -Y
+    vec3( 0.0,  0.0, -1.0)   // -Z
 );
 
 void main()
@@ -50,10 +55,15 @@ void main()
     uint y = (positionIndex >> 6) & 0x3Fu;
     uint z = positionIndex & 0x3Fu;
     vec3 position = vec3(x, y, z);
+
+    // Calculate face shading.
+    vec3 faceNormal = face_normals[normal];
+    float dotProduct = dot(faceNormal, SunDirection);
+    float shading = dotProduct * 0.5 + 0.5;
+    FaceShading = shading;
     
     AOColor = aoColors[aoIndex];
     UV = vec3(textureCoords[uvIndex], textureIndex);
-    FaceShading = face_shading[normal];
     FragPosition = (vec4(position, 1.0) * ModelMat * ViewMat * ProjMat).xyz;
     gl_Position = vec4(position, 1.0) * ModelMat * ViewMat * ProjMat;
 }

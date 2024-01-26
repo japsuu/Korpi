@@ -163,6 +163,7 @@ public class GameWorldRenderer : IDisposable
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         
         ShaderManager.BlockOpaqueCutoutShader.Use();
+        ShaderManager.BlockOpaqueCutoutShader.SunDirection.Set(GameTime.SunDirection);
         // ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector4.One);
         
         _world.ChunkManager.DrawChunks(RenderPass.Opaque);
@@ -184,8 +185,8 @@ public class GameWorldRenderer : IDisposable
         GL.ClearBuffer(ClearBuffer.Color, 1, OneFiller);
         
         ShaderManager.BlockTranslucentShader.Use();
+        ShaderManager.BlockTranslucentShader.SunDirection.Set(GameTime.SunDirection);
         // ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector4.One);
-        ShaderManager.BlockTranslucentShader.CameraPosition.Set(Camera.RenderingCamera.Position);
         
         _world.ChunkManager.DrawChunks(RenderPass.Transparent);
     }

@@ -2,6 +2,7 @@
 using Korpi.Client.Rendering.Shaders.Variables;
 using Korpi.Client.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 
@@ -14,6 +15,12 @@ public class BlocksOpaqueCutoutShaderProgram : MvpShaderProgram
     /// </summary>
     [VertexAttrib(2, VertexAttribPointerType.UnsignedInt)]
     public VertexAttrib InData { get; protected set; } = null!;
+    
+    /// <summary>
+    /// Direction of the sun.
+    /// Used to calculate the directional sunlight.
+    /// </summary>
+    public Uniform<Vector3> SunDirection { get; protected set; } = null!;
     
     // /// <summary>
     // /// The color modulator is used to tint the texture.

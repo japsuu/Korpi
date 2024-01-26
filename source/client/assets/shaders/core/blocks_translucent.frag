@@ -6,7 +6,6 @@ in float FaceShading;
 in vec3 FragPosition;
 
 layout (binding = 15) uniform sampler2DArray Sampler0;
-uniform vec3 CameraPosition;
 
 layout (location = 0) out vec4 accum;	// Accumulation buffer
 layout (location = 1) out float reveal;	// Revealage buffer
