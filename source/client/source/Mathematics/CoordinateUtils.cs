@@ -6,34 +6,37 @@ namespace Korpi.Client.Mathematics;
 
 public static class CoordinateUtils
 {
+    private const int SUBCHUNK_SIDE_LENGTH_BITMASK = Constants.SUBCHUNK_SIDE_LENGTH - 1;
+    
+    
     /// <summary>
     /// World position -> chunk position.
     /// Example: (36, 74, -5) -> (32, 64, -32)
     /// </summary>
     /// <returns>A new position that is relative to the chunk grid</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3i WorldToChunk(Vector3 position)
+    public static Vector3i WorldToSubChunk(Vector3 position)
     {
         return new Vector3i(
-            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            (int)System.Math.Floor(position.Y) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            (int)Math.Floor(position.X) & ~SUBCHUNK_SIDE_LENGTH_BITMASK,
+            (int)Math.Floor(position.Y) & ~SUBCHUNK_SIDE_LENGTH_BITMASK,
+            (int)Math.Floor(position.Z) & ~SUBCHUNK_SIDE_LENGTH_BITMASK
         );
     }
-    
-    
+
+
     /// <summary>
     /// World position -> chunk position.
     /// Example: (36, 74, -5) -> (32, 64, -32)
     /// </summary>
     /// <returns>A new position that is relative to the chunk grid</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector3i WorldToChunk(Vector3i position)
+    public static Vector3i WorldToSubChunk(Vector3i position)
     {
         return new Vector3i(
-            position.X & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Y & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Z & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            position.X & ~SUBCHUNK_SIDE_LENGTH_BITMASK,
+            position.Y & ~SUBCHUNK_SIDE_LENGTH_BITMASK,
+            position.Z & ~SUBCHUNK_SIDE_LENGTH_BITMASK
         );
     }
         
@@ -47,8 +50,8 @@ public static class CoordinateUtils
     public static Vector2i WorldToColumn(Vector3i position)
     {
         return new Vector2i(
-            position.X & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Z & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            position.X & ~SUBCHUNK_SIDE_LENGTH_BITMASK,
+            position.Z & ~SUBCHUNK_SIDE_LENGTH_BITMASK
         );
     }
         
@@ -62,8 +65,8 @@ public static class CoordinateUtils
     public static Vector2i WorldToColumn(Vector3 position)
     {
         return new Vector2i(
-            (int)System.Math.Floor(position.X) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            (int)System.Math.Floor(position.Z) & ~Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            (int)Math.Floor(position.X) & ~SUBCHUNK_SIDE_LENGTH_BITMASK,
+            (int)Math.Floor(position.Z) & ~SUBCHUNK_SIDE_LENGTH_BITMASK
         );
     }
     
@@ -77,9 +80,9 @@ public static class CoordinateUtils
     public static Vector3i WorldToChunkRelative(Vector3i position)
     {
         return new Vector3i(
-            position.X & Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Y & Constants.CHUNK_SIDE_LENGTH_MAX_INDEX,
-            position.Z & Constants.CHUNK_SIDE_LENGTH_MAX_INDEX
+            position.X & SUBCHUNK_SIDE_LENGTH_BITMASK,
+            position.Y & SUBCHUNK_SIDE_LENGTH_BITMASK,
+            position.Z & SUBCHUNK_SIDE_LENGTH_BITMASK
         );
     }
 }

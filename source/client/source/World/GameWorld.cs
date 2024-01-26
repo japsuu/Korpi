@@ -1,17 +1,12 @@
-﻿using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
+﻿using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.TerrainGenerators;
-using Korpi.Client.Logging;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
-using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
-using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Window;
-using Korpi.Client.World.Regions.Chunks.Blocks;
-using OpenTK.Graphics.OpenGL4;
+using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -19,11 +14,13 @@ namespace Korpi.Client.World;
 
 public class GameWorld
 {
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameWorld));
+    
     public static GameWorld CurrentGameWorld { get; private set; } = null!;
 
     public static event Action<WorldEvent>? WorldEventPublished;
     
-    public readonly RegionManager RegionManager;      // TODO: Make private, or wrap around a function
+    public readonly ChunkManager ChunkManager;      // TODO: Make private, or wrap around a function
     public readonly ITerrainGenerator TerrainGenerator;
     public readonly EntityManager EntityManager;
 
@@ -33,15 +30,15 @@ public class GameWorld
     public GameWorld(string name)
     {
         _name = name;
-        RegionManager = new RegionManager();
-        TerrainGenerator = FlatTerrainGenerator.Default();
+        ChunkManager = new ChunkManager();
+        TerrainGenerator = Simplex3DTerrainGenerator.Default();
         EntityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
             throw new Exception("For now, only one world can be loaded at a time");
         CurrentGameWorld = this;
         
-        Logger.Log($"Loaded world '{_name}'");
+        Logger.Info($"Loaded world '{_name}'");
     }
     
     
@@ -54,16 +51,16 @@ public class GameWorld
     
     public void FixedUpdate()
     {
-        RegionManager.Tick();
+        ChunkManager.Tick();
         EntityManager.FixedUpdate();
-        DebugStats.LoadedRegionCount = RegionManager.LoadedRegionsCount;
+        DebugStats.LoadedChunkCount = ChunkManager.LoadedChunksCount;
     }
 
 
     public BlockState RaycastWorld(Vector3 start, Vector3 direction, float maxDistance)
     {
         Ray ray = new Ray(start, direction);
-        RaycastResult raycastResult = RegionManager.RaycastBlocks(ray, maxDistance);
+        RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
 
         if (!GameClient.IsPlayerInGui)
         {
@@ -71,14 +68,14 @@ public class GameWorld
             {
                 if (raycastResult.Hit)
                 {
-                    RegionManager.SetBlockStateAtWorld(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
+                    ChunkManager.SetBlockStateAtWorld(raycastResult.HitBlockPosition, BlockRegistry.Air.GetDefaultState());
                 }
             }
             else if (Input.MouseState.IsButtonPressed(MouseButton.Right))
             {
                 if (raycastResult.Hit)
                 {
-                    RegionManager.SetBlockStateAtWorld(
+                    ChunkManager.SetBlockStateAtWorld(
                         raycastResult.HitBlockPosition + raycastResult.HitBlockFace.Normal(),
                         BlockRegistry.GetBlock(PlayerEntity.SelectedBlockType).GetDefaultState());
                 }
@@ -86,15 +83,13 @@ public class GameWorld
         }
 
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderRaycastHit)
+        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHit)
             DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.5f, Color4.Red);
         
-        if (ClientConfig.DebugModeConfig.RenderRaycastHitBlock && !raycastResult.BlockState.IsAir)
-            DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
-#else
-        if (!raycastResult.BlockState.IsAir)
-            DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
+        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHitBlock)
 #endif
+            if (!raycastResult.BlockState.IsAir)
+                DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);
         
         return raycastResult.BlockState;
     }
@@ -109,6 +104,12 @@ public class GameWorld
     public static void ReloadAllChunks()
     {
         PublishWorldEvent(WorldEvent.RELOAD_ALL_CHUNKS);
+    }
+
+
+    public static void RegenerateAllChunks()
+    {
+        PublishWorldEvent(WorldEvent.REGENERATE_ALL_CHUNKS);
     }
     
     

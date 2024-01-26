@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.UI.HUD;
 
-public class Crosshair
+public sealed class Crosshair : IDisposable
 {
     private static readonly float[] Vertices =
     {
@@ -41,8 +41,6 @@ public class Crosshair
         
         GL.EnableVertexAttribArray(1);
         GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
-        
-        GameClient.ClientUnload += OnClientUnload;
     }
 
 
@@ -62,7 +60,7 @@ public class Crosshair
     }
     
     
-    private void OnClientUnload()
+    public void Dispose()
     {
         _crosshairTexture.Dispose();
         

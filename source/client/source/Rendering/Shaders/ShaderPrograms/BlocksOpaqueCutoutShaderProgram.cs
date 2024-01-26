@@ -2,7 +2,6 @@
 using Korpi.Client.Rendering.Shaders.Variables;
 using Korpi.Client.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 

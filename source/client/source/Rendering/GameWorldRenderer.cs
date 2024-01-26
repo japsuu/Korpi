@@ -1,5 +1,4 @@
-﻿using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
+﻿using Korpi.Client.Debugging;
 using Korpi.Client.Logging;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
@@ -7,12 +6,13 @@ using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.Window;
 using Korpi.Client.World;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering;
 
 public class GameWorldRenderer : IDisposable
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GameWorldRenderer));
+
     private static readonly float[] ZeroFiller = { 0.0f, 0.0f, 0.0f, 0.0f };
     private static readonly float[] OneFiller = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -67,7 +67,7 @@ public class GameWorldRenderer : IDisposable
         
         if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
         {
-            Logger.LogError("Failed to create opaque framebuffer");
+            Logger.Error("Failed to create opaque framebuffer");
             throw new Exception("Failed to create opaque framebuffer");
         }
         
@@ -103,7 +103,7 @@ public class GameWorldRenderer : IDisposable
         
         if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
         {
-            Logger.LogError("Failed to create transparent framebuffer");
+            Logger.Error("Failed to create transparent framebuffer");
             throw new Exception("Failed to create transparent framebuffer");
         }
         
@@ -143,20 +143,19 @@ public class GameWorldRenderer : IDisposable
         DrawToBackbuffer();
 
 #if DEBUG
-        RegionManager.DrawDebugBorders();
+        ChunkManager.DrawDebugBorders();
 #endif
-        
         _world.EntityManager.Draw();
     }
 
 
     private void DrawChunksOpaquePass()
     {
-        GL.Enable(EnableCap.CullFace);      // Cull backfaces
-        GL.Enable(EnableCap.DepthTest);     // Enable depth testing
-        GL.DepthFunc(DepthFunction.Less);   // Draw fragments that are closer to the camera
-        GL.DepthMask(true);             // Enable writing to the depth buffer
-        GL.Disable(EnableCap.Blend);        // Disable blending
+        GL.Enable(EnableCap.CullFace); // Cull backfaces
+        GL.Enable(EnableCap.DepthTest); // Enable depth testing
+        GL.DepthFunc(DepthFunction.Less); // Draw fragments that are closer to the camera
+        GL.DepthMask(true); // Enable writing to the depth buffer
+        GL.Disable(EnableCap.Blend); // Disable blending
         GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         
         // Bind opaque framebuffer to render solid objects
@@ -166,7 +165,7 @@ public class GameWorldRenderer : IDisposable
         ShaderManager.BlockOpaqueCutoutShader.Use();
         // ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector4.One);
         
-        _world.RegionManager.DrawChunks(RenderPass.Opaque);
+        _world.ChunkManager.DrawChunks(RenderPass.Opaque);
     }
 
 
@@ -188,7 +187,7 @@ public class GameWorldRenderer : IDisposable
         // ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector4.One);
         ShaderManager.BlockTranslucentShader.CameraPosition.Set(Camera.RenderingCamera.Position);
         
-        _world.RegionManager.DrawChunks(RenderPass.Transparent);
+        _world.ChunkManager.DrawChunks(RenderPass.Transparent);
     }
 
 
@@ -216,7 +215,7 @@ public class GameWorldRenderer : IDisposable
     private void DrawSkybox()
     {
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderSkybox)
+        if (Configuration.ClientConfig.DebugModeConfig.RenderSkybox)
 #endif
             _skybox.Draw();
     }

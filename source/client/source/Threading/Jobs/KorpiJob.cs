@@ -8,6 +8,8 @@ namespace Korpi.Client.Threading.Jobs;
 /// </summary>
 public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(KorpiJob));
+
     private Action? _continuation;
     private T _result;
 
@@ -54,13 +56,13 @@ public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
     {
         if (completionState == JobCompletionState.None)
         {
-            Logger.LogError("Signal completion called with a state of 'None'!");
+            Logger.Error("Signal completion called with a state of 'None'!");
             return;
         }
 
         if (CompletionState != JobCompletionState.None)
         {
-            Logger.LogError("Signal completion called multiple times in job!");
+            Logger.Error("Signal completion called multiple times in job!");
             return;
         }
 

@@ -5,6 +5,7 @@ namespace Korpi.Client.Window;
 /// <summary>
 /// Class that can dynamically adjust game settings based on the current performance of the game.
 /// </summary>
+[Obsolete("This class should not be used currently, as it might negatively impact player experience.")]
 public static class DynamicPerformance
 {
     /// <summary>

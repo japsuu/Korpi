@@ -13,6 +13,8 @@ namespace Korpi.Client.UI;
 
 public class ImGuiController : IDisposable
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ImGuiController));
+
     private bool _frameBegun;
 
     private int _vertexArray;
@@ -386,8 +388,6 @@ void main()
                     
                 GL.BufferData(BufferTarget.ArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
                 _vertexBufferSize = newSize;
-
-                Logger.LogVerbose($"Resized dear imgui vertex buffer to new size {_vertexBufferSize}");
             }
 
             int indexSize = cmdList.IdxBuffer.Size * sizeof(ushort);
@@ -396,8 +396,6 @@ void main()
                 int newSize = (int)System.Math.Max(_indexBufferSize * 1.5f, indexSize);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
                 _indexBufferSize = newSize;
-
-                Logger.LogVerbose($"Resized dear imgui index buffer to new size {_indexBufferSize}");
             }
         }
 

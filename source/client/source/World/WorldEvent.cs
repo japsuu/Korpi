@@ -11,4 +11,9 @@ public enum WorldEvent
     /// Fired when all chunks need to be reloaded.
     /// </summary>
     RELOAD_ALL_CHUNKS,
+    
+    /// <summary>
+    /// Fired when all chunks need to be re-generated.
+    /// </summary>
+    REGENERATE_ALL_CHUNKS,
 }

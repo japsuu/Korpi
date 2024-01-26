@@ -3,7 +3,7 @@ using Korpi.Client.Logging;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;
-using Korpi.Client.World.Regions.Chunks.Blocks.Textures;
+using Korpi.Client.World.Chunks.Blocks.Textures;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Registries;

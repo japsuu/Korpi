@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Korpi.Client.Utils;
+﻿namespace Korpi.Client.Utils;
 
 public static class Extensions
 {

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Korpi.Client.World.Regions.Chunks.Blocks;
+using Korpi.Client.World.Chunks.Blocks;
 
 namespace Korpi.Client.Debugging;
 
@@ -8,8 +8,9 @@ public static class DebugStats
     private const int AVERAGE_CHUNK_GENERATION_TIME_SAMPLES = 64;
     private const int AVERAGE_CHUNK_MESHING_TIME_SAMPLES = 64;
         
-    public static int LoadedRegionCount;
+    public static int LoadedChunkCount;
     public static ulong ChunksInGenerationQueue;
+    public static ulong AvailableThreads;
     public static ulong ChunksInMeshingQueue;
     public static ulong ItemsInMainThreadQueue;
     public static ulong ItemsInMainThreadThrottledQueue;

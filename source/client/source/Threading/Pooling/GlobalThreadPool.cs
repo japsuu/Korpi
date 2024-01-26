@@ -14,6 +14,8 @@ namespace Korpi.Client.Threading.Pooling;
 /// </summary>
 public static class GlobalThreadPool
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GlobalThreadPool));
+
     /// <summary>
     /// Minimum number of <see cref="mainQueueThrottled"/> invocations executed per tick.
     /// </summary>
@@ -28,7 +30,7 @@ public static class GlobalThreadPool
     /// The number of invocations executed on the main thread from the throttled queue per tick.
     /// Dynamically adjusted based on performance.
     /// </summary>
-    private static int throttledUpdatesPerTick;
+    private static int throttledUpdatesPerTick = MAX_THROTTLED_UPDATES_PER_TICK;
 
     /// <summary>
     /// The thread pool.
@@ -54,12 +56,18 @@ public static class GlobalThreadPool
     public static void Initialize()
     {
         // Since we're CPU-bound (most of the threads will be waiting in a loop), allocate only 3/4 of the system's logical processor count with a minimum of 2.
+        //NOTE: For some reason, the Debug build seems to run faster than Release. https://stackoverflow.com/questions/8858128/c-opengl-application-running-smoother-with-debugger-attached
+
+#if DEBUG
         ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount * 3 / 4, 2);
+        Logger.Warn($"[Global Thread Pool] Running in DEBUG, using {ThreadCount} threads instead of the usual {SystemInfo.ProcessorCount/4}.");
+#else
+        ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount / 4, 2);
+#endif
         threadPool = new ThreadPool(ThreadCount, ThreadConfig.Default());
         mainQueue = new ConcurrentQueue<Action>();
         mainQueueThrottled = new ConcurrentQueue<Action>();
-
-        Logger.Log($"[Global Thread Pool] Initialized with {ThreadCount} threads.");
+        Logger.Info($"[Global Thread Pool] Initialized with {ThreadCount} threads.");
     }
 
 
@@ -74,7 +82,7 @@ public static class GlobalThreadPool
 
     public static void FixedUpdate()
     {
-        throttledUpdatesPerTick = DynamicPerformance.GetDynamic(MIN_THROTTLED_UPDATES_PER_TICK, MAX_THROTTLED_UPDATES_PER_TICK);
+        // throttledUpdatesPerTick = DynamicPerformance.GetDynamic(MIN_THROTTLED_UPDATES_PER_TICK, MAX_THROTTLED_UPDATES_PER_TICK); //TODO: Research if this is needed.
         Debugging.DebugStats.ItemsInMainThreadThrottledQueue = (ulong)mainQueueThrottled.Count;
         Debugging.DebugStats.MainThreadThrottledQueueItemsPerTick = (ulong)throttledUpdatesPerTick;
 

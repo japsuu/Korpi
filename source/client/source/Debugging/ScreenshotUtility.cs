@@ -8,6 +8,8 @@ namespace Korpi.Client.Debugging;
 
 public static class ScreenshotUtility
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ScreenshotUtility));
+    
     public class FrameCapture
     {
         private readonly byte[] _pixels;
@@ -83,7 +85,7 @@ public static class ScreenshotUtility
             File.WriteAllBytes(filePath, pngBytes);
             
             string fullPath = Path.GetFullPath(filePath);
-            Logger.Log($"Saved screenshot to {fullPath}");
+            Logger.Info($"Saved screenshot to {fullPath}");
             return filePath;
         }
         

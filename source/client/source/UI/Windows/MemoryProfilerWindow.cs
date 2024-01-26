@@ -20,7 +20,6 @@ public class MemoryProfilerWindow : ImGuiWindow
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
         _proc = Process.GetCurrentProcess();
         _gcMemoryInfo = GC.GetGCMemoryInfo(GCKind.Any);
-        GameClient.ClientUnload += OnUnload;
     }
 
 
@@ -57,8 +56,9 @@ public class MemoryProfilerWindow : ImGuiWindow
     }
 
 
-    private void OnUnload()
+    public override void Dispose()
     {
+        base.Dispose();
         _proc.Dispose();
     }
 }

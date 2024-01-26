@@ -10,7 +10,7 @@ namespace Korpi.Client.UI.Windows;
 
 public class DebugStatsWindow : ImGuiWindow
 {
-    private const int CALCULATE_MIN_MAX_FPS_AFTER_FRAMES = 1000;
+    private const int CALCULATE_MIN_MAX_FPS_AFTER_FRAMES = 2000;
     
     public override string Title => "Debug Stats";
 
@@ -30,11 +30,12 @@ public class DebugStatsWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        uint loadedChunksApprox = (uint)DebugStats.LoadedRegionCount * Constants.CHUNK_COLUMN_HEIGHT;
-        uint loadedBlocksApprox = loadedChunksApprox * Constants.CHUNK_SIDE_LENGTH_CUBED;
+        uint loadedSubchunksApprox = (uint)DebugStats.LoadedChunkCount * Constants.CHUNK_HEIGHT_SUBCHUNKS;
+        const uint chunkSizeCubed = Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
+        uint loadedBlocksApprox = loadedSubchunksApprox * chunkSizeCubed;
         
         string loadedBlocksApproxFormatted = loadedBlocksApprox.ToString("#,0", _largeNumberFormat);
-        string loadedChunksApproxFormatted = loadedChunksApprox.ToString("#,0", _largeNumberFormat);
+        string loadedSubchunksApproxFormatted = loadedSubchunksApprox.ToString("#,0", _largeNumberFormat);
         string renderedTris = DebugStats.RenderedTris.ToString("#,0", _largeNumberFormat);
         
         float averageFps = ImGui.GetIO().Framerate;
@@ -57,13 +58,14 @@ public class DebugStatsWindow : ImGuiWindow
 
         ImGui.Separator();
         ImGui.Text("Loaded regions");
+        ImGui.Text($"Loaded chunks = {DebugStats.LoadedChunkCount}");
+        ImGui.Text($"Loaded subchunks (approx) = {loadedSubchunksApproxFormatted}");
         ImGui.Text($"Loaded blocks (approx) = {loadedBlocksApproxFormatted}");
-        ImGui.Text($"Loaded chunks (approx) = {loadedChunksApproxFormatted}");
-        ImGui.Text($"Loaded regions = {DebugStats.LoadedRegionCount}");
 
         ImGui.Separator();
         ImGui.Text("Global Thread Pool");
         ImGui.Text($"Threads = {GlobalThreadPool.ThreadCount}");
+        ImGui.Text($"Available Threads = {DebugStats.AvailableThreads}");
         ImGui.Text($"In queue = {DebugStats.ItemsInMainThreadQueue}");
         ImGui.Text($"In queue (throttled) = {DebugStats.ItemsInMainThreadThrottledQueue}");
         ImGui.Text($"Throttled items per tick = {DebugStats.MainThreadThrottledQueueItemsPerTick}");

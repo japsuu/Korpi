@@ -6,6 +6,8 @@ namespace Korpi.Client.Threading.Threads;
 
 public sealed class WorkerThread
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(WorkerThread));
+
     private readonly PriorityWorkQueue<IKorpiJob> _workQueue;
     private readonly ThreadConfig _config;
     private readonly Thread _thread;
@@ -74,7 +76,7 @@ public sealed class WorkerThread
     {
         if (obj is null)
         {
-            Logger.LogWarning("Worker thread has been started without a cancellation token.");
+            Logger.Warn("Worker thread has been started without a cancellation token.");
             return;
         }
         
@@ -85,7 +87,6 @@ public sealed class WorkerThread
             // Shut down if there is no more work being added.
             if (_shuttingDown || _workQueue.IsCompleted)
             {
-                // Debug.Log("Thread pool worker shutting down.");
                 Status = ThreadStatus.Offline;
                 return;
             }
@@ -95,7 +96,7 @@ public sealed class WorkerThread
 
             if (hasWork && job == null)
             {
-                Logger.LogError("Worker thread has encountered a null job.");
+                Logger.Error("Worker thread has encountered a null job.");
                 continue;
             }
 
@@ -104,14 +105,20 @@ public sealed class WorkerThread
             {
                 try
                 {
+#if DEBUG
+                    Interlocked.Decrement(ref Debugging.DebugStats.AvailableThreads);
+#endif
                     job!.Execute();
 
                     if (job.CompletionState == JobCompletionState.None)
                         job.SignalCompletion(JobCompletionState.Completed);
+#if DEBUG
+                    Interlocked.Increment(ref Debugging.DebugStats.AvailableThreads);
+#endif
                 }
                 catch (Exception e)
                 {
-                    Logger.LogException("Worker thread encountered an exception while executing a job:", e);
+                    Logger.Error("Worker thread encountered an exception while executing a job:", e);
                     LastException = e;
 
                     if (job!.CompletionState == JobCompletionState.None)

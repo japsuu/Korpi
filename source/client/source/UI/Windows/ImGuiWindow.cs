@@ -4,6 +4,8 @@ namespace Korpi.Client.UI.Windows;
 
 public abstract class ImGuiWindow
 {
+    protected static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ImGuiWindow));
+    
     protected ImGuiWindowFlags Flags = ImGuiWindowFlags.None;
     
     public abstract string Title { get; }
@@ -40,6 +42,9 @@ public abstract class ImGuiWindow
     
     
     protected virtual void PreUpdate() { }
+    
+    
+    public virtual void Dispose() { }
 
     
     protected abstract void UpdateContent();
