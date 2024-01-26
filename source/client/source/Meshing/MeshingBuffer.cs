@@ -304,6 +304,7 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
                 _transparentVertexData[_addedTransparentVertexDataCount + 1] = data2;
                 _addedTransparentVertexDataCount += 2;
                 break;
+            case BlockRenderType.AlphaClip:
             case BlockRenderType.Opaque:
                 _opaqueVertexData[_addedOpaqueVertexDataCount] = data1;
                 _opaqueVertexData[_addedOpaqueVertexDataCount + 1] = data2;
@@ -330,6 +331,7 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
                 _addedTransparentIndicesCount += 6;
                 _addedTransparentFacesCount++;
                 break;
+            case BlockRenderType.AlphaClip:
             case BlockRenderType.Opaque:
                 uint oOffset = 4 * (uint)_addedOpaqueFacesCount;
                 _opaqueIndexData[_addedOpaqueIndicesCount] = oOffset + 0;
