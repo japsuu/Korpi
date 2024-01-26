@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
+using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Rendering;
+using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
@@ -15,7 +17,7 @@ public class Chunk
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(Chunk));
     
-    private ChunkGenerationState _currentState;
+    private ChunkGenerationState _currentState = ChunkGenerationState.UNINITIALIZED;
     private long _currentJobId;
     private readonly SubChunk[] _subchunks;
     private readonly ChunkHeightmap _heightmap;
@@ -67,7 +69,10 @@ public class Chunk
             subChunk.Load();
             _subchunks[i] = subChunk;
         }
-        ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
+
+        // if (IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
+        // if (Vector3.Distance(Camera.RenderingCamera.Position, new Vector3(Position.X, Camera.RenderingCamera.Position.Y, Position.Y)) < Constants.SUBCHUNK_SIDE_LENGTH * 3)
+        //     ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
     }
 
 
@@ -153,6 +158,31 @@ public class Chunk
         SubChunkBlockPosition pos = new(x, y % Constants.SUBCHUNK_SIDE_LENGTH, z);
         return _subchunks[arrayIndex].GetBlockState(pos);
     }
+    
+    
+    public bool IsOnFrustum(Frustum viewFrustum)
+    {
+        Vector3 position = new Vector3(Position.X, 0, Position.Y);
+        Vector3 min = position;
+        Vector3 max = position + new Vector3(Constants.SUBCHUNK_SIDE_LENGTH, Constants.CHUNK_HEIGHT_BLOCKS, Constants.SUBCHUNK_SIDE_LENGTH);
+
+        foreach (FrustumPlane plane in viewFrustum.Planes)
+        {
+            Vector3 pVertex = min;
+
+            if (plane.Normal.X >= 0)
+                pVertex.X = max.X;
+            if (plane.Normal.Y >= 0)
+                pVertex.Y = max.Y;
+            if (plane.Normal.Z >= 0)
+                pVertex.Z = max.Z;
+
+            if (Vector3.Dot(plane.Normal, pVertex) + plane.Distance < 0)
+                return false;
+        }
+
+        return true;
+    }
 
 
     private void ChangeState(ChunkGenerationState newState)
@@ -200,6 +230,7 @@ public class Chunk
         switch (_currentState)
         {
             case ChunkGenerationState.UNINITIALIZED:
+                ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
                 break;
             case ChunkGenerationState.GENERATING_TERRAIN:
                 break;

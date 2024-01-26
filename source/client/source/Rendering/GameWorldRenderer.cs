@@ -1,5 +1,6 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
+using Korpi.Client.Debugging.Profiling;
 using Korpi.Client.Logging;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
@@ -132,25 +133,20 @@ public class GameWorldRenderer : IDisposable
     {
         DebugStats.RenderedTris = 0;
 
-        using (new ProfileScope("DrawChunksOpaquePass"))
-            DrawChunksOpaquePass();
+        DrawChunksOpaquePass();
 
         DrawSkybox();
 
-        using (new ProfileScope("DrawChunksTransparentPass"))
-            DrawChunksTransparentPass();
+        DrawChunksTransparentPass();
         
-        using (new ProfileScope("DrawChunksCompositePass"))
-            DrawChunksCompositePass();
+        DrawChunksCompositePass();
         
-        using (new ProfileScope("DrawToBackbuffer"))
-            DrawToBackbuffer();
+        DrawToBackbuffer();
 
 #if DEBUG
         ChunkManager.DrawDebugBorders();
 #endif
-        using (new ProfileScope("EntityManager.Draw"))
-            _world.EntityManager.Draw();
+        _world.EntityManager.Draw();
     }
 
 

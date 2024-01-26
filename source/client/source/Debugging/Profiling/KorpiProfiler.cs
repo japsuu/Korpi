@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Korpi.Client.Debugging;
+namespace Korpi.Client.Debugging.Profiling;
 
 /// <summary>
 /// A simple profiler that can be used to measure the duration of code execution.
@@ -90,22 +90,5 @@ public static class KorpiProfiler
         profile.Stopwatch.Stop();
         profile.DurationMillis = profile.Stopwatch.Elapsed.TotalMilliseconds;
         lastFrame = profile;
-    }
-}
-
-public class Profile
-{
-    public string Name;
-    public readonly Stopwatch Stopwatch;
-    public readonly List<Profile> Children = new();
-    public readonly float DiscardIfDurationLessThan;
-    public double DurationMillis;
-
-
-    public Profile(string name, Stopwatch stopwatch, float discardIfDurationLessThan)
-    {
-        Name = name;
-        Stopwatch = stopwatch;
-        DiscardIfDurationLessThan = discardIfDurationLessThan;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Korpi.Client.Debugging;
+﻿namespace Korpi.Client.Debugging.Profiling;
 
 /// <summary>
 /// A scope that can be used to profile code.

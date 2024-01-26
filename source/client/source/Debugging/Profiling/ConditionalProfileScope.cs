@@ -1,4 +1,4 @@
-﻿namespace Korpi.Client.Debugging;
+﻿namespace Korpi.Client.Debugging.Profiling;
 
 /// <summary>
 /// <see cref="ProfileScope"/> but will get discarded if the duration is less than the specified value.

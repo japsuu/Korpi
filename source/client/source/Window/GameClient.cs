@@ -2,6 +2,7 @@
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
+using Korpi.Client.Debugging.Profiling;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Modding;
 using Korpi.Client.Registries;
@@ -216,8 +217,7 @@ public class GameClient : GameWindow
         if (Input.KeyboardState.IsKeyPressed(Keys.F2))
             ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
 
-        using (new ProfileScope("SwapBuffers"))
-            SwapBuffers();
+        SwapBuffers();
         KorpiProfiler.End();
         KorpiProfiler.EndFrame();
     }
@@ -236,8 +236,7 @@ public class GameClient : GameWindow
 
     private void DrawWorld()
     {
-        using (new ProfileScope("GameWorldRenderer.Draw"))
-            _gameWorldRenderer.Draw();
+        _gameWorldRenderer.Draw();
 
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && DebugStats.ChunksInGenerationQueue == 0 && DebugStats.ChunksInMeshingQueue == 0)
@@ -260,11 +259,8 @@ public class GameClient : GameWindow
     private void FixedUpdate()
     {
         GameTime.FixedUpdate();
-        using (new ProfileScope("GlobalThreadPool.FixedUpdate"))
-            GlobalThreadPool.FixedUpdate();
-        
-        using (new ProfileScope("GameWorld.FixedUpdate"))
-            _gameWorld.FixedUpdate();
+        GlobalThreadPool.FixedUpdate();
+        _gameWorld.FixedUpdate();
     }
 
 
