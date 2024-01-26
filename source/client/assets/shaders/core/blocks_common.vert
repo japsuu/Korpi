@@ -58,8 +58,17 @@ void main()
     // Calculate face shading.
     vec3 faceNormal = face_normals[normal];
     float dotProduct = dot(faceNormal, SunDirection);
-    float shading = dotProduct * 0.5 + 0.5;
-    shading = shading * 0.3 + 0.7;  // Scale shading to range [0.7, 1]
+    float shading;
+    // Check if the normal is pointing up or down (Y-axis), to apply constant lighting for top and bottom faces.
+    if (faceNormal.y == 1.0 || faceNormal.y == -1.0) {
+        const float topShading = 1.0;
+        const float bottomShading = 0.5;
+        shading = mix(bottomShading, topShading, (faceNormal.y + 1.0) * 0.5);
+    } else {
+        float dotProduct = dot(faceNormal, SunDirection);
+        shading = dotProduct * 0.5 + 0.5;
+        shading = shading * 0.3 + 0.7;  // Scale shading to range [0.7, 1]
+    }
     
     VertexColor = aoColors[aoIndex] * ColorModulator * shading;
     UV = vec3(textureCoords[uvIndex], textureIndex);
