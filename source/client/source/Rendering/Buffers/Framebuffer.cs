@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Debugging;
+﻿using System.Diagnostics;
+using Korpi.Client.Debugging;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
@@ -161,6 +162,7 @@ public class Framebuffer : GLObject
     /// Check if the current framebuffer status is "framebuffer complete", throws on error.
     /// </summary>
     /// <param name="target">The framebuffer target to bind to.</param>
+    [Conditional("DEBUG")]
     public void CheckState(FramebufferTarget target)
     {
         AssertUtility.Assert("Error on framebuffer attach/detach");
@@ -172,6 +174,7 @@ public class Framebuffer : GLObject
     /// Throws an <see cref="ObjectNotBoundException"/> if this framebuffer is not the currently active one.
     /// </summary>
     /// <param name="target">The framebuffer target to bind to.</param>
+    [Conditional("DEBUG")]
     public void AssertActive(FramebufferTarget target)
     {
         GetPName binding = target switch
