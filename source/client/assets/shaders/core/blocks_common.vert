@@ -60,6 +60,7 @@ void main()
     vec3 faceNormal = face_normals[normal];
     float dotProduct = dot(faceNormal, SunDirection);
     float shading = dotProduct * 0.5 + 0.5;
+    shading = shading * 0.3 + 0.7;  // Scale shading to range [0.7, 1]
     FaceShading = shading;
     
     AOColor = aoColors[aoIndex];
