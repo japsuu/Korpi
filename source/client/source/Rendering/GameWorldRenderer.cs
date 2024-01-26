@@ -11,6 +11,8 @@ namespace Korpi.Client.Rendering;
 
 public class GameWorldRenderer : IDisposable
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GameWorldRenderer));
+
     private static readonly float[] ZeroFiller = { 0.0f, 0.0f, 0.0f, 0.0f };
     private static readonly float[] OneFiller = { 1.0f, 1.0f, 1.0f, 1.0f };
     
@@ -65,7 +67,7 @@ public class GameWorldRenderer : IDisposable
         
         if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
         {
-            Logger.LogError("Failed to create opaque framebuffer");
+            Logger.Error("Failed to create opaque framebuffer");
             throw new Exception("Failed to create opaque framebuffer");
         }
         
@@ -101,7 +103,7 @@ public class GameWorldRenderer : IDisposable
         
         if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
         {
-            Logger.LogError("Failed to create transparent framebuffer");
+            Logger.Error("Failed to create transparent framebuffer");
             throw new Exception("Failed to create transparent framebuffer");
         }
         

@@ -11,6 +11,8 @@ namespace Korpi.Client.Meshing.Jobs;
 
 public class MeshingJob : KorpiJob
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(MeshingJob));
+    
     private readonly long _id;
     private readonly SubChunk _subChunk;
     private readonly Action _callback;
@@ -37,14 +39,14 @@ public class MeshingJob : KorpiJob
         // Abort the job if the subChunk's job ID does not match the job ID.
         if (_subChunk.CurrentJobId != _id)
         {
-            Logger.LogWarning($"Aborting orphaned job with ID: {_id}");
+            Logger.Warn($"Aborting orphaned job with ID: {_id}");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }
 
         if (!GameWorld.CurrentGameWorld.ChunkManager.ChunkExistsAt(_subChunk.Position))
         {
-            Logger.LogWarning($"Aborting meshing job with ID {_id} because subChunk at position {_subChunk.Position} no longer exists.");
+            Logger.Warn($"Aborting meshing job with ID {_id} because subChunk at position {_subChunk.Position} no longer exists.");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }
@@ -68,7 +70,7 @@ public class MeshingJob : KorpiJob
         }
         else
         {
-            Logger.LogError($"Job with ID {_id} has encountered a deadlock and will be aborted.");
+            Logger.Error($"Job with ID {_id} has encountered a deadlock and will be aborted.");
 
             SignalCompletion(JobCompletionState.Aborted);
 

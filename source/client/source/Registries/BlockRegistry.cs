@@ -15,6 +15,8 @@ namespace Korpi.Client.Registries;
 /// </summary>
 public static class BlockRegistry
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(BlockRegistry));
+
     private static readonly List<Block> Values = new();
     private static readonly List<BlockState> DefaultStateValues = new();
     private static readonly Dictionary<string, Block> NameToValue = new();
@@ -30,7 +32,7 @@ public static class BlockRegistry
     {
         if (mod.ContainingFolderPath == null)
         {
-            Logger.LogWarning($"Mod {mod.Name} by {mod.Author} has no containing folder path, cannot register blocks for it.");
+            Logger.Warn($"Mod {mod.Name} by {mod.Author} has no containing folder path, cannot register blocks for it.");
             return;
         }
         
@@ -39,7 +41,7 @@ public static class BlockRegistry
         
         if (mod.Namespace == null)
         {
-            Logger.LogWarning($"Mod {mod.Name} by {mod.Author} has no namespace, cannot register blocks for it.");
+            Logger.Warn($"Mod {mod.Name} by {mod.Author} has no namespace, cannot register blocks for it.");
             return;
         }
         
@@ -48,7 +50,7 @@ public static class BlockRegistry
             RegisterNewBlock(mod.Namespace, mod.ContainingFolderPath, blockCreationData);
         }
 
-        Logger.Log($"Registered {mod.Blocks.Length} blocks from mod '{mod.Name}' by {mod.Author}.");
+        Logger.Info($"Registered {mod.Blocks.Length} blocks from mod '{mod.Name}' by {mod.Author}.");
     }
     
     

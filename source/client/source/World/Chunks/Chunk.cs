@@ -69,9 +69,6 @@ public class Chunk
             _subchunks[i] = subChunk;
         }
 
-        // if (IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
-        // if (Vector3.Distance(Camera.RenderingCamera.Position, new Vector3(Position.X, Camera.RenderingCamera.Position.Y, Position.Y)) < Constants.SUBCHUNK_SIDE_LENGTH * 3)
-        //     ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
         ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
     }
 
@@ -206,8 +203,11 @@ public class Chunk
             case ChunkGenerationState.UNINITIALIZED:
                 break;
             case ChunkGenerationState.GENERATING_TERRAIN:
+                const WorkItemPriority priority = WorkItemPriority.Normal;
+                // if (IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
+                //     priority = WorkItemPriority.High;
                 Interlocked.Increment(ref _currentJobId);
-                GlobalThreadPool.DispatchJob(new GenerationJob(_currentJobId, this, () => ChangeState(ChunkGenerationState.GENERATING_DECORATION)), WorkItemPriority.Normal);
+                GlobalThreadPool.DispatchJob(new GenerationJob(_currentJobId, this, () => ChangeState(ChunkGenerationState.GENERATING_DECORATION)), priority);
                 break;
             case ChunkGenerationState.GENERATING_DECORATION:
                 ChangeState(ChunkGenerationState.GENERATING_LIGHTING);

@@ -14,6 +14,8 @@ namespace Korpi.Client.Threading.Pooling;
 /// </summary>
 public static class GlobalThreadPool
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GlobalThreadPool));
+
     /// <summary>
     /// Minimum number of <see cref="mainQueueThrottled"/> invocations executed per tick.
     /// </summary>
@@ -65,7 +67,7 @@ public static class GlobalThreadPool
         threadPool = new ThreadPool(ThreadCount, ThreadConfig.Default());
         mainQueue = new ConcurrentQueue<Action>();
         mainQueueThrottled = new ConcurrentQueue<Action>();
-        Logger.Log($"[Global Thread Pool] Initialized with {ThreadCount} threads.");
+        Logger.Info($"[Global Thread Pool] Initialized with {ThreadCount} threads.");
     }
 
 

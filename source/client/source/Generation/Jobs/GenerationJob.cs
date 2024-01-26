@@ -9,6 +9,8 @@ namespace Korpi.Client.Generation.Jobs;
 
 public class GenerationJob : KorpiJob
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GenerationJob));
+
     private readonly long _id;
     private readonly Chunk _chunk;
     private readonly Action _callback;
@@ -33,7 +35,7 @@ public class GenerationJob : KorpiJob
         // Abort the job if the chunk's job ID does not match the job ID.
         if (_chunk.CurrentJobId != _id)
         {
-            Logger.LogWarning($"Aborting orphaned job with ID: {_id}");
+            Logger.Warn($"Aborting orphaned job with ID: {_id}");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }
@@ -53,7 +55,7 @@ public class GenerationJob : KorpiJob
         }
         else
         {
-            Logger.LogError($"Job with ID {_id} has encountered a deadlock and will be aborted.");
+            Logger.Error($"Job with ID {_id} has encountered a deadlock and will be aborted.");
 
             SignalCompletion(JobCompletionState.Aborted);
 

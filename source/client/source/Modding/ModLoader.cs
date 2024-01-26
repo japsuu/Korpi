@@ -10,9 +10,11 @@ namespace Korpi.Client.Modding;
 
 public static class ModLoader
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ModLoader));
+
     public static void LoadAllMods()
     {
-        Logger.Log("Loading mods...");
+        Logger.Info("Loading mods...");
         List<YamlMod> mods = new();
         List<YamlMod> builtInMods = new();
 
@@ -23,23 +25,23 @@ public static class ModLoader
             string fileContents = File.ReadAllText(filePath);
             YamlMod mod = YamlSerializationHelper.Deserialize<YamlMod>(fileContents);
             
-            Logger.Log($"Discovered mod '{mod.Name}' by '{mod.Author}'.");
+            Logger.Info($"Discovered mod '{mod.Name}' by '{mod.Author}'.");
 
             if (mod.Name == null)
             {
-                Logger.LogWarning($"Mod by '{mod.Author}' has no name, skipping.");
+                Logger.Warn($"Mod by '{mod.Author}' has no name, skipping.");
                 continue;
             }
             
             if (mod.Author == null)
             {
-                Logger.LogWarning($"Mod '{mod.Name}' has no author, skipping.");
+                Logger.Warn($"Mod '{mod.Name}' has no author, skipping.");
                 continue;
             }
             
             if (mod.Namespace == null)
             {
-                Logger.LogWarning($"Mod '{mod.Name}' by '{mod.Author}' has no namespace, skipping.");
+                Logger.Warn($"Mod '{mod.Name}' by '{mod.Author}' has no namespace, skipping.");
                 continue;
             }
             
@@ -56,7 +58,7 @@ public static class ModLoader
 
         if (builtInMods.Count < 1)
         {
-            Logger.LogWarning("No built-in mods found, creating default.");
+            Logger.Warn("No built-in mods found, creating default.");
             builtInMods.Add(GetBuiltinMods());
         }
         
@@ -70,7 +72,7 @@ public static class ModLoader
             BlockRegistry.RegisterBlocks(mod);
         }
         
-        Logger.Log("Finished loading mods.");
+        Logger.Info("Finished loading mods.");
     }
     
     
@@ -96,7 +98,7 @@ public static class ModLoader
         {
             string def = GetDefaultBuiltinMod();
             File.WriteAllText(filePath, def);
-            Logger.Log("Created default builtin mod.");
+            Logger.Info("Created default builtin mod.");
         }
         
         string fileContents = File.ReadAllText(filePath);

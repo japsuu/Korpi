@@ -9,6 +9,8 @@ namespace Korpi.Client.Threading.Pooling;
 /// </summary>
 public sealed class ThreadPool
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ThreadPool));
+
     private readonly List<WorkerThread> _workers;
     private readonly PriorityWorkQueue<IKorpiJob> _workQueue;
 
@@ -83,7 +85,7 @@ public sealed class ThreadPool
         {
             if (count >= waitInterval)
             {
-                Logger.LogWarning("Thread pool shutdown wait interval exceeded, aborting threads.");
+                Logger.Warn("Thread pool shutdown wait interval exceeded, aborting threads.");
                 break;
             }
 

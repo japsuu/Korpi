@@ -9,6 +9,8 @@ namespace Korpi.Client.Rendering.Chunks;
 
 public class ChunkRenderer : IDisposable
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ChunkRenderer));
+
     private readonly int _opaqueMeshVAO;
     private readonly int _opaqueMeshVBO;
     private readonly int _opaqueMeshEBO;
@@ -138,6 +140,6 @@ public class ChunkRenderer : IDisposable
     ~ChunkRenderer()
     {
         if (_isDisposed == false)
-            Logger.LogWarning($"[{nameof(ChunkRenderer)}] GPU Resource leak! Did you forget to call Dispose()?");
+            Logger.Warn($"[{nameof(ChunkRenderer)}] GPU Resource leak! Did you forget to call Dispose()?");
     }
 }
