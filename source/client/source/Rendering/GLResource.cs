@@ -34,7 +34,7 @@ public abstract class GLResource : IDisposable
         Logger.WarnFormat("GLResource leaked: {0}", this);
         Dispose(false);
 #if DEBUG
-        throw new OpenGLException($"GLResource leaked: {this}");
+        throw new Exceptions.OpenGLException($"GLResource leaked: {this}");
 #endif
     }
 

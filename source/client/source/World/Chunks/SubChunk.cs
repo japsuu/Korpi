@@ -363,7 +363,7 @@ public class SubChunk
             ChunkMeshState.READY => Color4.Green,
             _ => throw new ArgumentOutOfRangeException()
         };
-        DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.SUBCHUNK_SIDE_LENGTH, color);
+        Debugging.Drawing.DebugDrawer.DrawLine(Position + centerOffset, Position + centerOffset + Vector3i.UnitY * Constants.SUBCHUNK_SIDE_LENGTH, color);
     }
 #endif
 }

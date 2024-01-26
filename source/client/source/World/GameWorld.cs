@@ -2,7 +2,6 @@
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.TerrainGenerators;
-using Korpi.Client.Logging;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
@@ -15,6 +14,8 @@ namespace Korpi.Client.World;
 
 public class GameWorld
 {
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameWorld));
+    
     public static GameWorld CurrentGameWorld { get; private set; } = null!;
 
     public static event Action<WorldEvent>? WorldEventPublished;
@@ -37,7 +38,7 @@ public class GameWorld
             throw new Exception("For now, only one world can be loaded at a time");
         CurrentGameWorld = this;
         
-        Logger.Log($"Loaded world '{_name}'");
+        Logger.Info($"Loaded world '{_name}'");
     }
     
     
@@ -82,10 +83,10 @@ public class GameWorld
         }
 
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderRaycastHit)
+        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHit)
             DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.5f, Color4.Red);
         
-        if (ClientConfig.DebugModeConfig.RenderRaycastHitBlock)
+        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHitBlock)
 #endif
             if (!raycastResult.BlockState.IsAir)
                 DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);

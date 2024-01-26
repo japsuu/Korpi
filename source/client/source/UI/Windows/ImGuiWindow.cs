@@ -42,6 +42,9 @@ public abstract class ImGuiWindow
     
     
     protected virtual void PreUpdate() { }
+    
+    
+    public virtual void Dispose() { }
 
     
     protected abstract void UpdateContent();

@@ -61,4 +61,11 @@ public static class ImGuiWindowManager
         foreach (ImGuiWindow window in RegisteredWindows.Keys)
             window.Update();
     }
+
+
+    public static void Dispose()
+    {
+        foreach (ImGuiWindow window in RegisteredWindows.Keys)
+            window.Dispose();
+    }
 }
