@@ -46,7 +46,6 @@ public class GameClient : GameWindow
     private PlayerEntity _playerEntity = null!;
 
     private double _fixedFrameAccumulator;
-    private readonly string _selfProfileOutputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "dottrace.tmp");
 
 #if DEBUG
     private static readonly DebugProc DebugMessageDelegate = OnDebugMessage;
@@ -83,9 +82,10 @@ public class GameClient : GameWindow
         {
             Logger.Warn("Initializing DotTrace... (this may take a while)");
             DotTrace.EnsurePrerequisite();   // Initialize the DotTrace API and download the profiler tool (if needed).
-            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(_selfProfileOutputFilePath);
+            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(ClientConfig.Store.SelfProfileOutputFilePath);
             DotTrace.Attach(cfg);   // Attach the profiler to the current process.
             DotTrace.StartCollectingData();  // Start collecting data.
+            Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
         }
         
         WindowWidth = ClientSize.X;
@@ -147,7 +147,7 @@ public class GameClient : GameWindow
         {
             DotTrace.SaveData();
             DotTrace.Detach();   // Detach the profiler from the current process.
-            Logger.Warn($"DotTrace profile output saved to {_selfProfileOutputFilePath}.");
+            Logger.Warn($"DotTrace profile output saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
         }
     }
 
