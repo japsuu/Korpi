@@ -1,5 +1,4 @@
 ﻿using ImGuiNET;
-using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Profiling;
 using Korpi.Client.Window;
 

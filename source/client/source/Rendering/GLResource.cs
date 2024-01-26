@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Korpi.Client.Exceptions;
 
 namespace Korpi.Client.Rendering;
 

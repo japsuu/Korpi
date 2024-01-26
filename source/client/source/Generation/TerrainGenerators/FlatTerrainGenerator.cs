@@ -1,7 +1,6 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Registries;
-using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
 using Korpi.Client.World.Chunks.Blocks;
 

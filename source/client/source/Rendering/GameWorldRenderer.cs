@@ -1,6 +1,4 @@
-﻿using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
-using Korpi.Client.Debugging.Profiling;
+﻿using Korpi.Client.Debugging;
 using Korpi.Client.Logging;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
@@ -8,7 +6,6 @@ using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.Window;
 using Korpi.Client.World;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering;
 

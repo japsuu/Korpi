@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
-using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
