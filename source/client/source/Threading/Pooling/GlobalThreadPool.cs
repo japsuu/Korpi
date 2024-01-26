@@ -60,7 +60,7 @@ public static class GlobalThreadPool
 
 #if DEBUG
         ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount * 3 / 4, 2);
-        Logger.LogWarning($"[Global Thread Pool] Running in DEBUG, using {ThreadCount} threads instead of the usual {SystemInfo.ProcessorCount/4}.");
+        Logger.Warn($"[Global Thread Pool] Running in DEBUG, using {ThreadCount} threads instead of the usual {SystemInfo.ProcessorCount/4}.");
 #else
         ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount / 4, 2);
 #endif
