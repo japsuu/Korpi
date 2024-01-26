@@ -132,12 +132,16 @@ public class GameWorldRenderer : IDisposable
     public void Draw()
     {
         DebugStats.RenderedTris = 0;
+        
+        const float minWorldBrightness = 0.3f;
+        const float maxWorldBrightness = 1.0f;
+        float worldBrightness = MathHelper.Lerp(minWorldBrightness, maxWorldBrightness, GameTime.SkyboxLerpProgress);
 
-        DrawChunksOpaquePass();
+        DrawChunksOpaquePass(worldBrightness);
 
         DrawSkybox();
 
-        DrawChunksTransparentPass();
+        DrawChunksTransparentPass(worldBrightness);
         
         DrawChunksCompositePass();
         
@@ -150,7 +154,7 @@ public class GameWorldRenderer : IDisposable
     }
 
 
-    private void DrawChunksOpaquePass()
+    private void DrawChunksOpaquePass(float worldBrightness)
     {
         GL.Enable(EnableCap.CullFace); // Cull backfaces
         GL.Enable(EnableCap.DepthTest); // Enable depth testing
@@ -164,13 +168,13 @@ public class GameWorldRenderer : IDisposable
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         
         ShaderManager.BlockOpaqueCutoutShader.Use();
-        ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector3.One);
+        ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(new Vector3(worldBrightness));
         
         _world.ChunkManager.DrawChunks(RenderPass.Opaque);
     }
 
 
-    private void DrawChunksTransparentPass()
+    private void DrawChunksTransparentPass(float worldBrightness)
     {
         GL.Disable(EnableCap.CullFace);     // Do not cull backfaces
         GL.DepthMask(false);            // Disable writing to the depth buffer
@@ -185,7 +189,7 @@ public class GameWorldRenderer : IDisposable
         GL.ClearBuffer(ClearBuffer.Color, 1, OneFiller);
         
         ShaderManager.BlockTranslucentShader.Use();
-        ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector3.One);
+        ShaderManager.BlockTranslucentShader.ColorModulator.Set(new Vector3(worldBrightness));
         
         _world.ChunkManager.DrawChunks(RenderPass.Transparent);
     }

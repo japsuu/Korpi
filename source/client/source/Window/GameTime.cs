@@ -45,9 +45,9 @@ public static class GameTime
     public static uint TotalFrameCount { get; private set; }
     
     /// <summary>
-    /// Total number of ticks (fixed update calls) that have passed since the start of the game.
+    /// Total number of fixed frames that have passed since the start of the game.
     /// </summary>
-    public static uint TotalTickCount { get; private set; }
+    public static uint TotalFixedFrameCount { get; private set; }
 
     /// <summary>
     /// This value stores how far we are in the current update frame, relative to the fixed update loop.
@@ -155,7 +155,7 @@ public static class GameTime
 
     public static void FixedUpdate()
     {
-        TotalTickCount++;
+        TotalFixedFrameCount++;
     }
 
 
