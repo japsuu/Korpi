@@ -166,6 +166,12 @@ public static class GameTime
         TotalTime = 0;
         TotalFrameCount = 0;
     }
+    
+    
+    public static void SetDayProgress(float dayProgress)
+    {
+        DayProgress = dayProgress;
+    }
 
     
     private static void AdvanceDay()

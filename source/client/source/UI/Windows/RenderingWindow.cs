@@ -2,6 +2,7 @@
 using ImGuiNET;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging.Drawing;
+using Korpi.Client.Window;
 using Korpi.Client.World;
 
 namespace Korpi.Client.UI.Windows;
@@ -47,6 +48,14 @@ public class RenderingWindow : ImGuiWindow
         ImGui.Checkbox("Draw raycast path", ref ClientConfig.DebugModeConfig.RenderRaycastPath);
         ImGui.Checkbox("Draw raycast hit", ref ClientConfig.DebugModeConfig.RenderRaycastHit);
         ImGui.Checkbox("Draw raycast hit block", ref ClientConfig.DebugModeConfig.RenderRaycastHitBlock);
+            
+        ImGui.Separator();
+        ImGui.Text("Time of day");
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(100);
+        float dayProgress = GameTime.DayProgress;
+        if (ImGui.SliderFloat("##rendering_day_progress", ref dayProgress, 0.1f, 0.9f))
+            GameTime.SetDayProgress(dayProgress);
     }
 }
 #endif
