@@ -11,6 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="JetBrains.Profiler.SelfApi" Version="2.5.0" />
         <PackageReference Include="log4net" Version="2.0.15" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0"/>
         <PackageReference Include="NUnit" Version="3.13.3"/>

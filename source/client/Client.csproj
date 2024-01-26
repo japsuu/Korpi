@@ -17,6 +17,7 @@
     <PackageReference Include="Config.Net" Version="5.1.5" />
     <PackageReference Include="ImGui.NET" Version="1.89.9.3" />
     <PackageReference Include="JetBrains.Profiler.Api" Version="1.4.0" />
+    <PackageReference Include="JetBrains.Profiler.SelfApi" Version="2.5.0" />
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="OpenTK" Version="4.8.1" />
     <PackageReference Include="StbImageSharp" Version="2.27.13" />
