@@ -5,7 +5,6 @@ layout (location = 0) in uvec2 InData;
 uniform mat4 ModelMat;
 uniform mat4 ViewMat;
 uniform mat4 ProjMat;
-uniform vec3 SunDirection;
 uniform vec3 ColorModulator;
 
 out vec3 UV;
@@ -34,6 +33,11 @@ vec3 face_normals[6] = vec3[6](
     vec3( 0.0,  0.0, -1.0)   // -Z
 );
 
+float face_shading[6] = float[6](
+    0.8, 1.0, 0.5,  //  X,  Y,  Z
+    0.5, 0.5, 0.8   // -X, -Y, -Z
+);
+
 void main()
 {
     // Extracting values from the packed integers.
@@ -56,19 +60,7 @@ void main()
     vec3 position = vec3(x, y, z);
 
     // Calculate face shading.
-    vec3 faceNormal = face_normals[normal];
-    float dotProduct = dot(faceNormal, SunDirection);
-    float shading;
-    // Check if the normal is pointing up or down (Y-axis), to apply constant lighting for top and bottom faces.
-    if (faceNormal.y == 1.0 || faceNormal.y == -1.0) {
-        const float topShading = 1.0;
-        const float bottomShading = 0.5;
-        shading = mix(bottomShading, topShading, (faceNormal.y + 1.0) * 0.5);
-    } else {
-        float dotProduct = dot(faceNormal, SunDirection);
-        shading = dotProduct * 0.5 + 0.5;
-        shading = shading * 0.3 + 0.7;  // Scale shading to range [0.7, 1]
-    }
+    float shading = face_shading[normal];
     
     VertexColor = aoColors[aoIndex] * ColorModulator * shading;
     UV = vec3(textureCoords[uvIndex], textureIndex);

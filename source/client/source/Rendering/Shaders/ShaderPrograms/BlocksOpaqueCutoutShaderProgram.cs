@@ -16,12 +16,6 @@ public class BlocksOpaqueCutoutShaderProgram : MvpShaderProgram
     [VertexAttrib(2, VertexAttribPointerType.UnsignedInt)]
     public VertexAttrib InData { get; protected set; } = null!;
     
-    /// <summary>
-    /// Direction of the sun.
-    /// Used to calculate the directional sunlight.
-    /// </summary>
-    public Uniform<Vector3> SunDirection { get; protected set; } = null!;
-    
     // /// <summary>
     // /// The color modulator is used to tint the texture.
     // /// Can be used for effects like global illumination.
