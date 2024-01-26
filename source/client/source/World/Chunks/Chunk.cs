@@ -72,6 +72,7 @@ public class Chunk
         // if (IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
         // if (Vector3.Distance(Camera.RenderingCamera.Position, new Vector3(Position.X, Camera.RenderingCamera.Position.Y, Position.Y)) < Constants.SUBCHUNK_SIDE_LENGTH * 3)
         //     ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
+        ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
     }
 
 
@@ -229,7 +230,6 @@ public class Chunk
         switch (_currentState)
         {
             case ChunkGenerationState.UNINITIALIZED:
-                ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
                 break;
             case ChunkGenerationState.GENERATING_TERRAIN:
                 break;
