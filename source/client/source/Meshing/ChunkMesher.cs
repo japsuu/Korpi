@@ -104,7 +104,7 @@ public class ChunkMesher
                     // If the neighbour is opaque, skip this face.
                     continue;
                 case BlockRenderType.AlphaClip:
-                    throw new NotImplementedException();
+                    break;
                 case BlockRenderType.Transparent:
                     // If this block and the neighbour are both transparent and of the same type, skip this face.
                     if (blockState.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
