@@ -6,6 +6,7 @@ using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.Window;
 using Korpi.Client.World;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering;
 
@@ -131,12 +132,17 @@ public class GameWorldRenderer : IDisposable
     public void Draw()
     {
         DebugStats.RenderedTris = 0;
+        
+        // HUE-shift the world color based on the time of day.
+        Vector3 dayColor = new Vector3(240 / 255f, 240 / 255f, 204 / 255f);     // Yellowish color for the day.
+        Vector3 nightColor = new Vector3(57 / 255f, 41 / 255f, 61 / 255f);      // Purple-ish color for the night.
+        Vector3 worldColor = Vector3.Lerp(nightColor, dayColor, GameTime.SkyboxLerpProgress);
 
-        DrawChunksOpaquePass();
+        DrawChunksOpaquePass(worldColor);
 
         DrawSkybox();
 
-        DrawChunksTransparentPass();
+        DrawChunksTransparentPass(worldColor);
         
         DrawChunksCompositePass();
         
@@ -149,7 +155,7 @@ public class GameWorldRenderer : IDisposable
     }
 
 
-    private void DrawChunksOpaquePass()
+    private void DrawChunksOpaquePass(Vector3 worldColor)
     {
         GL.Enable(EnableCap.CullFace); // Cull backfaces
         GL.Enable(EnableCap.DepthTest); // Enable depth testing
@@ -163,13 +169,13 @@ public class GameWorldRenderer : IDisposable
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         
         ShaderManager.BlockOpaqueCutoutShader.Use();
-        // ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(Vector4.One);
+        ShaderManager.BlockOpaqueCutoutShader.ColorModulator.Set(worldColor);
         
         _world.ChunkManager.DrawChunks(RenderPass.Opaque);
     }
 
 
-    private void DrawChunksTransparentPass()
+    private void DrawChunksTransparentPass(Vector3 worldColor)
     {
         GL.Disable(EnableCap.CullFace);     // Do not cull backfaces
         GL.DepthMask(false);            // Disable writing to the depth buffer
@@ -184,8 +190,7 @@ public class GameWorldRenderer : IDisposable
         GL.ClearBuffer(ClearBuffer.Color, 1, OneFiller);
         
         ShaderManager.BlockTranslucentShader.Use();
-        // ShaderManager.BlockTranslucentShader.ColorModulator.Set(Vector4.One);
-        ShaderManager.BlockTranslucentShader.CameraPosition.Set(Camera.RenderingCamera.Position);
+        ShaderManager.BlockTranslucentShader.ColorModulator.Set(worldColor);
         
         _world.ChunkManager.DrawChunks(RenderPass.Transparent);
     }

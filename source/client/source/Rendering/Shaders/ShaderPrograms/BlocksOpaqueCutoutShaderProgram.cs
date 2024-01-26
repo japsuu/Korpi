@@ -2,6 +2,7 @@
 using Korpi.Client.Rendering.Shaders.Variables;
 using Korpi.Client.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 
@@ -19,7 +20,7 @@ public class BlocksOpaqueCutoutShaderProgram : MvpShaderProgram
     // /// The color modulator is used to tint the texture.
     // /// Can be used for effects like global illumination.
     // /// </summary>
-    // public Uniform<Vector4> ColorModulator { get; protected set; } = null!;
+    public Uniform<Vector3> ColorModulator { get; protected set; } = null!;
     
     /// <summary>
     /// Block array texture.
