@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Configuration;
+﻿using JetBrains.Profiler.SelfApi;
+using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.Debugging.Profiling;
@@ -27,16 +28,6 @@ public class GameClient : GameWindow
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameClient));
     
-    /// <summary>
-    /// Called before <see cref="OnLoad"/> is exited.
-    /// </summary>
-    public static event Action? ClientLoad;
-
-    /// <summary>
-    /// Called before <see cref="OnUnload"/> is exited.
-    /// </summary>
-    public static event Action? ClientUnload;
-
     /// <summary>
     /// Called when the game client is resized.
     /// </summary>
@@ -86,6 +77,16 @@ public class GameClient : GameWindow
     {
         base.OnLoad();
         Logger.Info($"Starting v{Constants.CLIENT_VERSION}...");
+
+        if (ClientConfig.Store.EnableSelfProfile)
+        {
+            Logger.Warn("Initializing DotTrace... (this may take a while)");
+            DotTrace.EnsurePrerequisite();   // Initialize the DotTrace API and download the profiler tool (if needed).
+            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(ClientConfig.Store.SelfProfileOutputFilePath);
+            DotTrace.Attach(cfg);   // Attach the profiler to the current process.
+            DotTrace.StartCollectingData();  // Start collecting data.
+            Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
+        }
         
         WindowWidth = ClientSize.X;
         WindowHeight = ClientSize.Y;
@@ -126,7 +127,6 @@ public class GameClient : GameWindow
         _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
         ImGuiWindowManager.CreateDefaultWindows();
 
-        ClientLoad?.Invoke();
         Logger.Info("Started.");
     }
 
@@ -135,12 +135,20 @@ public class GameClient : GameWindow
     {
         base.OnUnload();
         Logger.Info("Shutting down...");
+        _crosshair.Dispose();
         _shaderManager.Dispose();
         _gameWorldRenderer.Dispose();
         _imGuiController.DestroyDeviceObjects();
         TextureRegistry.BlockArrayTexture.Dispose();
+        ImGuiWindowManager.Dispose();
         _playerEntity.Disable();
-        ClientUnload?.Invoke();
+
+        if (ClientConfig.Store.EnableSelfProfile)
+        {
+            DotTrace.SaveData();
+            DotTrace.Detach();   // Detach the profiler from the current process.
+            Logger.Warn($"DotTrace profile output saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
+        }
     }
 
 
@@ -375,7 +383,7 @@ public class GameClient : GameWindow
         // In order to access the string pointed to by pMessage, you can use Marshal
         // class to copy its contents to a C# string without unsafe code. You can
         // also use the new function Marshal.PtrToStringUTF8 since .NET Core 1.1.
-        string message = Marshal.PtrToStringAnsi(pMessage, length);
+        string message = System.Runtime.InteropServices.Marshal.PtrToStringAnsi(pMessage, length);
         
         Logger.OpenGl($"[{severity} source={source} type={type} id={id}] {message}");
 

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Rendering.Shaders.Variables;
 using OpenTK.Graphics.OpenGL4;
@@ -118,6 +119,7 @@ public class ShaderProgram : GLObject
     /// <summary>
     /// Throws an <see cref="ObjectNotBoundException"/> if this shaderProgram is not the currently active one.
     /// </summary>
+    [Conditional("DEBUG")]
     public void AssertActive()
     {
         GL.GetInteger(GetPName.CurrentProgram, out int activeHandle);

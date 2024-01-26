@@ -213,7 +213,7 @@ public class GameWorldRenderer : IDisposable
     private void DrawSkybox()
     {
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderSkybox)
+        if (Configuration.ClientConfig.DebugModeConfig.RenderSkybox)
 #endif
             _skybox.Draw();
     }
