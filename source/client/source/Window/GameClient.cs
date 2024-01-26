@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Configuration;
+﻿using JetBrains.Profiler.SelfApi;
+using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.Debugging.Profiling;
@@ -45,6 +46,7 @@ public class GameClient : GameWindow
     private PlayerEntity _playerEntity = null!;
 
     private double _fixedFrameAccumulator;
+    private readonly string _selfProfileOutputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "dottrace.tmp");
 
 #if DEBUG
     private static readonly DebugProc DebugMessageDelegate = OnDebugMessage;
@@ -76,6 +78,15 @@ public class GameClient : GameWindow
     {
         base.OnLoad();
         Logger.Info($"Starting v{Constants.CLIENT_VERSION}...");
+
+        if (ClientConfig.Store.EnableSelfProfile)
+        {
+            Logger.Warn("Initializing DotTrace... (this may take a while)");
+            DotTrace.EnsurePrerequisite();   // Initialize the DotTrace API and download the profiler tool (if needed).
+            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(_selfProfileOutputFilePath);
+            DotTrace.Attach(cfg);   // Attach the profiler to the current process.
+            DotTrace.StartCollectingData();  // Start collecting data.
+        }
         
         WindowWidth = ClientSize.X;
         WindowHeight = ClientSize.Y;
@@ -131,6 +142,13 @@ public class GameClient : GameWindow
         TextureRegistry.BlockArrayTexture.Dispose();
         ImGuiWindowManager.Dispose();
         _playerEntity.Disable();
+
+        if (ClientConfig.Store.EnableSelfProfile)
+        {
+            DotTrace.SaveData();
+            DotTrace.Detach();   // Detach the profiler from the current process.
+            Logger.Warn($"DotTrace profile output saved to {_selfProfileOutputFilePath}.");
+        }
     }
 
 
