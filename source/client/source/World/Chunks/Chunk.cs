@@ -217,7 +217,10 @@ public class Chunk
                 break;
             case ChunkGenerationState.READY:
                 for (int i = _subchunks.Length - 1; i >= 0; i--)
+                {
+                    _subchunks[i].HasBeenGenerated = true;
                     _subchunks[i].SetMeshDirty();
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
