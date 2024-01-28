@@ -15,6 +15,7 @@ public class PaletteBlockStorage : IBlockStorage
     
     /// <summary>
     /// How many different (unique) blocks are in the <see cref="_palette"/>.
+    /// Should never be larger than <see cref="_palette"/>.Length.
     /// </summary>
     private int _uniqueEntriesCount;
     
@@ -91,6 +92,16 @@ public class PaletteBlockStorage : IBlockStorage
     
         // Reduce the refcount of the current block-type, as an index referencing it will be overwritten.
         _palette[paletteIndex].RefCount -= 1;
+
+        if (_palette[paletteIndex].RefCount <= 0)
+        {
+            // The block-type is no longer referenced by any indices, so we can remove it from the palette.
+            _palette[paletteIndex].BlockState = null;
+            _palette[paletteIndex].RefCount = 0;
+            
+            // Decrease the unique entries count.
+            _uniqueEntriesCount -= 1;
+        }
     
         // See if palette has this block already, se we can use it's index.
         for(uint existingPaletteIndex = 0; existingPaletteIndex < _palette.Length; existingPaletteIndex++)
