@@ -24,7 +24,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Runtime info (please complete the following information):**
  - OS: [e.g. Windows, Linux]
- - Version [e.g. 1.0.5]
+ - Version: [e.g. 1.0.5]
 
 **Additional context**
 Add any other context about the problem here.
