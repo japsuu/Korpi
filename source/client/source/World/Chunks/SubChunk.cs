@@ -56,9 +56,14 @@ public class SubChunk
     /// <summary>
     /// True if this chunk contains rendered blocks, false otherwise.
     /// </summary>
-    private bool _containsRenderedBlocks;
+    internal bool ContainsRenderedBlocks;
 
-    private bool HasBeenGenerated => _currentMeshState > ChunkMeshState.UNINITIALIZED;
+    /// <summary>
+    /// True if this chunk has been generated, false otherwise.
+    /// </summary>
+    internal bool HasBeenGenerated;
+    
+    private bool IsWaitingForMeshing => _currentMeshState is ChunkMeshState.MESHING or ChunkMeshState.WAITING_FOR_NEIGHBOURS;
 
 
     public SubChunk(Vector3i position)
@@ -68,7 +73,8 @@ public class SubChunk
         Top = position.Y + Constants.SUBCHUNK_SIDE_LENGTH - 1;
         Bottom = position.Y;
 
-        _containsRenderedBlocks = false;
+        HasBeenGenerated = false;
+        ContainsRenderedBlocks = false;
         ThreadLock = new ReaderWriterLockSlim();
     }
 
@@ -162,16 +168,15 @@ public class SubChunk
     public void SetBlockState(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock, bool delayedMeshDirtying)
     {
         _blockStorage.SetBlock(position, block, out oldBlock);
-        _containsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
+        ContainsRenderedBlocks = _blockStorage.RenderedBlockCount > 0;
 
-        bool isChunkReady = _currentMeshState == ChunkMeshState.READY;
         bool renderedBlockChanged = oldBlock.IsRendered || block.IsRendered;
 
         // Only consider re-meshing if the chunk has been meshed before, is not meshed currently, and a rendered block was changed.
         // NOTE: MIGHT cause mesh desync issues when settings blocks on chunk borders, but this needs to be tested.
         // If multiple blocks are set with delayedMeshDirtying=false, only the first block would update the _neighboursToMeshDirty mask.
         // This is because SetSelfAndNeighboursMeshDirty would be called for the first block, changing chunk state and changing _currentMeshState.
-        if (!isChunkReady || !renderedBlockChanged)
+        if (!HasBeenGenerated || IsWaitingForMeshing || !renderedBlockChanged)
             return;
 
         // Cache the neighbours that would be affected by this change to dirty them,
@@ -213,8 +218,10 @@ public class SubChunk
     }
 
 
-    internal void ChangeState(ChunkMeshState newState)
+    private void ChangeState(ChunkMeshState newState)
     {
+        Debug.Assert(HasBeenGenerated, "SubChunk is trying to change the mesh state before it has been generated.");
+        
         if (_currentMeshState == newState && newState != ChunkMeshState.UNINITIALIZED)
         {
             Logger.Warn($"SubChunk {Position} tried to change to state {newState} but is already in that state.");
@@ -235,10 +242,8 @@ public class SubChunk
             case ChunkMeshState.UNINITIALIZED:
                 break;
             case ChunkMeshState.WAITING_FOR_NEIGHBOURS:
-                if (_containsRenderedBlocks)
+                if (ContainsRenderedBlocks)
                 {
-                    Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
-
                     // If the chunk contains rendered blocks, wait for neighbours to be generated before meshing
                     if (Chunk.AreAllNeighboursGenerated(ChunkPosition, false))
                         ChangeState(ChunkMeshState.MESHING);
@@ -270,7 +275,6 @@ public class SubChunk
             case ChunkMeshState.UNINITIALIZED:
                 break;
             case ChunkMeshState.WAITING_FOR_NEIGHBOURS:
-                Debug.Assert(HasBeenGenerated, "SubChunk contains rendered blocks but has not been generated.");
                 if (Chunk.AreAllNeighboursGenerated(ChunkPosition, false))
                     ChangeState(ChunkMeshState.MESHING);
                 break;
@@ -331,7 +335,7 @@ public class SubChunk
 
     internal void SetMeshDirty()
     {
-        if (!_containsRenderedBlocks)
+        if (!ContainsRenderedBlocks)
             return;
 
         if (_currentMeshState != ChunkMeshState.WAITING_FOR_NEIGHBOURS)
@@ -343,6 +347,9 @@ public class SubChunk
     {
         _blockStorage.Clear();
         ChangeState(ChunkMeshState.UNINITIALIZED);
+        ContainsRenderedBlocks = false;
+        HasBeenGenerated = false;
+        _hasBeenMeshed = false;
     }
 
 
