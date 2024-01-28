@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace Korpi.Client.World.Chunks.Blocks;
+namespace Korpi.Client.Blocks;
 
 /// <summary>
 /// Represents a face of a block.

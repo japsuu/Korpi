@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Korpi.Client.World.Chunks.Blocks;
+using Korpi.Client.Blocks;
 
 namespace Korpi.Client.Debugging;
 

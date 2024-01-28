@@ -1,4 +1,4 @@
-namespace Korpi.Client.World.Chunks.Blocks;
+namespace Korpi.Client.Blocks;
 
 /// <summary>
 /// The state of a <see cref="Block"/>. Also this is what chunks actually store.

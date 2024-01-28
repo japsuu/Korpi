@@ -1,7 +1,7 @@
 ﻿using Korpi.Client.Bitpacking;
+using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.Registries;
-using Korpi.Client.World.Chunks.Blocks;
 
 namespace Korpi.Client.World.Chunks.BlockStorage;
 

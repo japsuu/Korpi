@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Debugging;
+﻿using Korpi.Client.Blocks;
+using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.TerrainGenerators;
@@ -6,7 +7,6 @@ using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Window;
-using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 

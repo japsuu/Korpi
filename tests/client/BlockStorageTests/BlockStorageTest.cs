@@ -1,6 +1,6 @@
-﻿using Korpi.Client.Registries;
+﻿using Korpi.Client.Blocks;
+using Korpi.Client.Registries;
 using Korpi.Client.World;
-using Korpi.Client.World.Chunks.Blocks;
 using Korpi.Client.World.Chunks.BlockStorage;
 
 namespace ClientTests.BlockStorageTests;

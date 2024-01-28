@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Threading.Pooling;
-using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;

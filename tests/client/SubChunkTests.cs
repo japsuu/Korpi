@@ -1,6 +1,6 @@
-﻿using Korpi.Client.World;
+﻿using Korpi.Client.Blocks;
+using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
-using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace ClientTests;
