@@ -16,7 +16,7 @@ public class SubChunk
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(SubChunk));
 
-    private readonly IBlockStorage _blockStorage = new BlockPalette();
+    private readonly IBlockStorage _blockStorage = new PaletteBlockStorage();
 
     private long _currentJobId;
     private bool _hasBeenMeshed;

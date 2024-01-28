@@ -5,7 +5,7 @@ using Korpi.Client.Registries;
 
 namespace Korpi.Client.World.Chunks.BlockStorage;
 
-public class BlockPalette : IBlockStorage
+public class PaletteBlockStorage : IBlockStorage
 {
     /// <summary>
     /// How many blocks can this palette hold?
@@ -38,7 +38,7 @@ public class BlockPalette : IBlockStorage
     public int RenderedBlockCount { get; private set; }
 
 
-    public BlockPalette()
+    public PaletteBlockStorage()
     {
         const int chunkSizeCubed = Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
         _sizeInBlocks = chunkSizeCubed;

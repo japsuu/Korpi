@@ -2,7 +2,7 @@
 
 namespace ClientTests.BlockStorageTests;
 
-public class BlockPaletteTests : BlockStorageTest<BlockPalette>
+public class PaletteBlockStorageTests : BlockStorageTest<PaletteBlockStorage>
 {
     
 }
