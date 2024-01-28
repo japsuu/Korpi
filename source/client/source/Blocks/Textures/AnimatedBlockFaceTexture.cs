@@ -1,4 +1,4 @@
-﻿namespace Korpi.Client.World.Chunks.Blocks.Textures;
+﻿namespace Korpi.Client.Blocks.Textures;
 
 /// <summary>
 /// Animated texture of one side of a <see cref="Block"/>.

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Korpi.Client.World.Chunks.Blocks.Textures;
+using Korpi.Client.Blocks.Textures;
 
-namespace Korpi.Client.World.Chunks.Blocks;
+namespace Korpi.Client.Blocks;
 
 /// <summary>
 /// Blocks are what define the unique functionality of a block. It has functions to override the default behavior of a block.

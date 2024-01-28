@@ -1,4 +1,4 @@
-namespace Korpi.Client.World.Chunks.Blocks;
+namespace Korpi.Client.Blocks;
 
 /// <summary>
 /// Type of rendering of a <see cref="Block"/>.

@@ -1,5 +1,5 @@
-﻿using Korpi.Client.Configuration;
-using Korpi.Client.World.Chunks.Blocks;
+﻿using Korpi.Client.Blocks;
+using Korpi.Client.Configuration;
 
 namespace Korpi.Client.World.Chunks.BlockStorage;
 

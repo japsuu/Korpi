@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Meshing.Jobs;
@@ -6,7 +7,6 @@ using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Pooling;
-using Korpi.Client.World.Chunks.Blocks;
 using Korpi.Client.World.Chunks.BlockStorage;
 using OpenTK.Mathematics;
 
@@ -16,7 +16,7 @@ public class SubChunk
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(SubChunk));
 
-    private readonly IBlockStorage _blockStorage = new BlockPalette();
+    private readonly IBlockStorage _blockStorage = new PaletteBlockStorage();
 
     private long _currentJobId;
     private bool _hasBeenMeshed;

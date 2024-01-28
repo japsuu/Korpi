@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.Blocks;
+using Korpi.Client.Blocks.Textures;
 using Korpi.Client.Configuration;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Logging;
 using Korpi.Client.Modding;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Utils;
-using Korpi.Client.World.Chunks.Blocks;
-using Korpi.Client.World.Chunks.Blocks.Textures;
 
 namespace Korpi.Client.Registries;
 

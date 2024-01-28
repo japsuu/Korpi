@@ -1,4 +1,4 @@
-﻿using Korpi.Client.World.Chunks.Blocks;
+﻿using Korpi.Client.Blocks;
 
 namespace Korpi.Client.World.Chunks.BlockStorage;
 

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
 using Korpi.Client.Mathematics;
@@ -7,7 +8,6 @@ using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
 using Korpi.Client.World.Chunks;
-using Korpi.Client.World.Chunks.Blocks;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World;

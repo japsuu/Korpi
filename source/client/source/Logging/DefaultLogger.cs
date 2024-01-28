@@ -47,7 +47,7 @@ public class DefaultLogger : IKorpiLogger
 
     public void Debug(object message, Exception? exception = null)
     {
-        Log(Level.Debug, message);
+        Log(Level.Debug, message, exception);
     }
 
 
@@ -65,7 +65,7 @@ public class DefaultLogger : IKorpiLogger
 
     public void Error(object message, Exception? exception = null)
     {
-        Log(Level.Error, message);
+        Log(Level.Error, message, exception);
     }
 
 
@@ -83,7 +83,7 @@ public class DefaultLogger : IKorpiLogger
 
     public void Fatal(object message, Exception? exception = null)
     {
-        Log(Level.Fatal, message);
+        Log(Level.Fatal, message, exception);
     }
 
 
@@ -101,7 +101,7 @@ public class DefaultLogger : IKorpiLogger
 
     public void Info(object message, Exception? exception = null)
     {
-        Log(Level.Info, message);
+        Log(Level.Info, message, exception);
     }
 
 
@@ -119,7 +119,7 @@ public class DefaultLogger : IKorpiLogger
 
     public void Warn(object message, Exception? exception = null)
     {
-        Log(Level.Warn, message);
+        Log(Level.Warn, message, exception);
     }
 
 
