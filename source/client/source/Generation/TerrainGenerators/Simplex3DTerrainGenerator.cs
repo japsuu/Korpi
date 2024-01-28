@@ -1,9 +1,9 @@
-﻿using Korpi.Client.Configuration;
+﻿using Korpi.Client.Blocks;
+using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Mathematics.Noise;
 using Korpi.Client.Registries;
 using Korpi.Client.World.Chunks;
-using Korpi.Client.World.Chunks.Blocks;
 
 namespace Korpi.Client.Generation.TerrainGenerators;
 
@@ -15,9 +15,6 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     private const int NOISE_SAMPLE_BRICK_SIZE = 4;
     private const int BRICK_COUNT_H = Constants.SUBCHUNK_SIDE_LENGTH / NOISE_SAMPLE_BRICK_SIZE;
     private const int BRICK_COUNT_V = Constants.CHUNK_HEIGHT_BLOCKS / NOISE_SAMPLE_BRICK_SIZE;
-    
-    private const int MIN_ALLOWED_TERRAIN_HEIGHT = Constants.SUBCHUNK_SIDE_LENGTH;
-    private const int MAX_ALLOWED_TERRAIN_HEIGHT = Constants.CHUNK_HEIGHT_BLOCKS - Constants.SUBCHUNK_SIDE_LENGTH;
 
     private float _terrainBaseHeight = 256;          // The base height of the terrain, in blocks.
     private float _terrainHeightMaxOffset = 64;    // The maximum how much the terrain height may be offset from the base height, in blocks.
@@ -27,6 +24,9 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     private readonly FastNoiseLite _densityNoise; // FNL seems to be thread safe, as long as you don't change the seed/other settings while generating.
     private readonly FastNoiseLite _squashNoise;
     private readonly FastNoiseLite _heightNoise;
+    private readonly BlockState _stone;
+    private readonly BlockState _dirt;
+    private readonly BlockState _dirtSurface;
     
     
     private void SetMinSquash(float value)
@@ -67,14 +67,20 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         _heightNoise.SetFrequency(0.002f);
 
 #if DEBUG
+        const int minAllowedTerrainHeight = Constants.SUBCHUNK_SIDE_LENGTH;
+        const int maxAllowedTerrainHeight = Constants.CHUNK_HEIGHT_BLOCKS - Constants.SUBCHUNK_SIDE_LENGTH;
         UI.Windows.GenerationWindow.RegisterNoise("Density", _densityNoise);
         UI.Windows.GenerationWindow.RegisterNoise("Squash", _squashNoise);
         UI.Windows.GenerationWindow.RegisterNoise("Height", _heightNoise);
-        UI.Windows.GenerationWindow.RegisterVariable(new UI.Windows.Variables.EditorVariableFloat("Terrain Base Height", value => _terrainBaseHeight = value, () => _terrainBaseHeight, MIN_ALLOWED_TERRAIN_HEIGHT, MAX_ALLOWED_TERRAIN_HEIGHT));
+        UI.Windows.GenerationWindow.RegisterVariable(new UI.Windows.Variables.EditorVariableFloat("Terrain Base Height", value => _terrainBaseHeight = value, () => _terrainBaseHeight, minAllowedTerrainHeight, maxAllowedTerrainHeight));
         UI.Windows.GenerationWindow.RegisterVariable(new UI.Windows.Variables.EditorVariableFloat("Terrain Height Max Offset", value => _terrainHeightMaxOffset = value, () => _terrainHeightMaxOffset, 0, 128));
         UI.Windows.GenerationWindow.RegisterVariable(new UI.Windows.Variables.EditorVariableFloat("Min Squash", SetMinSquash, () => _minSquash, 0, 100));
         UI.Windows.GenerationWindow.RegisterVariable(new UI.Windows.Variables.EditorVariableFloat("Max Squash", SetMaxSquash, () => _maxSquash, 0, 100));
 #endif
+
+        _stone = BlockRegistry.GetBlock("korpi:stone").GetDefaultState();
+        _dirt = BlockRegistry.GetBlock("korpi:dirt").GetDefaultState();
+        _dirtSurface = BlockRegistry.GetBlock("korpi:surface_dirt").GetDefaultState();
     }
 
 
@@ -90,8 +96,6 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
 
         // if (chunk.Position.X < 7 * Constants.SUBCHUNK_SIDE_LENGTH)
         //     return;
-
-        BlockState stone = BlockRegistry.GetBlockDefaultState(1);
 
         // Process each brick in the chunk.
         for (int brickZ = 0; brickZ < BRICK_COUNT_H; brickZ++)
@@ -138,13 +142,13 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
                     // Process each block within the brick.
                     for (int blockZ = 0; blockZ < NOISE_SAMPLE_BRICK_SIZE; blockZ++)
                     {
-                        int worldZ = brickWorldZ + blockZ;
+                        // int worldZ = brickWorldZ + blockZ;
                         for (int blockY = 0; blockY < NOISE_SAMPLE_BRICK_SIZE; blockY++)
                         {
                             int worldY = brickWorldY + blockY;
                             for (int blockX = 0; blockX < NOISE_SAMPLE_BRICK_SIZE; blockX++)
                             {
-                                int worldX = brickWorldX + blockX;
+                                // int worldX = brickWorldX + blockX;
                                 // Calculate the relative position of the block within its brick.
                                 float rx = blockX / (float)NOISE_SAMPLE_BRICK_SIZE;
                                 float ry = blockY / (float)NOISE_SAMPLE_BRICK_SIZE;
@@ -186,7 +190,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
                                 int chunkY = brickWorldY + blockY;
                                 int chunkZ = brickZChunk + blockZ;
 
-                                GenerateTerrain(chunk, worldX, worldY, worldZ, chunkX, chunkY, chunkZ, density, height, squash, stone);
+                                GenerateTerrain(chunk, worldY, chunkX, chunkY, chunkZ, density, height, squash);
                             }
                         }
                     }
@@ -205,17 +209,14 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
     /// The terrain generation is controlled by two parameters: squashing factor and terrain height.
     /// </summary>
     /// <param name="chunk"></param>
-    /// <param name="worldX">X position of the block in world space.</param>
     /// <param name="worldY">Y position of the block in world space.</param>
-    /// <param name="worldZ">Z position of the block in world space.</param>
     /// <param name="chunkX"></param>
     /// <param name="chunkY"></param>
     /// <param name="chunkZ"></param>
     /// <param name="densityNoise">The value of the density noise field at the given position. Bounded between -1 and 1.</param>
     /// <param name="heightNoise">The value of the height noise field at the given position. Bounded between -1 and 1.</param>
     /// <param name="squashNoise">The value of the squash noise field at the given position. Bounded between -1 and 1.</param>
-    /// <param name="stone"></param>
-    private void GenerateTerrain(Chunk chunk, int worldX, int worldY, int worldZ, int chunkX, int chunkY, int chunkZ, float densityNoise, float heightNoise, float squashNoise, BlockState stone)
+    private void GenerateTerrain(Chunk chunk, int worldY, int chunkX, int chunkY, int chunkZ, float densityNoise, float heightNoise, float squashNoise)
     {
         // Get average terrain height at this point, in blocks.
         float averageTerrainHeight = GetTerrainHeight(heightNoise);
@@ -235,15 +236,13 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         // Place terrain if density is above 0.
         if (densityNoise > 0)
         {
-            chunk.SetBlockState(chunkX, chunkY, chunkZ, stone, out _, false);
+            chunk.SetBlockState(chunkX, chunkY, chunkZ, _stone, out _, false);
         }
     }
 
 
     private void DecorateSurface(Chunk chunk)
     {
-        BlockState dirtBlockState = BlockRegistry.GetBlockDefaultState(2);
-        
         for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
         {
             for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
@@ -264,7 +263,11 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
                     if (surfaceBlocksSet >= 3)
                         continue;
 
-                    chunk.SetBlockState(x, y, z, dirtBlockState, out _, false);
+                    // If this is the topmost block, set it to surface dirt.
+                    if (surfaceBlocksSet == 0)
+                        chunk.SetBlockState(x, y, z, _dirtSurface, out _, false);
+                    else
+                        chunk.SetBlockState(x, y, z, _dirt, out _, false);
 
                     surfaceBlocksSet++;
                     if (encounteredSolidBlocks > 10)
