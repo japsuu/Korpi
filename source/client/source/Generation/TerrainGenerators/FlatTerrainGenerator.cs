@@ -23,7 +23,7 @@ public class FlatTerrainGenerator : ITerrainGenerator
     }
 
 
-    public void ProcessChunk(in Chunk subChunk)
+    public void ProcessChunk(in Chunk chunk)
     {
         DebugStats.StartChunkGeneration();
         
@@ -33,14 +33,12 @@ public class FlatTerrainGenerator : ITerrainGenerator
         {
             for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
             {
-                for (int y = 0; y < Constants.SUBCHUNK_SIDE_LENGTH; y++)
+                for (int y = 0; y < Constants.CHUNK_HEIGHT_BLOCKS; y++)
                 {
-                    int worldY = y + subChunk.Position.Y;
-                    
-                    if (worldY > TERRAIN_HEIGHT)
+                    if (y > TERRAIN_HEIGHT)
                         continue;
                     
-                    subChunk.SetBlockState(x, y, z, stone, out _, false);
+                    chunk.SetBlockState(x, y, z, stone, out _, false);
                 }
             }
         }

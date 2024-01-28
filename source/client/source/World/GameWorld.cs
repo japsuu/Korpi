@@ -31,7 +31,7 @@ public class GameWorld
     {
         _name = name;
         ChunkManager = new ChunkManager();
-        TerrainGenerator = Simplex3DTerrainGenerator.Default();
+        TerrainGenerator = FlatTerrainGenerator.Default();
         EntityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
