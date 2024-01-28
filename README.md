@@ -12,6 +12,9 @@ Korpi is a voxel[*](https://japsuu.github.io/Korpi/faq/#voxel-engine-vs-korpi) e
 
 This project is still searching for its own identity :)
 
+I also post development updates to YouTube every once in a while:
+https://youtube.com/@devlogs
+
 ## Table of Contents
 
 - [Project goals](#project-goals)
