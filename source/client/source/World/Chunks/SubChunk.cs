@@ -186,6 +186,15 @@ public class SubChunk
 
         if (delayedMeshDirtying)
             return;
+        
+        // If the chunk doesn't contain any rendered blocks anymore, delete the mesh if it exists and skip meshing self
+        if (!ContainsRenderedBlocks)
+        {
+            ChangeState(ChunkMeshState.UNINITIALIZED);
+            ChunkRendererStorage.RemoveChunkMesh(Position);
+            DirtyNeighbours(_neighboursToMeshDirty);
+            return;
+        }
 
         SetSelfAndNeighboursMeshDirty(_neighboursToMeshDirty);
     }
