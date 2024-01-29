@@ -35,7 +35,7 @@ public class ChunkRenderManager
     }
     
     
-    public void Render(RenderPass pass)
+    public void RenderMesh(RenderPass pass)
     {
         _renderer?.Draw(pass);
     }

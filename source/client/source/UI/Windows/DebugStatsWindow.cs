@@ -10,12 +10,11 @@ namespace Korpi.Client.UI.Windows;
 
 public class DebugStatsWindow : ImGuiWindow
 {
-    private const int CALCULATE_MIN_MAX_FPS_AFTER_FRAMES = 2000;
-    
     public override string Title => "Debug Stats";
 
     private readonly NumberFormatInfo _largeNumberFormat;
 
+    private bool _shouldCalcMinMaxFps;
     private float _minFps = float.MaxValue;
     private float _maxFps = float.MinValue;
 
@@ -40,11 +39,15 @@ public class DebugStatsWindow : ImGuiWindow
         
         float averageFps = ImGui.GetIO().Framerate;
         float frameTime = 1000f / averageFps;
-        bool shouldCalcMinMaxFps = GameTime.TotalFrameCount > CALCULATE_MIN_MAX_FPS_AFTER_FRAMES;
+        if (ImGui.Checkbox("Calculate min/max FPS", ref _shouldCalcMinMaxFps))
+        {
+            _minFps = float.MaxValue;
+            _maxFps = float.MinValue;
+        }
 
         ImGui.Text("Rendering");
         ImGui.Text($"{averageFps:F1} fps ({frameTime:F1} ms/frame)");
-        if (shouldCalcMinMaxFps)
+        if (_shouldCalcMinMaxFps)
         {
             if (averageFps < _minFps)
                 _minFps = averageFps;

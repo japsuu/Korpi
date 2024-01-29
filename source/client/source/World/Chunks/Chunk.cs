@@ -114,7 +114,7 @@ public class Chunk
             return;
 #endif
         
-        _renderManager.Render(pass);
+        _renderManager.RenderMesh(pass);
 
 #if DEBUG
         DebugDraw();
