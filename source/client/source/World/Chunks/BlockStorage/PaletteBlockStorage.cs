@@ -37,6 +37,7 @@ public class PaletteBlockStorage : IBlockStorage
     private BitBuffer _indices = null!;
     
     public int RenderedBlockCount { get; private set; }
+    public int TranslucentBlockCount { get; private set; }
 
 
     public PaletteBlockStorage()
@@ -85,13 +86,13 @@ public class PaletteBlockStorage : IBlockStorage
                 return;
         }
         
+        BlockRenderType oldRenderType = oldBlock.RenderType;
+        BlockRenderType newRenderType = block.RenderType;
 
-        bool wasRendered = oldBlock.IsRendered;
-        bool willBeRendered = block.IsRendered;
-        if (wasRendered && !willBeRendered)
-            RenderedBlockCount--;
-        else if (!wasRendered && willBeRendered)
-            RenderedBlockCount++;
+        if (oldRenderType != newRenderType)
+        {
+            UpdateContainedCount(oldRenderType, newRenderType);
+        }
     
         // Reduce the refcount of the current block-type, as an index referencing it will be overwritten.
         _palette[paletteIndex].RefCount -= 1;
@@ -136,8 +137,28 @@ public class PaletteBlockStorage : IBlockStorage
         // As the entry was not previously in the palette, increase the unique entries count.
         _uniqueEntriesCount += 1;
     }
-    
-    
+
+
+    private void UpdateContainedCount(BlockRenderType oldRenderType, BlockRenderType newRenderType)
+    {
+        // Update the rendered block count.
+        bool wasRendered = oldRenderType != BlockRenderType.None;
+        bool willBeRendered = newRenderType != BlockRenderType.None;
+        if (wasRendered && !willBeRendered)
+            RenderedBlockCount--;
+        else if (!wasRendered && willBeRendered)
+            RenderedBlockCount++;
+            
+        // Update the translucent block count.
+        bool wasTransparent = oldRenderType == BlockRenderType.Transparent;
+        bool willBeTransparent = newRenderType == BlockRenderType.Transparent;
+        if (wasTransparent && !willBeTransparent)
+            TranslucentBlockCount--;
+        else if (!wasTransparent && willBeTransparent)
+            TranslucentBlockCount++;
+    }
+
+
     public BlockState GetBlock(SubChunkBlockPosition position)
     {
         int index = position.Index;

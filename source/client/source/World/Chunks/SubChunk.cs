@@ -90,6 +90,9 @@ public class SubChunk
         if (!_hasBeenMeshed)
             return;
 
+        if (_blockStorage.TranslucentBlockCount == 0 && pass == RenderPass.Transparent)
+            return;
+
 #if DEBUG
 
         // If in debug mode, allow the player to toggle frustum culling on/off
@@ -187,7 +190,7 @@ public class SubChunk
         if (delayedMeshDirtying)
             return;
         
-        // If the chunk doesn't contain any rendered blocks anymore, delete the mesh if it exists and skip meshing self
+        // If the chunk doesn't contain any rendered blocks anymore, delete the mesh if it exists and skip meshing self.
         if (!ContainsRenderedBlocks)
         {
             ChangeState(ChunkMeshState.UNINITIALIZED);

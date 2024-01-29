@@ -7,6 +7,7 @@ namespace Korpi.Client.World.Chunks.BlockStorage;
 /// <summary>
 /// Stores <see cref="BlockLayer"/>s, which in turn store the blocks in a flat array
 /// </summary>
+[Obsolete("Currently broken, do not use!")]
 public class LayeredBlockStorage : IBlockStorage
 {
     /// <summary>
@@ -18,8 +19,6 @@ public class LayeredBlockStorage : IBlockStorage
         private readonly BlockState _singleBlock;
         private bool _hasOnlyOneBlockType;
         private BlockState[]? _blocks;
-    
-        public int RenderedBlockCount { get; private set; }
 
 
         public BlockLayer(BlockState singleBlock)
@@ -66,6 +65,7 @@ public class LayeredBlockStorage : IBlockStorage
     private readonly BlockLayer?[] _layers = new BlockLayer[Constants.SUBCHUNK_SIDE_LENGTH];
     
     public int RenderedBlockCount { get; private set; }
+    public int TranslucentBlockCount { get; private set; }
     
     
     public void SetBlock(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock)
@@ -85,12 +85,27 @@ public class LayeredBlockStorage : IBlockStorage
             oldBlock = layer.GetBlock(x, z);
         }
         
-        bool wasRendered = oldBlock.IsRendered;
-        bool willBeRendered = block.IsRendered;
-        if (wasRendered && !willBeRendered)
-            RenderedBlockCount--;
-        else if (!wasRendered && willBeRendered)
-            RenderedBlockCount++;
+        BlockRenderType oldRenderType = oldBlock.RenderType;
+        BlockRenderType newRenderType = block.RenderType;
+
+        if (oldRenderType != newRenderType)
+        {
+            // Update the rendered block count.
+            bool wasRendered = oldRenderType != BlockRenderType.None;
+            bool willBeRendered = newRenderType != BlockRenderType.None;
+            if (wasRendered && !willBeRendered)
+                RenderedBlockCount--;
+            else if (!wasRendered && willBeRendered)
+                RenderedBlockCount++;
+            
+            // Update the translucent block count.
+            bool wasTransparent = oldRenderType == BlockRenderType.Transparent;
+            bool willBeTransparent = newRenderType == BlockRenderType.Transparent;
+            if (wasTransparent && !willBeTransparent)
+                TranslucentBlockCount--;
+            else if (!wasTransparent && willBeTransparent)
+                TranslucentBlockCount++;
+        }
 
         layer.SetBlock(x, z, block);
     }

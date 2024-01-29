@@ -11,6 +11,11 @@ public interface IBlockStorage
     /// The count of blocks with <see cref="BlockRenderType"/> other than <see cref="BlockRenderType.None"/> (other than air) contained in this <see cref="IBlockStorage"/>.
     /// </summary>
     public int RenderedBlockCount { get; }
+    
+    /// <summary>
+    /// The count of blocks with <see cref="BlockRenderType"/>.<see cref="BlockRenderType.Transparent"/> contained in this <see cref="IBlockStorage"/>.
+    /// </summary>
+    public int TranslucentBlockCount { get; }
 
     
     /// <summary>

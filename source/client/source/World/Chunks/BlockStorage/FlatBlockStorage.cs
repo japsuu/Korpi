@@ -9,6 +9,7 @@ public class FlatBlockStorage : IBlockStorage
     private readonly BlockState[] _blocks = new BlockState[CHUNK_SIZE_CUBED];
     
     public int RenderedBlockCount { get; private set; }
+    public int TranslucentBlockCount { get; private set; }
     
     
     public void SetBlock(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock)
@@ -17,14 +18,35 @@ public class FlatBlockStorage : IBlockStorage
 
         oldBlock = _blocks[index];
         
-        bool wasRendered = oldBlock.IsRendered;
-        bool willBeRendered = block.IsRendered;
+        BlockRenderType oldRenderType = oldBlock.RenderType;
+        BlockRenderType newRenderType = block.RenderType;
+
+        if (oldRenderType != newRenderType)
+        {
+            UpdateContainedCount(oldRenderType, newRenderType);
+        }
+
+        _blocks[index] = block;
+    }
+
+
+    private void UpdateContainedCount(BlockRenderType oldRenderType, BlockRenderType newRenderType)
+    {
+        // Update the rendered block count.
+        bool wasRendered = oldRenderType != BlockRenderType.None;
+        bool willBeRendered = newRenderType != BlockRenderType.None;
         if (wasRendered && !willBeRendered)
             RenderedBlockCount--;
         else if (!wasRendered && willBeRendered)
             RenderedBlockCount++;
-
-        _blocks[index] = block;
+            
+        // Update the translucent block count.
+        bool wasTransparent = oldRenderType == BlockRenderType.Transparent;
+        bool willBeTransparent = newRenderType == BlockRenderType.Transparent;
+        if (wasTransparent && !willBeTransparent)
+            TranslucentBlockCount--;
+        else if (!wasTransparent && willBeTransparent)
+            TranslucentBlockCount++;
     }
 
 
