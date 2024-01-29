@@ -7,6 +7,7 @@ using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Window;
+using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
