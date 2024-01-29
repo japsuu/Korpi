@@ -28,9 +28,9 @@ public class RenderingWindow : ImGuiWindow
                 DebugChunkDrawer.Dispose();
         }
 
-        if (ImGui.Checkbox("Draw region borders", ref ClientConfig.DebugModeConfig.RenderRegionBorders))
+        if (ImGui.Checkbox("Draw column borders", ref ClientConfig.DebugModeConfig.RenderColumnBorders))
         {
-            if (ClientConfig.DebugModeConfig.RenderRegionBorders)
+            if (ClientConfig.DebugModeConfig.RenderColumnBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();

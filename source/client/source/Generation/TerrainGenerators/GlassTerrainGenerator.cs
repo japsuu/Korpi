@@ -8,6 +8,7 @@ using OpenTK.Mathematics;
 
 namespace Korpi.Client.Generation.TerrainGenerators;
 
+[Obsolete("This terrain generator is not finished yet.")]
 public class GlassTerrainGenerator : ITerrainGenerator
 {
     private const int SEA_LEVEL = Constants.CHUNK_HEIGHT_BLOCKS / 4 + 16;
@@ -36,44 +37,10 @@ public class GlassTerrainGenerator : ITerrainGenerator
     }
 
 
-    public void ProcessChunk(in Chunk subChunk)
+    public void ProcessChunk(in ChunkColumn chunkColumn)
     {
-        DebugStats.StartChunkGeneration();
-        
         throw new NotImplementedException();
-        
-        // bool isChunkCompletelyBelowSurface = subChunk.Top < TERRAIN_HEIGHT_MIN;
-        //
-        // for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
-        // {
-        //     int worldZ = z + subChunk.Position.Z;
-        //     for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
-        //     {
-        //         int worldX = x + subChunk.Position.X;
-        //         int height = GetHeightmapAtPosition(new Vector2i(worldX, worldZ));
-        //         for (int y = 0; y < Constants.SUBCHUNK_SIDE_LENGTH; y++)
-        //         {
-        //             int worldY = y + subChunk.Position.Y;
-        //
-        //             if (GetCaveAtPosition(new Vector3i(worldX, worldY, worldZ)))
-        //             {
-        //                 continue;
-        //             }
-        //
-        //             if (isChunkCompletelyBelowSurface)
-        //             {
-        //                 subChunk.SetBlockState(new SubChunkBlockPosition(x, y, z), GetRandomBlock(3, BlockRegistry.GetBlockCount()), out _, false);
-        //                 continue;
-        //             }
-        //
-        //             SubChunkBlockPosition position = new(x, y, z);
-        //             if (worldY <= height)
-        //             {
-        //                 subChunk.SetBlockState(position, GetRandomBlock(3, BlockRegistry.GetBlockCount()), out _, false);
-        //             }
-        //         }
-        //     }
-        // }
+        DebugStats.StartChunkGeneration();
 
         DebugStats.StopChunkGeneration();
     }

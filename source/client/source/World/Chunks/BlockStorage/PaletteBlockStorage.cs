@@ -9,7 +9,7 @@ public class PaletteBlockStorage : IBlockStorage
 {
     /// <summary>
     /// How many blocks can this palette hold?
-    /// Usually SUBCHUNK_SIDE_LENGTH^3.
+    /// Usually CHUNK_SIDE_LENGTH^3.
     /// </summary>
     private readonly int _sizeInBlocks;
     
@@ -42,7 +42,7 @@ public class PaletteBlockStorage : IBlockStorage
 
     public PaletteBlockStorage()
     {
-        const int chunkSizeCubed = Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
+        const int chunkSizeCubed = Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;
         _sizeInBlocks = chunkSizeCubed;
         Initialize();
     }
@@ -67,7 +67,7 @@ public class PaletteBlockStorage : IBlockStorage
     }
 
 
-    public void SetBlock(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
         int index = position.Index;
         if (index < 0 || index >= _sizeInBlocks)
@@ -159,7 +159,7 @@ public class PaletteBlockStorage : IBlockStorage
     }
 
 
-    public BlockState GetBlock(SubChunkBlockPosition position)
+    public BlockState GetBlock(ChunkBlockPosition position)
     {
         int index = position.Index;
         uint paletteIndex = _indices.Get(index * _indexLengthInBits, _indexLengthInBits);

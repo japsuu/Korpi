@@ -16,7 +16,7 @@ public class ChunkMesher
     public static ChunkMesher ThreadLocalInstance => ThreadLocal.Value!;
     
     /// <summary>
-    /// Cache in to which the data of the subChunk currently being meshed is copied into.
+    /// Cache in to which the data of the chunk currently being meshed is copied into.
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
     private readonly MeshingDataCache _meshingDataCache = new();
@@ -41,24 +41,24 @@ public class ChunkMesher
     };
 
 
-    public ChunkMesh GenerateMesh(SubChunk subChunk)
+    public ChunkMesh GenerateMesh(Chunk chunk)
     {
-        // if (subChunk.Position == new Vector3i(0, 3*Constants.SUBCHUNK_SIDE_LENGTH, 0))
-        if (subChunk.Position == new Vector3i(0, 4*Constants.SUBCHUNK_SIDE_LENGTH, 0))
+        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
             MeasureProfiler.StartCollectingData();
         DebugStats.StartChunkMeshing();
-        GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(subChunk.Position, _meshingDataCache);
+        GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
         _meshingDataCache.AcquireNeighbourReadLocks();
         
         _meshingBuffer.Clear();
         
-        // Mesh the subChunk based on the data cache.
-        for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
+        // Mesh the chunk based on the data cache.
+        for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
         {
-            for (int y = 0; y < Constants.SUBCHUNK_SIDE_LENGTH; y++)
+            for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH; y++)
             {
-                for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
+                for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
                 {
                      _meshingDataCache.TryGetData(x, y, z, out BlockState blockState);
                     
@@ -74,10 +74,10 @@ public class ChunkMesher
         
         DebugStats.StopChunkMeshing();
         
-        ChunkMesh mesh = _meshingBuffer.CreateMesh(subChunk.Position);
+        ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
         
-        // if (subChunk.Position == new Vector3i(0, 3*Constants.SUBCHUNK_SIDE_LENGTH, 0))
-        if (subChunk.Position == new Vector3i(0, 4*Constants.SUBCHUNK_SIDE_LENGTH, 0))
+        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
+        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
             MeasureProfiler.SaveData();
 
         return mesh;
@@ -86,9 +86,9 @@ public class ChunkMesher
 
     private void AddFaces(BlockState blockState, int x, int y, int z)
     {
-        Debug.Assert(x >= 0 && x < Constants.SUBCHUNK_SIDE_LENGTH, "0 <= x < SUBCHUNK_SIDE_LENGTH");
-        Debug.Assert(y >= 0 && y < Constants.SUBCHUNK_SIDE_LENGTH, "0 <= y < SUBCHUNK_SIDE_LENGTH");
-        Debug.Assert(z >= 0 && z < Constants.SUBCHUNK_SIDE_LENGTH, "0 <= z < SUBCHUNK_SIDE_LENGTH");
+        Debug.Assert(x >= 0 && x < Constants.CHUNK_SIDE_LENGTH, "0 <= x < CHUNK_SIDE_LENGTH");
+        Debug.Assert(y >= 0 && y < Constants.CHUNK_SIDE_LENGTH, "0 <= y < CHUNK_SIDE_LENGTH");
+        Debug.Assert(z >= 0 && z < Constants.CHUNK_SIDE_LENGTH, "0 <= z < CHUNK_SIDE_LENGTH");
         // Iterate over all 6 faces of the block
         for (int face = 0; face < 6; face++)
         {

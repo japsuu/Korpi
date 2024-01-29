@@ -14,7 +14,7 @@ public class CoordinateUtilsTests
         Vector3 position = new(36, 74, 5);
 
         // Act
-        Vector3i result = CoordinateUtils.WorldToSubChunk(position);
+        Vector3i result = CoordinateUtils.WorldToChunk(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector3i(32, 64, 0)));
@@ -28,7 +28,7 @@ public class CoordinateUtilsTests
         Vector3 position = new(-36, -74, -5);
 
         // Act
-        Vector3i result = CoordinateUtils.WorldToSubChunk(position);
+        Vector3i result = CoordinateUtils.WorldToChunk(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector3i(-64, -96, -32)));
@@ -42,7 +42,7 @@ public class CoordinateUtilsTests
         Vector3i position = new(36, 74, 5);
 
         // Act
-        Vector3i result = CoordinateUtils.WorldToSubChunk(position);
+        Vector3i result = CoordinateUtils.WorldToChunk(position);
 
         // Assert
         Assert.That(result, Is.EqualTo(new Vector3i(32, 64, 0)));

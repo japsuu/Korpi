@@ -15,7 +15,7 @@ public class ChunkHeightmap
     public ChunkHeightmap()
     {
         _blockmap = new HighPerformanceBitArray(Constants.CHUNK_BLOCKS_COUNT);
-        _heightmap = new int[Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH];
+        _heightmap = new int[Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH];
         for (int i = 0; i < _heightmap.Length; i++)
             _heightmap[i] = -1;
     }
@@ -52,7 +52,7 @@ public class ChunkHeightmap
 
     private int GetHighestBlockInColumn(int x, int z)
     {
-        for (int y = Constants.SUBCHUNK_SIDE_LENGTH - 1; y >= 0; y--)
+        for (int y = Constants.CHUNK_SIDE_LENGTH - 1; y >= 0; y--)
         {
             int blockIndex = GetBlockIndex(x, y, z);
             if (_blockmap.Get(blockIndex))
@@ -64,13 +64,13 @@ public class ChunkHeightmap
 
     private static int GetColumnIndex(int x, int z)
     {
-        return x + z * Constants.SUBCHUNK_SIDE_LENGTH;
+        return x + z * Constants.CHUNK_SIDE_LENGTH;
     }
 
 
     private static int GetBlockIndex(int x, int y, int z)
     {
         // Calculate the index in such a way, that it is most cache friendly when iterating over y in the innermost loop.
-        return y + z * Constants.SUBCHUNK_SIDE_LENGTH + x * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
+        return y + z * Constants.CHUNK_SIDE_LENGTH + x * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;
     }
 }

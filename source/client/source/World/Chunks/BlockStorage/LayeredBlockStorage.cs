@@ -35,7 +35,7 @@ public class LayeredBlockStorage : IBlockStorage
                 if (block != _singleBlock)
                 {
                     _hasOnlyOneBlockType = false;
-                    _blocks = new BlockState[Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH];
+                    _blocks = new BlockState[Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH];
                     _blocks[GetIndex(x, z)] = block;
                 }
             }
@@ -58,17 +58,17 @@ public class LayeredBlockStorage : IBlockStorage
         private int GetIndex(int x, int z)
         {
             // Calculate the index in a way that minimizes cache trashing.
-            return x + Constants.SUBCHUNK_SIDE_LENGTH * z;
+            return x + Constants.CHUNK_SIDE_LENGTH * z;
         }
     }
     
-    private readonly BlockLayer?[] _layers = new BlockLayer[Constants.SUBCHUNK_SIDE_LENGTH];
+    private readonly BlockLayer?[] _layers = new BlockLayer[Constants.CHUNK_SIDE_LENGTH];
     
     public int RenderedBlockCount { get; private set; }
     public int TranslucentBlockCount { get; private set; }
     
     
-    public void SetBlock(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
         int x = position.X;
         int y = position.Y;
@@ -111,7 +111,7 @@ public class LayeredBlockStorage : IBlockStorage
     }
 
 
-    public BlockState GetBlock(SubChunkBlockPosition position)
+    public BlockState GetBlock(ChunkBlockPosition position)
     {
         int x = position.X;
         int y = position.Y;
