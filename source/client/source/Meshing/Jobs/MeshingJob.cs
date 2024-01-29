@@ -62,7 +62,7 @@ public class MeshingJob : KorpiJob
             // Invoke callback on main.
             DispatchToMain(() =>
             {
-                ChunkRendererStorage.AddOrUpdateChunkMesh(mesh);
+                _chunk.UpdateMesh(mesh);
                 _callback.Invoke();
             }, QueueType.Throttled);
         }

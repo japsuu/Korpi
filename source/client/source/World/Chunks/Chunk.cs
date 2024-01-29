@@ -2,6 +2,7 @@
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
+using Korpi.Client.Meshing;
 using Korpi.Client.Meshing.Jobs;
 using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
@@ -21,6 +22,7 @@ public class Chunk
     /// </summary>
     private readonly IChunkColumn _column;
     private readonly IBlockStorage _blockStorage = new PaletteBlockStorage();
+    private readonly ChunkRenderManager _renderManager;
 
     private long _currentJobId;
     private bool _hasBeenMeshed;
@@ -75,6 +77,7 @@ public class Chunk
 
         HasBeenGenerated = false;
         ContainsRenderedBlocks = false;
+        _renderManager = new ChunkRenderManager();
         ThreadLock = new ReaderWriterLockSlim();
     }
 
@@ -111,12 +114,17 @@ public class Chunk
             return;
 #endif
         
-        if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? renderer))
-            renderer!.Draw(pass);
+        _renderManager.Render(pass);
 
 #if DEBUG
         DebugDraw();
 #endif
+    }
+    
+    
+    public void UpdateMesh(ChunkMesh mesh)
+    {
+        _renderManager.AddOrUpdateMesh(mesh);
     }
 
 
@@ -151,7 +159,7 @@ public class Chunk
 
     public void Unload()
     {
-        ChunkRendererStorage.RemoveChunkMesh(Position);
+        _renderManager.DeleteMesh();
     }
 
 
@@ -196,7 +204,7 @@ public class Chunk
         if (!ContainsRenderedBlocks)
         {
             ChangeState(ChunkMeshState.UNINITIALIZED);
-            ChunkRendererStorage.RemoveChunkMesh(Position);
+            _renderManager.DeleteMesh();
             DirtyNeighbours(_neighboursToMeshDirty);
             return;
         }

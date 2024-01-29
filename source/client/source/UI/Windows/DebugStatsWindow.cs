@@ -83,6 +83,6 @@ public class DebugStatsWindow : ImGuiWindow
         ImGui.Text($"Average mesh time = {DebugStats.AverageChunkMeshingTime:F1}ms");
         ImGui.Text($"Median mesh time = {DebugStats.MedianChunkMeshingTime:F1}ms");
         ImGui.Text($"Min/Max mesh time = {DebugStats.MinChunkMeshingTime:F1}/{DebugStats.MaxChunkMeshingTime:F1}ms");
-        ImGui.Text($"Active meshes = {ChunkRendererStorage.GeneratedRendererCount}");
+        ImGui.Text($"Active meshes = {ChunkRenderManager.GeneratedRendererCount}");
     }
 }
