@@ -21,17 +21,15 @@ public class GenerationJob : KorpiJob
         _id = id;
         _chunkColumn = chunkColumn;
         _callback = callback;
-#if DEBUG
+        
         Interlocked.Increment(ref Debugging.DebugStats.ChunksInGenerationQueue);
-#endif
     }
 
 
     public override void Execute()
     {
-#if DEBUG
         Interlocked.Decrement(ref Debugging.DebugStats.ChunksInGenerationQueue);
-#endif
+        
         // Abort the job if the chunkColumn's job ID does not match the job ID.
         if (_chunkColumn.CurrentJobId != _id)
         {
