@@ -12,7 +12,7 @@ namespace Korpi.Client.World.Chunks;
 /// <summary>
 /// Vertical column of chunks.
 /// </summary>
-public class ChunkColumn
+public class ChunkColumn : IChunkColumn
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkColumn));
     
@@ -21,7 +21,7 @@ public class ChunkColumn
     private readonly Chunk[] _chunks;
     private readonly ChunkHeightmap _heightmap;
 
-    public readonly Vector2i Position;
+    public Vector2i Position { get; }
     
     /// <summary>
     /// Lock used to synchronize access to this chunk.
@@ -64,7 +64,7 @@ public class ChunkColumn
     {
         for (int i = Constants.CHUNK_COLUMN_HEIGHT_CHUNKS - 1; i >= 0; i--)
         {
-            Chunk chunk = new(new Vector3i(Position.X, i * Constants.CHUNK_SIDE_LENGTH, Position.Y));
+            Chunk chunk = new(this, i * Constants.CHUNK_SIDE_LENGTH);
             chunk.Load();
             _chunks[i] = chunk;
         }
@@ -300,14 +300,13 @@ public class ChunkColumn
     /// <summary>
     /// Checks if all neighbouring chunks of this chunk are generated.
     /// </summary>
-    /// <param name="centerPosition">Position of the chunk which neighbours are checked</param>
     /// <param name="excludeMissingChunks">If true, chunks that are not loaded are excluded from neighbourhood checks</param>
     /// <returns>True if all neighbouring chunks are generated, false otherwise</returns>
-    internal static bool AreAllNeighboursGenerated(Vector2i centerPosition, bool excludeMissingChunks)
+    public bool AreAllNeighboursGenerated(bool excludeMissingChunks)
     {
         foreach (Vector2i chunkOffset in ChunkOffsets.ChunkColumnNeighbourOffsets)
         {
-            Vector2i neighbourPos = centerPosition + chunkOffset;
+            Vector2i neighbourPos = Position + chunkOffset;
             
             ChunkColumn? neighbourChunk = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(neighbourPos);
 

@@ -16,6 +16,10 @@ public class Chunk
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(Chunk));
 
+    /// <summary>
+    /// The chunk column this chunk belongs to.
+    /// </summary>
+    private readonly IChunkColumn _column;
     private readonly IBlockStorage _blockStorage = new PaletteBlockStorage();
 
     private long _currentJobId;
@@ -23,15 +27,11 @@ public class Chunk
     private ChunkMeshState _currentMeshState;
     private ChunkOffsets.NeighbourOffsetFlags _neighboursToMeshDirty;
 
+
     /// <summary>
     /// Position of this chunk in the world.
     /// </summary>
     public readonly Vector3i Position;
-
-    /// <summary>
-    /// Position of the column which contains this chunk in the world.
-    /// </summary>
-    public readonly Vector2i ChunkPosition;
 
     /// <summary>
     /// Highest possible Y value in this chunk.
@@ -66,12 +66,12 @@ public class Chunk
     private bool IsWaitingForMeshing => _currentMeshState is ChunkMeshState.MESHING or ChunkMeshState.WAITING_FOR_NEIGHBOURS;
 
 
-    public Chunk(Vector3i position)
+    public Chunk(IChunkColumn column, int height)
     {
-        Position = position;
-        ChunkPosition = new Vector2i(position.X, position.Z);
-        Top = position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
-        Bottom = position.Y;
+        _column = column;
+        Position = new Vector3i(column.Position.X, height, column.Position.Y);
+        Top = Position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
+        Bottom = Position.Y;
 
         HasBeenGenerated = false;
         ContainsRenderedBlocks = false;
@@ -109,8 +109,8 @@ public class Chunk
         if (!IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
             return;
 #endif
-        if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
-            mesh!.Draw(pass);
+        if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? renderer))
+            renderer!.Draw(pass);
 
 #if DEBUG
         DebugDraw();
@@ -257,7 +257,7 @@ public class Chunk
                 if (ContainsRenderedBlocks)
                 {
                     // If the chunk contains rendered blocks, wait for neighbours to be generated before meshing
-                    if (ChunkColumn.AreAllNeighboursGenerated(ChunkPosition, false))
+                    if (_column.AreAllNeighboursGenerated(false))
                         ChangeState(ChunkMeshState.MESHING);
                 }
                 else
@@ -287,7 +287,7 @@ public class Chunk
             case ChunkMeshState.UNINITIALIZED:
                 break;
             case ChunkMeshState.WAITING_FOR_NEIGHBOURS:
-                if (ChunkColumn.AreAllNeighboursGenerated(ChunkPosition, false))
+                if (_column.AreAllNeighboursGenerated(false))
                     ChangeState(ChunkMeshState.MESHING);
                 break;
             case ChunkMeshState.MESHING:
