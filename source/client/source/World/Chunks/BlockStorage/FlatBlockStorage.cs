@@ -5,14 +5,14 @@ namespace Korpi.Client.World.Chunks.BlockStorage;
 
 public class FlatBlockStorage : IBlockStorage
 {
-    private const int CHUNK_SIZE_CUBED = Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
+    private const int CHUNK_SIZE_CUBED = Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;
     private readonly BlockState[] _blocks = new BlockState[CHUNK_SIZE_CUBED];
     
     public int RenderedBlockCount { get; private set; }
     public int TranslucentBlockCount { get; private set; }
     
     
-    public void SetBlock(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
         int index = position.Index;
 
@@ -50,7 +50,7 @@ public class FlatBlockStorage : IBlockStorage
     }
 
 
-    public BlockState GetBlock(SubChunkBlockPosition position)
+    public BlockState GetBlock(ChunkBlockPosition position)
     {
         return _blocks[position.Index];
     }

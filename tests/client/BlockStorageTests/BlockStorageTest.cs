@@ -16,10 +16,10 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block, out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
 
         // Assert
-        Assert.That(storage.GetBlock(new SubChunkBlockPosition(1, 1, 1)), Is.EqualTo(block));
+        Assert.That(storage.GetBlock(new ChunkBlockPosition(1, 1, 1)), Is.EqualTo(block));
     }
     
     [Test]
@@ -30,7 +30,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block, out BlockState oldBlock);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState oldBlock);
 
         // Assert
         Assert.That(oldBlock, Is.EqualTo(BlockRegistry.Air.GetDefaultState()));
@@ -43,7 +43,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         T storage = new();
 
         // Act & Assert
-        Assert.Catch(() => storage.GetBlock(new SubChunkBlockPosition(100, 100, -100)));
+        Assert.Catch(() => storage.GetBlock(new ChunkBlockPosition(100, 100, -100)));
     }
     
     [Test]
@@ -54,7 +54,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         BlockState block = new();
 
         // Act & Assert
-        Assert.Catch(() => storage.SetBlock(new SubChunkBlockPosition(100, 100, -100), block, out BlockState _));
+        Assert.Catch(() => storage.SetBlock(new ChunkBlockPosition(100, 100, -100), block, out BlockState _));
     }
 
     [Test]
@@ -65,7 +65,7 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block, out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
 
         // Assert
         Assert.That(storage.RenderedBlockCount, Is.EqualTo(1));
@@ -77,10 +77,10 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         // Arrange
         T storage = new();
         BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block, out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
 
         // Act
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), BlockRegistry.Air.GetDefaultState(), out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), BlockRegistry.Air.GetDefaultState(), out BlockState _);
 
         // Assert
         Assert.That(storage.RenderedBlockCount, Is.EqualTo(0));
@@ -92,11 +92,11 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         // Arrange
         T storage = new();
         BlockState block = new Block(1, "test1", BlockRenderType.Opaque, null).GetDefaultState();
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block, out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
         block = new Block(2, "test2", BlockRenderType.Opaque, null).GetDefaultState();
 
         // Act
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block, out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
 
         // Assert
         Assert.That(storage.RenderedBlockCount, Is.EqualTo(1));
@@ -108,11 +108,11 @@ public abstract class BlockStorageTest<T> where T : IBlockStorage, new()
         // Arrange
         T storage = new();
         BlockState block = new Block(1, "test", BlockRenderType.Opaque, null).GetDefaultState();
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block, out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block, out BlockState _);
         BlockState block2 = new Block(2, "test", BlockRenderType.None, null).GetDefaultState();
 
         // Act
-        storage.SetBlock(new SubChunkBlockPosition(1, 1, 1), block2, out BlockState _);
+        storage.SetBlock(new ChunkBlockPosition(1, 1, 1), block2, out BlockState _);
 
         // Assert
         Assert.That(storage.RenderedBlockCount, Is.EqualTo(0));

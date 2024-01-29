@@ -9,13 +9,13 @@ public class DummyBlockStorage : IBlockStorage
     public int TranslucentBlockCount => 0;
     
     
-    public void SetBlock(SubChunkBlockPosition position, BlockState block, out BlockState oldBlock)
+    public void SetBlock(ChunkBlockPosition position, BlockState block, out BlockState oldBlock)
     {
         oldBlock = BlockRegistry.Air.GetDefaultState();
     }
 
 
-    public BlockState GetBlock(SubChunkBlockPosition position)
+    public BlockState GetBlock(ChunkBlockPosition position)
     {
         return BlockRegistry.Air.GetDefaultState();
     }

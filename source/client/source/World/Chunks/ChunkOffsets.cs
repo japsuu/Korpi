@@ -93,25 +93,25 @@ public static class ChunkOffsets
     /// <summary>
     /// Contains the offsets of all 8 neighbouring columns of a column.
     /// </summary>
-    public static readonly Vector2i[] ChunkNeighbourOffsets =
+    public static readonly Vector2i[] ChunkColumnNeighbourOffsets =
     {
         // 4 Corners
-        new(1 * Constants.SUBCHUNK_SIDE_LENGTH, 1 * Constants.SUBCHUNK_SIDE_LENGTH),
-        new(-1 * Constants.SUBCHUNK_SIDE_LENGTH, 1 * Constants.SUBCHUNK_SIDE_LENGTH),
-        new(-1 * Constants.SUBCHUNK_SIDE_LENGTH, -1 * Constants.SUBCHUNK_SIDE_LENGTH),
-        new(1 * Constants.SUBCHUNK_SIDE_LENGTH, -1 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(1 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
+        new(-1 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
+        new(-1 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
+        new(1 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
 
         // 4 Faces
-        new(1 * Constants.SUBCHUNK_SIDE_LENGTH, 0 * Constants.SUBCHUNK_SIDE_LENGTH),
-        new(0 * Constants.SUBCHUNK_SIDE_LENGTH, 1 * Constants.SUBCHUNK_SIDE_LENGTH),
-        new(-1 * Constants.SUBCHUNK_SIDE_LENGTH, 0 * Constants.SUBCHUNK_SIDE_LENGTH),
-        new(0 * Constants.SUBCHUNK_SIDE_LENGTH, -1 * Constants.SUBCHUNK_SIDE_LENGTH),
+        new(1 * Constants.CHUNK_SIDE_LENGTH, 0 * Constants.CHUNK_SIDE_LENGTH),
+        new(0 * Constants.CHUNK_SIDE_LENGTH, 1 * Constants.CHUNK_SIDE_LENGTH),
+        new(-1 * Constants.CHUNK_SIDE_LENGTH, 0 * Constants.CHUNK_SIDE_LENGTH),
+        new(0 * Constants.CHUNK_SIDE_LENGTH, -1 * Constants.CHUNK_SIDE_LENGTH),
     };
 
     /// <summary>
-    /// Contains the offsets of all 26 neighbouring chunks of a subchunk.
+    /// Contains the offsets of all 26 neighbouring chunks of a chunk.
     /// </summary>
-    public static readonly Vector3i[] SubChunkNeighbourOffsets;
+    public static readonly Vector3i[] ChunkNeighbourOffsets;
     
     
     /// <summary>
@@ -143,7 +143,7 @@ public static class ChunkOffsets
         
         for (int i = 0; i < 26; i++)
         {
-            Vector3i offset = SubChunkNeighbourOffsets[i];
+            Vector3i offset = ChunkNeighbourOffsets[i];
             if (flags.HasFlag((NeighbourOffsetFlags)(1 << i)))
             {
                 yield return offset;
@@ -158,13 +158,13 @@ public static class ChunkOffsets
     /// </summary>
     /// <param name="position">Position of the block that was changed</param>
     /// <returns>Flags indicating which neighbouring chunks are affected</returns>
-    public static NeighbourOffsetFlags CalculateNeighboursFromOtherChunks(SubChunkBlockPosition position)
+    public static NeighbourOffsetFlags CalculateNeighboursFromOtherChunks(ChunkBlockPosition position)
     {
-        bool isXPositive = position.X == Constants.SUBCHUNK_SIDE_LENGTH - 1;
+        bool isXPositive = position.X == Constants.CHUNK_SIDE_LENGTH - 1;
         bool isXNegative = position.X == 0;
-        bool isYPositive = position.Y == Constants.SUBCHUNK_SIDE_LENGTH - 1;
+        bool isYPositive = position.Y == Constants.CHUNK_SIDE_LENGTH - 1;
         bool isYNegative = position.Y == 0;
-        bool isZPositive = position.Z == Constants.SUBCHUNK_SIDE_LENGTH - 1;
+        bool isZPositive = position.Z == Constants.CHUNK_SIDE_LENGTH - 1;
         bool isZNegative = position.Z == 0;
         
         NeighbourOffsetFlags affectedNeighbours = NeighbourOffsetFlags.None;
@@ -243,10 +243,10 @@ public static class ChunkOffsets
 
     static ChunkOffsets()
     {
-        SubChunkNeighbourOffsets = new Vector3i[26];
+        ChunkNeighbourOffsets = new Vector3i[26];
         for (int i = 0; i < 26; i++)
         {
-            SubChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.SUBCHUNK_SIDE_LENGTH;
+            ChunkNeighbourOffsets[i] = NeighbourOffsets[i] * Constants.CHUNK_SIDE_LENGTH;
         }
     }
 }

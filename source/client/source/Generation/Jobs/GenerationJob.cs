@@ -12,14 +12,14 @@ public class GenerationJob : KorpiJob
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GenerationJob));
 
     private readonly long _id;
-    private readonly Chunk _chunk;
+    private readonly ChunkColumn _chunkColumn;
     private readonly Action _callback;
 
 
-    public GenerationJob(long id, Chunk chunk, Action callback)
+    public GenerationJob(long id, ChunkColumn chunkColumn, Action callback)
     {
         _id = id;
-        _chunk = chunk;
+        _chunkColumn = chunkColumn;
         _callback = callback;
 #if DEBUG
         Interlocked.Increment(ref Debugging.DebugStats.ChunksInGenerationQueue);
@@ -32,20 +32,20 @@ public class GenerationJob : KorpiJob
 #if DEBUG
         Interlocked.Decrement(ref Debugging.DebugStats.ChunksInGenerationQueue);
 #endif
-        // Abort the job if the chunk's job ID does not match the job ID.
-        if (_chunk.CurrentJobId != _id)
+        // Abort the job if the chunkColumn's job ID does not match the job ID.
+        if (_chunkColumn.CurrentJobId != _id)
         {
             Logger.Warn($"Aborting orphaned job with ID: {_id}");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }
 
-        // Acquire a read lock on the chunk and generate terrain data.
-        if (_chunk.ThreadLock.TryEnterWriteLock(Constants.JOB_LOCK_TIMEOUT_MS))
+        // Acquire a read lock on the chunkColumn and generate terrain data.
+        if (_chunkColumn.ThreadLock.TryEnterWriteLock(Constants.JOB_LOCK_TIMEOUT_MS))
         {
-            GameWorld.CurrentGameWorld.TerrainGenerator.ProcessChunk(_chunk);
+            GameWorld.CurrentGameWorld.TerrainGenerator.ProcessChunk(_chunkColumn);
             
-            _chunk.ThreadLock.ExitWriteLock();
+            _chunkColumn.ThreadLock.ExitWriteLock();
 
             // Signal completion.
             SignalCompletion(JobCompletionState.Completed);
@@ -60,7 +60,7 @@ public class GenerationJob : KorpiJob
             SignalCompletion(JobCompletionState.Aborted);
 
             // This honestly gets us into an invalid state that cannot be recovered from, so we just quit.
-            DispatchToMain(() => throw new Exception($"Job with ID {_id} aborted: Failed to acquire read lock on chunk."), QueueType.Default);
+            DispatchToMain(() => throw new Exception($"Job with ID {_id} aborted: Failed to acquire read lock on chunkColumn."), QueueType.Default);
         }
     }
 }

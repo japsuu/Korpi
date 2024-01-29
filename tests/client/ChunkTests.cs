@@ -5,19 +5,19 @@ using OpenTK.Mathematics;
 
 namespace ClientTests;
 
-public class SubChunkTests
+public class ChunkTests
 {
     [Test]
     public void GetBlockState_ReturnsCorrectBlockState()
     {
         // Arrange
-        SubChunk subChunk = new(new Vector3i(0, 0, 0));
-        SubChunkBlockPosition position = new(1, 1, 1);
+        Chunk chunk = new(new Vector3i(0, 0, 0));
+        ChunkBlockPosition position = new(1, 1, 1);
         BlockState blockState = new();
-        subChunk.SetBlockState(position, blockState, out _, false);
+        chunk.SetBlockState(position, blockState, out _, false);
 
         // Act
-        BlockState result = subChunk.GetBlockState(new SubChunkBlockPosition(position.X, position.Y, position.Z));
+        BlockState result = chunk.GetBlockState(new ChunkBlockPosition(position.X, position.Y, position.Z));
 
         // Assert
         Assert.That(result, Is.EqualTo(blockState));
