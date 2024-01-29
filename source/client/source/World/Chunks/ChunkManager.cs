@@ -7,10 +7,9 @@ using Korpi.Client.Meshing;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
-using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
 
-namespace Korpi.Client.World;
+namespace Korpi.Client.World.Chunks;
 
 /// <summary>
 /// Manages all loaded <see cref="ChunkColumn"/>s.

@@ -2,7 +2,7 @@
 using Korpi.Client.Configuration;
 using OpenTK.Mathematics;
 
-namespace Korpi.Client.World;
+namespace Korpi.Client.World.Chunks;
 
 /// <summary>
 /// Represents a blocks position inside a chunk.

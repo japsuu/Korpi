@@ -1,5 +1,4 @@
 ﻿using Korpi.Client.Blocks;
-using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
 
@@ -7,11 +6,18 @@ namespace ClientTests;
 
 public class ChunkTests
 {
+    private class DummyChunkColumn : IChunkColumn
+    {
+        public Vector2i Position => Vector2i.Zero;
+
+        public bool AreAllNeighboursGenerated(bool excludeMissingChunks) => true;
+    }
+    
     [Test]
     public void GetBlockState_ReturnsCorrectBlockState()
     {
         // Arrange
-        Chunk chunk = new(new Vector3i(0, 0, 0));
+        Chunk chunk = new(new DummyChunkColumn(), 0);
         ChunkBlockPosition position = new(1, 1, 1);
         BlockState blockState = new();
         chunk.SetBlockState(position, blockState, out _, false);

@@ -2,6 +2,7 @@
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
+using Korpi.Client.Meshing;
 using Korpi.Client.Meshing.Jobs;
 using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
@@ -16,22 +17,23 @@ public class Chunk
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(Chunk));
 
+    /// <summary>
+    /// The chunk column this chunk belongs to.
+    /// </summary>
+    private readonly IChunkColumn _column;
     private readonly IBlockStorage _blockStorage = new PaletteBlockStorage();
+    private readonly ChunkRenderManager _renderManager;
 
     private long _currentJobId;
     private bool _hasBeenMeshed;
     private ChunkMeshState _currentMeshState;
     private ChunkOffsets.NeighbourOffsetFlags _neighboursToMeshDirty;
 
+
     /// <summary>
     /// Position of this chunk in the world.
     /// </summary>
     public readonly Vector3i Position;
-
-    /// <summary>
-    /// Position of the column which contains this chunk in the world.
-    /// </summary>
-    public readonly Vector2i ChunkPosition;
 
     /// <summary>
     /// Highest possible Y value in this chunk.
@@ -66,15 +68,16 @@ public class Chunk
     private bool IsWaitingForMeshing => _currentMeshState is ChunkMeshState.MESHING or ChunkMeshState.WAITING_FOR_NEIGHBOURS;
 
 
-    public Chunk(Vector3i position)
+    public Chunk(IChunkColumn column, int height)
     {
-        Position = position;
-        ChunkPosition = new Vector2i(position.X, position.Z);
-        Top = position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
-        Bottom = position.Y;
+        _column = column;
+        Position = new Vector3i(column.Position.X, height, column.Position.Y);
+        Top = Position.Y + Constants.CHUNK_SIDE_LENGTH - 1;
+        Bottom = Position.Y;
 
         HasBeenGenerated = false;
         ContainsRenderedBlocks = false;
+        _renderManager = new ChunkRenderManager();
         ThreadLock = new ReaderWriterLockSlim();
     }
 
@@ -90,11 +93,12 @@ public class Chunk
         if (!_hasBeenMeshed)
             return;
 
+        // Skip the transparent pass if the chunk doesn't contain any transparent blocks
         if (_blockStorage.TranslucentBlockCount == 0 && pass == RenderPass.Transparent)
             return;
 
+        // Frustum check.
 #if DEBUG
-
         // If in debug mode, allow the player to toggle frustum culling on/off
         if (ClientConfig.DebugModeConfig.DoFrustumCulling)
         {
@@ -109,12 +113,18 @@ public class Chunk
         if (!IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
             return;
 #endif
-        if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? mesh))
-            mesh!.Draw(pass);
+        
+        _renderManager.RenderMesh(pass);
 
 #if DEBUG
         DebugDraw();
 #endif
+    }
+    
+    
+    public void UpdateMesh(ChunkMesh mesh)
+    {
+        _renderManager.AddOrUpdateMesh(mesh);
     }
 
 
@@ -149,7 +159,7 @@ public class Chunk
 
     public void Unload()
     {
-        ChunkRendererStorage.RemoveChunkMesh(Position);
+        _renderManager.DeleteMesh();
     }
 
 
@@ -194,7 +204,7 @@ public class Chunk
         if (!ContainsRenderedBlocks)
         {
             ChangeState(ChunkMeshState.UNINITIALIZED);
-            ChunkRendererStorage.RemoveChunkMesh(Position);
+            _renderManager.DeleteMesh();
             DirtyNeighbours(_neighboursToMeshDirty);
             return;
         }
@@ -257,7 +267,7 @@ public class Chunk
                 if (ContainsRenderedBlocks)
                 {
                     // If the chunk contains rendered blocks, wait for neighbours to be generated before meshing
-                    if (ChunkColumn.AreAllNeighboursGenerated(ChunkPosition, false))
+                    if (_column.AreAllNeighboursGenerated(false))
                         ChangeState(ChunkMeshState.MESHING);
                 }
                 else
@@ -287,7 +297,7 @@ public class Chunk
             case ChunkMeshState.UNINITIALIZED:
                 break;
             case ChunkMeshState.WAITING_FOR_NEIGHBOURS:
-                if (ChunkColumn.AreAllNeighboursGenerated(ChunkPosition, false))
+                if (_column.AreAllNeighboursGenerated(false))
                     ChangeState(ChunkMeshState.MESHING);
                 break;
             case ChunkMeshState.MESHING:

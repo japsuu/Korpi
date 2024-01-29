@@ -25,17 +25,15 @@ public class MeshingJob : KorpiJob
         _id = id;
         _chunk = chunk;
         _callback = callback;
-#if DEBUG
+        
         Interlocked.Increment(ref Debugging.DebugStats.ChunksInMeshingQueue);
-#endif
     }
 
 
     public override void Execute()
     {
-#if DEBUG
         Interlocked.Decrement(ref Debugging.DebugStats.ChunksInMeshingQueue);
-#endif
+
         // Abort the job if the chunk's job ID does not match the job ID.
         if (_chunk.CurrentJobId != _id)
         {
@@ -64,7 +62,7 @@ public class MeshingJob : KorpiJob
             // Invoke callback on main.
             DispatchToMain(() =>
             {
-                ChunkRendererStorage.AddOrUpdateChunkMesh(mesh);
+                _chunk.UpdateMesh(mesh);
                 _callback.Invoke();
             }, QueueType.Throttled);
         }
