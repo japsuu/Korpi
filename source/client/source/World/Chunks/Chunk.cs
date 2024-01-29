@@ -90,11 +90,12 @@ public class Chunk
         if (!_hasBeenMeshed)
             return;
 
+        // Skip the transparent pass if the chunk doesn't contain any transparent blocks
         if (_blockStorage.TranslucentBlockCount == 0 && pass == RenderPass.Transparent)
             return;
 
+        // Frustum check.
 #if DEBUG
-
         // If in debug mode, allow the player to toggle frustum culling on/off
         if (ClientConfig.DebugModeConfig.DoFrustumCulling)
         {
@@ -109,6 +110,7 @@ public class Chunk
         if (!IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
             return;
 #endif
+        
         if (ChunkRendererStorage.TryGetRenderer(Position, out ChunkRenderer? renderer))
             renderer!.Draw(pass);
 

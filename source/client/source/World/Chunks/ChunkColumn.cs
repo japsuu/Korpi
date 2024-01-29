@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
+using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
@@ -91,6 +92,24 @@ public class ChunkColumn : IChunkColumn
     /// <param name="pass">The render pass to draw with.</param>
     public void Draw(RenderPass pass)
     {
+        // Frustum check.
+#if DEBUG
+
+        // If in debug mode, allow the player to toggle frustum culling on/off
+        if (ClientConfig.DebugModeConfig.DoFrustumCulling)
+        {
+            Frustum cameraViewFrustum = ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling
+                ? PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum
+                : Camera.RenderingCamera.ViewFrustum;
+
+            if (!IsOnFrustum(cameraViewFrustum))
+                return;
+        }
+#else
+        if (!IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
+            return;
+#endif
+        
         //TODO: Render the chunk the player is in, first.
         for (int i = _chunks.Length - 1; i >= 0; i--)
         {
