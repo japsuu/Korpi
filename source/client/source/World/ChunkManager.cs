@@ -13,14 +13,14 @@ using OpenTK.Mathematics;
 namespace Korpi.Client.World;
 
 /// <summary>
-/// Manages all loaded <see cref="Chunk"/>s.
+/// Manages all loaded <see cref="ChunkColumn"/>s.
 /// </summary>
 public class ChunkManager
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkManager));
     
-    private readonly Dictionary<Vector2i, Chunk> _loadedChunks = new();
-    private readonly SortedSet<Chunk> _loadedSortedChunks = new SortedSet<Chunk>(new ChunkDistanceComparer());
+    private readonly Dictionary<Vector2i, ChunkColumn> _loadedChunks = new();
+    private readonly SortedSet<ChunkColumn> _loadedSortedChunks = new SortedSet<ChunkColumn>(new ChunkDistanceComparer());
     private readonly List<Vector2i> _chunksToLoad = new();
     private readonly List<Vector2i> _chunksToUnload = new();
 
@@ -47,7 +47,7 @@ public class ChunkManager
         LoadChunks();
 
         // Tick all loaded columns
-        foreach (Chunk chunk in _loadedSortedChunks)
+        foreach (ChunkColumn chunk in _loadedSortedChunks)
         {
             chunk.Tick();
         }
@@ -56,7 +56,7 @@ public class ChunkManager
 
     public void DrawChunks(RenderPass pass)
     {
-        foreach (Chunk chunk in _loadedSortedChunks)
+        foreach (ChunkColumn chunk in _loadedSortedChunks)
         {
             chunk.Draw(pass);
         }
@@ -69,11 +69,11 @@ public class ChunkManager
         if (ClientConfig.DebugModeConfig.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector3i chunkPos = CoordinateUtils.WorldToSubChunk(Rendering.Cameras.Camera.RenderingCamera.Position);
+            Vector3i chunkPos = CoordinateUtils.WorldToChunk(Rendering.Cameras.Camera.RenderingCamera.Position);
             Debugging.Drawing.DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
-        if (ClientConfig.DebugModeConfig.RenderRegionBorders)
+        if (ClientConfig.DebugModeConfig.RenderColumnBorders)
         {
             // Get the chunk the playerEntity is currently in
             Vector2i columnPos = CoordinateUtils.WorldToColumn(Rendering.Cameras.Camera.RenderingCamera.Position);
@@ -98,20 +98,20 @@ public class ChunkManager
 
     
     /// <summary>
-    /// Gets the subchunk at the given position.
+    /// Gets the chunk at the given position.
     /// Thread safe.
     /// </summary>
     /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
-    public SubChunk? GetSubChunkAt(Vector3i position)
+    public Chunk? GetChunkAt(Vector3i position)
     {
         Vector2i chunkColumnPos = CoordinateUtils.WorldToColumn(position);
 
-        if (!_loadedChunks.TryGetValue(chunkColumnPos, out Chunk? column))
+        if (!_loadedChunks.TryGetValue(chunkColumnPos, out ChunkColumn? column))
             return null;
         
         Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
 
-        return column.GetSubchunkAtHeight(position.Y);
+        return column.GetChunkAtHeight(position.Y);
     }
 
     
@@ -120,12 +120,12 @@ public class ChunkManager
     /// Thread safe.
     /// </summary>
     /// <returns>Returns the chunk at the given position, or null if the chunk is not loaded</returns>
-    public Chunk? GetChunkAt(Vector2i chunkPos)
+    public ChunkColumn? GetChunkAt(Vector2i chunkPos)
     {
-        Debug.Assert(chunkPos.X % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the X coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
-        Debug.Assert(chunkPos.Y % Constants.SUBCHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the Y coordinate was not a multiple of {Constants.SUBCHUNK_SIDE_LENGTH}!");
+        Debug.Assert(chunkPos.X % Constants.CHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the X coordinate was not a multiple of {Constants.CHUNK_SIDE_LENGTH}!");
+        Debug.Assert(chunkPos.Y % Constants.CHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the Y coordinate was not a multiple of {Constants.CHUNK_SIDE_LENGTH}!");
 
-        _loadedChunks.TryGetValue(chunkPos, out Chunk? chunk);
+        _loadedChunks.TryGetValue(chunkPos, out ChunkColumn? chunk);
         return chunk;
     }
 
@@ -139,7 +139,7 @@ public class ChunkManager
     /// <param name="cache">Array to fill with BlockState data</param>
     public void FillMeshingCache(Vector3i chunkOriginPos, MeshingDataCache cache)
     {
-        SubChunk? loadedChunk = GetSubChunkAt(chunkOriginPos);
+        Chunk? loadedChunk = GetChunkAt(chunkOriginPos);
 
         if (loadedChunk == null)
             throw new InvalidOperationException($"Tried to fill meshing cache at {chunkOriginPos}, but the chunk was not loaded!");
@@ -162,12 +162,12 @@ public class ChunkManager
         if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
             return BlockRegistry.Air.GetDefaultState();
         
-        SubChunk? chunk = GetSubChunkAt(worldPosition);
+        Chunk? chunk = GetChunkAt(worldPosition);
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
         Vector3i chunkRelativePos = CoordinateUtils.WorldToChunkRelative(worldPosition);
-        return chunk.GetBlockState(new SubChunkBlockPosition(chunkRelativePos));
+        return chunk.GetBlockState(new ChunkBlockPosition(chunkRelativePos));
     }
     
     
@@ -183,12 +183,12 @@ public class ChunkManager
         if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
             return BlockRegistry.Air.GetDefaultState();
         
-        SubChunk? chunk = GetSubChunkAt(worldPosition);
+        Chunk? chunk = GetChunkAt(worldPosition);
         if (chunk == null)
             return BlockRegistry.Air.GetDefaultState();
 
         Vector3i chunkRelativePos = CoordinateUtils.WorldToChunkRelative(worldPosition);
-        chunk.SetBlockState(new SubChunkBlockPosition(chunkRelativePos), blockState, out BlockState oldBlockState, false);
+        chunk.SetBlockState(new ChunkBlockPosition(chunkRelativePos), blockState, out BlockState oldBlockState, false);
 
         return oldBlockState;
     }
@@ -198,9 +198,9 @@ public class ChunkManager
     {
         _chunksToUnload.Clear();
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
-        foreach ((Vector2i position, Chunk? chunk) in _loadedChunks)
+        foreach ((Vector2i position, ChunkColumn? chunk) in _loadedChunks)
         {
-            Vector2i normalizedColumnPos = (position - originColumnPos) / Constants.SUBCHUNK_SIDE_LENGTH;
+            Vector2i normalizedColumnPos = (position - originColumnPos) / Constants.CHUNK_SIDE_LENGTH;
             if (Constants.CIRCULAR_LOAD_REGION)
             {
                 bool inRange = normalizedColumnPos.X * normalizedColumnPos.X + normalizedColumnPos.Y * normalizedColumnPos.Y <=
@@ -226,7 +226,7 @@ public class ChunkManager
     {
         foreach (Vector2i chunkPos in _chunksToUnload)
         {
-            if (!_loadedChunks.Remove(chunkPos, out Chunk? chunk))
+            if (!_loadedChunks.Remove(chunkPos, out ChunkColumn? chunk))
                 continue;
             
             chunk.Unload();
@@ -258,11 +258,11 @@ public class ChunkManager
     {
         foreach (Vector2i chunkPos in _chunksToLoad)
         {
-            Chunk chunk = new(chunkPos);
-            chunk.Load();
-            if (!_loadedChunks.TryAdd(chunkPos, chunk))
+            ChunkColumn chunkColumn = new(chunkPos);
+            chunkColumn.Load();
+            if (!_loadedChunks.TryAdd(chunkPos, chunkColumn))
                 Logger.Error($"Failed to add chunk column at {chunkPos} to loaded columns!");
-            _loadedSortedChunks.Add(chunk);
+            _loadedSortedChunks.Add(chunkColumn);
         }
     }
 
@@ -285,7 +285,7 @@ public class ChunkManager
                 if (!inRange)
                     continue;
             }
-            _chunkLoadSpiral.Add(pos * Constants.SUBCHUNK_SIDE_LENGTH);
+            _chunkLoadSpiral.Add(pos * Constants.CHUNK_SIDE_LENGTH);
         }
 
         Logger.Info($"Precomputed column load spiral for render distance {Constants.CHUNK_LOAD_RADIUS}, for {_chunkLoadSpiral.Count} columns.");
@@ -393,9 +393,9 @@ public class ChunkManager
     }
     
     
-    private class ChunkDistanceComparer : IComparer<Chunk>
+    private class ChunkDistanceComparer : IComparer<ChunkColumn>
     {
-        public int Compare(Chunk x, Chunk y)
+        public int Compare(ChunkColumn x, ChunkColumn y)
         {
             Vector3 playerPosition = PlayerEntity.LocalPlayerEntity.Transform.LocalPosition;
             float xDistance = (x.Position - playerPosition.Xz).LengthSquared;

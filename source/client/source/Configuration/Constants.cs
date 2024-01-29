@@ -90,29 +90,29 @@ public static class Constants
     #region CHUNK SIZE
 
     /// <summary>
-    /// The length of one side of a subchunk in blocks.
+    /// The length of one side of a chunk in blocks.
     /// </summary>
-    public const int SUBCHUNK_SIDE_LENGTH = 32;
+    public const int CHUNK_SIDE_LENGTH = 32;
 
     /// <summary>
-    /// The amount of bits needed to represent <see cref="SUBCHUNK_SIDE_LENGTH"/>.
+    /// The amount of bits needed to represent <see cref="CHUNK_SIDE_LENGTH"/>.
     /// </summary>
-    public const int SUBCHUNK_SIDE_BITS = 5;
+    public const int CHUNK_SIDE_BITS = 5;
 
     /// <summary>
-    /// The amount of subchunks in a chunk.
+    /// The amount of chunks in a chunk column.
     /// </summary>
-    public const int CHUNK_HEIGHT_SUBCHUNKS = 16;
+    public const int CHUNK_COLUMN_HEIGHT_CHUNKS = 16;
     
     /// <summary>
     /// The height of a chunk in blocks.
     /// </summary>
-    public const int CHUNK_HEIGHT_BLOCKS = CHUNK_HEIGHT_SUBCHUNKS * SUBCHUNK_SIDE_LENGTH;
+    public const int CHUNK_HEIGHT_BLOCKS = CHUNK_COLUMN_HEIGHT_CHUNKS * CHUNK_SIDE_LENGTH;
     
     /// <summary>
     /// The count of block in a chunk.
     /// </summary>
-    public const int CHUNK_BLOCKS_COUNT = SUBCHUNK_SIDE_LENGTH * SUBCHUNK_SIDE_LENGTH * CHUNK_HEIGHT_BLOCKS;
+    public const int CHUNK_BLOCKS_COUNT = CHUNK_SIDE_LENGTH * CHUNK_SIDE_LENGTH * CHUNK_HEIGHT_BLOCKS;
 
     #endregion
 

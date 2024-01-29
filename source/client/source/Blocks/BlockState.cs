@@ -19,7 +19,7 @@ public struct BlockState
     /// Cached info of which faces should not be meshed.
     /// 6 least-significant bits are flags for each face, in the order of: +x, +y, +z, -x, -y, -z.
     /// </summary>
-    public byte InvisibleFaces { get; private set; }
+    public byte InvisibleFaces { get; private set; }    //TODO: Use this in the meshing algorithm
     
     /// <summary>
     /// Data for the block. This is block-specific.
@@ -76,7 +76,7 @@ public struct BlockState
 
     public static bool EqualsNonAlloc(BlockState b1, BlockState b2)
     {
-        return b1.RenderType == b2.RenderType && b1.Id == b2.Id && b1.Data == b2.Data && b1.InvisibleFaces == b2.InvisibleFaces;
+        return b1.Id == b2.Id && b1.RenderType == b2.RenderType && b1.Data == b2.Data && b1.InvisibleFaces == b2.InvisibleFaces;
     }
 
 

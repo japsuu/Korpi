@@ -17,7 +17,7 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
 
     // Since we cull internal faces, the worst case WOULD NORMALLY BE half of the faces (every other block needs to be meshed).
     // HOWEVER this is NOT the case, as different adjacent transparent blocks ignore the face culling and are both rendered.
-    private const int CHUNK_SIZE_CUBED = Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH * Constants.SUBCHUNK_SIDE_LENGTH;
+    private const int CHUNK_SIZE_CUBED = Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;
     private const int MAX_VISIBLE_FACES = CHUNK_SIZE_CUBED * FACES_PER_BLOCK;
     private const int MAX_VERTICES_PER_CHUNK = MAX_VISIBLE_FACES * VERTICES_PER_FACE;
     private const int MAX_INDICES_PER_CHUNK = MAX_VISIBLE_FACES * INDICES_PER_FACE;

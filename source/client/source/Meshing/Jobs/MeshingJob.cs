@@ -14,16 +14,16 @@ public class MeshingJob : KorpiJob
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(MeshingJob));
     
     private readonly long _id;
-    private readonly SubChunk _subChunk;
+    private readonly Chunk _chunk;
     private readonly Action _callback;
 
 
-    public MeshingJob(long id, SubChunk subChunk, Action callback)
+    public MeshingJob(long id, Chunk chunk, Action callback)
     {
         Debug.Assert(callback != null, nameof(callback) + " != null");
         
         _id = id;
-        _subChunk = subChunk;
+        _chunk = chunk;
         _callback = callback;
 #if DEBUG
         Interlocked.Increment(ref Debugging.DebugStats.ChunksInMeshingQueue);
@@ -36,27 +36,27 @@ public class MeshingJob : KorpiJob
 #if DEBUG
         Interlocked.Decrement(ref Debugging.DebugStats.ChunksInMeshingQueue);
 #endif
-        // Abort the job if the subChunk's job ID does not match the job ID.
-        if (_subChunk.CurrentJobId != _id)
+        // Abort the job if the chunk's job ID does not match the job ID.
+        if (_chunk.CurrentJobId != _id)
         {
             Logger.Warn($"Aborting orphaned job with ID: {_id}");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }
 
-        if (!GameWorld.CurrentGameWorld.ChunkManager.ChunkExistsAt(_subChunk.Position))
+        if (!GameWorld.CurrentGameWorld.ChunkManager.ChunkExistsAt(_chunk.Position))
         {
-            Logger.Warn($"Aborting meshing job with ID {_id} because subChunk at position {_subChunk.Position} no longer exists.");
+            Logger.Warn($"Aborting meshing job with ID {_id} because chunk at position {_chunk.Position} no longer exists.");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }
 
-        // Acquire a read lock on the subChunk and generate mesh data.
-        if (_subChunk.ThreadLock.TryEnterReadLock(Constants.JOB_LOCK_TIMEOUT_MS))
+        // Acquire a read lock on the chunk and generate mesh data.
+        if (_chunk.ThreadLock.TryEnterReadLock(Constants.JOB_LOCK_TIMEOUT_MS))
         {
-            ChunkMesh mesh = ChunkMesher.ThreadLocalInstance.GenerateMesh(_subChunk);
+            ChunkMesh mesh = ChunkMesher.ThreadLocalInstance.GenerateMesh(_chunk);
             
-            _subChunk.ThreadLock.ExitReadLock();
+            _chunk.ThreadLock.ExitReadLock();
 
             // Signal completion.
             SignalCompletion(JobCompletionState.Completed);
@@ -75,7 +75,7 @@ public class MeshingJob : KorpiJob
             SignalCompletion(JobCompletionState.Aborted);
 
             // This honestly gets us into an invalid state that cannot be recovered from, so we just quit.
-            DispatchToMain(() => throw new Exception($"Job with ID {_id} aborted: Failed to acquire read lock on subChunk."), QueueType.Default);
+            DispatchToMain(() => throw new Exception($"Job with ID {_id} aborted: Failed to acquire read lock on chunk."), QueueType.Default);
         }
     }
 }

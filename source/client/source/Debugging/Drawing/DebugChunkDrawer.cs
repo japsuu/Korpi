@@ -122,7 +122,7 @@ public static class DebugChunkDrawer
         List<float> vertices = new();
         List<uint> indices = new();
         int indexBufferIndex = 0;
-        for (int y = 0; y < Constants.SUBCHUNK_SIDE_LENGTH + 1; y++)
+        for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH + 1; y++)
         {
             // Adding the four vertices of the current line.
             vertices.Add(0);
@@ -132,23 +132,23 @@ public static class DebugChunkDrawer
             vertices.Add(0);
             vertices.Add(0);
             
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(y);
             vertices.Add(0);
             vertices.Add(1);
             vertices.Add(0);
             vertices.Add(0);
             
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(y);
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(1);
             vertices.Add(0);
             vertices.Add(0);
             
             vertices.Add(0);
             vertices.Add(y);
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(1);
             vertices.Add(0);
             vertices.Add(0);
@@ -164,7 +164,7 @@ public static class DebugChunkDrawer
             uint corner3 = (uint) indexBufferIndex - 2;
             uint corner4 = (uint) indexBufferIndex - 1;
 
-            if (y == Constants.SUBCHUNK_SIDE_LENGTH)
+            if (y == Constants.CHUNK_SIDE_LENGTH)
             {
                 indices.Add(corner1);
                 indices.Add(corner2);
@@ -174,7 +174,7 @@ public static class DebugChunkDrawer
             }
             
             // Adding the Z- columns of the current line.
-            for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
+            for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
             {
                 vertices.Add(x);
                 vertices.Add(y);
@@ -204,23 +204,23 @@ public static class DebugChunkDrawer
             indices.Add(corner2);
             
             // Adding the X+ columns of the current line.
-            for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
+            for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
             {
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(y);
                 vertices.Add(z);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(y + 1);
                 vertices.Add(z);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(y);
                 vertices.Add(z);
                 vertices.Add(1);
@@ -234,25 +234,25 @@ public static class DebugChunkDrawer
             indices.Add(corner3);
             
             // Adding the Z+ columns of the current line.
-            for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
+            for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
             {
                 vertices.Add(x);
                 vertices.Add(y);
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
                 vertices.Add(x);
                 vertices.Add(y + 1);
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
                 vertices.Add(x);
                 vertices.Add(y);
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
@@ -264,7 +264,7 @@ public static class DebugChunkDrawer
             indices.Add(corner4);
             
             // Adding the X- columns of the current line.
-            for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
+            for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
             {
                 vertices.Add(0);
                 vertices.Add(y);
@@ -314,23 +314,23 @@ public static class DebugChunkDrawer
             vertices.Add(0);
             vertices.Add(0);
             
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(y);
             vertices.Add(0);
             vertices.Add(1);
             vertices.Add(0);
             vertices.Add(0);
             
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(y);
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(1);
             vertices.Add(0);
             vertices.Add(0);
             
             vertices.Add(0);
             vertices.Add(y);
-            vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+            vertices.Add(Constants.CHUNK_SIDE_LENGTH);
             vertices.Add(1);
             vertices.Add(0);
             vertices.Add(0);
@@ -356,7 +356,7 @@ public static class DebugChunkDrawer
             }
             
             // Adding the Z- columns of the current line.
-            for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
+            for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
             {
                 vertices.Add(x);
                 vertices.Add(y);
@@ -386,23 +386,23 @@ public static class DebugChunkDrawer
             indices.Add(corner2);
             
             // Adding the X+ columns of the current line.
-            for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
+            for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
             {
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(y);
                 vertices.Add(z);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(y + 1);
                 vertices.Add(z);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(y);
                 vertices.Add(z);
                 vertices.Add(1);
@@ -416,25 +416,25 @@ public static class DebugChunkDrawer
             indices.Add(corner3);
             
             // Adding the Z+ columns of the current line.
-            for (int x = 0; x < Constants.SUBCHUNK_SIDE_LENGTH; x++)
+            for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
             {
                 vertices.Add(x);
                 vertices.Add(y);
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
                 vertices.Add(x);
                 vertices.Add(y + 1);
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
                 
                 vertices.Add(x);
                 vertices.Add(y);
-                vertices.Add(Constants.SUBCHUNK_SIDE_LENGTH);
+                vertices.Add(Constants.CHUNK_SIDE_LENGTH);
                 vertices.Add(1);
                 vertices.Add(0);
                 vertices.Add(0);
@@ -446,7 +446,7 @@ public static class DebugChunkDrawer
             indices.Add(corner4);
             
             // Adding the X- columns of the current line.
-            for (int z = 0; z < Constants.SUBCHUNK_SIDE_LENGTH; z++)
+            for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
             {
                 vertices.Add(0);
                 vertices.Add(y);
