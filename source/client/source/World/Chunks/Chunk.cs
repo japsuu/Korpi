@@ -67,6 +67,11 @@ public class Chunk
     
     private bool IsWaitingForMeshing => _currentMeshState is ChunkMeshState.MESHING or ChunkMeshState.WAITING_FOR_NEIGHBOURS;
 
+    /// <summary>
+    /// The chunk column this chunk belongs to.
+    /// </summary>
+    public IChunkColumn Column => _column;
+
 
     public Chunk(IChunkColumn column, int height)
     {

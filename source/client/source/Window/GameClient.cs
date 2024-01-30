@@ -61,7 +61,7 @@ public class GameClient : GameWindow
         {
             Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
-            NumberOfSamples = 8,
+            NumberOfSamples = 0,
             Location = new Vector2i(0, 0),
             API = ContextAPI.OpenGL,
             Profile = ContextProfile.Core,
@@ -99,7 +99,7 @@ public class GameClient : GameWindow
 #endif
 
         GL.Enable(EnableCap.DepthTest);     // Enable depth testing.
-        GL.Enable(EnableCap.Multisample);   // Enable multisampling.
+        // GL.Enable(EnableCap.Multisample);   // Enable multisampling.
         GL.ClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
         // Resource initialization.

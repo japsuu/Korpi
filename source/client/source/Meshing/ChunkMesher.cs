@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using JetBrains.Profiler.Api;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
@@ -43,9 +42,6 @@ public class ChunkMesher
 
     public ChunkMesh GenerateMesh(Chunk chunk)
     {
-        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
-        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
-            MeasureProfiler.StartCollectingData();
         DebugStats.StartChunkMeshing();
         GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
@@ -75,10 +71,6 @@ public class ChunkMesher
         DebugStats.StopChunkMeshing();
         
         ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
-        
-        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
-        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
-            MeasureProfiler.SaveData();
 
         return mesh;
     }

@@ -15,4 +15,8 @@ public interface IChunkColumn
     /// <param name="excludeMissingChunks">If true, chunks that are not loaded are excluded from neighbourhood checks</param>
     /// <returns>True if all neighbouring chunks are generated, false otherwise</returns>
     public bool AreAllNeighboursGenerated(bool excludeMissingChunks);
+
+
+    /// <returns>The highest block at the given x and z coordinates. -1 if no blocks are found.</returns>
+    public int GetHighestBlock(int x, int z);
 }
