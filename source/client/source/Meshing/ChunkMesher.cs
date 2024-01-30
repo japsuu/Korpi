@@ -22,9 +22,10 @@ public class ChunkMesher
     private readonly MeshingDataCache _meshingDataCache = new();
     
     /// <summary>
-    /// Buffer into which the meshing thread writes the mesh data.
+    /// Buffers into which the meshing thread writes the mesh data.
+    /// One for each LOD level.
     /// </summary>
-    private readonly MeshingBuffer _meshingBuffer = new();
+    private readonly MeshingBuffer[] _meshingBuffers;
     
     /// <summary>
     /// Offsets of the 6 neighbours of a block.
@@ -41,79 +42,126 @@ public class ChunkMesher
     };
 
 
-    public ChunkMesh GenerateMesh(Chunk chunk)
+    public ChunkMesher()
     {
-        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
-        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
-            MeasureProfiler.StartCollectingData();
+        _meshingBuffers = new MeshingBuffer[Constants.TERRAIN_LOD_LEVEL_COUNT];
+        for (int i = 0; i < Constants.TERRAIN_LOD_LEVEL_COUNT; i++)
+        {
+            _meshingBuffers[i] = new MeshingBuffer();
+        }
+    }
+
+
+    public LodChunkMesh GenerateMesh(Chunk chunk)
+    {
         DebugStats.StartChunkMeshing();
+        
         GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
-        _meshingDataCache.AcquireNeighbourReadLocks();
+        LodChunkMesh lodMesh = new(chunk.Position);
         
-        _meshingBuffer.Clear();
+        _meshingDataCache.AcquireNeighbourReadLocks();
+
+        foreach (MeshingBuffer meshingBuffer in _meshingBuffers)
+            meshingBuffer.Clear();
         
         // Mesh the chunk based on the data cache.
+        // The abomination below is required to avoid showing blocks below the surface.
+        bool[] isSurfaceSet = new bool[Constants.TERRAIN_LOD_LEVEL_COUNT - 1];
         for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
         {
-            for (int y = 0; y < Constants.CHUNK_SIDE_LENGTH; y++)
+            for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
             {
-                for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
+                bool foundSurfaceBlock = false;
+                Array.Clear(isSurfaceSet);
+                BlockState surfaceBlock = default;
+                for (int y = Constants.CHUNK_SIDE_LENGTH - 1; y >= 0; y--)
                 {
-                     _meshingDataCache.TryGetData(x, y, z, out BlockState blockState);
+                    _meshingDataCache.TryGetData(x, y, z, out BlockState blockState);
                     
                     if (!blockState.IsRendered)
                         continue;
                     
-                    AddFaces(blockState, x, y, z);
+                    if (!foundSurfaceBlock)
+                    {
+                        surfaceBlock = blockState;
+                        foundSurfaceBlock = true;
+                    }
+                    
+                    for (int lodLevel = 0; lodLevel < Constants.TERRAIN_LOD_LEVEL_COUNT; lodLevel++)
+                    {
+                        // Calculate how many blocks to skip when iterating over the chunk.
+                        int velocity = 1 << lodLevel;
+                        
+                        if (x % velocity != 0 || y % velocity != 0 || z % velocity != 0)
+                            continue;
+
+                        if (lodLevel > 0 && !isSurfaceSet[lodLevel - 1])
+                        {
+                            AddFaces(surfaceBlock, x, y, z, lodLevel, velocity);
+                            isSurfaceSet[lodLevel - 1] = true;
+                        }
+                        else
+                        {
+                            AddFaces(blockState, x, y, z, lodLevel, velocity);
+                        }
+                    }
                 }
             }
         }
         
         _meshingDataCache.ReleaseNeighbourReadLocks();
+
+        for (int i = 0; i < Constants.TERRAIN_LOD_LEVEL_COUNT; i++)
+        {
+            ChunkMesh mesh = _meshingBuffers[i].CreateMesh(chunk.Position, i);
+            lodMesh.SetMesh(i, mesh);
+        }
         
         DebugStats.StopChunkMeshing();
-        
-        ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
-        
-        // if (chunk.Position == new Vector3i(0, 3*Constants.CHUNK_SIDE_LENGTH, 0))
-        if (chunk.Position == new Vector3i(0, 4*Constants.CHUNK_SIDE_LENGTH, 0))
-            MeasureProfiler.SaveData();
 
-        return mesh;
+        return lodMesh;
     }
 
 
-    private void AddFaces(BlockState blockState, int x, int y, int z)
+    private void AddFaces(BlockState blockState, int x, int y, int z, int lodLevel, int velocity)
     {
         Debug.Assert(x >= 0 && x < Constants.CHUNK_SIDE_LENGTH, "0 <= x < CHUNK_SIDE_LENGTH");
         Debug.Assert(y >= 0 && y < Constants.CHUNK_SIDE_LENGTH, "0 <= y < CHUNK_SIDE_LENGTH");
         Debug.Assert(z >= 0 && z < Constants.CHUNK_SIDE_LENGTH, "0 <= z < CHUNK_SIDE_LENGTH");
+        
         // Iterate over all 6 faces of the block
         for (int face = 0; face < 6; face++)
         {
-            Vector3i neighbourOffset = BlockNeighbourOffsets[face];
-            if (!_meshingDataCache.TryGetData(x + neighbourOffset.X, y + neighbourOffset.Y, z + neighbourOffset.Z, out BlockState neighbour))
-                continue;
-
-            switch (neighbour.RenderType)
+            Vector3i neighbourOffset = BlockNeighbourOffsets[face] * velocity;
+            int neighbourX = x + neighbourOffset.X;
+            int neighbourY = y + neighbourOffset.Y;
+            int neighbourZ = z + neighbourOffset.Z;
+            // For all other LOD levels than the first, force the "side" faces to be rendered. This is to avoid holes in the LOD mesh.
+            if (velocity == 1 || (neighbourX is >= 0 and < Constants.CHUNK_SIDE_LENGTH &&
+                                  neighbourZ is >= 0 and < Constants.CHUNK_SIDE_LENGTH))
             {
-                case BlockRenderType.None:
-                    break;
-                case BlockRenderType.Opaque:
-                    // If the neighbour is opaque, skip this face.
+                if (!_meshingDataCache.TryGetData(neighbourX, neighbourY, neighbourZ, out BlockState neighbour))
                     continue;
-                case BlockRenderType.AlphaClip:
-                    break;
-                case BlockRenderType.Transparent:
-                    // If this block and the neighbour are both transparent and of the same type, skip this face.
-                    if (blockState.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
-                        continue;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(neighbour.RenderType), neighbour.RenderType, null);
-            }
 
+                switch (neighbour.RenderType)
+                {
+                    case BlockRenderType.None:
+                        break;
+                    case BlockRenderType.Opaque:
+                        // If the neighbour is opaque, skip this face.
+                        continue;
+                    case BlockRenderType.AlphaClip:
+                        break;
+                    case BlockRenderType.Transparent:
+                        // If this block and the neighbour are both transparent and of the same type, skip this face.
+                        if (blockState.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
+                            continue;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(neighbour.RenderType), neighbour.RenderType, null);
+                }
+            }
 
             // Get the texture index of the block face
             ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);
@@ -127,7 +175,7 @@ public class ChunkMesher
                         
             // Add the face to the meshing buffer
             Vector3i blockPos = new(x, y, z);
-            _meshingBuffer.AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel, blockState.RenderType);
+            _meshingBuffers[lodLevel].AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel, blockState.RenderType, velocity);
         }
     }
 

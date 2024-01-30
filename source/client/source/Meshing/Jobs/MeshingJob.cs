@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
 using Korpi.Client.Logging;
-using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World;
@@ -52,7 +51,7 @@ public class MeshingJob : KorpiJob
         // Acquire a read lock on the chunk and generate mesh data.
         if (_chunk.ThreadLock.TryEnterReadLock(Constants.JOB_LOCK_TIMEOUT_MS))
         {
-            ChunkMesh mesh = ChunkMesher.ThreadLocalInstance.GenerateMesh(_chunk);
+            LodChunkMesh mesh = ChunkMesher.ThreadLocalInstance.GenerateMesh(_chunk);
             
             _chunk.ThreadLock.ExitReadLock();
 

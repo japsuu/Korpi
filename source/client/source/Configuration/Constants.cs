@@ -121,18 +121,18 @@ public static class Constants
     /// <summary>
     /// Whether or not to load chunks in a circular or rectangular region around the player.
     /// </summary>
-    public const bool CIRCULAR_LOAD_REGION = false;
+    public const bool CIRCULAR_LOAD_REGION = true;
     
     /// <summary>
     /// The radius (in chunks) around the player to load chunks.
     /// </summary>
-    public const int CHUNK_LOAD_RADIUS = 14;
+    public const int CHUNK_LOAD_RADIUS = 16;
     
     /// <summary>
     /// The radius (in chunks) around the player to unload chunks.
     /// Should be greater than <see cref="CHUNK_LOAD_RADIUS"/>.
     /// </summary>
-    public const int CHUNK_UNLOAD_RADIUS = CHUNK_LOAD_RADIUS + 3;
+    public const int CHUNK_UNLOAD_RADIUS = CHUNK_LOAD_RADIUS + 2;
 
     #endregion
 
@@ -230,6 +230,11 @@ public static class Constants
     /// The level of anisotropic filtering to use.
     /// </summary>
     public const int ANISOTROPIC_FILTERING_LEVEL = 16;
+    
+    /// <summary>
+    /// The largest LOD level that can be used for terrain.
+    /// </summary>
+    public const int TERRAIN_LOD_LEVEL_COUNT = 6;
 
     #endregion
 

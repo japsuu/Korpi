@@ -16,10 +16,10 @@ public class BlocksTranslucentShaderProgram : MvpShaderProgram
     [VertexAttrib(2, VertexAttribPointerType.UnsignedInt)]
     public VertexAttrib InData { get; protected set; } = null!;
 
-    // /// <summary>
-    // /// The color modulator is used to tint the texture.
-    // /// Can be used for effects like global illumination.
-    // /// </summary>
+    /// <summary>
+    /// The color modulator is used to tint the texture.
+    /// Can be used for effects like global illumination.
+    /// </summary>
     public Uniform<Vector3> ColorModulator { get; protected set; } = null!;
     
     /// <summary>

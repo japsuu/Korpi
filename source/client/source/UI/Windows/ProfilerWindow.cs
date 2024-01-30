@@ -37,6 +37,7 @@ public class ProfilerWindow : ImGuiWindow
     public ProfilerWindow()
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
+        IsVisible = false;
     }
 
 

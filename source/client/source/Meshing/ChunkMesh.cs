@@ -35,9 +35,14 @@ public class ChunkMesh
     /// The index data for the transparent blocks.
     /// </summary>
     public readonly uint[] TransparentIndices;
+    
+    /// <summary>
+    /// The level of detail of the mesh.
+    /// </summary>
+    public readonly int LodLevel;
 
 
-    public ChunkMesh(Vector3i chunkPos, uint[] opaqueVertexData, uint[] opaqueIndices, uint[] transparentVertexData, uint[] transparentIndices)
+    public ChunkMesh(Vector3i chunkPos, uint[] opaqueVertexData, uint[] opaqueIndices, uint[] transparentVertexData, uint[] transparentIndices, int lodLevel)
     {
         ChunkPos = chunkPos;
         
@@ -46,5 +51,6 @@ public class ChunkMesh
         
         TransparentVertexData = transparentVertexData;
         TransparentIndices = transparentIndices;
+        LodLevel = lodLevel;
     }
 }

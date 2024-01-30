@@ -20,6 +20,7 @@ public class MemoryProfilerWindow : ImGuiWindow
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
         _proc = Process.GetCurrentProcess();
         _gcMemoryInfo = GC.GetGCMemoryInfo(GCKind.Any);
+        IsVisible = false;
     }
 
 

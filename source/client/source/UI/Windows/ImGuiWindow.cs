@@ -10,7 +10,7 @@ public abstract class ImGuiWindow
     
     public abstract string Title { get; }
     
-    public bool IsVisible { get; private set; } = true;
+    public bool IsVisible { get; protected set; } = true;
 
 
     protected ImGuiWindow()

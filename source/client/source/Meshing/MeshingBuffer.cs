@@ -53,7 +53,8 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
     /// <param name="lightLevel">Amount of light that hits this face (0-31)</param>
     /// <param name="skyLightLevel">Amount of skylight hitting this face (0-31)</param>
     /// <param name="renderType">Render type of the block</param>
-    public void AddFace(MeshingDataCache dataCache, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel, BlockRenderType renderType)
+    /// <param name="velocity"></param>
+    public void AddFace(MeshingDataCache dataCache, Vector3i blockPos, BlockFace face, int textureIndex, Color9 lightColor, int lightLevel, int skyLightLevel, BlockRenderType renderType, int velocity)
     {
         // NOTE: Just to be clear, I'm not proud of this unmaintainable mess... - Japsu
         
@@ -85,12 +86,12 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
         int blockX = blockPos.X;
         int blockY = blockPos.Y;
         int blockZ = blockPos.Z;
-        int xPosNeighbour = blockX + 1;
-        int yPosNeighbour = blockY + 1;
-        int zPosNeighbour = blockZ + 1;
-        int xNegNeighbour = blockX + -1;
-        int yNegNeighbour = blockY + -1;
-        int zNegNeighbour = blockZ + -1;
+        int xPosNeighbour = blockX + velocity;
+        int yPosNeighbour = blockY + velocity;
+        int zPosNeighbour = blockZ + velocity;
+        int xNegNeighbour = blockX + -velocity;
+        int yNegNeighbour = blockY + -velocity;
+        int zNegNeighbour = blockZ + -velocity;
         switch (face)
         {
             case BlockFace.XPositive:
@@ -350,7 +351,7 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
     }
 
 
-    public ChunkMesh CreateMesh(Vector3i chunkPos)
+    public ChunkMesh CreateMesh(Vector3i chunkPos, int lodLevel)
     {
         uint[] opaqueVertexData = new uint[_addedOpaqueVertexDataCount];
         uint[] opaqueIndices = new uint[_addedOpaqueIndicesCount];
@@ -365,7 +366,7 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
         Array.Copy(_transparentVertexData, transparentVertexData, _addedTransparentVertexDataCount);
         Array.Copy(_transparentIndexData, transparentIndices, _addedTransparentIndicesCount);
 
-        return new ChunkMesh(chunkPos, opaqueVertexData, opaqueIndices, transparentVertexData, transparentIndices);
+        return new ChunkMesh(chunkPos, opaqueVertexData, opaqueIndices, transparentVertexData, transparentIndices, lodLevel);
     }
 
 

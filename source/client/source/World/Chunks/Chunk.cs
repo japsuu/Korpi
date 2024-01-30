@@ -110,11 +110,16 @@ public class Chunk
                 return;
         }
 #else
-        if (!IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
+        if (!IsOnFrustum(Camera.RenderingCamera.ViewFrustum))
             return;
 #endif
+        const float minLodDistance = 50;
+        const float maxLodDistance = 400;
+        float distance = Vector3.Distance(Position, Camera.RenderingCamera.Position);
+        float normalizedDistance = (distance - minLodDistance) / (maxLodDistance - minLodDistance);
+        int lodLevel = (int) MathHelper.Clamp(MathHelper.Lerp(0, Constants.TERRAIN_LOD_LEVEL_COUNT - 1, normalizedDistance), 0, Constants.TERRAIN_LOD_LEVEL_COUNT - 1);
         
-        _renderManager.RenderMesh(pass);
+        _renderManager.RenderMesh(pass, lodLevel);
 
 #if DEBUG
         DebugDraw();
@@ -122,9 +127,12 @@ public class Chunk
     }
     
     
-    public void UpdateMesh(ChunkMesh mesh)
+    public void UpdateMesh(LodChunkMesh lodMesh)
     {
-        _renderManager.AddOrUpdateMesh(mesh);
+        foreach (ChunkMesh mesh in lodMesh.Meshes)
+        {
+            _renderManager.AddOrUpdateMesh(mesh);
+        }
     }
 
 

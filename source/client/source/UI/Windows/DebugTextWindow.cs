@@ -49,6 +49,7 @@ public class DebugTextWindow : ImGuiWindow
 
         frameTexts = new Dictionary<Vector3, List<DebugText>>();
         staticTexts = new Dictionary<Vector3, List<DebugText>>();
+        IsVisible = false;
     }
     
     
