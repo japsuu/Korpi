@@ -11,6 +11,8 @@ public class ChunkTests
         public Vector2i Position => Vector2i.Zero;
 
         public bool AreAllNeighboursGenerated(bool excludeMissingChunks) => true;
+
+        public int GetHighestBlock(int x, int z) => 0;
     }
     
     [Test]
