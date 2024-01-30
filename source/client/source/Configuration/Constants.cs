@@ -121,7 +121,7 @@ public static class Constants
     /// <summary>
     /// Whether or not to load chunks in a circular or rectangular region around the player.
     /// </summary>
-    public const bool CIRCULAR_LOAD_REGION = false;
+    public const bool CIRCULAR_LOAD_REGION = true;
     
     /// <summary>
     /// The radius (in chunks) around the player to load chunks.
@@ -132,7 +132,7 @@ public static class Constants
     /// The radius (in chunks) around the player to unload chunks.
     /// Should be greater than <see cref="CHUNK_LOAD_RADIUS"/>.
     /// </summary>
-    public const int CHUNK_UNLOAD_RADIUS = CHUNK_LOAD_RADIUS + 3;
+    public const int CHUNK_UNLOAD_RADIUS = CHUNK_LOAD_RADIUS + 2;
 
     #endregion
 
