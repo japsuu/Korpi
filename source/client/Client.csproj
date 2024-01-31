@@ -36,5 +36,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\shaders\include\" />
+    <Folder Include="source\Generation\Features\" />
   </ItemGroup>
 </Project>

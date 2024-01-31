@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
 using Korpi.Client.Logging;
-using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World;
@@ -37,7 +36,7 @@ public class MeshingJob : KorpiJob
         // Abort the job if the chunk's job ID does not match the job ID.
         if (_chunk.CurrentJobId != _id)
         {
-            Logger.Warn($"Aborting orphaned job with ID: {_id}");
+            Logger.Warn($"Aborting orphaned job with ID: {_id} of chunk at {_chunk.Position}");
             SignalCompletion(JobCompletionState.Aborted);
             return;
         }

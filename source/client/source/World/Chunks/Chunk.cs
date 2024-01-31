@@ -13,7 +13,7 @@ using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;
 
-public class Chunk
+public class Chunk : IRegionAccessor
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(Chunk));
 

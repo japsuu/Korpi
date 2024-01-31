@@ -13,7 +13,7 @@ namespace Korpi.Client.World.Chunks;
 /// <summary>
 /// Vertical column of chunks.
 /// </summary>
-public class ChunkColumn : IChunkColumn
+public class ChunkColumn : IChunkColumn, IRegionAccessor
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkColumn));
     
