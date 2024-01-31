@@ -7,35 +7,24 @@ using Korpi.Client.Window;
 namespace Korpi.Client.Threading.Pooling;
 
 /// <summary>
-/// A static thread-pool.
+/// A static pool for executing jobs.
 /// Contains queues for pushing callbacks to the main thread.
 /// Jobs don't necessarily have to use the queues for main-thread callbacks.
 /// A sync context could be used instead.
 /// </summary>
-public static class GlobalThreadPool
+public static class GlobalJobPool
 {
-    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GlobalThreadPool));
-
-    /// <summary>
-    /// Minimum number of <see cref="mainQueueThrottled"/> invocations executed per tick.
-    /// </summary>
-    private const int MIN_THROTTLED_UPDATES_PER_TICK = 1;
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GlobalJobPool));
 
     /// <summary>
     /// Maximum number of <see cref="mainQueueThrottled"/> invocations executed per tick.
     /// </summary>
-    private const int MAX_THROTTLED_UPDATES_PER_TICK = 256;
+    private const int MAX_THROTTLED_UPDATES_PER_TICK = 64;
 
     /// <summary>
-    /// The number of invocations executed on the main thread from the throttled queue per tick.
-    /// Dynamically adjusted based on performance.
+    /// The job pool.
     /// </summary>
-    private static int throttledUpdatesPerTick = MAX_THROTTLED_UPDATES_PER_TICK;
-
-    /// <summary>
-    /// The thread pool.
-    /// </summary>
-    private static ThreadPool threadPool = null!;
+    private static IJobPool jobPool = null!;
 
     /// <summary>
     /// A queue of actions to be executed on the main thread.
@@ -57,17 +46,25 @@ public static class GlobalThreadPool
     {
         // Since we're CPU-bound (most of the threads will be waiting in a loop), allocate only 3/4 of the system's logical processor count with a minimum of 2.
         //NOTE: For some reason, the Debug build seems to run faster than Release. https://stackoverflow.com/questions/8858128/c-opengl-application-running-smoother-with-debugger-attached
-
 #if DEBUG
         ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount * 3 / 4, 2);
         Logger.Warn($"[Global Thread Pool] Running in DEBUG, using {ThreadCount} threads instead of the usual {SystemInfo.ProcessorCount/4}.");
 #else
         ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount / 4, 2);
 #endif
-        threadPool = new ThreadPool(ThreadCount, ThreadConfig.Default());
+        jobPool = new JobTplPool();
+        // jobPool = new JobSingleThreadPool();
+        // jobPool = new JobThreadPool(ThreadCount, ThreadConfig.Default());
         mainQueue = new ConcurrentQueue<Action>();
         mainQueueThrottled = new ConcurrentQueue<Action>();
-        Logger.Info($"[Global Thread Pool] Initialized with {ThreadCount} threads.");
+        Logger.Info($"Initialized with {ThreadCount} threads.");
+    }
+    
+    
+    public static void Shutdown()
+    {
+        jobPool.Shutdown();
+        Logger.Info("Shutdown.");
     }
 
 
@@ -82,12 +79,11 @@ public static class GlobalThreadPool
 
     public static void FixedUpdate()
     {
-        // throttledUpdatesPerTick = DynamicPerformance.GetDynamic(MIN_THROTTLED_UPDATES_PER_TICK, MAX_THROTTLED_UPDATES_PER_TICK); //TODO: Research if this is needed.
         Debugging.DebugStats.ItemsInMainThreadThrottledQueue = (ulong)mainQueueThrottled.Count;
-        Debugging.DebugStats.MainThreadThrottledQueueItemsPerTick = (ulong)throttledUpdatesPerTick;
+        Debugging.DebugStats.MainThreadThrottledQueueItemsPerTick = MAX_THROTTLED_UPDATES_PER_TICK;
 
         // Process the throttled queue.
-        int count = throttledUpdatesPerTick;
+        int count = MAX_THROTTLED_UPDATES_PER_TICK;
         while (mainQueueThrottled.TryDequeue(out Action? a))
         {
             a.Invoke();
@@ -96,6 +92,8 @@ public static class GlobalThreadPool
             if (count <= 0)
                 break;
         }
+        
+        jobPool.FixedUpdate();
     }
 
 
@@ -104,7 +102,7 @@ public static class GlobalThreadPool
     /// </summary>
     public static KorpiJob<T> DispatchJob<T>(KorpiJob<T> item, WorkItemPriority priority)
     {
-        threadPool.EnqueueWorkItem(item, priority);
+        jobPool.EnqueueWorkItem(item, priority);
         return item;
     }
 

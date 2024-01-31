@@ -9,7 +9,7 @@ namespace Korpi.Client.Generation.TerrainGenerators;
 [Obsolete("This terrain generator is not finished yet.")]
 public class HeightmapTerrainGenerator : ITerrainGenerator
 {
-    private const int SEA_LEVEL = Constants.CHUNK_HEIGHT_BLOCKS / 4 + 16;
+    private const int SEA_LEVEL = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 4 + 16;
     private const int TERRAIN_HEIGHT_MIN = SEA_LEVEL - 16;
     private const int TERRAIN_HEIGHT_MAX = SEA_LEVEL + 16;
     

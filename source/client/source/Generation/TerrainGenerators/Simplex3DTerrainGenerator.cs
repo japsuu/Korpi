@@ -14,7 +14,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
 {
     private const int NOISE_SAMPLE_BRICK_SIZE = 4;
     private const int BRICK_COUNT_H = Constants.CHUNK_SIDE_LENGTH / NOISE_SAMPLE_BRICK_SIZE;
-    private const int BRICK_COUNT_V = Constants.CHUNK_HEIGHT_BLOCKS / NOISE_SAMPLE_BRICK_SIZE;
+    private const int BRICK_COUNT_V = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / NOISE_SAMPLE_BRICK_SIZE;
 
     private float _terrainBaseHeight = 256;          // The base height of the terrain, in blocks.
     private float _terrainHeightMaxOffset = 64;    // The maximum how much the terrain height may be offset from the base height, in blocks.
@@ -68,7 +68,7 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
 
 #if DEBUG
         const int minAllowedTerrainHeight = Constants.CHUNK_SIDE_LENGTH;
-        const int maxAllowedTerrainHeight = Constants.CHUNK_HEIGHT_BLOCKS - Constants.CHUNK_SIDE_LENGTH;
+        const int maxAllowedTerrainHeight = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS - Constants.CHUNK_SIDE_LENGTH;
         UI.Windows.GenerationWindow.RegisterNoise("Density", _densityNoise);
         UI.Windows.GenerationWindow.RegisterNoise("Squash", _squashNoise);
         UI.Windows.GenerationWindow.RegisterNoise("Height", _heightNoise);

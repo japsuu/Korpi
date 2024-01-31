@@ -33,7 +33,7 @@ public class FlatTerrainGenerator : ITerrainGenerator
         {
             for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
             {
-                for (int y = 0; y < Constants.CHUNK_HEIGHT_BLOCKS; y++)
+                for (int y = 0; y < Constants.CHUNK_COLUMN_HEIGHT_BLOCKS; y++)
                 {
                     if (y > TERRAIN_HEIGHT)
                         continue;

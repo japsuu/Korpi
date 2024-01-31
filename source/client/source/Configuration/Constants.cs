@@ -107,12 +107,12 @@ public static class Constants
     /// <summary>
     /// The height of a chunk in blocks.
     /// </summary>
-    public const int CHUNK_HEIGHT_BLOCKS = CHUNK_COLUMN_HEIGHT_CHUNKS * CHUNK_SIDE_LENGTH;
+    public const int CHUNK_COLUMN_HEIGHT_BLOCKS = CHUNK_COLUMN_HEIGHT_CHUNKS * CHUNK_SIDE_LENGTH;
     
     /// <summary>
     /// The count of block in a chunk.
     /// </summary>
-    public const int CHUNK_BLOCKS_COUNT = CHUNK_SIDE_LENGTH * CHUNK_SIDE_LENGTH * CHUNK_HEIGHT_BLOCKS;
+    public const int CHUNK_BLOCKS_COUNT = CHUNK_SIDE_LENGTH * CHUNK_SIDE_LENGTH * CHUNK_COLUMN_HEIGHT_BLOCKS;
 
     #endregion
 

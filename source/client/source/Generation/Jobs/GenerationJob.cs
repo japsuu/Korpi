@@ -39,7 +39,7 @@ public class GenerationJob : KorpiJob
         }
 
         // Acquire a read lock on the chunkColumn and generate terrain data.
-        if (_chunkColumn.ThreadLock.TryEnterWriteLock(Constants.JOB_LOCK_TIMEOUT_MS))
+        if (_chunkColumn.ThreadLock.TryEnterWriteLock(Constants.JOB_LOCK_TIMEOUT_MS))  //WARN: This lock might not be necessary.
         {
             GameWorld.CurrentGameWorld.TerrainGenerator.ProcessChunk(_chunkColumn);
             

@@ -1,4 +1,5 @@
-﻿using JetBrains.Profiler.SelfApi;
+﻿using JetBrains.Profiler.Api;
+using JetBrains.Profiler.SelfApi;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
@@ -62,7 +63,7 @@ public class GameClient : GameWindow
             Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
             NumberOfSamples = 0,
-            Location = new Vector2i(0, 0),
+            Location = new Vector2i(200, 0),
             API = ContextAPI.OpenGL,
             Profile = ContextProfile.Core,
             APIVersion = new Version(4,2),
@@ -87,6 +88,7 @@ public class GameClient : GameWindow
             DotTrace.StartCollectingData();  // Start collecting data.
             Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
         }
+        Logger.Info($"MainThread ID={Environment.CurrentManagedThreadId}");
         
         WindowWidth = ClientSize.X;
         WindowHeight = ClientSize.Y;
@@ -103,7 +105,7 @@ public class GameClient : GameWindow
         GL.ClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
         // Resource initialization.
-        GlobalThreadPool.Initialize();
+        GlobalJobPool.Initialize();
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
@@ -115,7 +117,7 @@ public class GameClient : GameWindow
         _gameWorldRenderer = new GameWorldRenderer(_gameWorld);
 
         // PlayerEntity initialization.
-        _playerEntity = new PlayerEntity(new Vector3(0, Constants.CHUNK_HEIGHT_BLOCKS / 2f, 0), 0, 0);
+        _playerEntity = new PlayerEntity(new Vector3(0, Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 2f, 0), 0, 0);
 #if DEBUG
         if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
             PhotoModeCamera.Create(new Vector3(0, 256, 48), -30, -100);
@@ -141,6 +143,7 @@ public class GameClient : GameWindow
         _imGuiController.DestroyDeviceObjects();
         TextureRegistry.BlockArrayTexture.Dispose();
         ImGuiWindowManager.Dispose();
+        GlobalJobPool.Shutdown();
         _playerEntity.Disable();
 
         if (ClientConfig.Store.EnableSelfProfile)
@@ -220,6 +223,21 @@ public class GameClient : GameWindow
 
         using (new ProfileScope("DrawUi"))
             DrawUi();
+        // float averageFps = ImGuiNET.ImGui.GetIO().Framerate;
+        // Console.WriteLine($"fps: {averageFps}");
+        // if (GameTime.TotalTime > 2 && !profile && averageFps < 200)
+        // {
+        //     MeasureProfiler.StartCollectingData();
+        //     profile = true;
+        //     Console.WriteLine("Started profiling");
+        // }
+        // if (profile && averageFps > 500)
+        // {
+        //     MeasureProfiler.SaveData();
+        //     MeasureProfiler.Detach();
+        //     profile = false;
+        //     Console.WriteLine("Stopped profiling");
+        // }
 
         if (Input.KeyboardState.IsKeyPressed(Keys.F2))
             ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
@@ -228,6 +246,7 @@ public class GameClient : GameWindow
         KorpiProfiler.End();
         KorpiProfiler.EndFrame();
     }
+    // private bool profile = false;
 
 
     private void DrawUi()
@@ -266,7 +285,7 @@ public class GameClient : GameWindow
     private void FixedUpdate()
     {
         GameTime.FixedUpdate();
-        GlobalThreadPool.FixedUpdate();
+        GlobalJobPool.FixedUpdate();
         _gameWorld.FixedUpdate();
     }
 
@@ -279,8 +298,8 @@ public class GameClient : GameWindow
     {
         UpdateGui();
         
-        using (new ProfileScope("GlobalThreadPool.Update"))
-            GlobalThreadPool.Update();
+        using (new ProfileScope("GlobalJobPool.Update"))
+            GlobalJobPool.Update();
         
         using (new ProfileScope("GameWorld.Update"))
             _gameWorld.Update();

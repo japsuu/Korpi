@@ -50,7 +50,7 @@ public class MeshingJob : KorpiJob
         }
 
         // Acquire a read lock on the chunk and generate mesh data.
-        if (_chunk.ThreadLock.TryEnterReadLock(Constants.JOB_LOCK_TIMEOUT_MS))
+        if (_chunk.ThreadLock.TryEnterReadLock(Constants.JOB_LOCK_TIMEOUT_MS))  //WARN: This lock might not be necessary.
         {
             ChunkMesh mesh = ChunkMesher.ThreadLocalInstance.GenerateMesh(_chunk);
             

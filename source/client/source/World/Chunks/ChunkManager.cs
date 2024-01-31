@@ -108,7 +108,7 @@ public class ChunkManager
         if (!_loadedChunks.TryGetValue(chunkColumnPos, out ChunkColumn? column))
             return null;
         
-        Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
+        Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_COLUMN_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
 
         return column.GetChunkAtHeight(position.Y);
     }
@@ -158,7 +158,7 @@ public class ChunkManager
     /// <returns></returns>
     public BlockState GetBlockStateAtWorld(Vector3i worldPosition)
     {
-        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
             return BlockRegistry.Air.GetDefaultState();
         
         Chunk? chunk = GetChunkAt(worldPosition);
@@ -179,7 +179,7 @@ public class ChunkManager
     /// <returns></returns>
     public BlockState SetBlockStateAtWorld(Vector3i worldPosition, BlockState blockState)
     {
-        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
             return BlockRegistry.Air.GetDefaultState();
         
         Chunk? chunk = GetChunkAt(worldPosition);

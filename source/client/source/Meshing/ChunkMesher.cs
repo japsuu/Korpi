@@ -45,7 +45,7 @@ public class ChunkMesher
         DebugStats.StartChunkMeshing();
         GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
-        _meshingDataCache.AcquireNeighbourReadLocks();
+        //REM: _meshingDataCache.AcquireNeighbourReadLocks();
         
         _meshingBuffer.Clear();
         
@@ -66,7 +66,7 @@ public class ChunkMesher
             }
         }
         
-        _meshingDataCache.ReleaseNeighbourReadLocks();
+        //REM: _meshingDataCache.ReleaseNeighbourReadLocks();
         
         DebugStats.StopChunkMeshing();
         

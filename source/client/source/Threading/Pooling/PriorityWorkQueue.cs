@@ -8,7 +8,7 @@ namespace Korpi.Client.Threading.Pooling;
 /// <typeparam name="T">The type of the items in the queue.</typeparam>
 public class PriorityWorkQueue<T>
 {
-    private readonly BlockingCollection<T> _workQueueLow;   // TODO: Switch to a priority queue, and apply score multiplier to chunks that are in view frustum.
+    private readonly BlockingCollection<T> _workQueueLow;
     private readonly BlockingCollection<T> _workQueueNormal;
     private readonly BlockingCollection<T> _workQueueHigh;
     private readonly BlockingCollection<T> _workQueueCritical;

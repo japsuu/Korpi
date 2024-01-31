@@ -299,7 +299,7 @@ public class Chunk
                 break;
             case ChunkMeshState.MESHING:
                 Interlocked.Increment(ref _currentJobId);
-                GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY)), WorkItemPriority.High);
+                GlobalJobPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY)), WorkItemPriority.High);
                 break;
             case ChunkMeshState.READY:
                 _hasBeenMeshed = true;
@@ -368,7 +368,7 @@ public class Chunk
         foreach (Vector3i vector in ChunkOffsets.OffsetsAsChunkVectors(flags))
         {
             Vector3i neighbourPos = Position + vector;
-            if (neighbourPos.Y < 0 || neighbourPos.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+            if (neighbourPos.Y < 0 || neighbourPos.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
                 continue;
             Chunk? neighbourChunk = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(neighbourPos);
 

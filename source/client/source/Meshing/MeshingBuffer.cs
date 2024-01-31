@@ -371,13 +371,13 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
 
     public void Clear()
     {
-        Array.Clear(_opaqueVertexData, 0, _opaqueVertexData.Length);
-        Array.Clear(_opaqueIndexData, 0, _opaqueIndexData.Length);
+        //Array.Clear(_opaqueVertexData, 0, _opaqueVertexData.Length);
+        //Array.Clear(_opaqueIndexData, 0, _opaqueIndexData.Length);
         _addedOpaqueVertexDataCount = 0;
         _addedOpaqueIndicesCount = 0;
         _addedOpaqueFacesCount = 0;
-        Array.Clear(_transparentVertexData, 0, _transparentVertexData.Length);
-        Array.Clear(_transparentIndexData, 0, _transparentIndexData.Length);
+        //Array.Clear(_transparentVertexData, 0, _transparentVertexData.Length);
+        //Array.Clear(_transparentIndexData, 0, _transparentIndexData.Length);
         _addedTransparentVertexDataCount = 0;
         _addedTransparentIndicesCount = 0;
         _addedTransparentFacesCount = 0;

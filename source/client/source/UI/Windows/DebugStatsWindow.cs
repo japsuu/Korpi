@@ -67,7 +67,7 @@ public class DebugStatsWindow : ImGuiWindow
 
         ImGui.Separator();
         ImGui.Text("Global Thread Pool");
-        ImGui.Text($"Threads = {GlobalThreadPool.ThreadCount}");
+        ImGui.Text($"Threads = {GlobalJobPool.ThreadCount}");
         ImGui.Text($"Available Threads = {DebugStats.AvailableThreads}");
         ImGui.Text($"In queue = {DebugStats.ItemsInMainThreadQueue}");
         ImGui.Text($"In queue (throttled) = {DebugStats.ItemsInMainThreadThrottledQueue}");

@@ -304,7 +304,7 @@ public static class DebugChunkDrawer
         List<float> vertices = new();
         List<uint> indices = new();
         int indexBufferIndex = 0;
-        for (int y = 0; y < Constants.CHUNK_HEIGHT_BLOCKS + 1; y++)
+        for (int y = 0; y < Constants.CHUNK_COLUMN_HEIGHT_BLOCKS + 1; y++)
         {
             // Adding the four vertices of the current line.
             vertices.Add(0);
@@ -346,7 +346,7 @@ public static class DebugChunkDrawer
             uint corner3 = (uint) indexBufferIndex - 2;
             uint corner4 = (uint) indexBufferIndex - 1;
 
-            if (y == Constants.CHUNK_HEIGHT_BLOCKS)
+            if (y == Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
             {
                 indices.Add(corner1);
                 indices.Add(corner2);
