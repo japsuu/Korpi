@@ -71,6 +71,10 @@ public class Chunk
     /// The chunk column this chunk belongs to.
     /// </summary>
     public IChunkColumn Column => _column;
+    
+    private static Vector3i DebugPosition = new(96, 224, 96);
+    private static Stopwatch DebugSw = new();
+    private static double PreviousMillis = 0;
 
 
     public Chunk(IChunkColumn column, int height)
@@ -159,6 +163,11 @@ public class Chunk
 
     public void Load()
     {
+        if (Position == DebugPosition)
+        {
+            DebugSw.Start();
+            Logger.Debug($"Chunk {Position} loaded");
+        }
     }
 
 
@@ -247,6 +256,12 @@ public class Chunk
 
     private void ChangeState(ChunkMeshState newState)
     {
+        if (Position == DebugPosition)
+        {
+            double millis = DebugSw.Elapsed.TotalMilliseconds;
+            Logger.Debug($"Chunk {Position} enter state {newState} in {millis} ms (delta: {millis - PreviousMillis} ms)");
+            PreviousMillis = millis;
+        }
         Debug.Assert(HasBeenGenerated, "Chunk is trying to change the mesh state before it has been generated.");
         
         if (_currentMeshState == newState && newState != ChunkMeshState.UNINITIALIZED)
@@ -288,6 +303,10 @@ public class Chunk
                 break;
             case ChunkMeshState.READY:
                 _hasBeenMeshed = true;
+                if (Position == DebugPosition)
+                {
+                    DebugSw.Stop();
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);

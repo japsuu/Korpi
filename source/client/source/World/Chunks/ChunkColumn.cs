@@ -33,6 +33,10 @@ public class ChunkColumn : IChunkColumn
     /// Id of the job last executed on this chunk.
     /// </summary>
     public long CurrentJobId => Interlocked.Read(ref _currentJobId);
+    
+    private static Vector2i DebugPosition = new(96, 96);
+    private static Stopwatch DebugSw = new();
+    private static double PreviousMillis = 0;
         
         
     public ChunkColumn(Vector2i position)
@@ -68,6 +72,11 @@ public class ChunkColumn : IChunkColumn
             Chunk chunk = new(this, i * Constants.CHUNK_SIDE_LENGTH);
             chunk.Load();
             _chunks[i] = chunk;
+        }
+        if (Position == DebugPosition)
+        {
+            DebugSw.Start();
+            Logger.Debug($"Column {Position} loaded");
         }
 
         ChangeState(ChunkGenerationState.GENERATING_TERRAIN);
@@ -217,6 +226,12 @@ public class ChunkColumn : IChunkColumn
 
     private void OnEnterState(ChunkGenerationState newState)
     {
+        if (Position == DebugPosition)
+        {
+            double millis = DebugSw.Elapsed.TotalMilliseconds;
+            Logger.Debug($"Column {Position} enter state {newState} in {millis} ms (delta: {millis - PreviousMillis} ms)");
+            PreviousMillis = millis;
+        }
         switch (newState)
         {
             case ChunkGenerationState.UNINITIALIZED:
@@ -239,6 +254,10 @@ public class ChunkColumn : IChunkColumn
                 {
                     _chunks[i].HasBeenGenerated = true;
                     _chunks[i].SetMeshDirty();
+                }
+                if (Position == DebugPosition)
+                {
+                    DebugSw.Stop();
                 }
                 break;
             default:
