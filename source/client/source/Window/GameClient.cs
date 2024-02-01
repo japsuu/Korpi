@@ -4,6 +4,7 @@ using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.Debugging.Profiling;
 using Korpi.Client.ECS.Entities;
+using Korpi.Client.Meshing;
 using Korpi.Client.Modding;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
@@ -142,11 +143,12 @@ public class GameClient : GameWindow
         _crosshair.Dispose();
         _shaderManager.Dispose();
         _gameWorldRenderer.Dispose();
+        _playerEntity.Disable();
         _imGuiController.DestroyDeviceObjects();
+        ChunkMesher.Dispose();
         TextureRegistry.BlockArrayTexture.Dispose();
         ImGuiWindowManager.Dispose();
         GlobalJobPool.Shutdown();
-        _playerEntity.Disable();
 
         if (ClientConfig.Store.EnableSelfProfile)
         {
@@ -225,21 +227,6 @@ public class GameClient : GameWindow
 
         using (new ProfileScope("DrawUi"))
             DrawUi();
-        // float averageFps = ImGuiNET.ImGui.GetIO().Framerate;
-        // Console.WriteLine($"fps: {averageFps}");
-        // if (GameTime.TotalTime > 2 && !profile && averageFps < 200)
-        // {
-        //     MeasureProfiler.StartCollectingData();
-        //     profile = true;
-        //     Console.WriteLine("Started profiling");
-        // }
-        // if (profile && averageFps > 500)
-        // {
-        //     MeasureProfiler.SaveData();
-        //     MeasureProfiler.Detach();
-        //     profile = false;
-        //     Console.WriteLine("Stopped profiling");
-        // }
 
         if (Input.KeyboardState.IsKeyPressed(Keys.F2))
             ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng("Screenshots");
@@ -248,7 +235,6 @@ public class GameClient : GameWindow
         KorpiProfiler.End();
         KorpiProfiler.EndFrame();
     }
-    // private bool profile = false;
 
 
     private void DrawUi()

@@ -124,4 +124,10 @@ public class ChunkMesher
     {
         return BlockRegistry.GetBlock(block.Id).GetFaceTextureId(block, normal);
     }
+    
+    
+    public static void Dispose()
+    {
+        ThreadLocal.Dispose();
+    }
 }

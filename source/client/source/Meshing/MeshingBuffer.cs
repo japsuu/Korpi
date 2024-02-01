@@ -6,9 +6,10 @@ using OpenTK.Mathematics;
 namespace Korpi.Client.Meshing;
 
 /// <summary>
-/// Buffer in to which meshes are generated.
+/// Buffer of unmanaged memory, into which mesh data is written.
+/// //TODO: Instead of storing the opaque and transparent data separately, use two MeshingBuffers.
 /// </summary>
-public class MeshingBuffer  //TODO: Instead of storing the opaque and transparent data separately, use two MeshingBuffers.
+public sealed class MeshingBuffer : IDisposable 
 {
     private const int ELEMENTS_PER_VERTEX = 2;
     private const int FACES_PER_BLOCK = 6;
@@ -20,19 +21,19 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
     private const int CHUNK_SIZE_CUBED = Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;
     private const int MAX_VISIBLE_FACES = CHUNK_SIZE_CUBED * FACES_PER_BLOCK;
     private const int MAX_VERTICES_PER_CHUNK = MAX_VISIBLE_FACES * VERTICES_PER_FACE;
-    private const int MAX_INDICES_PER_CHUNK = MAX_VISIBLE_FACES * INDICES_PER_FACE;
     private const int MAX_VERTEX_DATA_PER_CHUNK = MAX_VERTICES_PER_CHUNK * ELEMENTS_PER_VERTEX;
+    private const int MAX_INDICES_PER_CHUNK = MAX_VISIBLE_FACES * INDICES_PER_FACE;
 
     /// <summary>
     /// Array of uints containing the vertex data. 2 uints (64 bits) per vertex.
     /// </summary>
-    private readonly uint[] _opaqueVertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK]; // ~3.1 MB
-    private readonly uint[] _opaqueIndexData = new uint[MAX_INDICES_PER_CHUNK]; // ~2.4 MB
+    private readonly uint[] _opaqueVertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK];    // 6.29 MB
+    private readonly uint[] _opaqueIndexData = new uint[MAX_INDICES_PER_CHUNK];         // 4.72 MB
     /// <summary>
     /// Array of uints containing the vertex data. 2 uints (64 bits) per vertex.
     /// </summary>
-    private readonly uint[] _transparentVertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK]; // ~3.1 MB
-    private readonly uint[] _transparentIndexData = new uint[MAX_INDICES_PER_CHUNK]; // ~2.4 MB
+    private readonly uint[] _transparentVertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK];
+    private readonly uint[] _transparentIndexData = new uint[MAX_INDICES_PER_CHUNK];
 
     private int _addedOpaqueVertexDataCount;
     private int _addedOpaqueIndicesCount;
@@ -371,15 +372,30 @@ public class MeshingBuffer  //TODO: Instead of storing the opaque and transparen
 
     public void Clear()
     {
-        //Array.Clear(_opaqueVertexData, 0, _opaqueVertexData.Length);
-        //Array.Clear(_opaqueIndexData, 0, _opaqueIndexData.Length);
         _addedOpaqueVertexDataCount = 0;
         _addedOpaqueIndicesCount = 0;
         _addedOpaqueFacesCount = 0;
-        //Array.Clear(_transparentVertexData, 0, _transparentVertexData.Length);
-        //Array.Clear(_transparentIndexData, 0, _transparentIndexData.Length);
         _addedTransparentVertexDataCount = 0;
         _addedTransparentIndicesCount = 0;
         _addedTransparentFacesCount = 0;
+    }
+
+
+    private void ReleaseUnmanagedResources()
+    {
+        // TODO release unmanaged resources here
+    }
+
+
+    public void Dispose()
+    {
+        ReleaseUnmanagedResources();
+        GC.SuppressFinalize(this);
+    }
+
+
+    ~MeshingBuffer()
+    {
+        ReleaseUnmanagedResources();
     }
 }

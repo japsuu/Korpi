@@ -14,7 +14,7 @@ public sealed class JobTplPool : IJobPool
         ExecuteJob,
         new ExecutionDataflowBlockOptions
         {
-            MaxDegreeOfParallelism = Environment.ProcessorCount * 3 / 4,
+            MaxDegreeOfParallelism = Environment.ProcessorCount * 3 / 4,    // Allocate three quarters of the available threads to the job processor.
             BoundedCapacity = -1
         });
     // Dynamically switch between two queues, to allow dynamic priority changes.
