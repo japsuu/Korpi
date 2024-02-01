@@ -9,8 +9,8 @@ public static class DebugStats
     private const int AVERAGE_CHUNK_MESHING_TIME_SAMPLES = 64;
         
     public static int LoadedChunkCount;
-    public static ulong ChunksInGenerationQueue;
-    public static ulong ChunksInMeshingQueue;
+    public static ulong ChunksWaitingGeneration;
+    public static ulong ChunksWaitingMeshing;
     public static ulong ItemsInMainThreadQueue;
     public static ulong ItemsInMainThreadThrottledQueue;
     public static ulong MainThreadThrottledQueueItemsPerTick;

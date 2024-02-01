@@ -16,7 +16,7 @@ namespace Korpi.Client.World.Chunks;
 /// </summary>
 public class ChunkManager
 {
-    private const int MAX_CHUNKS_TO_LOAD_PER_TICK = 4;
+    private const int MAX_CHUNKS_TO_LOAD_PER_TICK = 16;
     private const int MAX_CHUNKS_TO_UNLOAD_PER_TICK = 8;
     
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkManager));

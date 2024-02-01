@@ -2,6 +2,7 @@
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Logging;
+using Korpi.Client.Threading;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World;
@@ -12,6 +13,7 @@ namespace Korpi.Client.Meshing.Jobs;
 public class MeshingJob : KorpiJob
 {
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(MeshingJob));
+    private static readonly ObjectPool<Stopwatch> StopwatchPool = new(64, () => new Stopwatch());
     
     private readonly long _id;
     private readonly Chunk _chunk;
@@ -28,13 +30,13 @@ public class MeshingJob : KorpiJob
         _chunk = chunk;
         _callback = callback;
         
-        Interlocked.Increment(ref Debugging.DebugStats.ChunksInMeshingQueue);
+        Interlocked.Increment(ref DebugStats.ChunksWaitingMeshing);
     }
 
 
     public override void Execute()
     {
-        Interlocked.Decrement(ref Debugging.DebugStats.ChunksInMeshingQueue);
+        Interlocked.Decrement(ref DebugStats.ChunksWaitingMeshing);
 
         // Abort the job if the chunk's job ID does not match the job ID.
         if (_chunk.CurrentJobId != _id)
@@ -54,12 +56,14 @@ public class MeshingJob : KorpiJob
         // Acquire a read lock on the chunk and generate mesh data.
         if (_chunk.ThreadLock.TryEnterReadLock(Constants.JOB_LOCK_TIMEOUT_MS))  //WARN: This lock might not be necessary.
         {
-            Stopwatch timer = Stopwatch.StartNew();
+            Stopwatch timer = StopwatchPool.Get();
+            timer.Restart();
             
             ChunkMesh mesh = ChunkMesher.ThreadLocalInstance.GenerateMesh(_chunk);
         
             timer.Stop();
             DebugStats.PostMeshingTime(timer.ElapsedMilliseconds);
+            StopwatchPool.Return(timer);
             
             _chunk.ThreadLock.ExitReadLock();
 

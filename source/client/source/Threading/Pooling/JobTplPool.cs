@@ -6,7 +6,7 @@ namespace Korpi.Client.Threading.Pooling;
 
 public sealed class JobTplPool : IJobPool
 {
-    private const int MAX_JOBS_POSTED_PER_FRAME = 64;
+    private const int MAX_JOBS_POSTED_PER_FRAME = 128;
     
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(JobSingleThreadPool));
     
@@ -14,7 +14,7 @@ public sealed class JobTplPool : IJobPool
         ExecuteJob,
         new ExecutionDataflowBlockOptions
         {
-            MaxDegreeOfParallelism = Environment.ProcessorCount,
+            MaxDegreeOfParallelism = Environment.ProcessorCount * 3 / 4,
             BoundedCapacity = -1
         });
     // Dynamically switch between two queues, to allow dynamic priority changes.
