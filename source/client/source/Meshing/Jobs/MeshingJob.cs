@@ -18,17 +18,21 @@ public class MeshingJob : KorpiJob
     private readonly long _id;
     private readonly Chunk _chunk;
     private readonly Action _callback;
-    
-    public override float GetPriority() => WorkItemPriority.HIGH;
+    private readonly float _priority;
+
+    public override float GetPriority() => _priority;
 
 
-    public MeshingJob(long id, Chunk chunk, Action callback)
+    public MeshingJob(long id, Chunk chunk, Action callback, bool isReMeshOperation)
     {
         Debug.Assert(callback != null, nameof(callback) + " != null");
         
         _id = id;
         _chunk = chunk;
         _callback = callback;
+        
+        //TODO: Set the priority based on the distance to the player.
+        _priority = isReMeshOperation ? WorkItemPriority.HIGHEST : WorkItemPriority.HIGH;
         
         Interlocked.Increment(ref DebugStats.ChunksWaitingMeshing);
     }

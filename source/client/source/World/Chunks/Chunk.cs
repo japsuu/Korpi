@@ -286,7 +286,7 @@ public class Chunk
                 break;
             case ChunkMeshState.MESHING:
                 Interlocked.Increment(ref _currentJobId);
-                GlobalJobPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY)));
+                GlobalJobPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY), _hasBeenMeshed));
                 break;
             case ChunkMeshState.READY:
                 _hasBeenMeshed = true;
