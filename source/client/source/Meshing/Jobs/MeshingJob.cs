@@ -62,6 +62,13 @@ public class MeshingJob : KorpiJob
         {
             Stopwatch timer = StopwatchPool.Get();
             timer.Restart();
+
+            if (ChunkMesher.ThreadLocalInstance == null)
+            {
+                _chunk.ThreadLock.ExitReadLock();
+                SignalCompletion(JobCompletionState.Aborted);
+                return;
+            }
             
             ChunkMesh mesh = ChunkMesher.ThreadLocalInstance.GenerateMesh(_chunk);
         
