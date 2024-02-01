@@ -1,5 +1,9 @@
 ﻿using Config.Net;
 using Korpi.Client.Logging;
+using Korpi.Client.Utils;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
 
 namespace Korpi.Client.Configuration;
 
@@ -34,7 +38,7 @@ public static class ClientConfig
     /// Initializes all configuration objects.
     /// </summary>
     /// <param name="args">CLI arguments</param>
-    public static void Initialize(string[] args)
+    public static (GameWindowSettings gws, NativeWindowSettings nws) Initialize(string[] args)
     {
         Logger.Info("Initializing configuration...");
         WindowConfig = new ConfigurationBuilder<IWindowConfig>()
@@ -71,7 +75,29 @@ public static class ClientConfig
             Logger.Warn("Self-profiling enabled.");
         Store = new InMemoryConfig(enableSelfProfiling);
         
+        GameWindowSettings gws = new()
+        {
+            UpdateFrequency = Constants.UPDATE_FRAME_FREQUENCY
+        };
+        
+        NativeWindowSettings nws = new()
+        {
+            Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
+            Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
+            NumberOfSamples = 0,
+            Location = new Vector2i(200, 0),
+            API = ContextAPI.OpenGL,
+            Profile = ContextProfile.Core,
+            APIVersion = new Version(4, 2),
+            Icon = IoUtils.GetIcon(),
+#if DEBUG
+            Flags = ContextFlags.Debug
+#endif
+        };
+        
         Logger.Info("Configuration initialized.");
+        
+        return (gws, nws);
     }
     
     

@@ -54,25 +54,7 @@ public class GameClient : GameWindow
 #endif
 
 
-    public GameClient() : base(
-        new GameWindowSettings
-        {
-            UpdateFrequency = Constants.UPDATE_FRAME_FREQUENCY
-        },
-        new NativeWindowSettings
-        {
-            Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
-            Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
-            NumberOfSamples = 0,
-            Location = new Vector2i(200, 0),
-            API = ContextAPI.OpenGL,
-            Profile = ContextProfile.Core,
-            APIVersion = new Version(4,2),
-            // WindowState = WindowState.Fullscreen,
-#if DEBUG
-            Flags = ContextFlags.Debug
-#endif
-        }) { }
+    public GameClient(GameWindowSettings gws, NativeWindowSettings nws) : base(gws, nws) { }
 
 
     protected override void OnLoad()
