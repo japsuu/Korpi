@@ -10,8 +10,9 @@ namespace Korpi.Client.Meshing;
 
 public class ChunkMesher
 {
-    private static readonly ThreadLocal<ChunkMesher>? ThreadLocal = new(() => new ChunkMesher());
-    public static ChunkMesher? ThreadLocalInstance => ThreadLocal?.Value;
+    private static readonly ThreadLocal<ChunkMesher> ThreadLocal = new(() => new ChunkMesher());
+    public static bool IsDisposed { get; private set; }
+    public static ChunkMesher ThreadLocalInstance => ThreadLocal.Value!;
     
     /// <summary>
     /// Cache in to which the data of the chunk currently being meshed is copied into.
@@ -165,6 +166,7 @@ public class ChunkMesher
     
     public static void Dispose()
     {
+        IsDisposed = true;
         ThreadLocal.Dispose();
     }
 }
