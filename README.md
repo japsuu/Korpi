@@ -90,8 +90,8 @@ Technical documentation and additional information about the implementation of K
 
 The full API Documentation is available on the [official API documentation](https://japsuu.github.io/Korpi/api/index.html) or inline from your favourite IDE.
 
-## Building from source
-To build Korpi from source you just need to clone the git repo and open `Korpi.sln` in your favourite IDE.
+## Cloning the source
+To clone the source of Korpi for development purposes, you just need to clone the git repo and open `Korpi.sln` in your favourite IDE.
 
 ```git
 git clone https://github.com/japsuu/Korpi   # Download source code from git
@@ -117,6 +117,8 @@ cd korpi   # Enter the source directory
 
 ## Terms
 
-You may NOT sell this software in any way, shape, or form.
+You may freely read the source, learn from it, and use it as a basis for mods of the game Korpi. All contributions are of course welcome!
 
-You may freely read it, learn from it, and use it as a basis for mods of the game Korpi. All contributions are of course welcome! In case of doubt, just ask the Korpi development team! :-)
+In case of doubt, just ask the Korpi development team! :-)
+
+Make sure to read the [licence](https://github.com/japsuu/Korpi/blob/master/LICENCE.md).
