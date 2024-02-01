@@ -1,8 +1,5 @@
 ﻿using Korpi.Client.Configuration;
-using Korpi.Client.Utils;
 using Korpi.Client.Window;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
