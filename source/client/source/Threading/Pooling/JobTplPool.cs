@@ -47,7 +47,7 @@ public sealed class JobTplPool : IJobPool
         
         // Process the job queue.
         int i = 0;
-        while (i <= MAX_JOBS_POSTED_PER_FRAME && _activeQueue.TryDequeue(out IKorpiJob? job, out float _))
+        while (i < MAX_JOBS_POSTED_PER_FRAME && _activeQueue.TryDequeue(out IKorpiJob? job, out float _))
         {
             if (!_jobProcessor.Post(job))
                 Logger.Warn("Failed to post job to the job processor.");

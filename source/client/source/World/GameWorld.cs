@@ -54,7 +54,7 @@ public class GameWorld
     {
         ChunkManager.Tick();
         EntityManager.FixedUpdate();
-        DebugStats.LoadedChunkCount = ChunkManager.LoadedChunksCount;
+        DebugStats.LoadedChunkCount = ChunkManager.LoadedColumnsCount;
     }
 
 
