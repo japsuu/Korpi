@@ -8,30 +8,31 @@ namespace Korpi.Client.Meshing;
 /// <summary>
 /// Buffer of memory, into which mesh data is written.
 /// </summary>
-public sealed class MeshingBuffer : IDisposable 
+public abstract class MeshingBuffer : IDisposable 
 {
-    private const int ELEMENTS_PER_VERTEX = 2;
-    private const int FACES_PER_BLOCK = 6;
-    private const int VERTICES_PER_FACE = 4;
-    private const int INDICES_PER_FACE = 6;
-
-    // Since we cull internal faces, the worst case WOULD NORMALLY BE half of the faces (every other block needs to be meshed).
-    // HOWEVER this is NOT the case, as different adjacent transparent blocks ignore the face culling and are both rendered.    //WARN: Possibly not true, as transparent mesh has now it's own buffer.
-    private const int CHUNK_SIZE_CUBED = Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;
-    private const int MAX_VISIBLE_FACES = CHUNK_SIZE_CUBED * FACES_PER_BLOCK;
-    private const int MAX_VERTICES_PER_CHUNK = MAX_VISIBLE_FACES * VERTICES_PER_FACE;
-    private const int MAX_VERTEX_DATA_PER_CHUNK = MAX_VERTICES_PER_CHUNK * ELEMENTS_PER_VERTEX;
-    private const int MAX_INDICES_PER_CHUNK = MAX_VISIBLE_FACES * INDICES_PER_FACE;
+    protected const int ELEMENTS_PER_VERTEX = 2;
+    protected const int FACES_PER_BLOCK = 6;
+    protected const int VERTICES_PER_FACE = 4;
+    protected const int INDICES_PER_FACE = 6;
+    protected const int CHUNK_SIZE_CUBED = Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;
 
     /// <summary>
     /// Array of uints containing the vertex data. 2 uints (64 bits) per vertex.
     /// </summary>
-    public readonly uint[] VertexData = new uint[MAX_VERTEX_DATA_PER_CHUNK];    // 6.29 MB
+    public readonly uint[] VertexData;    // 6.29 MB
 
     /// <summary>
     /// Array of uints containing the index data. 1 uint (32 bits) per vertex.
     /// </summary>
-    public readonly uint[] IndexData = new uint[MAX_INDICES_PER_CHUNK];         // 4.72 MB
+    public readonly uint[] IndexData;         // 4.72 MB
+
+
+    public MeshingBuffer(int maxVertexDataPerChunk, int maxIndicesPerChunk)
+    {
+        VertexData = new uint[maxVertexDataPerChunk];
+        IndexData = new uint[maxIndicesPerChunk];
+    }
+
 
     /// <summary>
     /// The amount of vertex data currently in the buffer.

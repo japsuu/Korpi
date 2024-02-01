@@ -47,8 +47,8 @@ public class ChunkMesher
     private ChunkMesher()
     {
         _meshingDataCache = new MeshingDataCache();
-        _transparentBuffer = new MeshingBuffer();
-        _opaqueBuffer = new MeshingBuffer();
+        _opaqueBuffer = new OpaqueMeshingBuffer();
+        _transparentBuffer = new TransparentMeshingBuffer();
     }
 
 
