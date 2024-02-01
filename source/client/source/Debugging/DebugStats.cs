@@ -10,7 +10,6 @@ public static class DebugStats
         
     public static int LoadedChunkCount;
     public static ulong ChunksInGenerationQueue;
-    public static ulong AvailableThreads;
     public static ulong ChunksInMeshingQueue;
     public static ulong ItemsInMainThreadQueue;
     public static ulong ItemsInMainThreadThrottledQueue;

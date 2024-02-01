@@ -67,11 +67,9 @@ public class DebugStatsWindow : ImGuiWindow
 
         ImGui.Separator();
         ImGui.Text("Global Thread Pool");
-        ImGui.Text($"Threads = {GlobalJobPool.ThreadCount}");
-        ImGui.Text($"Available Threads = {DebugStats.AvailableThreads}");
         ImGui.Text($"In queue = {DebugStats.ItemsInMainThreadQueue}");
         ImGui.Text($"In queue (throttled) = {DebugStats.ItemsInMainThreadThrottledQueue}");
-        ImGui.Text($"Throttled items per tick = {DebugStats.MainThreadThrottledQueueItemsPerTick}");
+        ImGui.Text($"Throttled per tick = {DebugStats.MainThreadThrottledQueueItemsPerTick}");
 
         ImGui.Separator();
         ImGui.Text("Chunk Generation");
@@ -86,6 +84,5 @@ public class DebugStatsWindow : ImGuiWindow
         ImGui.Text($"Average mesh time = {DebugStats.AverageChunkMeshingTime:F1}ms");
         ImGui.Text($"Median mesh time = {DebugStats.MedianChunkMeshingTime:F1}ms");
         ImGui.Text($"Min/Max mesh time = {DebugStats.MinChunkMeshingTime:F1}/{DebugStats.MaxChunkMeshingTime:F1}ms");
-        ImGui.Text($"Active meshes = {ChunkRenderManager.GeneratedRendererCount}");
     }
 }

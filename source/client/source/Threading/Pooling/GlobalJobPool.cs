@@ -35,28 +35,12 @@ public static class GlobalJobPool
     /// </summary>
     private static ConcurrentQueue<Action> mainQueueThrottled = null!;
 
-    /// <summary>
-    /// The number of threads allocated to process the pool.
-    /// </summary>
-    public static uint ThreadCount { get; private set; }
-
 
     public static void Initialize()
     {
-        // Since we're CPU-bound (most of the threads will be waiting in a loop), allocate only 3/4 of the system's logical processor count with a minimum of 2.
-        //NOTE: For some reason, the Debug build seems to run faster than Release. https://stackoverflow.com/questions/8858128/c-opengl-application-running-smoother-with-debugger-attached
-#if DEBUG
-        ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount * 3 / 4, 2);
-        Logger.Warn($"[Global Thread Pool] Running in DEBUG, using {ThreadCount} threads instead of the usual {SystemInfo.ProcessorCount/4}.");
-#else
-        ThreadCount = (uint)Math.Max(SystemInfo.ProcessorCount / 4, 2);
-#endif
         jobPool = new JobTplPool();
-        // jobPool = new JobSingleThreadPool();
-        // jobPool = new JobThreadPool(ThreadCount, ThreadConfig.Default());
         mainQueue = new ConcurrentQueue<Action>();
         mainQueueThrottled = new ConcurrentQueue<Action>();
-        Logger.Info($"Initialized with {ThreadCount} threads.");
     }
     
     

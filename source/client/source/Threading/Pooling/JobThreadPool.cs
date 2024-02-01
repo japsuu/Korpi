@@ -27,8 +27,6 @@ public sealed class JobThreadPool : IJobPool
 
         _workQueue = new PriorityWorkQueue<IKorpiJob>();
         _workers = new List<WorkerThread>();
-
-        Debugging.DebugStats.AvailableThreads = threadCount;
         
         for (int i = 0; i < threadCount; i++)
             _workers.Add(new WorkerThread(_workQueue, config));
