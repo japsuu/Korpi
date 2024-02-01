@@ -1,5 +1,4 @@
-﻿using JetBrains.Profiler.Api;
-using JetBrains.Profiler.SelfApi;
+﻿using JetBrains.Profiler.SelfApi;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;

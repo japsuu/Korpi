@@ -1,7 +1,6 @@
 ﻿using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;
-using Korpi.Client.Window;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.UI.HUD;

@@ -2,9 +2,6 @@
 using ImGuiNET;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
-using Korpi.Client.Rendering.Chunks;
-using Korpi.Client.Threading.Pooling;
-using Korpi.Client.Window;
 
 namespace Korpi.Client.UI.Windows;
 

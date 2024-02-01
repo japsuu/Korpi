@@ -1,6 +1,4 @@
-﻿using Korpi.Client.Threading.Pooling;
-
-namespace Korpi.Client.Threading.Jobs;
+﻿namespace Korpi.Client.Threading.Jobs;
 
 /// <summary>
 /// Represents a job that can be executed by a <see cref="ThreadPool"/>.

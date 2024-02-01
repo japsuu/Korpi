@@ -1,5 +1,4 @@
 ﻿using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
 using Korpi.Client.Mathematics.Noise;
 using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
