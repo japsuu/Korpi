@@ -35,12 +35,12 @@ public sealed class JobThreadPool : IJobPool
     }
 
 
-    public void EnqueueWorkItem(IKorpiJob korpiJob, WorkItemPriority priority)
+    public void EnqueueWorkItem(IKorpiJob korpiJob)
     {
         if (_workQueue.IsAddingCompleted)
             throw new InvalidOperationException("Cannot queue a work item if the pool is shutting down.");
 
-        _workQueue.Add(korpiJob, priority);
+        _workQueue.Add(korpiJob, korpiJob.GetPriority());
     }
 
 

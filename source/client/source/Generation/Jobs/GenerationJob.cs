@@ -14,6 +14,8 @@ public class GenerationJob : KorpiJob
     private readonly long _id;
     private readonly ChunkColumn _chunkColumn;
     private readonly Action _callback;
+    
+    public override float GetPriority() => WorkItemPriority.NORMAL;
 
 
     public GenerationJob(long id, ChunkColumn chunkColumn, Action callback)

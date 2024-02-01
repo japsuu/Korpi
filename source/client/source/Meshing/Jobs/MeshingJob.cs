@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
 using Korpi.Client.Logging;
-using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World;
@@ -16,6 +15,8 @@ public class MeshingJob : KorpiJob
     private readonly long _id;
     private readonly Chunk _chunk;
     private readonly Action _callback;
+    
+    public override float GetPriority() => WorkItemPriority.HIGH;
 
 
     public MeshingJob(long id, Chunk chunk, Action callback)

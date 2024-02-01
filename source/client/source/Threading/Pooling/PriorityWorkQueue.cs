@@ -42,24 +42,22 @@ public class PriorityWorkQueue<T>
                                      _workQueueCritical.IsAddingCompleted;
 
 
-    public void Add(T item, WorkItemPriority priority)
+    public void Add(T item, float workItemPriority)
     {
-        switch (priority)
+        switch (workItemPriority)
         {
-            case WorkItemPriority.Low:
-                _workQueueLow.Add(item);
-                break;
-            case WorkItemPriority.Normal:
-                _workQueueNormal.Add(item);
-                break;
-            case WorkItemPriority.High:
-                _workQueueHigh.Add(item);
-                break;
-            case WorkItemPriority.Critical:
+            case <= WorkItemPriority.HIGHEST:
                 _workQueueCritical.Add(item);
                 break;
+            case <= WorkItemPriority.HIGH:
+                _workQueueHigh.Add(item);
+                break;
+            case <= WorkItemPriority.NORMAL:
+                _workQueueNormal.Add(item);
+                break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(priority), priority, null);
+                _workQueueLow.Add(item);
+                break;
         }
     }
 

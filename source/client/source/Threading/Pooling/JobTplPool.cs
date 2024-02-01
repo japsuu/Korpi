@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Threading.Tasks.Dataflow;
+﻿using System.Threading.Tasks.Dataflow;
 using Korpi.Client.Logging;
 using Korpi.Client.Threading.Jobs;
 
@@ -7,20 +6,59 @@ namespace Korpi.Client.Threading.Pooling;
 
 public sealed class JobTplPool : IJobPool
 {
+    private const int MAX_JOBS_POSTED_PER_FRAME = 128;
+    
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(JobSingleThreadPool));
     
-    private readonly ConcurrentQueue<IKorpiJob> _workQueue = new();
     private readonly ActionBlock<IKorpiJob> _jobProcessor = new(
         ExecuteJob,
         new ExecutionDataflowBlockOptions
         {
             MaxDegreeOfParallelism = Environment.ProcessorCount,
-            BoundedCapacity = -1,
+            BoundedCapacity = -1
         });
+    // Dynamically switch between two queues, to allow dynamic priority changes.
+    private readonly PriorityQueue<IKorpiJob, float> _workQueue1 = new();
+    private readonly PriorityQueue<IKorpiJob, float> _workQueue2 = new();
+    private PriorityQueue<IKorpiJob, float> _activeQueue;
+    private bool _useSecondQueue;
 
 
     public JobTplPool()
     {
+        _activeQueue = _workQueue1;
+    }
+
+
+    public void EnqueueWorkItem(IKorpiJob korpiJob)
+    {
+        _activeQueue.Enqueue(korpiJob, korpiJob.GetPriority());
+    }
+
+
+    public void FixedUpdate()
+    {
+        // Switch queues and update priorities.
+        PriorityQueue<IKorpiJob, float> destination = _useSecondQueue ? _workQueue1 : _workQueue2;
+        while (_activeQueue.TryDequeue(out IKorpiJob? job, out float _))
+            destination.Enqueue(job, job.GetPriority());
+        _useSecondQueue = !_useSecondQueue;
+        _activeQueue = destination;
+        
+        // Process the job queue.
+        int i = 0;
+        while (i <= MAX_JOBS_POSTED_PER_FRAME && _activeQueue.TryDequeue(out IKorpiJob? job, out float _))
+        {
+            if (!_jobProcessor.Post(job))
+                Logger.Warn("Failed to post job to the job processor.");
+            i++;
+        }
+    }
+
+
+    public void Shutdown()
+    {
+        
     }
 
 
@@ -40,26 +78,5 @@ public sealed class JobTplPool : IJobPool
             if (job.CompletionState == JobCompletionState.None)
                 job.SignalCompletion(JobCompletionState.Aborted);
         }
-    }
-
-
-    public void EnqueueWorkItem(IKorpiJob korpiJob, WorkItemPriority priority)
-    {
-        _workQueue.Enqueue(korpiJob);
-    }
-
-
-    public void FixedUpdate()
-    {
-        while (_workQueue.TryDequeue(out IKorpiJob? job))
-        {
-            _jobProcessor.Post(job);
-        }
-    }
-
-
-    public void Shutdown()
-    {
-        
     }
 }

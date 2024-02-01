@@ -262,6 +262,7 @@ public class Chunk
             Logger.Debug($"Chunk {Position} enter state {newState} in {millis} ms (delta: {millis - PreviousMillis} ms)");
             PreviousMillis = millis;
         }
+        Debug.Assert(Window.GameClient.MainThreadId == Environment.CurrentManagedThreadId, "Chunk state should only be changed on the main thread.");
         Debug.Assert(HasBeenGenerated, "Chunk is trying to change the mesh state before it has been generated.");
         
         if (_currentMeshState == newState && newState != ChunkMeshState.UNINITIALIZED)
@@ -299,7 +300,7 @@ public class Chunk
                 break;
             case ChunkMeshState.MESHING:
                 Interlocked.Increment(ref _currentJobId);
-                GlobalJobPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY)), WorkItemPriority.High);
+                GlobalJobPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY)));
                 break;
             case ChunkMeshState.READY:
                 _hasBeenMeshed = true;

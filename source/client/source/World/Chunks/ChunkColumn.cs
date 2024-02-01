@@ -237,11 +237,10 @@ public class ChunkColumn : IChunkColumn
             case ChunkGenerationState.UNINITIALIZED:
                 break;
             case ChunkGenerationState.GENERATING_TERRAIN:
-                const WorkItemPriority priority = WorkItemPriority.Normal;
                 // if (IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
                 //     priority = WorkItemPriority.High;
                 Interlocked.Increment(ref _currentJobId);
-                GlobalJobPool.DispatchJob(new GenerationJob(_currentJobId, this, () => ChangeState(ChunkGenerationState.GENERATING_DECORATION)), priority);
+                GlobalJobPool.DispatchJob(new GenerationJob(_currentJobId, this, () => ChangeState(ChunkGenerationState.GENERATING_DECORATION)));
                 break;
             case ChunkGenerationState.GENERATING_DECORATION:
                 ChangeState(ChunkGenerationState.GENERATING_LIGHTING);

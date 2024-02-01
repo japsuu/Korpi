@@ -7,7 +7,7 @@ namespace Korpi.Client.Threading.Pooling;
 /// </summary>
 public interface IJobPool
 {
-    public void EnqueueWorkItem(IKorpiJob korpiJob, WorkItemPriority priority);
+    public void EnqueueWorkItem(IKorpiJob korpiJob);
     
     
     public void FixedUpdate();

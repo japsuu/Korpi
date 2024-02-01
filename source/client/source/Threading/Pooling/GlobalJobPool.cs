@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Korpi.Client.Logging;
 using Korpi.Client.Threading.Jobs;
-using Korpi.Client.Threading.Threads;
 using Korpi.Client.Window;
 
 namespace Korpi.Client.Threading.Pooling;
@@ -100,9 +99,9 @@ public static class GlobalJobPool
     /// <summary>
     /// Immediately queues the provided job for execution on the pool.
     /// </summary>
-    public static KorpiJob<T> DispatchJob<T>(KorpiJob<T> item, WorkItemPriority priority)
+    public static KorpiJob<T> DispatchJob<T>(KorpiJob<T> item)
     {
-        jobPool.EnqueueWorkItem(item, priority);
+        jobPool.EnqueueWorkItem(item);
         return item;
     }
 

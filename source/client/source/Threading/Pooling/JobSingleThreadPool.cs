@@ -59,7 +59,7 @@ public sealed class JobSingleThreadPool : IJobPool
     }
 
 
-    public void EnqueueWorkItem(IKorpiJob korpiJob, WorkItemPriority priority)
+    public void EnqueueWorkItem(IKorpiJob korpiJob)
     {
         _workQueue.Enqueue(korpiJob);
     }

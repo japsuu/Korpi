@@ -32,6 +32,9 @@ public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
     }
 
 
+    public abstract float GetPriority();
+
+
     /// <summary>
     /// Do your main work here.
     /// Anything used within this method should be thread-safe.
@@ -76,9 +79,9 @@ public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
     /// <summary>
     /// Dispatches the job to be executed by the thread-pool.
     /// </summary>
-    public KorpiJob<T> Dispatch(WorkItemPriority priority)
+    public KorpiJob<T> Dispatch()
     {
-        return GlobalJobPool.DispatchJob(this, priority);
+        return GlobalJobPool.DispatchJob(this);
     }
 
 

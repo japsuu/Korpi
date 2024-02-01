@@ -38,6 +38,7 @@ public class GameClient : GameWindow
     public static int WindowHeight { get; private set; }
     public static float WindowAspectRatio { get; private set; }
     public static bool IsPlayerInGui { get; private set; }
+    public static int MainThreadId { get; private set; }
 
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
@@ -88,7 +89,9 @@ public class GameClient : GameWindow
             DotTrace.StartCollectingData();  // Start collecting data.
             Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
         }
-        Logger.Info($"MainThread ID={Environment.CurrentManagedThreadId}");
+
+        MainThreadId = Environment.CurrentManagedThreadId;
+        Logger.Info($"MainThread ID={MainThreadId}");
         
         WindowWidth = ClientSize.X;
         WindowHeight = ClientSize.Y;

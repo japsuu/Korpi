@@ -1,4 +1,6 @@
-﻿namespace Korpi.Client.Threading.Jobs;
+﻿using Korpi.Client.Threading.Pooling;
+
+namespace Korpi.Client.Threading.Jobs;
 
 /// <summary>
 /// Represents a job that can be executed by a <see cref="ThreadPool"/>.
@@ -9,6 +11,12 @@ public interface IKorpiJob
     /// The current completion state of the job.
     /// </summary>
     public JobCompletionState CompletionState { get; }
+    
+    /// <summary>
+    /// Returns the current priority of the job.
+    /// </summary>
+    /// <returns></returns>
+    public float GetPriority();
 
     /// <summary>
     /// Executes the job.
