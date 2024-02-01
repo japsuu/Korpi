@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
 using Korpi.Client.Registries;
 using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
@@ -42,7 +41,6 @@ public class ChunkMesher
 
     public ChunkMesh GenerateMesh(Chunk chunk)
     {
-        DebugStats.StartChunkMeshing();
         GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
         //REM: _meshingDataCache.AcquireNeighbourReadLocks();
@@ -67,8 +65,6 @@ public class ChunkMesher
         }
         
         //REM: _meshingDataCache.ReleaseNeighbourReadLocks();
-        
-        DebugStats.StopChunkMeshing();
         
         ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
 

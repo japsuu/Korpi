@@ -25,8 +25,6 @@ public class FlatTerrainGenerator : ITerrainGenerator
 
     public void ProcessChunk(in ChunkColumn chunkColumn)
     {
-        DebugStats.StartChunkGeneration();
-        
         BlockState stone = BlockRegistry.GetBlockDefaultState(1);
         
         for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
@@ -42,7 +40,5 @@ public class FlatTerrainGenerator : ITerrainGenerator
                 }
             }
         }
-
-        DebugStats.StopChunkGeneration();
     }
 }

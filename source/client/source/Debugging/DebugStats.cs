@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Concurrent;
 using Korpi.Client.Blocks;
 
 namespace Korpi.Client.Debugging;
@@ -29,87 +29,77 @@ public static class DebugStats
     public static BlockState LastRaycastResult;
     public static ulong RenderedTris;
 
-    private static readonly Stopwatch ChunkGenerationTimer = new();
-    private static readonly Stopwatch ChunkMeshingTimer = new();
-    private static readonly Queue<float> ChunkGenerationTimes = new();
-    private static readonly Queue<float> ChunkMeshingTimes = new();
-    private static readonly object LockObject = new();
-    
-    
-    public static void StartChunkGeneration()
-    {
-        lock (LockObject)
-        {
-            ChunkGenerationTimer.Restart();
-        }
-    }
-    
-    
-    public static void StopChunkGeneration()
-    {
-        lock (LockObject)
-        {
-            ChunkGenerationTimer.Stop();
-            ChunkGenerationTimes.Enqueue(ChunkGenerationTimer.ElapsedMilliseconds);
-            if (ChunkGenerationTimes.Count > AVERAGE_CHUNK_GENERATION_TIME_SAMPLES)
-                ChunkGenerationTimes.Dequeue();
+    private static readonly ConcurrentQueue<float> ChunkGenerationTimes = new();
+    private static readonly ConcurrentQueue<float> ChunkMeshingTimes = new();
 
-            float sum = 0;
-            foreach (float time in ChunkGenerationTimes)
-            {
-                sum += time;
-                
-                if (time < MinChunkGenerationTime)
-                    MinChunkGenerationTime = time;
-                
-                if (time > MaxChunkGenerationTime)
-                    MaxChunkGenerationTime = time;
-            }
-            AverageChunkGenerationTime = sum / ChunkGenerationTimes.Count;
-            
-            // Calculate the median
-            float[] sortedTimes = ChunkGenerationTimes.ToArray();
-            Array.Sort(sortedTimes);
-            MedianChunkGenerationTime = sortedTimes[sortedTimes.Length / 2];
-        }
-    }
-    
-    
-    public static void StartChunkMeshing()
-    {
-        lock (LockObject)
-        {
-            ChunkMeshingTimer.Restart();
-        }
-    }
-    
-    
-    public static void StopChunkMeshing()
-    {
-        lock (LockObject)
-        {
-            ChunkMeshingTimer.Stop();
-            ChunkMeshingTimes.Enqueue(ChunkMeshingTimer.ElapsedMilliseconds);
-            if (ChunkMeshingTimes.Count > AVERAGE_CHUNK_MESHING_TIME_SAMPLES)
-                ChunkMeshingTimes.Dequeue();
 
-            float sum = 0;
-            foreach (float time in ChunkMeshingTimes)
-            {
-                sum += time;
+    public static void CalculateStats()
+    {
+        CalculateGenerationTimes();
+        CalculateMeshingTimes();
+    }
+
+
+    private static void CalculateGenerationTimes()
+    {
+        if (ChunkGenerationTimes.IsEmpty)
+            return;
+        float sum = 0;
+        float[] floats = ChunkGenerationTimes.ToArray();
+        foreach (float time in floats)
+        {
+            sum += time;
                 
-                if (time < MinChunkMeshingTime)
-                    MinChunkMeshingTime = time;
+            if (time < MinChunkGenerationTime)
+                MinChunkGenerationTime = time;
                 
-                if (time > MaxChunkMeshingTime)
-                    MaxChunkMeshingTime = time;
-            }
-            AverageChunkMeshingTime = sum / ChunkMeshingTimes.Count;
-            
-            // Calculate the median
-            float[] sortedTimes = ChunkMeshingTimes.ToArray();
-            Array.Sort(sortedTimes);
-            MedianChunkMeshingTime = sortedTimes[sortedTimes.Length / 2];
+            if (time > MaxChunkGenerationTime)
+                MaxChunkGenerationTime = time;
         }
+        AverageChunkGenerationTime = sum / ChunkGenerationTimes.Count;
+            
+        // Calculate the median
+        Array.Sort(floats);
+        MedianChunkGenerationTime = floats[floats.Length / 2];
+    }
+
+
+    private static void CalculateMeshingTimes()
+    {
+        if (ChunkMeshingTimes.IsEmpty)
+            return;
+        float sum = 0;
+        float[] floats = ChunkMeshingTimes.ToArray();
+        foreach (float time in floats)
+        {
+            sum += time;
+                
+            if (time < MinChunkMeshingTime)
+                MinChunkMeshingTime = time;
+                
+            if (time > MaxChunkMeshingTime)
+                MaxChunkMeshingTime = time;
+        }
+        AverageChunkMeshingTime = sum / ChunkMeshingTimes.Count;
+            
+        // Calculate the median
+        Array.Sort(floats);
+        MedianChunkMeshingTime = floats[floats.Length / 2];
+    }
+
+
+    public static void PostMeshingTime(float time)
+    {
+        ChunkMeshingTimes.Enqueue(time);
+        if (ChunkMeshingTimes.Count > AVERAGE_CHUNK_MESHING_TIME_SAMPLES)
+            ChunkMeshingTimes.TryDequeue(out float _);
+    }
+    
+    
+    public static void PostGenerationTime(float time)
+    {
+        ChunkGenerationTimes.Enqueue(time);
+        if (ChunkGenerationTimes.Count > AVERAGE_CHUNK_GENERATION_TIME_SAMPLES)
+            ChunkGenerationTimes.TryDequeue(out float _);
     }
 }

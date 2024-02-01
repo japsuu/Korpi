@@ -1,4 +1,6 @@
-﻿using Korpi.Client.Configuration;
+﻿using System.Diagnostics;
+using Korpi.Client.Configuration;
+using Korpi.Client.Debugging;
 using Korpi.Client.Logging;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
@@ -43,7 +45,11 @@ public class GenerationJob : KorpiJob
         // Acquire a read lock on the chunkColumn and generate terrain data.
         if (_chunkColumn.ThreadLock.TryEnterWriteLock(Constants.JOB_LOCK_TIMEOUT_MS))  //WARN: This lock might not be necessary.
         {
+            Stopwatch timer = Stopwatch.StartNew();
             GameWorld.CurrentGameWorld.TerrainGenerator.ProcessChunk(_chunkColumn);
+        
+            timer.Stop();
+            DebugStats.PostGenerationTime(timer.ElapsedMilliseconds);
             
             _chunkColumn.ThreadLock.ExitWriteLock();
 

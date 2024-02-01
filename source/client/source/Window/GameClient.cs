@@ -290,6 +290,7 @@ public class GameClient : GameWindow
         GameTime.FixedUpdate();
         GlobalJobPool.FixedUpdate();
         _gameWorld.FixedUpdate();
+        DebugStats.CalculateStats();
     }
 
 

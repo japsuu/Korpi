@@ -40,9 +40,6 @@ public class GlassTerrainGenerator : ITerrainGenerator
     public void ProcessChunk(in ChunkColumn chunkColumn)
     {
         throw new NotImplementedException();
-        DebugStats.StartChunkGeneration();
-
-        DebugStats.StopChunkGeneration();
     }
 
 

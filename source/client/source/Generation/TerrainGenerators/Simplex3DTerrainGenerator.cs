@@ -92,8 +92,6 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
 
     public void ProcessChunk(in ChunkColumn chunkColumn)
     {
-        DebugStats.StartChunkGeneration();
-
         // if (chunkColumn.Position.X < 7 * Constants.CHUNK_SIDE_LENGTH)
         //     return;
 
@@ -199,8 +197,6 @@ public class Simplex3DTerrainGenerator : ITerrainGenerator
         }
         
         DecorateSurface(chunkColumn);
-
-        DebugStats.StopChunkGeneration();
     }
 
 
