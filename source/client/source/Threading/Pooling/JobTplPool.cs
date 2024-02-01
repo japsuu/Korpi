@@ -6,7 +6,7 @@ namespace Korpi.Client.Threading.Pooling;
 
 public sealed class JobTplPool : IJobPool
 {
-    private const int MAX_JOBS_POSTED_PER_FRAME = 128;
+    private const int MAX_JOBS_POSTED_PER_FRAME = 64;
     
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(JobSingleThreadPool));
     
@@ -50,7 +50,7 @@ public sealed class JobTplPool : IJobPool
         while (i < MAX_JOBS_POSTED_PER_FRAME && _activeQueue.TryDequeue(out IKorpiJob? job, out float _))
         {
             if (!_jobProcessor.Post(job))
-                Logger.Warn("Failed to post job to the job processor.");
+                Logger.Warn($"Failed to post a job ({job.GetType().FullName}) to the job processor.");
             i++;
         }
     }
@@ -58,7 +58,7 @@ public sealed class JobTplPool : IJobPool
 
     public void Shutdown()
     {
-        
+        _jobProcessor.Complete();
     }
 
 

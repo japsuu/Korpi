@@ -7,7 +7,7 @@ public static class ImGuiWindowManager
 {
     private static readonly Dictionary<ImGuiWindow, string> RegisteredWindows = new();
     
-    private static bool shouldRenderWindows = false;
+    private static bool shouldRenderWindows = true;
     
     
     public static void CreateDefaultWindows()
