@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using Korpi.Client.Configuration;
+using log4net;
 using log4net.Core;
 
 namespace Korpi.Client.Logging;
@@ -45,9 +46,18 @@ public class DefaultLogger : IKorpiLogger
     }
 
 
+    public void Verbose(object message, Exception? exception = null)
+    {
+        if (ClientConfig.Logging.EnableVerboseLogging)
+            Log(Level.Verbose, message, exception);
+    }
+
+
     public void Debug(object message, Exception? exception = null)
     {
+#if DEBUG
         Log(Level.Debug, message, exception);
+#endif
     }
 
 

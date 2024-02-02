@@ -84,10 +84,10 @@ public class GameWorld
         }
 
 #if DEBUG
-        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHit)
+        if (Configuration.ClientConfig.Debugging.RenderRaycastHit)
             DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.5f, Color4.Red);
         
-        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHitBlock)
+        if (Configuration.ClientConfig.Debugging.RenderRaycastHitBlock)
 #endif
             if (!raycastResult.BlockState.IsAir)
                 DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);

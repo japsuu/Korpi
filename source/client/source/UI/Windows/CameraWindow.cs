@@ -45,8 +45,8 @@ public class CameraWindow : ImGuiWindow
 #if DEBUG
         ImGui.Separator();
         ImGui.Text("Frustum Culling");
-        ImGui.Checkbox("Enabled", ref Configuration.ClientConfig.DebugModeConfig.DoFrustumCulling);
-        ImGui.Checkbox("Use player for frustum culling", ref Configuration.ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling);
+        ImGui.Checkbox("Enabled", ref Configuration.ClientConfig.Debugging.DoFrustumCulling);
+        ImGui.Checkbox("Use player for frustum culling", ref Configuration.ClientConfig.Debugging.OnlyPlayerFrustumCulling);
 #endif
     }
 }

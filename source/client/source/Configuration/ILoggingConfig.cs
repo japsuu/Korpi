@@ -4,6 +4,6 @@ namespace Korpi.Client.Configuration;
 
 public interface ILoggingConfig
 {
-    [Option(Alias = "windowWidth", DefaultValue = "false")]
+    [Option(Alias = "enable_verbose", DefaultValue = "false")]
     public bool EnableVerboseLogging { get; }
 }

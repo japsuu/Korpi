@@ -4,9 +4,6 @@ namespace Korpi.Client.Configuration;
 
 public class DebugModeConfig
 {
-    public readonly bool IsPhotoModeEnabled;
-    public readonly string PhotoModeScreenshotPath;
-
     public bool RenderWireframe;
     public bool RenderChunkBorders;
     public bool RenderColumnBorders;
@@ -19,12 +16,5 @@ public class DebugModeConfig
     public bool EnableAmbientOcclusion = true;
     public bool DoFrustumCulling = true;
     public bool OnlyPlayerFrustumCulling;
-
-
-    public DebugModeConfig(bool isPhotoModeEnabled, string photoModeScreenshotPath)
-    {
-        IsPhotoModeEnabled = isPhotoModeEnabled;
-        PhotoModeScreenshotPath = photoModeScreenshotPath;
-    }
 }
 #endif

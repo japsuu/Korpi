@@ -105,9 +105,9 @@ public class Chunk
         // Frustum check.
 #if DEBUG
         // If in debug mode, allow the player to toggle frustum culling on/off
-        if (ClientConfig.DebugModeConfig.DoFrustumCulling)
+        if (ClientConfig.Debugging.DoFrustumCulling)
         {
-            Frustum cameraViewFrustum = ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling
+            Frustum cameraViewFrustum = ClientConfig.Debugging.OnlyPlayerFrustumCulling
                 ? PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum
                 : Camera.RenderingCamera.ViewFrustum;
 
@@ -385,7 +385,7 @@ public class Chunk
 #if DEBUG
     private void DebugDraw()
     {
-        if (!ClientConfig.DebugModeConfig.RenderChunkMeshState)
+        if (!ClientConfig.Debugging.RenderChunkMeshState)
             return;
 
         const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;

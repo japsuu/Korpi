@@ -62,14 +62,14 @@ public class GameClient : GameWindow
         base.OnLoad();
         Logger.Info($"Starting v{Constants.CLIENT_VERSION}...");
 
-        if (ClientConfig.Store.EnableSelfProfile)
+        if (ClientConfig.Profiling != null)
         {
             Logger.Warn("Initializing DotTrace... (this may take a while)");
             DotTrace.EnsurePrerequisite();   // Initialize the DotTrace API and download the profiler tool (if needed).
-            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(ClientConfig.Store.SelfProfileOutputFilePath);
+            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(ClientConfig.Profiling.SelfProfileTargetPath);
             DotTrace.Attach(cfg);   // Attach the profiler to the current process.
             DotTrace.StartCollectingData();  // Start collecting data.
-            Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
+            Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Profiling.SelfProfileTargetPath}.");
         }
 
         MainThreadId = Environment.CurrentManagedThreadId;
@@ -103,16 +103,15 @@ public class GameClient : GameWindow
 
         // PlayerEntity initialization.
         _playerEntity = new PlayerEntity(new Vector3(0, Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 2f, 0), 0, 0);
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
-            PhotoModeCamera.Create(new Vector3(0, 256, 48), -30, -100);
-#endif
         CursorState = CursorState.Grabbed;
 
         // UI initialization.
         _crosshair = new Crosshair();
         _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
         ImGuiWindowManager.CreateDefaultWindows();
+        
+        CenterWindow();
+        IsVisible = true;
 
         Logger.Info("Started.");
     }
@@ -132,11 +131,11 @@ public class GameClient : GameWindow
         ImGuiWindowManager.Dispose();
         GlobalJobPool.Shutdown();
 
-        if (ClientConfig.Store.EnableSelfProfile)
+        if (ClientConfig.Profiling != null)
         {
             DotTrace.SaveData();
             DotTrace.Detach();   // Detach the profiler from the current process.
-            Logger.Warn($"DotTrace profile output saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
+            Logger.Warn($"DotTrace profile output saved to {ClientConfig.Profiling.SelfProfileTargetPath}.");
         }
     }
 
@@ -190,7 +189,7 @@ public class GameClient : GameWindow
         
 #if DEBUG
         // Set the polygon mode to wireframe if the debug setting is enabled.
-        GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.DebugModeConfig.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
+        GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.Debugging.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
 #endif
 
         // Pass all of these matrices to the vertex shaders.
@@ -222,7 +221,7 @@ public class GameClient : GameWindow
     private void DrawUi()
     {
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderCrosshair)
+        if (ClientConfig.Debugging.RenderCrosshair)
 #endif
             _crosshair.Draw();
 
@@ -233,16 +232,6 @@ public class GameClient : GameWindow
     private void DrawWorld()
     {
         _gameWorldRenderer.Draw();
-
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && DebugStats.ChunksWaitingGeneration == 0 && DebugStats.ChunksWaitingMeshing == 0)
-        {
-            ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
-            Logger.Debug($"Photomode completed in {GameTime.TotalTime:F2}s.");
-            Close();
-            return;
-        }
-#endif
 
         DebugDrawer.Draw();
     }
@@ -339,11 +328,6 @@ public class GameClient : GameWindow
 
     private void SwitchCursorState()
     {
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
-            return;
-#endif
-
         if (CursorState == CursorState.Grabbed)
         {
             CursorState = CursorState.Normal;
