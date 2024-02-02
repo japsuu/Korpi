@@ -1,4 +1,4 @@
-﻿using Korpi.Client.Window;
+﻿using Korpi.Client;
 
 namespace ClientTests;
 

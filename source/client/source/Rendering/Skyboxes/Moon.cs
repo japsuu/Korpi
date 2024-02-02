@@ -1,5 +1,4 @@
 ﻿using Korpi.Client.Utils;
-using Korpi.Client.Window;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Skyboxes;

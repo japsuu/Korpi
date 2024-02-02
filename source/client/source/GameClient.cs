@@ -20,7 +20,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Korpi.Client.Window;
+namespace Korpi.Client;
 
 /// <summary>
 /// The main game client window.
@@ -28,17 +28,6 @@ namespace Korpi.Client.Window;
 public class GameClient : GameWindow
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameClient));
-    
-    /// <summary>
-    /// Called when the game client is resized.
-    /// </summary>
-    public static event Action? ClientResized;
-
-    public static int WindowWidth { get; private set; }
-    public static int WindowHeight { get; private set; }
-    public static float WindowAspectRatio { get; private set; }
-    public static bool IsPlayerInGui { get; private set; }
-    public static int MainThreadId { get; private set; }
 
     private ImGuiController _imGuiController = null!;
     private ShaderManager _shaderManager = null!;
@@ -46,7 +35,6 @@ public class GameClient : GameWindow
     private GameWorldRenderer _gameWorldRenderer = null!;
     private Crosshair _crosshair = null!;
     private PlayerEntity _playerEntity = null!;
-
     private double _fixedFrameAccumulator;
 
 #if DEBUG
@@ -62,22 +50,20 @@ public class GameClient : GameWindow
         base.OnLoad();
         Logger.Info($"Starting v{Constants.CLIENT_VERSION}...");
 
-        if (ClientConfig.Store.EnableSelfProfile)
+        if (ClientConfig.Profiling.EnableSelfProfile)
         {
             Logger.Warn("Initializing DotTrace... (this may take a while)");
             DotTrace.EnsurePrerequisite();   // Initialize the DotTrace API and download the profiler tool (if needed).
-            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(ClientConfig.Store.SelfProfileOutputFilePath);
+            DotTrace.Config cfg = new DotTrace.Config().SaveToFile(ClientConfig.Profiling.SelfProfileTargetPath);
             DotTrace.Attach(cfg);   // Attach the profiler to the current process.
             DotTrace.StartCollectingData();  // Start collecting data.
-            Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
+            Logger.Warn($"DotTrace initialized. Profile output will be saved to {ClientConfig.Profiling.SelfProfileTargetPath}.");
         }
-
-        MainThreadId = Environment.CurrentManagedThreadId;
-        Logger.Info($"MainThread ID={MainThreadId}");
         
-        WindowWidth = ClientSize.X;
-        WindowHeight = ClientSize.Y;
-        WindowAspectRatio = ClientSize.X / (float)ClientSize.Y;
+        SystemInfo.Initialize();
+        WindowInfo.Initialize(this);
+        Client.Cursor.Initialize(this);
+        Client.Cursor.SetGrabbed(true);
 
 #if DEBUG
         GL.DebugMessageCallback(DebugMessageDelegate, IntPtr.Zero);
@@ -103,16 +89,18 @@ public class GameClient : GameWindow
 
         // PlayerEntity initialization.
         _playerEntity = new PlayerEntity(new Vector3(0, Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 2f, 0), 0, 0);
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
-            PhotoModeCamera.Create(new Vector3(0, 256, 48), -30, -100);
-#endif
-        CursorState = CursorState.Grabbed;
 
         // UI initialization.
         _crosshair = new Crosshair();
-        _imGuiController = new ImGuiController(ClientSize.X, ClientSize.Y);
+        _imGuiController = new ImGuiController(this);
         ImGuiWindowManager.CreateDefaultWindows();
+        
+        // Show the window after all resources are loaded.
+        CenterWindow();
+        IsVisible = true;
+        
+        // Restore window fullscreen state from config.
+        WindowState = ClientConfig.Window.Fullscreen ? WindowState.Fullscreen : WindowState.Normal;
 
         Logger.Info("Started.");
     }
@@ -122,21 +110,21 @@ public class GameClient : GameWindow
     {
         base.OnUnload();
         Logger.Info("Shutting down...");
+        SaveConfigs();
         _crosshair.Dispose();
         _shaderManager.Dispose();
         _gameWorldRenderer.Dispose();
         _playerEntity.Disable();
-        _imGuiController.DestroyDeviceObjects();
         ChunkMesher.Dispose();
         TextureRegistry.BlockArrayTexture.Dispose();
         ImGuiWindowManager.Dispose();
         GlobalJobPool.Shutdown();
 
-        if (ClientConfig.Store.EnableSelfProfile)
+        if (ClientConfig.Profiling.EnableSelfProfile)
         {
             DotTrace.SaveData();
             DotTrace.Detach();   // Detach the profiler from the current process.
-            Logger.Warn($"DotTrace profile output saved to {ClientConfig.Store.SelfProfileOutputFilePath}.");
+            Logger.Warn($"DotTrace profile output saved to {ClientConfig.Profiling.SelfProfileTargetPath}.");
         }
     }
 
@@ -190,7 +178,7 @@ public class GameClient : GameWindow
         
 #if DEBUG
         // Set the polygon mode to wireframe if the debug setting is enabled.
-        GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.DebugModeConfig.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
+        GL.PolygonMode(MaterialFace.FrontAndBack, ClientConfig.Rendering.Debug.RenderWireframe ? PolygonMode.Line : PolygonMode.Fill);
 #endif
 
         // Pass all of these matrices to the vertex shaders.
@@ -221,10 +209,7 @@ public class GameClient : GameWindow
 
     private void DrawUi()
     {
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.RenderCrosshair)
-#endif
-            _crosshair.Draw();
+        _crosshair.Draw();
 
         DrawImGui();
     }
@@ -233,16 +218,6 @@ public class GameClient : GameWindow
     private void DrawWorld()
     {
         _gameWorldRenderer.Draw();
-
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled && GameTime.TotalTime > 1f && DebugStats.ChunksWaitingGeneration == 0 && DebugStats.ChunksWaitingMeshing == 0)
-        {
-            ScreenshotUtility.CaptureFrame(ClientSize.X, ClientSize.Y).SaveAsPng(ClientConfig.DebugModeConfig.PhotoModeScreenshotPath, "latest", true, true);
-            Logger.Debug($"Photomode completed in {GameTime.TotalTime:F2}s.");
-            Close();
-            return;
-        }
-#endif
 
         DebugDrawer.Draw();
     }
@@ -287,14 +262,12 @@ public class GameClient : GameWindow
         if (CursorState == CursorState.Grabbed)
             mousePos = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
 
-        // MousePosition = new Vector2(ClientSize.X / 2f, ClientSize.Y / 2f);
-
-        _imGuiController.Update(this, GameTime.DeltaTimeFloat, mousePos);
+        _imGuiController.Update(GameTime.DeltaTimeFloat, mousePos);
 
         ImGuiWindowManager.UpdateAllWindows();
 
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
-            SwitchCursorState();
+            Client.Cursor.ChangeGrabState();
     }
 
 
@@ -309,51 +282,28 @@ public class GameClient : GameWindow
     {
         base.OnResize(e);
 
-        WindowWidth = e.Width;
-        WindowHeight = e.Height;
-        WindowAspectRatio = e.Width / (float)e.Height;
-
-        GL.Viewport(0, 0, WindowWidth, WindowHeight);
-
-        // Tell ImGui of the new window size.
-        _imGuiController.WindowResized(ClientSize.X, ClientSize.Y);
-        ClientResized?.Invoke();
+        GL.Viewport(0, 0, e.Width, e.Height);
     }
 
 
-    protected override void OnTextInput(TextInputEventArgs e)
+    protected override void OnKeyUp(KeyboardKeyEventArgs e)
     {
-        base.OnTextInput(e);
-
-        _imGuiController.PressChar((char)e.Unicode);
+        base.OnKeyUp(e);
+        
+        // Check for fullscreen toggle.
+        if (e.Key == Keys.F11)
+            WindowState = IsFullscreen ? WindowState.Normal : WindowState.Fullscreen;
     }
 
 
-    protected override void OnMouseWheel(MouseWheelEventArgs e)
+    private void SaveConfigs()
     {
-        base.OnMouseWheel(e);
-
-        _imGuiController.MouseScroll(e.Offset);
-    }
-
-
-    private void SwitchCursorState()
-    {
-#if DEBUG
-        if (ClientConfig.DebugModeConfig.IsPhotoModeEnabled)
-            return;
-#endif
-
-        if (CursorState == CursorState.Grabbed)
+        if (!IsFullscreen)
         {
-            CursorState = CursorState.Normal;
-            IsPlayerInGui = true;
+            ClientConfig.Window.WindowWidth = ClientSize.X;
+            ClientConfig.Window.WindowHeight = ClientSize.Y;
         }
-        else if (CursorState == CursorState.Normal)
-        {
-            CursorState = CursorState.Grabbed;
-            IsPlayerInGui = false;
-        }
+        ClientConfig.Window.Fullscreen = IsFullscreen;
     }
 
 

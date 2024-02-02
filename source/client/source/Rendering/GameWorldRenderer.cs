@@ -2,8 +2,8 @@
 using Korpi.Client.Logging;
 using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Skyboxes;
-using Korpi.Client.Window;
 using Korpi.Client.World;
+using Korpi.Client.World.Chunks;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -15,7 +15,7 @@ public class GameWorldRenderer : IDisposable
 
     private static readonly float[] ZeroFiller = { 0.0f, 0.0f, 0.0f, 0.0f };
     private static readonly float[] OneFiller = { 1.0f, 1.0f, 1.0f, 1.0f };
-    
+
     private readonly GameWorld _world;
     private readonly ScreenQuad _screenQuad;
     private readonly Skybox _skybox;
@@ -32,13 +32,13 @@ public class GameWorldRenderer : IDisposable
         _world = world;
         _screenQuad = new ScreenQuad();
         _skybox = new Skybox(false);
-        GameClient.ClientResized += OnWindowResize;
+        WindowInfo.ClientResized += OnWindowResize;
         
-        Initialize();
+        Initialize(WindowInfo.ClientWidth, WindowInfo.ClientHeight);
     }
 
 
-    private void Initialize()
+    private void Initialize(int screenWidth, int screenHeight)
     {
         // Setup framebuffers
         _opaqueFbo = GL.GenFramebuffer();
@@ -50,7 +50,7 @@ public class GameWorldRenderer : IDisposable
         // Opaque texture
         _opaqueTexture = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, _opaqueTexture);
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, GameClient.WindowWidth, GameClient.WindowHeight, 0, PixelFormat.Rgba, PixelType.HalfFloat, IntPtr.Zero);
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, screenWidth, screenHeight, 0, PixelFormat.Rgba, PixelType.HalfFloat, IntPtr.Zero);
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -58,7 +58,7 @@ public class GameWorldRenderer : IDisposable
         // Depth texture
         _depthTexture = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, _depthTexture);
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent, GameClient.WindowWidth, GameClient.WindowHeight, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent, screenWidth, screenHeight, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
         GL.BindTexture(TextureTarget.Texture2D, 0);
 
         GL.BindFramebuffer(FramebufferTarget.Framebuffer, _opaqueFbo);
@@ -79,7 +79,7 @@ public class GameWorldRenderer : IDisposable
         // Accumulation texture
         _accumTexture = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, _accumTexture);
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, GameClient.WindowWidth, GameClient.WindowHeight, 0, PixelFormat.Rgba, PixelType.HalfFloat, IntPtr.Zero);
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, screenWidth, screenHeight, 0, PixelFormat.Rgba, PixelType.HalfFloat, IntPtr.Zero);
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -87,7 +87,7 @@ public class GameWorldRenderer : IDisposable
         // Revealage texture
         _revealTexture = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, _revealTexture);
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, GameClient.WindowWidth, GameClient.WindowHeight, 0, PixelFormat.Red, PixelType.Float, IntPtr.Zero);
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, screenWidth, screenHeight, 0, PixelFormat.Red, PixelType.Float, IntPtr.Zero);
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -111,7 +111,7 @@ public class GameWorldRenderer : IDisposable
     }
 
 
-    private void OnWindowResize()
+    private void OnWindowResize(WindowInfo.WindowResizeEventArgs args)
     {
         // Delete old textures
         GL.DeleteTexture(_opaqueTexture);
@@ -124,7 +124,7 @@ public class GameWorldRenderer : IDisposable
         GL.DeleteFramebuffer(_transparentFbo);
         
         // Reinitialize
-        Initialize();
+        Initialize(args.Width, args.Height);
     }
 
 
@@ -218,10 +218,7 @@ public class GameWorldRenderer : IDisposable
 
     private void DrawSkybox()
     {
-#if DEBUG
-        if (Configuration.ClientConfig.DebugModeConfig.RenderSkybox)
-#endif
-            _skybox.Draw();
+        _skybox.Draw();
     }
 
 

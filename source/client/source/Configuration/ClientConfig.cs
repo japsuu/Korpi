@@ -17,21 +17,22 @@ public static class ClientConfig
     /// <summary>
     /// Window configuration.
     /// </summary>
-    public static IWindowConfig WindowConfig { get; private set; } = null!;
+    public static IWindowConfig Window { get; private set; } = null!;
     
     /// <summary>
     /// Logging configuration.
     /// </summary>
-    public static ILoggingConfig LoggingConfig { get; private set; } = null!;
+    public static ILoggingConfig Logging { get; private set; } = null!;
 
-#if DEBUG
     /// <summary>
-    /// Debug mode configuration. Only available in debug builds.
+    /// Render configuration.
     /// </summary>
-    public static DebugModeConfig DebugModeConfig { get; private set; } = null!;
-#endif
+    public static RenderingConfig Rendering { get; private set; } = null!;
     
-    public static InMemoryConfig Store { get; private set; } = null!;
+    /// <summary>
+    /// Profiling configuration.
+    /// </summary>
+    public static ProfilingConfig Profiling { get; private set; } = null!;
 
 
     /// <summary>
@@ -41,40 +42,36 @@ public static class ClientConfig
     public static (GameWindowSettings gws, NativeWindowSettings nws) Initialize(string[] args)
     {
         Logger.Info("Initializing configuration...");
-        WindowConfig = new ConfigurationBuilder<IWindowConfig>()
-            .UseJsonFile("WindowConfig.json")
+        
+        // Create necessary directories.
+        DirectoryInfo configDirectory = Directory.CreateDirectory("config");
+        DirectoryInfo tempDirectory = Directory.CreateDirectory("temp");
+        
+        // Window configuration
+        string windowConfigPath = Path.Combine(configDirectory.FullName, "config_window.json");
+        Window = new ConfigurationBuilder<IWindowConfig>()
+            .UseJsonFile(windowConfigPath)
             .Build();
         
-        LoggingConfig = new ConfigurationBuilder<ILoggingConfig>()
-            .UseJsonFile("LoggingConfig.json")
+        // Logging configuration
+        string loggingConfigPath = Path.Combine(configDirectory.FullName, "config_logging.json");
+        Logging = new ConfigurationBuilder<ILoggingConfig>()
+            .UseJsonFile(loggingConfigPath)
             .Build();
 
-#if DEBUG
+        // Render configuration
+        Rendering = new RenderingConfig();
         
-        // Check if args contains the "-photomode" flag
-        bool isPhotoMode = false;
-        string photoModePath = "Screenshots";
-        if (args.ContainsFlag("-photomode", out string? suppliedPath))
-        {
-            isPhotoMode = true;
-            Logger.Warn("Running in photo mode...");
-            if (suppliedPath != null)
-            {
-                photoModePath = suppliedPath;
-                Logger.Warn($"Using path \"{photoModePath}\" for photo mode.");
-            }
-            else
-                Logger.Warn($"No path specified for photo mode, using default path \"{photoModePath}\".");
-        }
+        // Profiling configuration
+        Profiling = new ProfilingConfig(IsSelfProfile(args), tempDirectory);
         
-        DebugModeConfig = new DebugModeConfig(isPhotoMode, photoModePath);
-#endif
-        
-        bool enableSelfProfiling = args.Contains("-selfprofile");
-        if (enableSelfProfiling)
-            Logger.Warn("Self-profiling enabled.");
-        Store = new InMemoryConfig(enableSelfProfiling);
-        
+        Logger.Info("Configuration files initialized.");
+        return GetWindowSettings();
+    }
+
+
+    private static (GameWindowSettings gws, NativeWindowSettings nws) GetWindowSettings()
+    {
         GameWindowSettings gws = new()
         {
             UpdateFrequency = Constants.UPDATE_FRAME_FREQUENCY
@@ -82,25 +79,33 @@ public static class ClientConfig
         
         NativeWindowSettings nws = new()
         {
-            Size = new Vector2i(ClientConfig.WindowConfig.WindowWidth, ClientConfig.WindowConfig.WindowHeight),
+            ClientSize = new Vector2i(Window.WindowWidth, Window.WindowHeight),
+            StartVisible = false,
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
+            Icon = IoUtils.GetIcon(),
             NumberOfSamples = 0,
-            Location = new Vector2i(200, 0),
             API = ContextAPI.OpenGL,
             Profile = ContextProfile.Core,
             APIVersion = new Version(4, 2),
-            Icon = IoUtils.GetIcon(),
+            AspectRatio = (16, 9),
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
         };
         
-        Logger.Info("Configuration initialized.");
-        
         return (gws, nws);
     }
-    
-    
+
+
+    private static bool IsSelfProfile(string[] args)
+    {
+        bool enableSelfProfiling = args.Contains("-selfprofile");
+        if (enableSelfProfiling)
+            Logger.Warn("Self-profiling enabled.");
+        return enableSelfProfiling;
+    }
+
+
     /// <summary>
     /// Checks if the given flag is present in the given args array.
     /// </summary>

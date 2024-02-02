@@ -232,7 +232,7 @@ public abstract class MeshingBuffer : IDisposable
         }
 
 #if DEBUG
-        if (ClientConfig.DebugModeConfig.EnableAmbientOcclusion)
+        if (ClientConfig.Rendering.Debug.EnableAmbientOcclusion)
         {
 #endif
             int ao0 = CalculateAoIndex(dataCache, aoLeft0, aoRight0, aoMiddle0);
@@ -247,10 +247,10 @@ public abstract class MeshingBuffer : IDisposable
         }
         else
         {
-            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
-            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
-            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
-            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, 3, textureIndex, lightColor, lightLevel, skyLightLevel, renderType);
+            AddVertex(vertexPos0.X, vertexPos0.Y, vertexPos0.Z, normal, 0, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos1.X, vertexPos1.Y, vertexPos1.Z, normal, 1, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos2.X, vertexPos2.Y, vertexPos2.Z, normal, 2, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
+            AddVertex(vertexPos3.X, vertexPos3.Y, vertexPos3.Z, normal, 3, 3, textureIndex, lightColor, lightLevel, skyLightLevel);
         }
 #endif
 

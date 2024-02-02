@@ -1,7 +1,7 @@
 ﻿using Korpi.Client.Configuration;
 using OpenTK.Mathematics;
 
-namespace Korpi.Client.Window;
+namespace Korpi.Client;
 
 public static class GameTime
 {

@@ -105,9 +105,9 @@ public class Chunk
         // Frustum check.
 #if DEBUG
         // If in debug mode, allow the player to toggle frustum culling on/off
-        if (ClientConfig.DebugModeConfig.DoFrustumCulling)
+        if (ClientConfig.Rendering.Debug.DoFrustumCulling)
         {
-            Frustum cameraViewFrustum = ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling
+            Frustum cameraViewFrustum = ClientConfig.Rendering.Debug.OnlyPlayerFrustumCulling
                 ? PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum
                 : Camera.RenderingCamera.ViewFrustum;
 
@@ -248,7 +248,7 @@ public class Chunk
 
     private void ChangeState(ChunkMeshState newState)
     {
-        Debug.Assert(Window.GameClient.MainThreadId == Environment.CurrentManagedThreadId, "Chunk state should only be changed on the main thread.");
+        Debug.Assert(SystemInfo.MainThreadId == Environment.CurrentManagedThreadId, "Chunk state should only be changed on the main thread.");
         Debug.Assert(HasBeenGenerated, "Chunk is trying to change the mesh state before it has been generated.");
         
         if (_currentMeshState == newState && newState != ChunkMeshState.UNINITIALIZED)
@@ -385,7 +385,7 @@ public class Chunk
 #if DEBUG
     private void DebugDraw()
     {
-        if (!ClientConfig.DebugModeConfig.RenderChunkMeshState)
+        if (!ClientConfig.Rendering.Debug.RenderChunkMeshState)
             return;
 
         const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;

@@ -1,5 +1,4 @@
 ﻿using Korpi.Client.Configuration;
-using Korpi.Client.Window;
 using OpenTK.Windowing.Desktop;
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]

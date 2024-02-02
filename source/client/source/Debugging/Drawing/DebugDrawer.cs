@@ -1,6 +1,5 @@
 ﻿using Korpi.Client.Debugging.Drawing.Drawables;
 using Korpi.Client.Rendering.Shaders;
-using Korpi.Client.Window;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 

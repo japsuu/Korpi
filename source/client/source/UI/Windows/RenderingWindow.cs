@@ -2,7 +2,6 @@
 using ImGuiNET;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging.Drawing;
-using Korpi.Client.Window;
 using Korpi.Client.World;
 
 namespace Korpi.Client.UI.Windows;
@@ -20,34 +19,34 @@ public class RenderingWindow : ImGuiWindow
 
     protected override void UpdateContent()
     {
-        if (ImGui.Checkbox("Draw chunk borders", ref ClientConfig.DebugModeConfig.RenderChunkBorders))
+        if (ImGui.Checkbox("Draw chunk borders", ref ClientConfig.Rendering.RenderChunkBorders))
         {
-            if (ClientConfig.DebugModeConfig.RenderChunkBorders)
+            if (ClientConfig.Rendering.RenderChunkBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();
         }
 
-        if (ImGui.Checkbox("Draw column borders", ref ClientConfig.DebugModeConfig.RenderColumnBorders))
+        if (ImGui.Checkbox("Draw column borders", ref ClientConfig.Rendering.RenderColumnBorders))
         {
-            if (ClientConfig.DebugModeConfig.RenderColumnBorders)
+            if (ClientConfig.Rendering.RenderColumnBorders)
                 DebugChunkDrawer.Initialize();
             else
                 DebugChunkDrawer.Dispose();
         }
-        ImGui.Checkbox("Draw chunk mesh state", ref ClientConfig.DebugModeConfig.RenderChunkMeshState);
+        ImGui.Checkbox("Draw chunk mesh state", ref ClientConfig.Rendering.Debug.RenderChunkMeshState);
 
         ImGui.Separator();
-        ImGui.Checkbox("Enable Wireframe", ref ClientConfig.DebugModeConfig.RenderWireframe);
-        if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.DebugModeConfig.EnableAmbientOcclusion))
+        ImGui.Checkbox("Enable Wireframe", ref ClientConfig.Rendering.Debug.RenderWireframe);
+        if (ImGui.Checkbox("Enable Ambient Occlusion", ref ClientConfig.Rendering.Debug.EnableAmbientOcclusion))
             GameWorld.ReloadAllChunks();
-        ImGui.Checkbox("Enable skybox", ref ClientConfig.DebugModeConfig.RenderSkybox);
-        ImGui.Checkbox("Enable crosshair", ref ClientConfig.DebugModeConfig.RenderCrosshair);
+        ImGui.Checkbox("Enable skybox", ref ClientConfig.Rendering.Debug.RenderSkybox);
+        ImGui.Checkbox("Enable crosshair", ref ClientConfig.Rendering.Debug.RenderCrosshair);
 
         ImGui.Separator();
-        ImGui.Checkbox("Draw raycast path", ref ClientConfig.DebugModeConfig.RenderRaycastPath);
-        ImGui.Checkbox("Draw raycast hit", ref ClientConfig.DebugModeConfig.RenderRaycastHit);
-        ImGui.Checkbox("Draw raycast hit block", ref ClientConfig.DebugModeConfig.RenderRaycastHitBlock);
+        ImGui.Checkbox("Draw raycast path", ref ClientConfig.Rendering.Debug.RenderRaycastPath);
+        ImGui.Checkbox("Draw raycast hit", ref ClientConfig.Rendering.Debug.RenderRaycastHit);
+        ImGui.Checkbox("Highlight targeted block", ref ClientConfig.Rendering.Debug.HighlightTargetedBlock);
             
         ImGui.Separator();
         ImGui.Text("Time of day");

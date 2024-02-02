@@ -44,10 +44,15 @@ public class ImGuiController : IDisposable
     /// <summary>
     /// Constructs a new ImGuiController.
     /// </summary>
-    public ImGuiController(int width, int height)
+    public ImGuiController(GameWindow clientWindow)
     {
-        _windowWidth = width;
-        _windowHeight = height;
+        clientWindow.Resize += args => WindowResized(args.Width, args.Height);
+        clientWindow.Unload += DestroyDeviceObjects;
+        clientWindow.TextInput += e => PressChar((char)e.Unicode);
+        clientWindow.MouseWheel += e => MouseScroll(e.Offset);
+        
+        _windowWidth = clientWindow.ClientSize.X;
+        _windowHeight = clientWindow.ClientSize.Y;
 
         int major = GL.GetInteger(GetPName.MajorVersion);
         int minor = GL.GetInteger(GetPName.MinorVersion);
@@ -215,7 +220,7 @@ void main()
     /// <summary>
     /// Updates ImGui input and IO configuration state.
     /// </summary>
-    public void Update(GameWindow wnd, float deltaSeconds, Vector2 mousePos)
+    public void Update(float deltaSeconds, Vector2 mousePos)
     {
         if (_frameBegun)
         {
@@ -223,7 +228,7 @@ void main()
         }
 
         SetPerFrameImGuiData(deltaSeconds);
-        UpdateImGuiInput(wnd, mousePos);
+        UpdateImGuiInput(mousePos);
 
         _frameBegun = true;
         ImGui.NewFrame();
@@ -250,12 +255,12 @@ void main()
         .ToArray();
 
     // NOTE: Modified to take in an override mouse position
-    private void UpdateImGuiInput(GameWindow wnd, Vector2 mousePos)
+    private void UpdateImGuiInput(Vector2 mousePos)
     {
         ImGuiIOPtr io = ImGui.GetIO();
 
-        MouseState mouseState = wnd.MouseState;
-        KeyboardState keyboardState = wnd.KeyboardState;
+        MouseState mouseState = Input.MouseState;
+        KeyboardState keyboardState = Input.KeyboardState;
 
         io.MouseDown[0] = mouseState[MouseButton.Left];
         io.MouseDown[1] = mouseState[MouseButton.Right];
