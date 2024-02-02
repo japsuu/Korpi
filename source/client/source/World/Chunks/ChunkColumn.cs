@@ -96,9 +96,9 @@ public class ChunkColumn : IChunkColumn
 #if DEBUG
 
         // If in debug mode, allow the player to toggle frustum culling on/off
-        if (ClientConfig.DebugModeConfig.DoFrustumCulling)
+        if (ClientConfig.Rendering.Debug.DoFrustumCulling)
         {
-            Frustum cameraViewFrustum = ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling
+            Frustum cameraViewFrustum = ClientConfig.Rendering.Debug.OnlyPlayerFrustumCulling
                 ? PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum
                 : Camera.RenderingCamera.ViewFrustum;
 
@@ -142,7 +142,7 @@ public class ChunkColumn : IChunkColumn
     public void SetBlockState(int x, int y, int z, BlockState block, out BlockState oldBlock, bool delayedMeshDirtying)
     {
         Debug.Assert(x >= 0 && x < Constants.CHUNK_SIDE_LENGTH);
-        Debug.Assert(y >= 0 && y < Constants.CHUNK_HEIGHT_BLOCKS);
+        Debug.Assert(y >= 0 && y < Constants.CHUNK_COLUMN_HEIGHT_BLOCKS);
         Debug.Assert(z >= 0 && z < Constants.CHUNK_SIDE_LENGTH);
         
         int arrayIndex = y / Constants.CHUNK_SIDE_LENGTH;
@@ -167,7 +167,7 @@ public class ChunkColumn : IChunkColumn
     public BlockState GetBlockState(int x, int y, int z)
     {
         Debug.Assert(x >= 0 && x < Constants.CHUNK_SIDE_LENGTH);
-        Debug.Assert(y >= 0 && y < Constants.CHUNK_HEIGHT_BLOCKS);
+        Debug.Assert(y >= 0 && y < Constants.CHUNK_COLUMN_HEIGHT_BLOCKS);
         Debug.Assert(z >= 0 && z < Constants.CHUNK_SIDE_LENGTH);
         
         int arrayIndex = y / Constants.CHUNK_SIDE_LENGTH;
@@ -180,7 +180,7 @@ public class ChunkColumn : IChunkColumn
     {
         Vector3 position = new Vector3(Position.X, 0, Position.Y);
         Vector3 min = position;
-        Vector3 max = position + new Vector3(Constants.CHUNK_SIDE_LENGTH, Constants.CHUNK_HEIGHT_BLOCKS, Constants.CHUNK_SIDE_LENGTH);
+        Vector3 max = position + new Vector3(Constants.CHUNK_SIDE_LENGTH, Constants.CHUNK_COLUMN_HEIGHT_BLOCKS, Constants.CHUNK_SIDE_LENGTH);
 
         foreach (FrustumPlane plane in viewFrustum.Planes)
         {
@@ -222,11 +222,10 @@ public class ChunkColumn : IChunkColumn
             case ChunkGenerationState.UNINITIALIZED:
                 break;
             case ChunkGenerationState.GENERATING_TERRAIN:
-                const WorkItemPriority priority = WorkItemPriority.Normal;
                 // if (IsOnFrustum(PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum))
                 //     priority = WorkItemPriority.High;
                 Interlocked.Increment(ref _currentJobId);
-                GlobalThreadPool.DispatchJob(new GenerationJob(_currentJobId, this, () => ChangeState(ChunkGenerationState.GENERATING_DECORATION)), priority);
+                GlobalJobPool.DispatchJob(new GenerationJob(_currentJobId, this, () => ChangeState(ChunkGenerationState.GENERATING_DECORATION)));
                 break;
             case ChunkGenerationState.GENERATING_DECORATION:
                 ChangeState(ChunkGenerationState.GENERATING_LIGHTING);

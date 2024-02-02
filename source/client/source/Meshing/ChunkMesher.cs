@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
 using Korpi.Client.Registries;
 using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
@@ -12,18 +11,24 @@ namespace Korpi.Client.Meshing;
 public class ChunkMesher
 {
     private static readonly ThreadLocal<ChunkMesher> ThreadLocal = new(() => new ChunkMesher());
+    public static bool IsDisposed { get; private set; }
     public static ChunkMesher ThreadLocalInstance => ThreadLocal.Value!;
     
     /// <summary>
     /// Cache in to which the data of the chunk currently being meshed is copied into.
     /// Also includes one block wide border extending into the neighbouring chunks.
     /// </summary>
-    private readonly MeshingDataCache _meshingDataCache = new();
+    private readonly MeshingDataCache _meshingDataCache;
     
     /// <summary>
-    /// Buffer into which the meshing thread writes the mesh data.
+    /// Buffer to write opaque mesh data into.
     /// </summary>
-    private readonly MeshingBuffer _meshingBuffer = new();
+    private readonly MeshingBuffer _opaqueBuffer;
+    
+    /// <summary>
+    /// Buffer to write transparent mesh data into.
+    /// </summary>
+    private readonly MeshingBuffer _transparentBuffer;
     
     /// <summary>
     /// Offsets of the 6 neighbours of a block.
@@ -40,14 +45,22 @@ public class ChunkMesher
     };
 
 
+    private ChunkMesher()
+    {
+        _meshingDataCache = new MeshingDataCache();
+        _opaqueBuffer = new OpaqueMeshingBuffer();
+        _transparentBuffer = new TransparentMeshingBuffer();
+    }
+
+
     public ChunkMesh GenerateMesh(Chunk chunk)
     {
-        DebugStats.StartChunkMeshing();
         GameWorld.CurrentGameWorld.ChunkManager.FillMeshingCache(chunk.Position, _meshingDataCache);
         
-        _meshingDataCache.AcquireNeighbourReadLocks();
+        //REM: _meshingDataCache.AcquireNeighbourReadLocks();
         
-        _meshingBuffer.Clear();
+        _opaqueBuffer.Initialize();
+        _transparentBuffer.Initialize();
         
         // Mesh the chunk based on the data cache.
         for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
@@ -66,11 +79,9 @@ public class ChunkMesher
             }
         }
         
-        _meshingDataCache.ReleaseNeighbourReadLocks();
+        //REM: _meshingDataCache.ReleaseNeighbourReadLocks();
         
-        DebugStats.StopChunkMeshing();
-        
-        ChunkMesh mesh = _meshingBuffer.CreateMesh(chunk.Position);
+        ChunkMesh mesh = CreateMesh(chunk.Position);
 
         return mesh;
     }
@@ -81,6 +92,10 @@ public class ChunkMesher
         Debug.Assert(x >= 0 && x < Constants.CHUNK_SIDE_LENGTH, "0 <= x < CHUNK_SIDE_LENGTH");
         Debug.Assert(y >= 0 && y < Constants.CHUNK_SIDE_LENGTH, "0 <= y < CHUNK_SIDE_LENGTH");
         Debug.Assert(z >= 0 && z < Constants.CHUNK_SIDE_LENGTH, "0 <= z < CHUNK_SIDE_LENGTH");
+        
+        bool isTransparent = blockState.RenderType == BlockRenderType.Transparent;
+        MeshingBuffer meshingBuffer = isTransparent ? _transparentBuffer : _opaqueBuffer;
+        
         // Iterate over all 6 faces of the block
         for (int face = 0; face < 6; face++)
         {
@@ -88,6 +103,7 @@ public class ChunkMesher
             if (!_meshingDataCache.TryGetData(x + neighbourOffset.X, y + neighbourOffset.Y, z + neighbourOffset.Z, out BlockState neighbour))
                 continue;
 
+            // Determine if this face should be rendered based on the neighbour's render type.
             switch (neighbour.RenderType)
             {
                 case BlockRenderType.None:
@@ -99,14 +115,13 @@ public class ChunkMesher
                     break;
                 case BlockRenderType.Transparent:
                     // If this block and the neighbour are both transparent and of the same type, skip this face.
-                    if (blockState.RenderType == BlockRenderType.Transparent && blockState.Id == neighbour.Id)
+                    if (isTransparent && blockState.Id == neighbour.Id)
                         continue;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(neighbour.RenderType), neighbour.RenderType, null);
             }
-
-
+            
             // Get the texture index of the block face
             ushort textureIndex = GetBlockFaceTextureIndex(blockState, (BlockFace)face);
                         
@@ -119,13 +134,39 @@ public class ChunkMesher
                         
             // Add the face to the meshing buffer
             Vector3i blockPos = new(x, y, z);
-            _meshingBuffer.AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel, blockState.RenderType);
+            meshingBuffer.AddFace(_meshingDataCache, blockPos, (BlockFace)face, textureIndex, lightColor, lightLevel, skyLightLevel, blockState.RenderType);
         }
+    }
+
+
+    private ChunkMesh CreateMesh(Vector3i chunkPosition)
+    {
+        uint[] opaqueVertexData = new uint[_opaqueBuffer.AddedVertexDataCount];
+        uint[] opaqueIndices = new uint[_opaqueBuffer.AddedIndicesCount];
+        uint[] transparentVertexData = new uint[_transparentBuffer.AddedVertexDataCount];
+        uint[] transparentIndices = new uint[_transparentBuffer.AddedIndicesCount];
+        
+        // Copy opaque data.
+        Array.Copy(_opaqueBuffer.VertexData, opaqueVertexData, _opaqueBuffer.AddedVertexDataCount);
+        Array.Copy(_opaqueBuffer.IndexData, opaqueIndices, _opaqueBuffer.AddedIndicesCount);
+        
+        // Copy transparent data.
+        Array.Copy(_transparentBuffer.VertexData, transparentVertexData, _transparentBuffer.AddedVertexDataCount);
+        Array.Copy(_transparentBuffer.IndexData, transparentIndices, _transparentBuffer.AddedIndicesCount);
+
+        return new ChunkMesh(chunkPosition, opaqueVertexData, opaqueIndices, transparentVertexData, transparentIndices);
     }
 
 
     private ushort GetBlockFaceTextureIndex(BlockState block, BlockFace normal)
     {
         return BlockRegistry.GetBlock(block.Id).GetFaceTextureId(block, normal);
+    }
+    
+    
+    public static void Dispose()
+    {
+        IsDisposed = true;
+        ThreadLocal.Dispose();
     }
 }

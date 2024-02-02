@@ -1,9 +1,9 @@
 ﻿using Korpi.Client.ECS.Components;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
-using Korpi.Client.Window;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using Cursor = Korpi.Client.Cursor;
 
 namespace Korpi.Client.ECS.Entities;
 
@@ -77,7 +77,7 @@ public class PlayerEntity : TransformEntity
 
     protected override void OnUpdate()
     {
-        if (!GameClient.IsPlayerInGui)
+        if (Cursor.IsGrabbed)
         {
             if (Input.KeyboardState.IsKeyPressed(Keys.F5))
             {

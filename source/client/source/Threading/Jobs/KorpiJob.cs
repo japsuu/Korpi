@@ -4,7 +4,7 @@ using Korpi.Client.Threading.Pooling;
 namespace Korpi.Client.Threading.Jobs;
 
 /// <summary>
-/// A job for the <see cref="Pooling.ThreadPool"/> with a generic result type.
+/// A job for the <see cref="JobThreadPool"/> with a generic result type.
 /// </summary>
 public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
 {
@@ -30,6 +30,9 @@ public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
         _result = default!;
         CompletionState = JobCompletionState.None;
     }
+
+
+    public abstract float GetPriority();
 
 
     /// <summary>
@@ -76,9 +79,9 @@ public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
     /// <summary>
     /// Dispatches the job to be executed by the thread-pool.
     /// </summary>
-    public KorpiJob<T> Dispatch(WorkItemPriority priority)
+    public KorpiJob<T> Dispatch()
     {
-        return GlobalThreadPool.DispatchJob(this, priority);
+        return GlobalJobPool.DispatchJob(this);
     }
 
 
@@ -87,7 +90,7 @@ public abstract class KorpiJob<T> : IKorpiJob, IAwaitable<T>
     /// </summary>
     protected void DispatchToMain(Action a, QueueType queueType)
     {
-        GlobalThreadPool.DispatchOnMain(a, queueType);
+        GlobalJobPool.DispatchOnMain(a, queueType);
     }
 
 

@@ -16,20 +16,25 @@ namespace Korpi.Client.World.Chunks;
 /// </summary>
 public class ChunkManager
 {
+    private const int MAX_CHUNKS_TO_LOAD_PER_TICK = 16;
+    private const int MAX_CHUNKS_TO_UNLOAD_PER_TICK = 8;
+    
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkManager));
     
-    private readonly Dictionary<Vector2i, ChunkColumn> _loadedChunks = new();
-    private readonly SortedSet<ChunkColumn> _loadedSortedChunks = new SortedSet<ChunkColumn>(new ChunkDistanceComparer());
-    private readonly List<Vector2i> _chunksToLoad = new();
-    private readonly List<Vector2i> _chunksToUnload = new();
+    private readonly Dictionary<Vector2i, ChunkColumn> _loadedColumns = new();
+    private readonly SortedSet<ChunkColumn> _loadedSortedColumns = new(new ChunkDistanceComparer()); //NOTE: This doesn't keep the chunks sorted when the playerEntity moves.
+    private readonly Queue<Vector2i> _columnLoadQueue = new();
+    private readonly Queue<Vector2i> _columnUnloadQueue = new();
+    private readonly HashSet<Vector2i> _columnsToLoad = new();
+    private readonly HashSet<Vector2i> _columnsToUnload = new();
 
     /// <summary>
     /// Precomputed spiral of chunk column positions to load.
     /// The spiral is centered around the world origin, so manual offsetting is required.
     /// </summary>
-    private List<Vector2i> _chunkLoadSpiral = null!;
+    private List<Vector2i> _columnLoadSpiral = null!;
 
-    public int LoadedChunksCount => _loadedChunks.Count;
+    public int LoadedColumnsCount => _loadedColumns.Count;
 
 
     public ChunkManager()
@@ -46,7 +51,7 @@ public class ChunkManager
         LoadChunks();
 
         // Tick all loaded columns
-        foreach (ChunkColumn chunk in _loadedSortedChunks)
+        foreach (ChunkColumn chunk in _loadedSortedColumns)
         {
             chunk.Tick();
         }
@@ -55,7 +60,7 @@ public class ChunkManager
 
     public void DrawChunks(RenderPass pass)
     {
-        foreach (ChunkColumn chunk in _loadedSortedChunks)
+        foreach (ChunkColumn chunk in _loadedSortedColumns)
         {
             chunk.Draw(pass);
         }
@@ -65,14 +70,14 @@ public class ChunkManager
 #if DEBUG
     public static void DrawDebugBorders()
     {
-        if (ClientConfig.DebugModeConfig.RenderChunkBorders)
+        if (ClientConfig.Rendering.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
             Vector3i chunkPos = CoordinateUtils.WorldToChunk(Rendering.Cameras.Camera.RenderingCamera.Position);
             Debugging.Drawing.DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
-        if (ClientConfig.DebugModeConfig.RenderColumnBorders)
+        if (ClientConfig.Rendering.RenderColumnBorders)
         {
             // Get the chunk the playerEntity is currently in
             Vector2i columnPos = CoordinateUtils.WorldToColumn(Rendering.Cameras.Camera.RenderingCamera.Position);
@@ -92,7 +97,7 @@ public class ChunkManager
     {
         Vector2i columnPos = new(chunkPos.X, chunkPos.Z);
         
-        return _loadedChunks.ContainsKey(columnPos);
+        return _loadedColumns.ContainsKey(columnPos);
     }
 
     
@@ -105,10 +110,10 @@ public class ChunkManager
     {
         Vector2i chunkColumnPos = CoordinateUtils.WorldToColumn(position);
 
-        if (!_loadedChunks.TryGetValue(chunkColumnPos, out ChunkColumn? column))
+        if (!_loadedColumns.TryGetValue(chunkColumnPos, out ChunkColumn? column))
             return null;
         
-        Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
+        Debug.Assert(position.Y is >= 0 and < Constants.CHUNK_COLUMN_HEIGHT_BLOCKS, $"Tried to get chunk at {position}, but the Y coordinate was out of range!");
 
         return column.GetChunkAtHeight(position.Y);
     }
@@ -124,7 +129,7 @@ public class ChunkManager
         Debug.Assert(chunkPos.X % Constants.CHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the X coordinate was not a multiple of {Constants.CHUNK_SIDE_LENGTH}!");
         Debug.Assert(chunkPos.Y % Constants.CHUNK_SIDE_LENGTH == 0, $"Tried to get chunk at {chunkPos}, but the Y coordinate was not a multiple of {Constants.CHUNK_SIDE_LENGTH}!");
 
-        _loadedChunks.TryGetValue(chunkPos, out ChunkColumn? chunk);
+        _loadedColumns.TryGetValue(chunkPos, out ChunkColumn? chunk);
         return chunk;
     }
 
@@ -158,7 +163,7 @@ public class ChunkManager
     /// <returns></returns>
     public BlockState GetBlockStateAtWorld(Vector3i worldPosition)
     {
-        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
             return BlockRegistry.Air.GetDefaultState();
         
         Chunk? chunk = GetChunkAt(worldPosition);
@@ -179,7 +184,7 @@ public class ChunkManager
     /// <returns></returns>
     public BlockState SetBlockStateAtWorld(Vector3i worldPosition, BlockState blockState)
     {
-        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+        if (worldPosition.Y < 0 || worldPosition.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
             return BlockRegistry.Air.GetDefaultState();
         
         Chunk? chunk = GetChunkAt(worldPosition);
@@ -195,9 +200,8 @@ public class ChunkManager
 
     private void FindChunksToUnload(Vector3 playerPos)
     {
-        _chunksToUnload.Clear();
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
-        foreach ((Vector2i position, ChunkColumn? chunk) in _loadedChunks)
+        foreach ((Vector2i position, ChunkColumn? chunk) in _loadedColumns)
         {
             Vector2i normalizedColumnPos = (position - originColumnPos) / Constants.CHUNK_SIDE_LENGTH;
             if (Constants.CIRCULAR_LOAD_REGION)
@@ -215,53 +219,61 @@ public class ChunkManager
                     continue;
             }
 
-            if (chunk.ReadyToUnload())
-                _chunksToUnload.Add(position);
+            if (chunk.ReadyToUnload() && !_columnsToUnload.Contains(position))
+            {
+                _columnUnloadQueue.Enqueue(position);
+                _columnsToUnload.Add(position);
+            }
         }
     }
 
 
     private void UnloadChunks()
     {
-        foreach (Vector2i chunkPos in _chunksToUnload)
+        int i = 0;
+        while (i < MAX_CHUNKS_TO_UNLOAD_PER_TICK && _columnUnloadQueue.TryDequeue(out Vector2i chunkPos))
         {
-            if (!_loadedChunks.Remove(chunkPos, out ChunkColumn? chunk))
+            if (!_loadedColumns.Remove(chunkPos, out ChunkColumn? chunk))
                 continue;
             
             chunk.Unload();
-            _loadedSortedChunks.Remove(chunk);
+            _loadedSortedColumns.Remove(chunk);
+            _columnsToUnload.Remove(chunkPos);
+            i++;
         }
     }
 
 
     private void FindChunksToLoad(Vector3 playerPos)
     {
-        _chunksToLoad.Clear();
-
         // Get the column position where the loading should start
         Vector2i originColumnPos = CoordinateUtils.WorldToColumn(playerPos);
 
         // Load columns in a square around the origin column in a spiral pattern.
-        foreach (Vector2i spiralPos in _chunkLoadSpiral)
+        foreach (Vector2i spiralPos in _columnLoadSpiral)
         {
             Vector2i columnPos = originColumnPos + spiralPos;
-            if (_loadedChunks.ContainsKey(columnPos))
+            if (_loadedColumns.ContainsKey(columnPos) || _columnsToLoad.Contains(columnPos))
                 continue;
 
-            _chunksToLoad.Add(columnPos);
+            _columnLoadQueue.Enqueue(columnPos);
+            _columnsToLoad.Add(columnPos);
         }
     }
 
 
     private void LoadChunks()
     {
-        foreach (Vector2i chunkPos in _chunksToLoad)
+        int i = 0;
+        while (i < MAX_CHUNKS_TO_LOAD_PER_TICK && _columnLoadQueue.TryDequeue(out Vector2i chunkPos))
         {
             ChunkColumn chunkColumn = new(chunkPos);
             chunkColumn.Load();
-            if (!_loadedChunks.TryAdd(chunkPos, chunkColumn))
+            if (!_loadedColumns.TryAdd(chunkPos, chunkColumn))
                 Logger.Error($"Failed to add chunk column at {chunkPos} to loaded columns!");
-            _loadedSortedChunks.Add(chunkColumn);
+            _loadedSortedColumns.Add(chunkColumn);
+            _columnsToLoad.Remove(chunkPos);
+            i++;
         }
     }
 
@@ -269,7 +281,7 @@ public class ChunkManager
     private void PrecomputeChunkLoadSpiral()
     {
         const int size = Constants.CHUNK_LOAD_RADIUS * 2 + 1;
-        _chunkLoadSpiral = new List<Vector2i>
+        _columnLoadSpiral = new List<Vector2i>
         {
             new(0, 0)
         };
@@ -284,10 +296,10 @@ public class ChunkManager
                 if (!inRange)
                     continue;
             }
-            _chunkLoadSpiral.Add(pos * Constants.CHUNK_SIDE_LENGTH);
+            _columnLoadSpiral.Add(pos * Constants.CHUNK_SIDE_LENGTH);
         }
 
-        Logger.Info($"Precomputed column load spiral for render distance {Constants.CHUNK_LOAD_RADIUS}, for {_chunkLoadSpiral.Count} columns.");
+        Logger.Info($"Precomputed column load spiral for render distance {Constants.CHUNK_LOAD_RADIUS}, for {_columnLoadSpiral.Count} columns.");
     }
 
 
@@ -371,7 +383,7 @@ public class ChunkManager
             }
 
 #if DEBUG
-            if (ClientConfig.DebugModeConfig.RenderRaycastPath)
+            if (ClientConfig.Rendering.Debug.RenderRaycastPath)
                 Debugging.Drawing.DebugDrawer.DrawBox(new Vector3(blockPos.X + 0.5f, blockPos.Y + 0.5f, blockPos.Z + 0.5f), Vector3.One, Color4.Red);
 #endif
 

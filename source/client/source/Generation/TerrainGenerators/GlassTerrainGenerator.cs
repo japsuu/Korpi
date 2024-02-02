@@ -1,6 +1,5 @@
 ﻿using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
 using Korpi.Client.Mathematics.Noise;
 using Korpi.Client.Registries;
 using Korpi.Client.World.Chunks;
@@ -11,7 +10,7 @@ namespace Korpi.Client.Generation.TerrainGenerators;
 [Obsolete("This terrain generator is not finished yet.")]
 public class GlassTerrainGenerator : ITerrainGenerator
 {
-    private const int SEA_LEVEL = Constants.CHUNK_HEIGHT_BLOCKS / 4 + 16;
+    private const int SEA_LEVEL = Constants.CHUNK_COLUMN_HEIGHT_BLOCKS / 4 + 16;
     private const int TERRAIN_HEIGHT_MIN = SEA_LEVEL - 16;
     private const int TERRAIN_HEIGHT_MAX = SEA_LEVEL + 16;
     
@@ -40,9 +39,6 @@ public class GlassTerrainGenerator : ITerrainGenerator
     public void ProcessChunk(in ChunkColumn chunkColumn)
     {
         throw new NotImplementedException();
-        DebugStats.StartChunkGeneration();
-
-        DebugStats.StopChunkGeneration();
     }
 
 

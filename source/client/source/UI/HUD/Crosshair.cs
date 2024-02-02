@@ -1,7 +1,7 @@
-﻿using Korpi.Client.Rendering.Shaders;
+﻿using Korpi.Client.Configuration;
+using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;
-using Korpi.Client.Window;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.UI.HUD;
@@ -46,6 +46,10 @@ public sealed class Crosshair : IDisposable
 
     public void Draw()
     {
+#if DEBUG
+        if (!ClientConfig.Rendering.Debug.RenderCrosshair)
+            return;
+#endif
         GL.Enable(EnableCap.Blend);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         

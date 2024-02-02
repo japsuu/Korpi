@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Korpi.Client.Window;
+namespace Korpi.Client;
 
 public static class Input
 {

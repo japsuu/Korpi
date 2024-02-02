@@ -8,7 +8,7 @@ namespace Korpi.Client.Threading.Pooling;
 /// <typeparam name="T">The type of the items in the queue.</typeparam>
 public class PriorityWorkQueue<T>
 {
-    private readonly BlockingCollection<T> _workQueueLow;   // TODO: Switch to a priority queue, and apply score multiplier to chunks that are in view frustum.
+    private readonly BlockingCollection<T> _workQueueLow;
     private readonly BlockingCollection<T> _workQueueNormal;
     private readonly BlockingCollection<T> _workQueueHigh;
     private readonly BlockingCollection<T> _workQueueCritical;
@@ -42,24 +42,22 @@ public class PriorityWorkQueue<T>
                                      _workQueueCritical.IsAddingCompleted;
 
 
-    public void Add(T item, WorkItemPriority priority)
+    public void Add(T item, float workItemPriority)
     {
-        switch (priority)
+        switch (workItemPriority)
         {
-            case WorkItemPriority.Low:
-                _workQueueLow.Add(item);
-                break;
-            case WorkItemPriority.Normal:
-                _workQueueNormal.Add(item);
-                break;
-            case WorkItemPriority.High:
-                _workQueueHigh.Add(item);
-                break;
-            case WorkItemPriority.Critical:
+            case <= WorkItemPriority.HIGHEST:
                 _workQueueCritical.Add(item);
                 break;
+            case <= WorkItemPriority.HIGH:
+                _workQueueHigh.Add(item);
+                break;
+            case <= WorkItemPriority.NORMAL:
+                _workQueueNormal.Add(item);
+                break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(priority), priority, null);
+                _workQueueLow.Add(item);
+                break;
         }
     }
 

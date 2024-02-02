@@ -105,9 +105,9 @@ public class Chunk
         // Frustum check.
 #if DEBUG
         // If in debug mode, allow the player to toggle frustum culling on/off
-        if (ClientConfig.DebugModeConfig.DoFrustumCulling)
+        if (ClientConfig.Rendering.Debug.DoFrustumCulling)
         {
-            Frustum cameraViewFrustum = ClientConfig.DebugModeConfig.OnlyPlayerFrustumCulling
+            Frustum cameraViewFrustum = ClientConfig.Rendering.Debug.OnlyPlayerFrustumCulling
                 ? PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum
                 : Camera.RenderingCamera.ViewFrustum;
 
@@ -159,6 +159,7 @@ public class Chunk
 
     public void Load()
     {
+        
     }
 
 
@@ -247,6 +248,7 @@ public class Chunk
 
     private void ChangeState(ChunkMeshState newState)
     {
+        Debug.Assert(SystemInfo.MainThreadId == Environment.CurrentManagedThreadId, "Chunk state should only be changed on the main thread.");
         Debug.Assert(HasBeenGenerated, "Chunk is trying to change the mesh state before it has been generated.");
         
         if (_currentMeshState == newState && newState != ChunkMeshState.UNINITIALIZED)
@@ -284,7 +286,7 @@ public class Chunk
                 break;
             case ChunkMeshState.MESHING:
                 Interlocked.Increment(ref _currentJobId);
-                GlobalThreadPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY)), WorkItemPriority.High);
+                GlobalJobPool.DispatchJob(new MeshingJob(_currentJobId, this, () => ChangeState(ChunkMeshState.READY), _hasBeenMeshed));
                 break;
             case ChunkMeshState.READY:
                 _hasBeenMeshed = true;
@@ -349,7 +351,7 @@ public class Chunk
         foreach (Vector3i vector in ChunkOffsets.OffsetsAsChunkVectors(flags))
         {
             Vector3i neighbourPos = Position + vector;
-            if (neighbourPos.Y < 0 || neighbourPos.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+            if (neighbourPos.Y < 0 || neighbourPos.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
                 continue;
             Chunk? neighbourChunk = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(neighbourPos);
 
@@ -383,7 +385,7 @@ public class Chunk
 #if DEBUG
     private void DebugDraw()
     {
-        if (!ClientConfig.DebugModeConfig.RenderChunkMeshState)
+        if (!ClientConfig.Rendering.Debug.RenderChunkMeshState)
             return;
 
         const float halfAChunk = Constants.CHUNK_SIDE_LENGTH / 2f;

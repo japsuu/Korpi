@@ -105,14 +105,10 @@ public sealed class WorkerThread
             {
                 try
                 {
-                    Interlocked.Decrement(ref Debugging.DebugStats.AvailableThreads);
-
                     job!.Execute();
 
                     if (job.CompletionState == JobCompletionState.None)
                         job.SignalCompletion(JobCompletionState.Completed);
-                    
-                    Interlocked.Increment(ref Debugging.DebugStats.AvailableThreads);
                 }
                 catch (Exception e)
                 {

@@ -1,5 +1,7 @@
 ﻿## Basics & Requirements
 
+![Korpi banner image](img/banner.png)
+
 ### What is Korpi?
 
 Korpi is a voxel[*](#voxel-engine-vs-korpi) engine written in C#, that uses OpenGL as the rendering backend. I'm working on the engine to make it more stable and feature complete.

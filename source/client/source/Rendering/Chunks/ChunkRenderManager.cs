@@ -8,9 +8,6 @@ namespace Korpi.Client.Rendering.Chunks;
 public class ChunkRenderManager
 {
     private ChunkRenderer? _renderer;
-
-
-    public static int GeneratedRendererCount { get; private set; }
     
     
     public void AddOrUpdateMesh(ChunkMesh mesh)
@@ -22,7 +19,6 @@ public class ChunkRenderManager
         else
         {
             _renderer = new ChunkRenderer(mesh);
-            GeneratedRendererCount++;
         }
     }
     
@@ -31,7 +27,6 @@ public class ChunkRenderManager
     {
         _renderer?.Dispose();
         _renderer = null;
-        GeneratedRendererCount--;
     }
     
     

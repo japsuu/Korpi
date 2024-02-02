@@ -7,9 +7,9 @@ namespace Korpi.Client.Threading.Pooling;
 /// <summary>
 /// Custom thread pool with progressive throttling.
 /// </summary>
-public sealed class ThreadPool
+public sealed class JobThreadPool : IJobPool
 {
-    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ThreadPool));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(JobThreadPool));
 
     private readonly List<WorkerThread> _workers;
     private readonly PriorityWorkQueue<IKorpiJob> _workQueue;
@@ -20,27 +20,25 @@ public sealed class ThreadPool
     /// </summary>
     /// <param name="threadCount">Number of workers threads to allocate.</param>
     /// <param name="config">The thread config to use for the workers threads.</param>
-    public ThreadPool(uint threadCount, ThreadConfig config)
+    public JobThreadPool(uint threadCount, ThreadConfig config)
     {
         if (threadCount == 0)
             throw new ArgumentException("Thread count must be greater than zero!");
 
         _workQueue = new PriorityWorkQueue<IKorpiJob>();
         _workers = new List<WorkerThread>();
-
-        Debugging.DebugStats.AvailableThreads = threadCount;
         
         for (int i = 0; i < threadCount; i++)
             _workers.Add(new WorkerThread(_workQueue, config));
     }
 
 
-    public void EnqueueWorkItem(IKorpiJob korpiJob, WorkItemPriority priority)
+    public void EnqueueWorkItem(IKorpiJob korpiJob)
     {
         if (_workQueue.IsAddingCompleted)
             throw new InvalidOperationException("Cannot queue a work item if the pool is shutting down.");
 
-        _workQueue.Add(korpiJob, priority);
+        _workQueue.Add(korpiJob, korpiJob.GetPriority());
     }
 
 
@@ -62,6 +60,12 @@ public sealed class ThreadPool
                 return;
             }
         }
+    }
+
+
+    public void FixedUpdate()
+    {
+        
     }
 
 

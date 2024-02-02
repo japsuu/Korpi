@@ -6,10 +6,10 @@ using Korpi.Client.Generation.TerrainGenerators;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
-using Korpi.Client.Window;
 using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using Cursor = Korpi.Client.Cursor;
 
 namespace Korpi.Client.World;
 
@@ -54,7 +54,7 @@ public class GameWorld
     {
         ChunkManager.Tick();
         EntityManager.FixedUpdate();
-        DebugStats.LoadedChunkCount = ChunkManager.LoadedChunksCount;
+        DebugStats.LoadedChunkCount = ChunkManager.LoadedColumnsCount;
     }
 
 
@@ -63,7 +63,7 @@ public class GameWorld
         Ray ray = new Ray(start, direction);
         RaycastResult raycastResult = ChunkManager.RaycastBlocks(ray, maxDistance);
 
-        if (!GameClient.IsPlayerInGui)
+        if (Cursor.IsGrabbed)
         {
             if (Input.MouseState.IsButtonPressed(MouseButton.Left))
             {
@@ -84,10 +84,10 @@ public class GameWorld
         }
 
 #if DEBUG
-        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHit)
+        if (Configuration.ClientConfig.Rendering.Debug.RenderRaycastHit)
             DebugDrawer.DrawSphere(raycastResult.HitPosition, 0.5f, Color4.Red);
         
-        if (Configuration.ClientConfig.DebugModeConfig.RenderRaycastHitBlock)
+        if (Configuration.ClientConfig.Rendering.Debug.HighlightTargetedBlock)
 #endif
             if (!raycastResult.BlockState.IsAir)
                 DebugDrawer.DrawBox(raycastResult.HitBlockPosition + new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1, 1, 1), Color4.Red);

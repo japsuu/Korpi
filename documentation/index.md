@@ -4,6 +4,8 @@ _layout: landing
 
 # Korpi Documentation
 
+![Korpi banner image](img/banner.png)
+
 >### `⚠️ Warning! ⚠️`
 > _This documentation is still a work in progress. It is not complete and may contain errors._
 
@@ -40,4 +42,5 @@ The Korpi source code is available [on GitHub](https://github.com/japsuu/Korpi),
 - Release cursor: <kbd>Esc</kbd>
 - Toggle freecam: <kbd>F5</kbd>
 - Capture screenshot: <kbd>F2</kbd>
+- Toggle full-screen: <kbd>F11</kbd>
 - Reload shaders (shader hot-reload): <kbd>F10</kbd>

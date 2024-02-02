@@ -1,6 +1,5 @@
 ﻿using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
-using Korpi.Client.Debugging;
 using Korpi.Client.Registries;
 using Korpi.Client.World.Chunks;
 
@@ -25,15 +24,13 @@ public class FlatTerrainGenerator : ITerrainGenerator
 
     public void ProcessChunk(in ChunkColumn chunkColumn)
     {
-        DebugStats.StartChunkGeneration();
-        
         BlockState stone = BlockRegistry.GetBlockDefaultState(1);
         
         for (int z = 0; z < Constants.CHUNK_SIDE_LENGTH; z++)
         {
             for (int x = 0; x < Constants.CHUNK_SIDE_LENGTH; x++)
             {
-                for (int y = 0; y < Constants.CHUNK_HEIGHT_BLOCKS; y++)
+                for (int y = 0; y < Constants.CHUNK_COLUMN_HEIGHT_BLOCKS; y++)
                 {
                     if (y > TERRAIN_HEIGHT)
                         continue;
@@ -42,7 +39,5 @@ public class FlatTerrainGenerator : ITerrainGenerator
                 }
             }
         }
-
-        DebugStats.StopChunkGeneration();
     }
 }

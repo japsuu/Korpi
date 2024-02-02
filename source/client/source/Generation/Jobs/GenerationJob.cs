@@ -1,4 +1,6 @@
-﻿using Korpi.Client.Configuration;
+﻿using System.Diagnostics;
+using Korpi.Client.Configuration;
+using Korpi.Client.Debugging;
 using Korpi.Client.Logging;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
@@ -14,6 +16,8 @@ public class GenerationJob : KorpiJob
     private readonly long _id;
     private readonly ChunkColumn _chunkColumn;
     private readonly Action _callback;
+    
+    public override float GetPriority() => WorkItemPriority.NORMAL;
 
 
     public GenerationJob(long id, ChunkColumn chunkColumn, Action callback)
@@ -22,13 +26,13 @@ public class GenerationJob : KorpiJob
         _chunkColumn = chunkColumn;
         _callback = callback;
         
-        Interlocked.Increment(ref Debugging.DebugStats.ChunksInGenerationQueue);
+        Interlocked.Increment(ref DebugStats.ChunksWaitingGeneration);
     }
 
 
     public override void Execute()
     {
-        Interlocked.Decrement(ref Debugging.DebugStats.ChunksInGenerationQueue);
+        Interlocked.Decrement(ref DebugStats.ChunksWaitingGeneration);
         
         // Abort the job if the chunkColumn's job ID does not match the job ID.
         if (_chunkColumn.CurrentJobId != _id)
@@ -39,9 +43,13 @@ public class GenerationJob : KorpiJob
         }
 
         // Acquire a read lock on the chunkColumn and generate terrain data.
-        if (_chunkColumn.ThreadLock.TryEnterWriteLock(Constants.JOB_LOCK_TIMEOUT_MS))
+        if (_chunkColumn.ThreadLock.TryEnterWriteLock(Constants.JOB_LOCK_TIMEOUT_MS))  //WARN: This lock might not be necessary.
         {
+            Stopwatch timer = Stopwatch.StartNew();
             GameWorld.CurrentGameWorld.TerrainGenerator.ProcessChunk(_chunkColumn);
+        
+            timer.Stop();
+            DebugStats.PostGenerationTime(timer.ElapsedMilliseconds);
             
             _chunkColumn.ThreadLock.ExitWriteLock();
 

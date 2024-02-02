@@ -9,6 +9,12 @@ public interface IKorpiJob
     /// The current completion state of the job.
     /// </summary>
     public JobCompletionState CompletionState { get; }
+    
+    /// <summary>
+    /// Returns the current priority of the job.
+    /// </summary>
+    /// <returns></returns>
+    public float GetPriority();
 
     /// <summary>
     /// Executes the job.

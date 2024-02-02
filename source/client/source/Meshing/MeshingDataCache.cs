@@ -25,7 +25,7 @@ public class MeshingDataCache
         foreach (Vector3i offset in ChunkOffsets.ChunkNeighbourOffsets)
         {
             Vector3i position = chunk.Position + offset;
-            if (position.Y < 0 || position.Y >= Constants.CHUNK_HEIGHT_BLOCKS)
+            if (position.Y < 0 || position.Y >= Constants.CHUNK_COLUMN_HEIGHT_BLOCKS)
                 continue;
             Chunk? neighbour = GameWorld.CurrentGameWorld.ChunkManager.GetChunkAt(position);
             if (neighbour == null)

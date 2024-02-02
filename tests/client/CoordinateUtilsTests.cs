@@ -1,5 +1,4 @@
 using Korpi.Client.Mathematics;
-using Korpi.Client.Utils;
 using OpenTK.Mathematics;
 
 namespace ClientTests;
