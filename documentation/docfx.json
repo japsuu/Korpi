@@ -42,8 +42,8 @@
       "_appName": "Korpi",
       "_appTitle": "Korpi",
       "_enableSearch": true,
-      "_appLogoPath": "img/logo.png",
-      "_appFaviconPath": "img/favicon.ico",
+      "_appLogoPath": "/img/logo.png",
+      "_appFaviconPath": "/img/favicon.ico",
       "pdf": true
     }
   }
