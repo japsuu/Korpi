@@ -6,7 +6,7 @@
 [![Discord](https://img.shields.io/discord/1196068889918984272?style=flat&label=Discord)](https://discord.gg/EFYfVc3vcb)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/japsuu/Korpi/master)
 
-![Cave generation screenshot](screenshots/cave_gen.png)
+![Cave generation screenshot](screenshots/cave_gen_banner.png)
 
 Korpi is a voxel[*](https://japsuu.github.io/Korpi/faq/#voxel-engine-vs-korpi) engine written in C#, that uses OpenGL as the rendering backend.
 
