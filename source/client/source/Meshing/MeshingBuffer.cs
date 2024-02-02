@@ -232,7 +232,7 @@ public abstract class MeshingBuffer : IDisposable
         }
 
 #if DEBUG
-        if (ClientConfig.Debugging.EnableAmbientOcclusion)
+        if (ClientConfig.Rendering.Debug.EnableAmbientOcclusion)
         {
 #endif
             int ao0 = CalculateAoIndex(dataCache, aoLeft0, aoRight0, aoMiddle0);

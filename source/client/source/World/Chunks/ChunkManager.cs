@@ -70,14 +70,14 @@ public class ChunkManager
 #if DEBUG
     public static void DrawDebugBorders()
     {
-        if (ClientConfig.Debugging.RenderChunkBorders)
+        if (ClientConfig.Rendering.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
             Vector3i chunkPos = CoordinateUtils.WorldToChunk(Rendering.Cameras.Camera.RenderingCamera.Position);
             Debugging.Drawing.DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
-        if (ClientConfig.Debugging.RenderColumnBorders)
+        if (ClientConfig.Rendering.RenderColumnBorders)
         {
             // Get the chunk the playerEntity is currently in
             Vector2i columnPos = CoordinateUtils.WorldToColumn(Rendering.Cameras.Camera.RenderingCamera.Position);
@@ -383,7 +383,7 @@ public class ChunkManager
             }
 
 #if DEBUG
-            if (ClientConfig.Debugging.RenderRaycastPath)
+            if (ClientConfig.Rendering.Debug.RenderRaycastPath)
                 Debugging.Drawing.DebugDrawer.DrawBox(new Vector3(blockPos.X + 0.5f, blockPos.Y + 0.5f, blockPos.Z + 0.5f), Vector3.One, Color4.Red);
 #endif
 

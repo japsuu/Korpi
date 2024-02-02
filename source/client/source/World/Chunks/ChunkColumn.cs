@@ -96,9 +96,9 @@ public class ChunkColumn : IChunkColumn
 #if DEBUG
 
         // If in debug mode, allow the player to toggle frustum culling on/off
-        if (ClientConfig.Debugging.DoFrustumCulling)
+        if (ClientConfig.Rendering.Debug.DoFrustumCulling)
         {
-            Frustum cameraViewFrustum = ClientConfig.Debugging.OnlyPlayerFrustumCulling
+            Frustum cameraViewFrustum = ClientConfig.Rendering.Debug.OnlyPlayerFrustumCulling
                 ? PlayerEntity.LocalPlayerEntity.Camera.ViewFrustum
                 : Camera.RenderingCamera.ViewFrustum;
 

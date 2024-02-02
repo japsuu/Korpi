@@ -1,5 +1,4 @@
-﻿using Korpi.Client.Window;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Cameras;
 
@@ -131,7 +130,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
         Up = Vector3.UnitY;
         Right = Vector3.UnitX;
 
-        GameClient.ClientResized += RecalculateProjectionMatrix;
+        WindowInfo.ClientResized += OnClientResized;
         
         Initialize();
         ActiveCameras.Add(this);
@@ -152,7 +151,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
         PitchDegrees = pitch;
         YawDegrees = yaw;
 
-        GameClient.ClientResized += RecalculateProjectionMatrix;
+        WindowInfo.ClientResized += OnClientResized;
         
         Initialize();
         ActiveCameras.Add(this);
@@ -192,6 +191,12 @@ public abstract class Camera : IDisposable, IComparable<Camera>
     }
 
 
+    private void OnClientResized(WindowInfo.WindowResizeEventArgs windowResizeEventArgs)
+    {
+        RecalculateProjectionMatrix();
+    }
+
+
     private void Initialize()
     {
         RecalculateViewMatrix();
@@ -215,7 +220,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
     /// </summary>
     private void RecalculateProjectionMatrix()
     {
-        ProjectionMatrix = Matrix4.CreatePerspectiveFieldOfView(FovRadians, GameClient.WindowAspectRatio, DEPTH_NEAR, DEPTH_FAR);
+        ProjectionMatrix = Matrix4.CreatePerspectiveFieldOfView(FovRadians, WindowInfo.ClientAspectRatio, DEPTH_NEAR, DEPTH_FAR);
         RecalculateFrustum();
     }
 
@@ -266,7 +271,7 @@ public abstract class Camera : IDisposable, IComparable<Camera>
         // Dispose managed resources.
         ActiveCameras.Remove(this);
         RenderingCamera = ActiveCameras.Min!;
-        GameClient.ClientResized -= RecalculateProjectionMatrix;
+        WindowInfo.ClientResized -= OnClientResized;
     }
 
 

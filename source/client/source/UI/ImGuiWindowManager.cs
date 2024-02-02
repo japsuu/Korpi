@@ -18,7 +18,6 @@ public static class ImGuiWindowManager
         GenerationWindow unused5 = new();
 #endif
         CameraWindow unused2 = new();
-        DebugTextWindow unused3 = new();
         DebugStatsWindow unused4 = new();
         ProfilerWindow unused6 = new();
     }

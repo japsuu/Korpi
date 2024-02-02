@@ -18,4 +18,10 @@ public interface IWindowConfig
     /// </summary>
     [Option(Alias = "window_height", DefaultValue = 720)]
     public int WindowHeight { get; set; }
+
+    /// <summary>
+    /// Is the window fullscreen?
+    /// </summary>
+    [Option(Alias = "window_fullscreen", DefaultValue = false)]
+    public bool Fullscreen { get; set; }
 }

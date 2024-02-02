@@ -4,7 +4,6 @@ using Korpi.Client.ECS.Entities;
 using Korpi.Client.Mathematics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
-using Korpi.Client.Window;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.UI.Windows;
@@ -45,8 +44,8 @@ public class CameraWindow : ImGuiWindow
 #if DEBUG
         ImGui.Separator();
         ImGui.Text("Frustum Culling");
-        ImGui.Checkbox("Enabled", ref Configuration.ClientConfig.Debugging.DoFrustumCulling);
-        ImGui.Checkbox("Use player for frustum culling", ref Configuration.ClientConfig.Debugging.OnlyPlayerFrustumCulling);
+        ImGui.Checkbox("Enabled", ref Configuration.ClientConfig.Rendering.Debug.DoFrustumCulling);
+        ImGui.Checkbox("Use player for frustum culling", ref Configuration.ClientConfig.Rendering.Debug.OnlyPlayerFrustumCulling);
 #endif
     }
 }

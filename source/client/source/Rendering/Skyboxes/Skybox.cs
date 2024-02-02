@@ -2,7 +2,6 @@
 using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;
-using Korpi.Client.Window;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -110,6 +109,10 @@ public class Skybox : IDisposable
 
     public void Draw()
     {
+#if DEBUG
+        if (!ClientConfig.Rendering.Debug.RenderSkybox)
+            return;
+#endif
         // Update the skybox view matrix.
         Matrix4 modelMatrix = Matrix4.Identity;
         if (_enableStarsRotation)

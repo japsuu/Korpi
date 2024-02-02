@@ -1,5 +1,4 @@
 ﻿using Korpi.Client.Threading.Jobs;
-using Korpi.Client.Window;
 
 namespace Korpi.Client.Configuration;
 

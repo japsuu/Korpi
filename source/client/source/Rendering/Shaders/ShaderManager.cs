@@ -1,5 +1,4 @@
 ﻿using Korpi.Client.Rendering.Shaders.ShaderPrograms;
-using Korpi.Client.Window;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders;
@@ -88,8 +87,8 @@ public class ShaderManager : IDisposable
         Vector2 screenCoordinates = new Vector2(normalizedDeviceCoordinates.X, -normalizedDeviceCoordinates.Y);
         screenCoordinates += Vector2.One;
         screenCoordinates /= 2;
-        screenCoordinates.X *= GameClient.WindowWidth;
-        screenCoordinates.Y *= GameClient.WindowHeight;
+        screenCoordinates.X *= WindowInfo.ClientWidth;
+        screenCoordinates.Y *= WindowInfo.ClientHeight;
         screenPos = screenCoordinates;
         return true;
     }

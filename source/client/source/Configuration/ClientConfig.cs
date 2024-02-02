@@ -24,18 +24,15 @@ public static class ClientConfig
     /// </summary>
     public static ILoggingConfig Logging { get; private set; } = null!;
 
-#if DEBUG
     /// <summary>
-    /// Debug mode configuration. Only available in debug builds.
+    /// Render configuration.
     /// </summary>
-    public static DebugModeConfig Debugging { get; private set; } = null!;
-#endif
+    public static RenderingConfig Rendering { get; private set; } = null!;
     
     /// <summary>
-    /// Self profiling configuration.
-    /// Null if self-profiling is not enabled.
+    /// Profiling configuration.
     /// </summary>
-    public static SelfProfilingConfig? Profiling { get; private set; }
+    public static ProfilingConfig Profiling { get; private set; } = null!;
 
 
     /// <summary>
@@ -52,26 +49,21 @@ public static class ClientConfig
         
         // Window configuration
         string windowConfigPath = Path.Combine(configDirectory.FullName, "config_window.json");
-        File.Create(windowConfigPath).Close();
         Window = new ConfigurationBuilder<IWindowConfig>()
             .UseJsonFile(windowConfigPath)
             .Build();
         
         // Logging configuration
         string loggingConfigPath = Path.Combine(configDirectory.FullName, "config_logging.json");
-        File.Create(loggingConfigPath).Close();
         Logging = new ConfigurationBuilder<ILoggingConfig>()
             .UseJsonFile(loggingConfigPath)
             .Build();
 
-#if DEBUG
-        // Debug configuration
-        Debugging = new DebugModeConfig();
-#endif
+        // Render configuration
+        Rendering = new RenderingConfig();
         
-        // Self profiling configuration
-        if (IsSelfProfile(args))
-            Profiling = new SelfProfilingConfig(tempDirectory);
+        // Profiling configuration
+        Profiling = new ProfilingConfig(IsSelfProfile(args), tempDirectory);
         
         Logger.Info("Configuration files initialized.");
         return GetWindowSettings();
@@ -87,7 +79,7 @@ public static class ClientConfig
         
         NativeWindowSettings nws = new()
         {
-            Size = new Vector2i(Window.WindowWidth, Window.WindowHeight),
+            ClientSize = new Vector2i(Window.WindowWidth, Window.WindowHeight),
             StartVisible = false,
             Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
             Icon = IoUtils.GetIcon(),
@@ -95,6 +87,7 @@ public static class ClientConfig
             API = ContextAPI.OpenGL,
             Profile = ContextProfile.Core,
             APIVersion = new Version(4, 2),
+            AspectRatio = (16, 9),
 #if DEBUG
             Flags = ContextFlags.Debug
 #endif
