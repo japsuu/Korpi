@@ -28,9 +28,10 @@ namespace Korpi.Client;
 public class GameClient : GameWindow
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameClient));
+    
+    public static event Action? Disposing;
 
     private ImGuiController _imGuiController = null!;
-    private ShaderManager _shaderManager = null!;
     private GameWorld _gameWorld = null!;
     private GameWorldRenderer _gameWorldRenderer = null!;
     private Crosshair _crosshair = null!;
@@ -80,7 +81,7 @@ public class GameClient : GameWindow
         TextureRegistry.StartTextureRegistration();
         ModLoader.LoadAllMods();
         TextureRegistry.FinishTextureRegistration();
-        _shaderManager = new ShaderManager();
+        ShaderManager.Initialize();
 
         // World initialization.
         GameTime.Initialize();
@@ -112,7 +113,6 @@ public class GameClient : GameWindow
         Logger.Info("Shutting down...");
         SaveConfigs();
         _crosshair.Dispose();
-        _shaderManager.Dispose();
         _gameWorldRenderer.Dispose();
         _playerEntity.Disable();
         ChunkMesher.Dispose();
@@ -126,6 +126,8 @@ public class GameClient : GameWindow
             DotTrace.Detach();   // Detach the profiler from the current process.
             Logger.Warn($"DotTrace profile output saved to {ClientConfig.Profiling.SelfProfileTargetPath}.");
         }
+        
+        Disposing?.Invoke();
     }
 
 

@@ -3,7 +3,19 @@ using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders;
 
-public class ShaderManager : IDisposable
+/// <summary>
+/// Manages all shader programs.
+/// 
+/// The manager is responsible for compiling and providing the shader programs.
+/// 
+/// The manager also keeps track of the projection and view matrices and provides the
+/// screen position of a world position.
+/// 
+/// The manager also provides events for when the projection and view matrices are changed.
+/// TODO: Implement Uniform Buffer Objects (UBOs) for common uniforms: https://www.khronos.org/opengl/wiki/Uniform_Buffer_Objects
+/// TODO: Abstract this class away? There's too many static references to the shader programs.
+/// </summary>
+public static class ShaderManager
 {
     private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ShaderManager));
     
@@ -22,9 +34,10 @@ public class ShaderManager : IDisposable
     private static Matrix4 ViewMatrix { get; set; } = Matrix4.Identity;
 
 
-    public ShaderManager()  // TODO: Implement Uniform Buffer Objects (UBOs) for common uniforms: https://www.khronos.org/opengl/wiki/Uniform_Buffer_Objects
+    public static void Initialize()
     {
         CompileAllShaderPrograms();
+        GameClient.Disposing += Dispose;
     }
 
 
@@ -94,7 +107,7 @@ public class ShaderManager : IDisposable
     }
     
     
-    public void Dispose()
+    private static void Dispose()
     {
         PositionColorShader.Dispose();
         BlockOpaqueCutoutShader.Dispose();
@@ -103,7 +116,5 @@ public class ShaderManager : IDisposable
         UiPositionTexShader.Dispose();
         SkyboxShader.Dispose();
         CubemapTexShader.Dispose();
-        
-        GC.SuppressFinalize(this);
     }
 }
