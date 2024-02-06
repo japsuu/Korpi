@@ -1,4 +1,4 @@
-﻿namespace Common;
+﻿namespace Korpi.Common;
 
 /// <summary>
 /// Represents a client connected to a game server.

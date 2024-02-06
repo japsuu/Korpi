@@ -39,4 +39,8 @@
     <Folder Include="Assets\shaders\include\" />
     <Folder Include="Assets\textures\icon\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\server\Server.csproj" />
+  </ItemGroup>
 </Project>

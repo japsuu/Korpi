@@ -1,4 +1,6 @@
 ﻿using Korpi.Client.Configuration;
+using Korpi.Common;
+using Korpi.Server;
 using OpenTK.Windowing.Desktop;
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
@@ -18,6 +20,9 @@ internal static class Program
         
         // Initialize the configuration.
         (GameWindowSettings gws, NativeWindowSettings nws) = ClientConfig.Initialize(args);
+        
+        // Start a game server.
+        using IGameServer server = GameServerStarter.StartGameServer(new GameServerConfiguration());
         
         // Create and run the game client.
         using GameClient client = new(gws, nws);
