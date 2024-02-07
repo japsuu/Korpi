@@ -10,6 +10,17 @@
     <Company>Japsu</Company>
     <Product>Korpi Client</Product>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+		<DefineConstants>$(DefineConstants);TRACE;CLIENT</DefineConstants>
+		<Configurations>Debug;Release</Configurations>
+		<Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>TRACE;CLIENT</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>TRACE;CLIENT</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
