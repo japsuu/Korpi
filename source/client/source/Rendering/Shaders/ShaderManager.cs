@@ -37,7 +37,7 @@ public static class ShaderManager
     public static void Initialize()
     {
         CompileAllShaderPrograms();
-        GameClient.Disposing += Dispose;
+        GameClientWindow.Disposing += Dispose;
     }
 
 

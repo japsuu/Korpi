@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTests", "tests\client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "source\server\Server.csproj", "{FF668731-0884-4080-B82F-F8A2BC83AE2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "source\common\Common.csproj", "{39D68446-1B36-4EA0-B185-1473FE7AC2E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking", "source\networking\Networking.csproj", "{18923064-458E-49F3-A914-475C8FD6267A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{FF668731-0884-4080-B82F-F8A2BC83AE2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF668731-0884-4080-B82F-F8A2BC83AE2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF668731-0884-4080-B82F-F8A2BC83AE2D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39D68446-1B36-4EA0-B185-1473FE7AC2E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39D68446-1B36-4EA0-B185-1473FE7AC2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39D68446-1B36-4EA0-B185-1473FE7AC2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39D68446-1B36-4EA0-B185-1473FE7AC2E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18923064-458E-49F3-A914-475C8FD6267A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18923064-458E-49F3-A914-475C8FD6267A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18923064-458E-49F3-A914-475C8FD6267A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18923064-458E-49F3-A914-475C8FD6267A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

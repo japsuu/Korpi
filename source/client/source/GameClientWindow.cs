@@ -25,9 +25,9 @@ namespace Korpi.Client;
 /// <summary>
 /// The main game client window.
 /// </summary>
-public class GameClient : GameWindow
+public class GameClientWindow : GameWindow
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameClient));
+    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameClientWindow));
     
     public static event Action? Disposing;
 
@@ -43,7 +43,7 @@ public class GameClient : GameWindow
 #endif
 
 
-    public GameClient(GameWindowSettings gws, NativeWindowSettings nws) : base(gws, nws) { }
+    public GameClientWindow(GameWindowSettings gws, NativeWindowSettings nws) : base(gws, nws) { }
 
 
     protected override void OnLoad()
