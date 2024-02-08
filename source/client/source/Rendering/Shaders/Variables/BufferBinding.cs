@@ -1,3 +1,4 @@
+using Common.Logging;
 using Korpi.Client.Rendering.Buffers;
 using OpenTK.Graphics.OpenGL4;
 
@@ -8,7 +9,7 @@ namespace Korpi.Client.Rendering.Shaders.Variables;
 /// </summary>
 public abstract class BufferBinding : ProgramVariable
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(BufferBinding));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(BufferBinding));
 
     /// <summary>
     /// The target to use when binding to this point.

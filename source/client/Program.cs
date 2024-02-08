@@ -1,7 +1,7 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Networking;
+using Korpi.Networking.Transports.LiteNetLib;
 using Korpi.Server;
-using Korpi.Networking.Pass;
 using OpenTK.Windowing.Desktop;
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
@@ -21,10 +21,10 @@ internal static class Program
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         
         // Initialize the NetworkManager with the transport layer we want to use.
-        NetworkManager.Initialize(new PassThroughNetworkTransport());
+        NetworkManager.InitializeSingleton(new LiteNetLibTransport());
 
         // Create and start a network game server.
-        using GameServer server = new(GameServerConfiguration.Default());
+        using GameServer server = new(GameServerConfiguration.Default().WithPasswordAuthentication("password", NetworkManager.Instance));
         server.Start();
 
         // Initialize the client configuration.

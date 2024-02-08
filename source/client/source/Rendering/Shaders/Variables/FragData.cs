@@ -1,3 +1,4 @@
+using Common.Logging;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Rendering.Shaders.Variables;
@@ -9,7 +10,7 @@ namespace Korpi.Client.Rendering.Shaders.Variables;
 /// </summary>
 public sealed class FragData : ProgramVariable
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(FragData));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(FragData));
 
     /// <summary>
     /// The location of the output.

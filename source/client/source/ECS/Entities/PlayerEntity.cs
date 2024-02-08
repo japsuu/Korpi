@@ -3,7 +3,6 @@ using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using Cursor = Korpi.Client.Cursor;
 
 namespace Korpi.Client.ECS.Entities;
 

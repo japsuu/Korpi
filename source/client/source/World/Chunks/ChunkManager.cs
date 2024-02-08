@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Common.Logging;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
@@ -19,7 +20,7 @@ public class ChunkManager
     private const int MAX_CHUNKS_TO_LOAD_PER_TICK = 16;
     private const int MAX_CHUNKS_TO_UNLOAD_PER_TICK = 8;
     
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkManager));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ChunkManager));
     
     private readonly Dictionary<Vector2i, ChunkColumn> _loadedColumns = new();
     private readonly SortedSet<ChunkColumn> _loadedSortedColumns = new(new ChunkDistanceComparer()); //NOTE: This doesn't keep the chunks sorted when the playerEntity moves.

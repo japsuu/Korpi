@@ -1,5 +1,5 @@
-﻿using Korpi.Client.Debugging;
-using Korpi.Client.Logging;
+﻿using Common.Logging;
+using Korpi.Client.Debugging;
 using Korpi.Client.Meshing;
 using Korpi.Client.Rendering.Shaders;
 using OpenTK.Graphics.OpenGL4;

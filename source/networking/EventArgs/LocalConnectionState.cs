@@ -1,4 +1,4 @@
-﻿namespace Korpi.Networking.ConnectionState;
+﻿namespace Korpi.Networking.EventArgs;
 
 /// <summary>
 /// States the local connection can be in.

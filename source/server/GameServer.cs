@@ -18,7 +18,8 @@ public class GameServer : IDisposable
     public GameServer(GameServerConfiguration configuration)
     {
         Configuration = configuration;
-        NetworkManager.Server.SetMaxConnections(Configuration.MaxConnections);
+        NetworkManager.Instance.Server.SetMaxConnections(Configuration.MaxConnections);
+        NetworkManager.Instance.Server.SetAuthenticator(Configuration.Authenticator);
     }
 
 
@@ -27,9 +28,20 @@ public class GameServer : IDisposable
     /// </summary>
     public void Start()
     {
-        NetworkManager.Server.StartServer(Configuration.BindAddress, Configuration.BindPort);
+        NetworkManager.Instance.Server.StartServer(Configuration.BindAddress, Configuration.BindPort);
         OnStart();
         ServerStarted?.Invoke();
+        Task.Run(WorkLoop);
+    }
+    
+    
+    public void WorkLoop()
+    {
+        //TODO: Implement a proper game loop here.
+        while (true)
+        {
+            NetworkManager.Instance.Tick();
+        }
     }
 
 
@@ -38,7 +50,7 @@ public class GameServer : IDisposable
     /// </summary>
     public void Stop()
     {
-        NetworkManager.Server.StopServer();
+        NetworkManager.Instance.Server.StopServer();
         OnStop();
         ServerStopped?.Invoke();
     }

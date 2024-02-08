@@ -1,5 +1,5 @@
-﻿using Config.Net;
-using Korpi.Client.Logging;
+﻿using Common.Logging;
+using Config.Net;
 using Korpi.Client.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -18,11 +18,6 @@ public static class ClientConfig
     /// Window configuration.
     /// </summary>
     public static IWindowConfig Window { get; private set; } = null!;
-    
-    /// <summary>
-    /// Logging configuration.
-    /// </summary>
-    public static ILoggingConfig Logging { get; private set; } = null!;
 
     /// <summary>
     /// Render configuration.
@@ -51,12 +46,6 @@ public static class ClientConfig
         string windowConfigPath = Path.Combine(configDirectory.FullName, "config_window.json");
         Window = new ConfigurationBuilder<IWindowConfig>()
             .UseJsonFile(windowConfigPath)
-            .Build();
-        
-        // Logging configuration
-        string loggingConfigPath = Path.Combine(configDirectory.FullName, "config_logging.json");
-        Logging = new ConfigurationBuilder<ILoggingConfig>()
-            .UseJsonFile(loggingConfigPath)
             .Build();
 
         // Render configuration

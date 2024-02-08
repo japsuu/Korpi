@@ -1,11 +1,12 @@
-﻿using Korpi.Client.Exceptions;
+﻿using Common.Logging;
+using Korpi.Client.Exceptions;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Debugging;
 
 public class AssertUtility
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(AssertUtility));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(AssertUtility));
 
 
     public static void Assert(string errorMessage)

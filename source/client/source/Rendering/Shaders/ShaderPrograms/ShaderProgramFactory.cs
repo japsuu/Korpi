@@ -1,4 +1,5 @@
 using System.Text;
+using Common.Logging;
 using Korpi.Client.Configuration;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Rendering.Shaders.Sources;
@@ -10,7 +11,7 @@ namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 /// </summary>
 public static class ShaderProgramFactory
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ShaderProgramFactory));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ShaderProgramFactory));
 
     /// <summary>
     /// The base path used when looking for shader files.

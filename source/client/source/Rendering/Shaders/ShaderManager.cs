@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Rendering.Shaders.ShaderPrograms;
+﻿using Common.Logging;
+using Korpi.Client.Rendering.Shaders.ShaderPrograms;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders;
@@ -17,7 +18,7 @@ namespace Korpi.Client.Rendering.Shaders;
 /// </summary>
 public static class ShaderManager
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ShaderManager));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ShaderManager));
     
     public static event Action<Matrix4>? ProjectionMatrixChanged;
     public static event Action<Matrix4>? ViewMatrixChanged;

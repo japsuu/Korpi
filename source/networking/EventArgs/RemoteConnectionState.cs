@@ -1,4 +1,4 @@
-﻿namespace Korpi.Networking.ConnectionState;
+﻿namespace Korpi.Networking.EventArgs;
 
 /// <summary>
 /// States a remote client can be in.

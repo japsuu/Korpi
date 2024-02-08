@@ -1,5 +1,5 @@
-﻿using Korpi.Client.Debugging;
-using Korpi.Client.Logging;
+﻿using Common.Logging;
+using Korpi.Client.Debugging;
 using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.World;

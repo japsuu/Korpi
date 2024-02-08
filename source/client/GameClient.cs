@@ -1,6 +1,4 @@
-﻿using Korpi.Networking;
-
-namespace Korpi.Client;
+﻿namespace Korpi.Client;
 
 /// <summary>
 /// Represents a client of a game server.

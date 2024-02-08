@@ -1,7 +1,7 @@
 ﻿using System.Collections;
+using Common.Logging;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
-using Korpi.Client.Logging;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Registries;
 using Korpi.Client.Utils;

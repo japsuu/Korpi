@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using Common.Logging;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Rendering.Shaders.Variables;
 using OpenTK.Graphics.OpenGL4;
@@ -11,7 +12,7 @@ namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 /// </summary>
 public class ShaderProgram : GLObject
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ShaderProgram));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ShaderProgram));
 
     /// <summary>
     /// The name of this shader shaderProgram.

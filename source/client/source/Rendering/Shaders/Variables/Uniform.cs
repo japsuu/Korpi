@@ -1,3 +1,4 @@
+using Common.Logging;
 using Korpi.Client.Rendering.Shaders.ShaderPrograms;
 using OpenTK.Graphics.OpenGL4;
 
@@ -9,7 +10,7 @@ namespace Korpi.Client.Rendering.Shaders.Variables;
 /// <typeparam name="T">The type of the uniform.</typeparam>
 public class Uniform<T> : ProgramVariable
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(Uniform<T>));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(Uniform<T>));
 
     /// <summary>
     /// The location of the uniform within the shader shaderProgram.

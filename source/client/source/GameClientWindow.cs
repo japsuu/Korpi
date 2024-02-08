@@ -1,4 +1,5 @@
-﻿using JetBrains.Profiler.SelfApi;
+﻿using Common.Logging;
+using JetBrains.Profiler.SelfApi;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
@@ -27,7 +28,7 @@ namespace Korpi.Client;
 /// </summary>
 public class GameClientWindow : GameWindow
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameClientWindow));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GameClientWindow));
     
     public static event Action? Disposing;
 
