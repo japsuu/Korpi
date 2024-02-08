@@ -1,6 +1,6 @@
 ﻿using log4net;
 
-namespace Korpi.Client.Logging;
+namespace Common.Logging;
 
 public static class LogFactory
 {

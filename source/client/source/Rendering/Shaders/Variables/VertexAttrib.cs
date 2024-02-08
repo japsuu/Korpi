@@ -1,4 +1,5 @@
 using System.Reflection;
+using Common.Logging;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Rendering.Shaders.Variables;
@@ -8,7 +9,7 @@ namespace Korpi.Client.Rendering.Shaders.Variables;
 /// </summary>
 public sealed class VertexAttrib : ProgramVariable
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(VertexAttrib));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(VertexAttrib));
 
     /// <summary>
     /// The vertex attributes location within the shader.

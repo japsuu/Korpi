@@ -1,10 +1,11 @@
-﻿using ImGuiNET;
+﻿using Common.Logging;
+using ImGuiNET;
 
 namespace Korpi.Client.UI.Windows;
 
 public abstract class ImGuiWindow
 {
-    protected static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ImGuiWindow));
+    protected static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ImGuiWindow));
     
     protected ImGuiWindowFlags Flags = ImGuiWindowFlags.None;
     

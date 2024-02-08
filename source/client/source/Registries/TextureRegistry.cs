@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
+using Common.Logging;
 using Korpi.Client.Blocks.Textures;
-using Korpi.Client.Logging;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;

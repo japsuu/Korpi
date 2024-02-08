@@ -1,6 +1,6 @@
 ﻿namespace Korpi.Networking.Packets;
 
-public interface INetworkPacket
+public interface IPacket
 {
     
 }

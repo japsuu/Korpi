@@ -1,4 +1,4 @@
-﻿using Korpi.Client.Logging;
+﻿using Common.Logging;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;
 

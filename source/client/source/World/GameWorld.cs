@@ -1,4 +1,5 @@
-﻿using Korpi.Client.Blocks;
+﻿using Common.Logging;
+using Korpi.Client.Blocks;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.ECS.Entities;
@@ -9,13 +10,12 @@ using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using Cursor = Korpi.Client.Cursor;
 
 namespace Korpi.Client.World;
 
 public class GameWorld
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(GameWorld));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GameWorld));
     
     public static GameWorld CurrentGameWorld { get; private set; } = null!;
 

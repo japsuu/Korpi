@@ -1,5 +1,5 @@
 ﻿using BigGustave;
-using Korpi.Client.Logging;
+using Common.Logging;
 using OpenTK.Graphics.OpenGL4;
 using Buffer = System.Buffer;
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Common.Logging;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
@@ -15,7 +16,7 @@ namespace Korpi.Client.World.Chunks;
 /// </summary>
 public class ChunkColumn : IChunkColumn
 {
-    private static readonly Logging.IKorpiLogger Logger = Logging.LogFactory.GetLogger(typeof(ChunkColumn));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ChunkColumn));
     
     private ChunkGenerationState _currentState = ChunkGenerationState.UNINITIALIZED;
     private long _currentJobId;

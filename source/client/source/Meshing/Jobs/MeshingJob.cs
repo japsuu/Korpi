@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
+using Common.Logging;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
-using Korpi.Client.Logging;
 using Korpi.Client.Threading;
 using Korpi.Client.Threading.Jobs;
 using Korpi.Client.Threading.Pooling;

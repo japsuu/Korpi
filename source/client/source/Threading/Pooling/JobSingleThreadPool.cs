@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using Korpi.Client.Logging;
+using Common.Logging;
 using Korpi.Client.Threading.Jobs;
 
 namespace Korpi.Client.Threading.Pooling;
