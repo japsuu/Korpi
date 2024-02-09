@@ -61,7 +61,7 @@ public class PasswordAuthenticator : Authenticator
     }
 
 
-    private void OnReceiveAuthResponsePacket(NetworkConnection conn, AuthResponsePacket packet, Channel channel)
+    private void OnReceiveAuthResponsePacket(AuthResponsePacket packet, Channel channel)
     {
         string message = packet.Success ? "Authenticated." : "Authentication failed.";
         if (!string.IsNullOrWhiteSpace(packet.Reason))
