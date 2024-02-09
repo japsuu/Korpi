@@ -50,7 +50,7 @@ public class GameServer : IDisposable
     /// </summary>
     public void Stop()
     {
-        NetworkManager.Instance.Server.StopServer();
+        NetworkManager.Instance.Server.StopServer(true);
         OnStop();
         ServerStopped?.Invoke();
     }
