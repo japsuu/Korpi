@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
 using Korpi.Networking.Packets;
 using Korpi.Networking.Transports.LiteNetLib.Sockets.Client;
@@ -105,17 +106,17 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Called when a connection state changes for the local client.
     /// </summary>
-    public override event Action<ClientConnectionStateArgs>? OnClientConnectionState;
+    public override event Action<ClientConnectionStateArgs>? ClientConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for the local server.
     /// </summary>
-    public override event Action<ServerConnectionStateArgs>? OnServerConnectionState;
+    public override event Action<ServerConnectionStateArgs>? ServerConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for a remote client.
     /// </summary>
-    public override event Action<RemoteConnectionStateArgs>? OnRemoteConnectionState;
+    public override event Action<RemoteConnectionStateArgs>? RemoteConnectionStateChanged;
 
 
     /// <summary>
@@ -138,7 +139,7 @@ public class LiteNetLibTransport : Transport
     /// <param name="connectionStateArgs"></param>
     public override void HandleClientConnectionState(ClientConnectionStateArgs connectionStateArgs)
     {
-        OnClientConnectionState?.Invoke(connectionStateArgs);
+        ClientConnectionStateChanged?.Invoke(connectionStateArgs);
     }
 
 
@@ -148,7 +149,7 @@ public class LiteNetLibTransport : Transport
     /// <param name="connectionStateArgs"></param>
     public override void HandleServerConnectionState(ServerConnectionStateArgs connectionStateArgs)
     {
-        OnServerConnectionState?.Invoke(connectionStateArgs);
+        ServerConnectionStateChanged?.Invoke(connectionStateArgs);
         UpdateTimeout();
     }
 
@@ -159,7 +160,7 @@ public class LiteNetLibTransport : Transport
     /// <param name="connectionStateArgs"></param>
     public override void HandleRemoteConnectionState(RemoteConnectionStateArgs connectionStateArgs)
     {
-        OnRemoteConnectionState?.Invoke(connectionStateArgs);
+        RemoteConnectionStateChanged?.Invoke(connectionStateArgs);
     }
 
 
@@ -202,7 +203,7 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Called when client receives data.
     /// </summary>
-    public override event Action<ClientReceivedDataArgs>? OnClientReceivedData;
+    public override event Action<ClientReceivedDataArgs>? ClientReceivedPacket;
 
 
     /// <summary>
@@ -211,14 +212,14 @@ public class LiteNetLibTransport : Transport
     /// <param name="receivedDataArgs"></param>
     public override void HandleClientReceivedDataArgs(ClientReceivedDataArgs receivedDataArgs)
     {
-        OnClientReceivedData?.Invoke(receivedDataArgs);
+        ClientReceivedPacket?.Invoke(receivedDataArgs);
     }
 
 
     /// <summary>
     /// Called when server receives data.
     /// </summary>
-    public override event Action<ServerReceivedPacketArgs>? OnServerReceivedPacket;
+    public override event Action<ServerReceivedPacketArgs>? ServerReceivedPacket;
 
 
     /// <summary>
@@ -227,7 +228,7 @@ public class LiteNetLibTransport : Transport
     /// <param name="receivedPacketArgs"></param>
     public override void HandleServerReceivedDataArgs(ServerReceivedPacketArgs receivedPacketArgs)
     {
-        OnServerReceivedPacket?.Invoke(receivedPacketArgs);
+        ServerReceivedPacket?.Invoke(receivedPacketArgs);
     }
 
 

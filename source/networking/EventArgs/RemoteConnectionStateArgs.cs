@@ -1,16 +1,18 @@
-﻿namespace Korpi.Networking.EventArgs;
+﻿using Korpi.Networking.Connections;
 
-public struct RemoteConnectionStateArgs
+namespace Korpi.Networking.EventArgs;
+
+public readonly struct RemoteConnectionStateArgs
 {
     /// <summary>
     /// New connection state.
     /// </summary>
-    public RemoteConnectionState ConnectionState;
+    public readonly RemoteConnectionState ConnectionState;
     
     /// <summary>
     /// ConnectionId for which client the state changed. Will be 0 if <see cref="ConnectionState"/> was for the server.
     /// </summary>
-    public int ConnectionId;
+    public readonly int ConnectionId;
 
 
     public RemoteConnectionStateArgs(RemoteConnectionState state, int connectionEventConnectionId)

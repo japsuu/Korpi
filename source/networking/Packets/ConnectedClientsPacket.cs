@@ -5,10 +5,10 @@ namespace Korpi.Networking.Packets;
 /// </summary>
 public struct ConnectedClientsPacket : IPacket
 {
-    public List<int> ClientIds { get; set; }
+    public List<int>? ClientIds { get; set; }
     
     
-    public ConnectedClientsPacket(List<int> clientIds)
+    public ConnectedClientsPacket(List<int>? clientIds)
     {
         ClientIds = clientIds;
     }

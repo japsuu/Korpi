@@ -12,7 +12,7 @@ public class PasswordAuthenticator : Authenticator
     
     private readonly string _password;
     
-    public override event Action<NetworkConnection, bool>? OnAuthenticationResult;
+    public override event Action<NetworkConnection, bool>? ConcludedAuthenticationResult;
 
 
     public PasswordAuthenticator(NetworkManager networkManager, string password) : base(networkManager)
@@ -20,7 +20,7 @@ public class PasswordAuthenticator : Authenticator
         _password = password;
 
         //Listen for connection state change as client.
-        NetworkManager.Client.OnClientConnectionState += OnClientConnectionStateChanged;
+        NetworkManager.Client.ClientConnectionStateChanged += OnClientConnectionStateChanged;
 
         //Listen for broadcast from client. Be sure to set requireAuthentication to false.
         NetworkManager.Server.RegisterPacketHandler<AuthPasswordPacket>(OnReceiveAuthPasswordPacket, false);
@@ -57,7 +57,7 @@ public class PasswordAuthenticator : Authenticator
         /* Invoke result. This is handled internally to complete the connection or kick client.
          * It's important to call this after sending the broadcast so that the broadcast
          * makes it out to the client before the kick. */
-        OnAuthenticationResult?.Invoke(conn, correctPassword);
+        ConcludedAuthenticationResult?.Invoke(conn, correctPassword);
     }
 
 

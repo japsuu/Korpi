@@ -1,17 +1,15 @@
 ﻿using Common.Logging;
-using Korpi.Networking.Transports;
 
 namespace Korpi.Networking.Connections;
 
 /// <summary>
 /// A container for a connected client used to perform actions on and gather information for the declared client.
 /// </summary>
-public class NetworkConnection : IDisposable
+public class NetworkConnection : IDisposable, IEquatable<NetworkConnection>
 {
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(NetworkConnection));
 
-    private readonly NetServerManager _serverManager;
-    private readonly Transport _transport;
+    private readonly NetworkManager _netManager;
 
     /// <summary>
     /// True if this connection is authenticated. Only available to server.
@@ -37,12 +35,16 @@ public class NetworkConnection : IDisposable
     /// True if this connection is being disconnected. Only available to server.
     /// </summary>
     public bool Disconnecting { get; private set; }
+    
+    /// <summary>
+    /// Returns if this connection is for the local client.
+    /// </summary>
+    public bool IsLocalClient => _netManager.Client.Connection == this;
 
     
-    public NetworkConnection(NetServerManager serverManager, Transport transport, int clientId, bool asServer)
+    public NetworkConnection(NetworkManager netManager, int clientId, bool asServer)
     {
-        _serverManager = serverManager;
-        _transport = transport;
+        _netManager = netManager;
         ClientId = clientId;
 
         if (asServer)
@@ -55,7 +57,7 @@ public class NetworkConnection : IDisposable
     /// <summary>
     /// Disconnects this connection. Only available on the server.
     /// </summary>
-    /// <param name="immediate">True to disconnect immediately.</param>
+    /// <param name="immediate">True to disconnect immediately, false to first send all pending packets to them.</param>
     public void Disconnect(bool immediate)
     {
         if (!IsValid)
@@ -72,7 +74,21 @@ public class NetworkConnection : IDisposable
 
         SetDisconnecting(true);
 
-        _transport.StopConnection(ClientId, immediate);
+        // TODO: Send out any pending information to the client, then disconnect it.
+        _netManager.TransportManager.StopConnection(ClientId, immediate);
+    }
+    
+    
+    /// <summary>
+    /// Returns the address of this connection.
+    /// </summary>
+    /// <returns></returns>
+    public string GetAddress()
+    {
+        if (!IsValid)
+            return string.Empty;
+
+        return _netManager.TransportManager.GetConnectionAddress(ClientId);
     }
 
 
@@ -96,8 +112,7 @@ public class NetworkConnection : IDisposable
 
     public override string ToString()
     {
-        string ip = _transport.GetConnectionAddress(ClientId);
-        return $"Id [{ClientId}] Address [{ip}]";
+        return $"Id [{ClientId}] Address [{GetAddress()}]";
     }
 
 
@@ -105,4 +120,31 @@ public class NetworkConnection : IDisposable
     {
         // TODO release managed resources here
     }
+    
+    
+    public bool Equals(NetworkConnection? other)
+    {
+        if (ReferenceEquals(null, other))
+            return false;
+        if (ReferenceEquals(this, other))
+            return true;
+        return ClientId == other.ClientId;
+    }
+
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj))
+            return false;
+        if (ReferenceEquals(this, obj))
+            return true;
+        if (obj.GetType() != this.GetType())
+            return false;
+        return Equals((NetworkConnection)obj);
+    }
+
+
+    public override int GetHashCode() => ClientId;
+    public static bool operator ==(NetworkConnection? left, NetworkConnection? right) => Equals(left, right);
+    public static bool operator !=(NetworkConnection? left, NetworkConnection? right) => !Equals(left, right);
 }

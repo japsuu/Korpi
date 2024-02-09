@@ -1,11 +1,13 @@
-﻿namespace Korpi.Networking.EventArgs;
+﻿using Korpi.Networking.Connections;
 
-public struct ClientConnectionStateArgs
+namespace Korpi.Networking.EventArgs;
+
+public readonly struct ClientConnectionStateArgs
 {
     /// <summary>
     /// New connection state.
     /// </summary>
-    public LocalConnectionState ConnectionState;
+    public readonly LocalConnectionState ConnectionState;
 
 
     public ClientConnectionStateArgs(LocalConnectionState connectionState)

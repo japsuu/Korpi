@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
+using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
 using LiteNetLib;
 using LiteNetLib.Layers;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
 using Korpi.Networking.Utility;
 using LiteNetLib;

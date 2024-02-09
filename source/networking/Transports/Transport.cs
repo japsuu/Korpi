@@ -1,4 +1,5 @@
-﻿using Korpi.Networking.EventArgs;
+﻿using Korpi.Networking.Connections;
+using Korpi.Networking.EventArgs;
 using Korpi.Networking.Packets;
 
 namespace Korpi.Networking.Transports;
@@ -28,17 +29,17 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Called when a connection state changes for the local client.
     /// </summary>
-    public abstract event Action<ClientConnectionStateArgs>? OnClientConnectionState;
+    public abstract event Action<ClientConnectionStateArgs>? ClientConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for the local server.
     /// </summary>
-    public abstract event Action<ServerConnectionStateArgs>? OnServerConnectionState;
+    public abstract event Action<ServerConnectionStateArgs>? ServerConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for a remote client.
     /// </summary>
-    public abstract event Action<RemoteConnectionStateArgs>? OnRemoteConnectionState;
+    public abstract event Action<RemoteConnectionStateArgs>? RemoteConnectionStateChanged;
 
 
     /// <summary>
@@ -102,7 +103,7 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Called when the client receives data.
     /// </summary>
-    public abstract event Action<ClientReceivedDataArgs>? OnClientReceivedData;
+    public abstract event Action<ClientReceivedDataArgs>? ClientReceivedPacket;
 
 
     /// <summary>
@@ -115,7 +116,7 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Called when the server receives data.
     /// </summary>
-    public abstract event Action<ServerReceivedPacketArgs>? OnServerReceivedPacket;
+    public abstract event Action<ServerReceivedPacketArgs>? ServerReceivedPacket;
 
 
     /// <summary>

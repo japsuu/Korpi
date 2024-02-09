@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using Korpi.Networking.Connections;
 using Korpi.Networking.Transports;
 
 namespace Korpi.Networking;
@@ -9,10 +10,9 @@ public class NetworkManager
     
     public static NetworkManager Instance { get; private set; } = null!;
 
-    private readonly Transport _transport;
-
-    public NetServerManager Server { get; private set; }
-    public NetClientManager Client { get; private set; }
+    public readonly TransportManager TransportManager;
+    public readonly NetServerManager Server;
+    public readonly NetClientManager Client;
 
     public event Action? Update;
 
@@ -27,15 +27,26 @@ public class NetworkManager
 
     private NetworkManager(Transport transportLayer)
     {
-        _transport = transportLayer;
-        _transport.Initialize(this);
-        Server = new NetServerManager(_transport);
-        Client = new NetClientManager(_transport);
+        transportLayer.Initialize(this);
+        TransportManager = new TransportManager(this, transportLayer);
+        Server = new NetServerManager(this, TransportManager);
+        Client = new NetClientManager(this, TransportManager);
     }
     
     
     public void Tick()
     {
         Update?.Invoke();
+    }
+
+
+    public static void ClearClientsCollection(Dictionary<int,NetworkConnection> clients)
+    {
+        // Dispose of all clients and clear the collection.
+        foreach (NetworkConnection client in clients.Values)
+        {
+            client.Dispose();
+        }
+        clients.Clear();
     }
 }
