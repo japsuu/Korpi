@@ -1,14 +1,13 @@
-﻿using Korpi.Networking;
-using Korpi.Networking.Authenticating;
+﻿using Korpi.Networking.Authenticating;
 
 namespace Korpi.Server;
 
 public struct GameServerConfiguration
 {
-    public string BindAddress { get; set; }
-    public ushort BindPort { get; set; }
-    public int MaxConnections { get; set; }
-    public Authenticator? Authenticator { get; set; }
+    public string BindAddress { get; private set; }
+    public ushort BindPort { get; private set; }
+    public int MaxConnections { get; private set; }
+    public Authenticator? Authenticator { get; private set; }
 
 
     public GameServerConfiguration(string bindAddress, ushort bindPort, int maxConnections, Authenticator? authenticator)
@@ -30,9 +29,9 @@ public struct GameServerConfiguration
     }
     
     
-    public GameServerConfiguration WithPasswordAuthentication(string password, NetworkManager networkManager)
+    public GameServerConfiguration WithPasswordAuthentication(string password)
     {
-        Authenticator = new PasswordAuthenticator(networkManager, password);
+        Authenticator = new PasswordAuthenticator(password);
         return this;
     }
 }

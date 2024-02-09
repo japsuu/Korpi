@@ -9,11 +9,6 @@ public class TransportManager
     private readonly NetworkManager _netManager;
     public readonly Transport Transport;
 
-    public event Action<ClientReceivedPacketArgs>? LocalClientReceivedPacket;
-    public event Action<ServerReceivedPacketArgs>? LocalServerReceivedPacket;
-    public event Action<ClientConnectionStateArgs>? LocalClientConnectionStateChanged;
-    public event Action<RemoteConnectionStateArgs>? RemoteClientConnectionStateChanged;
-    public event Action<ServerConnectionStateArgs>? LocalServerConnectionStateChanged;
     public event Action<bool>? IterateOutgoingStart;
     public event Action<bool>? IterateOutgoingEnd;
     public event Action<bool>? IterateIncomingStart;
@@ -24,17 +19,6 @@ public class TransportManager
     {
         _netManager = netManager;
         Transport = transport;
-        SubscribeEvents();
-    }
-
-
-    private void SubscribeEvents()
-    {
-        Transport.LocalClientReceivedPacket += LocalClientReceivedPacket;
-        Transport.LocalServerReceivedPacket += LocalServerReceivedPacket;
-        Transport.LocalClientConnectionStateChanged += LocalClientConnectionStateChanged;
-        Transport.RemoteClientConnectionStateChanged += RemoteClientConnectionStateChanged;
-        Transport.LocalServerConnectionStateChanged += LocalServerConnectionStateChanged;
     }
     
     

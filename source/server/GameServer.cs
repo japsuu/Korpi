@@ -1,4 +1,5 @@
-﻿using Korpi.Networking;
+﻿using Common.Logging;
+using Korpi.Networking;
 
 namespace Korpi.Server;
 
@@ -8,18 +9,24 @@ namespace Korpi.Server;
 /// </summary>
 public class GameServer : IDisposable
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GameServer));
+
+    private readonly NetworkManager _netManager;
     protected readonly GameServerConfiguration Configuration;
+    private volatile bool _shouldStop;
     
     public event Action? ServerStarted;
     public event Action? ServerStopped;
 
 
+    /// <param name="netManager">The network manager to use</param>
     /// <param name="configuration">The configuration to use</param>
-    public GameServer(GameServerConfiguration configuration)
+    public GameServer(NetworkManager netManager, GameServerConfiguration configuration)
     {
+        _netManager = netManager;
         Configuration = configuration;
-        NetworkManager.Instance.Server.SetMaxConnections(Configuration.MaxConnections);
-        NetworkManager.Instance.Server.SetAuthenticator(Configuration.Authenticator);
+        _netManager.Server.SetMaxConnections(Configuration.MaxConnections);
+        _netManager.Server.SetAuthenticator(Configuration.Authenticator);
     }
 
 
@@ -28,19 +35,20 @@ public class GameServer : IDisposable
     /// </summary>
     public void Start()
     {
-        NetworkManager.Instance.Server.StartServer(Configuration.BindAddress, Configuration.BindPort);
+        Logger.Info("Starting server...");
+        _netManager.Server.StartServer(Configuration.BindAddress, Configuration.BindPort);
         OnStart();
-        ServerStarted?.Invoke();
         Task.Run(WorkLoop);
+        ServerStarted?.Invoke();
     }
     
     
     public void WorkLoop()
     {
         //TODO: Implement a proper game loop here.
-        while (true)
+        while (!_shouldStop)
         {
-            NetworkManager.Instance.Tick();
+            _netManager.Tick();
         }
     }
 
@@ -50,7 +58,9 @@ public class GameServer : IDisposable
     /// </summary>
     public void Stop()
     {
-        NetworkManager.Instance.Server.StopServer(true);
+        Logger.Info("Stopping server...");
+        _shouldStop = true;
+        _netManager.Server.StopServer(true);
         OnStop();
         ServerStopped?.Invoke();
     }

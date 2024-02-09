@@ -1,10 +1,10 @@
-﻿using Korpi.Client.Configuration;
+﻿using System.Reflection;
 using Korpi.Networking;
 using Korpi.Networking.Transports.Singleplayer;
 using Korpi.Server;
-using OpenTK.Windowing.Desktop;
-
-[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
+using log4net;
+using log4net.Config;
+using log4net.Repository;
 
 namespace Korpi.Client;
 
@@ -20,19 +20,25 @@ internal static class Program
         // Add support for additional encodings (code pages), required by Log4Net.
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         
+        // Initialize the log4net logger configuration.
+        ILoggerRepository? logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+        XmlConfigurator.Configure(logRepository, new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
+        
         // Initialize the NetworkManager with the transport layer we want to use.
-        NetworkManager.InitializeSingleton(new SingleplayerTransport());
+        NetworkManager netManager = new(new SingleplayerTransport());
 
         // Create and start a network game server.
-        using GameServer server = new(GameServerConfiguration.Default().WithPasswordAuthentication("password", NetworkManager.Instance));
+        using GameServer server = new(netManager, GameServerConfiguration.Default().WithPasswordAuthentication("password"));
         server.Start();
-
-        // Initialize the client configuration.
-        (GameWindowSettings gws, NativeWindowSettings nws) = ClientConfig.Initialize(args);
+        
+        while (!netManager.Server.Started)
+        {
+            Thread.Sleep(100);
+        }
 
         // Create and run the game client.
-        using GameClientWindow clientWindow = new(gws, nws);
-        clientWindow.Run();
+        using GameClient client = new(netManager, args);
+        client.Run();
         
         // Stop the game server.
         server.Stop();

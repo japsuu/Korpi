@@ -15,18 +15,53 @@ public class PasswordAuthenticator : Authenticator
     public override event Action<NetworkConnection, bool>? ConcludedAuthenticationResult;
 
 
-    public PasswordAuthenticator(NetworkManager networkManager, string password) : base(networkManager)
+    public PasswordAuthenticator(string password)
     {
         _password = password;
+    }
 
-        //Listen for connection state change as client.
-        NetworkManager.Client.ClientConnectionStateChanged += OnClientConnectionStateChanged;
 
-        //Listen for broadcast from client. Be sure to set requireAuthentication to false.
+    public override void Initialize(NetworkManager networkManager)
+    {
+        base.Initialize(networkManager);
+        
+        // Server listen for packets from client.
         NetworkManager.Server.RegisterPacketHandler<AuthPasswordPacket>(OnReceiveAuthPasswordPacket, false);
 
-        //Listen to response from server.
+        // Client listen to packets from server.
         NetworkManager.Client.RegisterPacketHandler<AuthResponsePacket>(OnReceiveAuthResponsePacket);
+        NetworkManager.Client.RegisterPacketHandler<AuthRequestPacket>(OnReceiveAuthRequestPacket);
+    }
+
+
+    private void OnReceiveAuthRequestPacket(AuthRequestPacket packet, Channel channel)
+    {
+        Logger.Info("Received authentication request from server.");
+        
+        if (!NetworkManager.Client.Started)
+        {
+            Logger.Error("Client not started. Cannot authenticate.");
+            return;
+        }
+
+        if (packet.AuthenticationMethod != 0)
+        {
+            Logger.Error("Server requested an unsupported authentication method.");
+            return;
+        }
+        // Respond to the server with the password.
+        AuthPasswordPacket pb = new("tester", _password);
+        NetworkManager.Client.SendPacketToServer(pb);
+    }
+
+
+    public override void OnRemoteConnection(NetworkConnection connection)
+    {
+        base.OnRemoteConnection(connection);
+        
+        // Send the client a authentication request.
+        AuthRequestPacket packet = new AuthRequestPacket(0);
+        NetworkManager.Server.SendPacketToClient(connection, packet, false);
     }
 
 
@@ -67,16 +102,5 @@ public class PasswordAuthenticator : Authenticator
         if (!string.IsNullOrWhiteSpace(packet.Reason))
             message += $" Reason: {packet.Reason}";
         Logger.Info(message);
-    }
-
-
-    private void OnClientConnectionStateChanged(ClientConnectionStateArgs obj)
-    {
-        if (obj.ConnectionState != LocalConnectionState.Started)
-            return;
-
-        AuthPasswordPacket pb = new("tester", _password);
-
-        NetworkManager.Client.SendPacketToServer(pb);
     }
 }

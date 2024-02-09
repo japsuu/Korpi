@@ -62,9 +62,9 @@ public class NetServerManager
     {
         _netManager = netManager;
         _transportManager = transportManager;
-        _transportManager.LocalServerReceivedPacket += OnLocalServerReceivePacket;
-        _transportManager.LocalServerConnectionStateChanged += OnLocalServerConnectionStateChanged;
-        _transportManager.RemoteClientConnectionStateChanged += OnRemoteClientConnectionStateChanged;
+        _transportManager.Transport.LocalServerReceivedPacket += OnLocalServerReceivePacket;
+        _transportManager.Transport.LocalServerConnectionStateChanged += OnLocalServerConnectionStateChanged;
+        _transportManager.Transport.RemoteClientConnectionStateChanged += OnRemoteClientConnectionStateChanged;
     }
 
 
@@ -84,8 +84,11 @@ public class NetServerManager
     public void SetAuthenticator(Authenticator? authenticator)
     {
         _authenticator = authenticator;
-        if (_authenticator != null)
-            _authenticator.ConcludedAuthenticationResult += OnAuthenticatorConcludeResult;
+        if (_authenticator == null)
+            return;
+        
+        _authenticator.Initialize(_netManager);
+        _authenticator.ConcludedAuthenticationResult += OnAuthenticatorConcludeResult;
     }
 
 
@@ -328,7 +331,7 @@ public class NetServerManager
             NetworkManager.ClearClientsCollection(Clients);
         }
 
-        string tName = _transportManager.GetType().Name;
+        string tName = _transportManager.Transport.GetType().Name;
         string socketInformation = string.Empty;
         if (state == LocalConnectionState.Starting)
             socketInformation = $" Listening on port {_transportManager.GetPort()}.";

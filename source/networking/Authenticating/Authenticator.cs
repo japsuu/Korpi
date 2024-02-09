@@ -4,10 +4,10 @@ namespace Korpi.Networking.Authenticating;
 
 public abstract class Authenticator
 {
-    protected readonly NetworkManager NetworkManager;
+    protected NetworkManager NetworkManager = null!;
 
 
-    public Authenticator(NetworkManager networkManager)
+    public virtual void Initialize(NetworkManager networkManager)
     {
         NetworkManager = networkManager;
     }

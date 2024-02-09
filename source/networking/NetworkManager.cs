@@ -6,26 +6,14 @@ namespace Korpi.Networking;
 
 public class NetworkManager
 {
-    private static readonly IKorpiLogger NetworkLogger = LogFactory.GetLogger(typeof(NetworkManager));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(NetworkManager));
     
-    public static NetworkManager Instance { get; private set; } = null!;
-
     public readonly TransportManager TransportManager;
     public readonly NetServerManager Server;
     public readonly NetClientManager Client;
 
-    public event Action? Update;
 
-
-    public static void InitializeSingleton(Transport transportLayer)
-    {
-        if (Instance != null)
-            throw new Exception("NetworkManager already initialized.");
-        Instance = new NetworkManager(transportLayer);
-    }
-
-
-    private NetworkManager(Transport transportLayer)
+    public NetworkManager(Transport transportLayer)
     {
         transportLayer.Initialize(this);
         TransportManager = new TransportManager(this, transportLayer);
@@ -36,7 +24,8 @@ public class NetworkManager
     
     public void Tick()
     {
-        Update?.Invoke();
+        IteratePackets(true);
+        IteratePackets(false);
     }
 
 
@@ -48,5 +37,24 @@ public class NetworkManager
             client.Dispose();
         }
         clients.Clear();
+    }
+
+
+    /// <summary>
+    /// Iterates incoming or outgoing packets.
+    /// </summary>
+    /// <param name="incoming">True to iterate incoming.</param>
+    private void IteratePackets(bool incoming)
+    {
+        if (incoming)
+        {
+            TransportManager.IterateIncoming(true);
+            TransportManager.IterateIncoming(false);
+        }
+        else
+        {
+            TransportManager.IterateOutgoing(true);
+            TransportManager.IterateOutgoing(false);
+        }
     }
 }

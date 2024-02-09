@@ -44,27 +44,6 @@ public abstract class Transport : IDisposable
 
 
     /// <summary>
-    /// Handles a ConnectionStateArgs for the local client.
-    /// </summary>
-    /// <param name="connectionStateArgs">Data being handled.</param>
-    public abstract void HandleLocalClientConnectionStateChange(ClientConnectionStateArgs connectionStateArgs);
-
-
-    /// <summary>
-    /// Handles a ConnectionStateArgs for the local server.
-    /// </summary>
-    /// <param name="connectionStateArgs">Data being handled.</param>
-    public abstract void HandleLocalServerConnectionStateChange(ServerConnectionStateArgs connectionStateArgs);
-
-
-    /// <summary>
-    /// Handles a ConnectionStateArgs for a remote client.
-    /// </summary>
-    /// <param name="connectionStateArgs">Data being handled.</param>
-    public abstract void HandleRemoteClientConnectionStateChange(RemoteConnectionStateArgs connectionStateArgs);
-
-
-    /// <summary>
     /// Gets the current local ConnectionState.
     /// </summary>
     /// <param name="asServer">True if getting ConnectionState for the server.</param>
@@ -119,20 +98,6 @@ public abstract class Transport : IDisposable
     /// Called when the server receives data.
     /// </summary>
     public abstract event Action<ServerReceivedPacketArgs>? LocalServerReceivedPacket;
-
-
-    /// <summary>
-    /// Handles a ClientReceivedPacketArgs.
-    /// </summary>
-    /// <param name="receivedDataArgs">Data being handled.</param>
-    public abstract void HandleLocalClientReceivedPacket(ClientReceivedPacketArgs receivedDataArgs);
-
-
-    /// <summary>
-    /// Handles a ServerReceivedPacketArgs.
-    /// </summary>
-    /// <param name="receivedPacketArgs">Data being handled.</param>
-    public abstract void HandleLocalServerReceivedPacket(ServerReceivedPacketArgs receivedPacketArgs);
 
     #endregion
 
@@ -266,14 +231,14 @@ public abstract class Transport : IDisposable
     /// Starts the local server or client using configured settings.
     /// </summary>
     /// <param name="server">True to start server.</param>
-    public abstract bool StartLocalConnection(bool server);
+    public abstract void StartLocalConnection(bool server);
 
 
     /// <summary>
     /// Stops the local server or client.
     /// </summary>
     /// <param name="server">True to stop server.</param>
-    public abstract bool StopLocalConnection(bool server);
+    public abstract void StopLocalConnection(bool server);
 
 
     /// <summary>
@@ -281,7 +246,7 @@ public abstract class Transport : IDisposable
     /// </summary>
     /// <param name="connectionId">ConnectionId of the client to disconnect.</param>
     /// <param name="immediate">True to disconnect immediately.</param>
-    public abstract bool StopRemoteConnection(int connectionId, bool immediate);
+    public abstract void StopRemoteConnection(int connectionId, bool immediate);
 
 
     /// <summary>

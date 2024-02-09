@@ -64,8 +64,8 @@ public class NetClientManager
     {
         _netManager = netManager;
         _transportManager = transportManager;
-        _transportManager.LocalClientReceivedPacket += OnLocalClientReceivePacket;
-        _transportManager.LocalClientConnectionStateChanged += OnLocalClientConnectionStateChanged;
+        _transportManager.Transport.LocalClientReceivedPacket += OnLocalClientReceivePacket;
+        _transportManager.Transport.LocalClientConnectionStateChanged += OnLocalClientConnectionStateChanged;
         
         // Listen for other clients connections from server.
         RegisterPacketHandler<ClientConnectionChangePacket>(OnReceiveClientConnectionPacket);
@@ -91,6 +91,8 @@ public class NetClientManager
                 "This can occur if the client is receiving a packet immediately before losing connection.");
             Connection = new NetworkConnection(_netManager, clientId, false);
         }
+        
+        Logger.Info($"Received welcome packet from server. Assigned clientId is {clientId}.");
         
         // Mark local connection as authenticated.
         Connection.SetAuthenticated();
@@ -192,7 +194,7 @@ public class NetClientManager
             NetworkManager.ClearClientsCollection(Clients);
         }
 
-        string tName = _transportManager.GetType().Name;
+        string tName = _transportManager.Transport.GetType().Name;
         string socketInformation = string.Empty;
         if (state == LocalConnectionState.Starting)
             socketInformation = $" Server IP is {_transportManager.GetClientAddress()}, port is {_transportManager.GetPort()}.";
@@ -264,10 +266,10 @@ public class NetClientManager
     /// <param name="channel">Channel to send on.</param>
     public void SendPacketToServer<T>(T packet, Channel channel = Channel.Reliable) where T : struct, IPacket
     {
-        if (Connection == null || !Connection.IsActive)
+        if (!Started)
         {
-            Logger.Error("Local connection is not active / does not exist, cannot send packets.");
-            return;
+            Logger.Error($"Local connection is not started, cannot send packet of type {packet.GetType().Name}.");
+            return; 
         }
 
         _transportManager.SendToServer(channel, packet);
