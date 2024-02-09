@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿/*using System.Runtime.CompilerServices;
 using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
 using Korpi.Networking.Packets;
@@ -100,46 +100,46 @@ public class LiteNetLibTransport : Transport
     /// </summary>
     /// <param name="connectionId"></param>
     /// <returns></returns>
-    public override string GetConnectionAddress(int connectionId) => _server.GetConnectionAddress(connectionId);
+    public override string GetRemoteConnectionAddress(int connectionId) => _server.GetConnectionAddress(connectionId);
 
 
     /// <summary>
     /// Called when a connection state changes for the local client.
     /// </summary>
-    public override event Action<ClientConnectionStateArgs>? ClientConnectionStateChanged;
+    public override event Action<ClientConnectionStateArgs>? LocalClientConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for the local server.
     /// </summary>
-    public override event Action<ServerConnectionStateArgs>? ServerConnectionStateChanged;
+    public override event Action<ServerConnectionStateArgs>? LocalServerConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for a remote client.
     /// </summary>
-    public override event Action<RemoteConnectionStateArgs>? RemoteConnectionStateChanged;
+    public override event Action<RemoteConnectionStateArgs>? RemoteClientConnectionStateChanged;
 
 
     /// <summary>
     /// Gets the current local ConnectionState.
     /// </summary>
-    /// <param name="server">True if getting ConnectionState for the server.</param>
-    public override LocalConnectionState GetConnectionState(bool server) => server ? _server.GetConnectionState() : _client.GetConnectionState();
+    /// <param name="asServer">True if getting ConnectionState for the server.</param>
+    public override LocalConnectionState GetLocalConnectionState(bool asServer) => asServer ? _server.GetConnectionState() : _client.GetConnectionState();
 
 
     /// <summary>
     /// Gets the current ConnectionState of a remote client on the server.
     /// </summary>
     /// <param name="connectionId">ConnectionId to get ConnectionState for.</param>
-    public override RemoteConnectionState GetConnectionState(int connectionId) => _server.GetConnectionState(connectionId);
+    public override RemoteConnectionState GetRemoteConnectionState(int connectionId) => _server.GetConnectionState(connectionId);
 
 
     /// <summary>
     /// Handles a ConnectionStateArgs for the local client.
     /// </summary>
     /// <param name="connectionStateArgs"></param>
-    public override void HandleClientConnectionState(ClientConnectionStateArgs connectionStateArgs)
+    public override void HandleLocalClientConnectionStateChange(ClientConnectionStateArgs connectionStateArgs)
     {
-        ClientConnectionStateChanged?.Invoke(connectionStateArgs);
+        LocalClientConnectionStateChanged?.Invoke(connectionStateArgs);
     }
 
 
@@ -147,9 +147,9 @@ public class LiteNetLibTransport : Transport
     /// Handles a ConnectionStateArgs for the local server.
     /// </summary>
     /// <param name="connectionStateArgs"></param>
-    public override void HandleServerConnectionState(ServerConnectionStateArgs connectionStateArgs)
+    public override void HandleLocalServerConnectionStateChange(ServerConnectionStateArgs connectionStateArgs)
     {
-        ServerConnectionStateChanged?.Invoke(connectionStateArgs);
+        LocalServerConnectionStateChanged?.Invoke(connectionStateArgs);
         UpdateTimeout();
     }
 
@@ -158,9 +158,9 @@ public class LiteNetLibTransport : Transport
     /// Handles a ConnectionStateArgs for a remote client.
     /// </summary>
     /// <param name="connectionStateArgs"></param>
-    public override void HandleRemoteConnectionState(RemoteConnectionStateArgs connectionStateArgs)
+    public override void HandleRemoteClientConnectionStateChange(RemoteConnectionStateArgs connectionStateArgs)
     {
-        RemoteConnectionStateChanged?.Invoke(connectionStateArgs);
+        RemoteClientConnectionStateChanged?.Invoke(connectionStateArgs);
     }
 
 
@@ -177,10 +177,10 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Processes data received by the socket.
     /// </summary>
-    /// <param name="server">True to process data received on the server.</param>
-    public override void IterateIncoming(bool server)
+    /// <param name="asServer">True to process data received on the server.</param>
+    public override void IterateIncoming(bool asServer)
     {
-        if (server)
+        if (asServer)
             _server.IterateIncoming();
         else
             _client.IterateIncoming();
@@ -190,10 +190,10 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Processes data to be sent by the socket.
     /// </summary>
-    /// <param name="server">True to process data received on the server.</param>
-    public override void IterateOutgoing(bool server)
+    /// <param name="asServer">True to process data received on the server.</param>
+    public override void IterateOutgoing(bool asServer)
     {
-        if (server)
+        if (asServer)
             _server.IterateOutgoing();
         else
             _client.IterateOutgoing();
@@ -203,32 +203,32 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Called when client receives data.
     /// </summary>
-    public override event Action<ClientReceivedDataArgs>? ClientReceivedPacket;
+    public override event Action<ClientReceivedPacketArgs>? LocalClientReceivedPacket;
 
 
     /// <summary>
-    /// Handles a ClientReceivedDataArgs.
+    /// Handles a ClientReceivedPacketArgs.
     /// </summary>
     /// <param name="receivedDataArgs"></param>
-    public override void HandleClientReceivedDataArgs(ClientReceivedDataArgs receivedDataArgs)
+    public override void HandleLocalClientReceivedPacket(ClientReceivedPacketArgs receivedDataArgs)
     {
-        ClientReceivedPacket?.Invoke(receivedDataArgs);
+        LocalClientReceivedPacket?.Invoke(receivedDataArgs);
     }
 
 
     /// <summary>
     /// Called when server receives data.
     /// </summary>
-    public override event Action<ServerReceivedPacketArgs>? ServerReceivedPacket;
+    public override event Action<ServerReceivedPacketArgs>? LocalServerReceivedPacket;
 
 
     /// <summary>
-    /// Handles a ClientReceivedDataArgs.
+    /// Handles a ClientReceivedPacketArgs.
     /// </summary>
     /// <param name="receivedPacketArgs"></param>
-    public override void HandleServerReceivedDataArgs(ServerReceivedPacketArgs receivedPacketArgs)
+    public override void HandleLocalServerReceivedPacket(ServerReceivedPacketArgs receivedPacketArgs)
     {
-        ServerReceivedPacket?.Invoke(receivedPacketArgs);
+        LocalServerReceivedPacket?.Invoke(receivedPacketArgs);
     }
 
 
@@ -264,9 +264,9 @@ public class LiteNetLibTransport : Transport
     public void SetPacketLayer(PacketLayerBase packetLayer)
     {
         _packetLayer = packetLayer;
-        if (GetConnectionState(true) != LocalConnectionState.Stopped)
+        if (GetLocalConnectionState(true) != LocalConnectionState.Stopped)
             NetworkManager.Logger.Warn("PacketLayer is set but will not be applied until the server stops.");
-        if (GetConnectionState(false) != LocalConnectionState.Stopped)
+        if (GetLocalConnectionState(false) != LocalConnectionState.Stopped)
             NetworkManager.Logger.Warn("PacketLayer is set but will not be applied until the client stops.");
 
         _server.Initialize(this, _unreliableMtu, _packetLayer, _dontRoute);
@@ -360,14 +360,14 @@ public class LiteNetLibTransport : Transport
     /// Starts the local server or client using configured settings.
     /// </summary>
     /// <param name="server">True to start server.</param>
-    public override bool StartConnection(bool server) => server ? StartServer() : StartClient(_clientAddress);
+    public override bool StartLocalConnection(bool server) => server ? StartServer() : StartClient(_clientAddress);
 
 
     /// <summary>
     /// Stops the local server or client.
     /// </summary>
     /// <param name="server">True to stop server.</param>
-    public override bool StopConnection(bool server) => server ? StopServer() : StopClient();
+    public override bool StopLocalConnection(bool server) => server ? StopServer() : StopClient();
 
 
     /// <summary>
@@ -383,8 +383,8 @@ public class LiteNetLibTransport : Transport
     public override void Shutdown()
     {
         //Stops client then server connections.
-        StopConnection(false);
-        StopConnection(true);
+        StopLocalConnection(false);
+        StopLocalConnection(true);
     }
 
 
@@ -441,4 +441,4 @@ public class LiteNetLibTransport : Transport
     /// <param name="channel"></param>
     /// <returns></returns>
     public override int GetMTU(byte channel) => _unreliableMtu;
-}
+}*/

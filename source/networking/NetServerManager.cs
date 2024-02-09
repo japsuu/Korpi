@@ -62,9 +62,9 @@ public class NetServerManager
     {
         _netManager = netManager;
         _transportManager = transportManager;
-        _transportManager.ServerReceivedPacket += OnServerReceivePacket;
-        _transportManager.ServerConnectionStateChanged += OnServerConnectionStateChanged;
-        _transportManager.RemoteConnectionStateChanged += OnRemoteConnectionStateChanged;
+        _transportManager.LocalServerReceivedPacket += OnLocalServerReceivePacket;
+        _transportManager.LocalServerConnectionStateChanged += OnLocalServerConnectionStateChanged;
+        _transportManager.RemoteClientConnectionStateChanged += OnRemoteClientConnectionStateChanged;
     }
 
 
@@ -276,7 +276,7 @@ public class NetServerManager
     /// Handles a received packet.
     /// </summary>
     /// <param name="args"></param>
-    private void OnServerReceivePacket(ServerReceivedPacketArgs args)
+    private void OnLocalServerReceivePacket(ServerReceivedPacketArgs args)
     {
         // Not from a valid connection.
         if (args.ConnectionId < 0)
@@ -318,7 +318,7 @@ public class NetServerManager
     /// Called when the local server connection state changes.
     /// </summary>
     /// <param name="args"></param>
-    private void OnServerConnectionStateChanged(ServerConnectionStateArgs args)
+    private void OnLocalServerConnectionStateChanged(ServerConnectionStateArgs args)
     {
         LocalConnectionState state = args.ConnectionState;
         Started = state == LocalConnectionState.Started;
@@ -341,7 +341,7 @@ public class NetServerManager
     /// <summary>
     /// Called when a connection state changes for a remote client.
     /// </summary>
-    private void OnRemoteConnectionStateChanged(RemoteConnectionStateArgs args)
+    private void OnRemoteClientConnectionStateChanged(RemoteConnectionStateArgs args)
     {
         int id = args.ConnectionId;
         if (id is < 0 or > short.MaxValue)
@@ -360,7 +360,7 @@ public class NetServerManager
                 Clients.Add(args.ConnectionId, conn);
                 RemoteConnectionStateChanged?.Invoke(conn, args);
 
-                // Connection is no longer valid. This can occur if the user changes the state using the RemoteConnectionStateChanged event.
+                // Connection is no longer valid. This can occur if the user changes the state using the RemoteClientConnectionStateChanged event.
                 if (!conn.IsValid)
                     return;
 

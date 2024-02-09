@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿/*using System.Collections.Concurrent;
 using System.Net;
 using System.Runtime.CompilerServices;
 using Korpi.Networking.Connections;
@@ -315,7 +315,7 @@ public class ServerSocket : CommonSocket
             peer.Disconnect();
 
             //Let LiteNetLib get the disconnect event which will enqueue a remote connection state.
-            //base.Transport.HandleRemoteConnectionState(new RemoteConnectionStateArgs(RemoteConnectionState.Stopped, connectionId, base.Transport.Index));
+            //base.Transport.HandleRemoteClientConnectionStateChange(new RemoteConnectionStateArgs(RemoteConnectionState.Stopped, connectionId, base.Transport.Index));
         }
         catch
         {
@@ -462,7 +462,7 @@ public class ServerSocket : CommonSocket
     {
         /* Run local connection states first so we can begin
          * to read for data at the start of the frame, as that's
-         * where incoming is read. */
+         * where incoming is read. #1#
         while (_localConnectionStates.TryDequeue(out LocalConnectionState result))
             SetConnectionState(result, true);
 
@@ -484,7 +484,7 @@ public class ServerSocket : CommonSocket
         while (_remoteConnectionEvents.TryDequeue(out RemoteConnectionEvent connectionEvent))
         {
             RemoteConnectionState state = connectionEvent.Connected ? RemoteConnectionState.Started : RemoteConnectionState.Stopped;
-            Transport.HandleRemoteConnectionState(new RemoteConnectionStateArgs(state, connectionEvent.ConnectionId));
+            Transport.HandleRemoteClientConnectionStateChange(new RemoteConnectionStateArgs(state, connectionEvent.ConnectionId));
         }
 
         //Handle packets.
@@ -499,7 +499,7 @@ public class ServerSocket : CommonSocket
                     (Channel)incoming.Channel,
                     incoming.ConnectionId);
 
-                Transport.HandleServerReceivedDataArgs(packetArgs);
+                Transport.HandleLocalServerReceivedPacket(packetArgs);
             }
 
             incoming.Dispose();
@@ -532,4 +532,4 @@ public class ServerSocket : CommonSocket
     {
         _maximumClients = value;
     }
-}
+}*/

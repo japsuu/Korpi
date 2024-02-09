@@ -1,6 +1,6 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Networking;
-using Korpi.Networking.Transports.LiteNetLib;
+using Korpi.Networking.Transports.Singleplayer;
 using Korpi.Server;
 using OpenTK.Windowing.Desktop;
 
@@ -21,7 +21,7 @@ internal static class Program
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         
         // Initialize the NetworkManager with the transport layer we want to use.
-        NetworkManager.InitializeSingleton(new LiteNetLibTransport());
+        NetworkManager.InitializeSingleton(new SingleplayerTransport());
 
         // Create and start a network game server.
         using GameServer server = new(GameServerConfiguration.Default().WithPasswordAuthentication("password", NetworkManager.Instance));

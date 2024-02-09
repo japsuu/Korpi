@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿/*using System.Collections.Concurrent;
 using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
 using Korpi.Networking.Utility;
@@ -36,9 +36,9 @@ public abstract class CommonSocket
 
         _connectionState = connectionState;
         if (asServer)
-            Transport.HandleServerConnectionState(new ServerConnectionStateArgs(connectionState));
+            Transport.HandleLocalServerConnectionStateChange(new ServerConnectionStateArgs(connectionState));
         else
-            Transport.HandleClientConnectionState(new ClientConnectionStateArgs(connectionState));
+            Transport.HandleLocalClientConnectionStateChange(new ClientConnectionStateArgs(connectionState));
     }
 
     /// <summary>
@@ -168,4 +168,4 @@ public abstract class CommonSocket
 
         return (ushort)port;
     }
-}
+}*/

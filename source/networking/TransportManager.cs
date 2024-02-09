@@ -9,11 +9,11 @@ public class TransportManager
     private readonly NetworkManager _netManager;
     public readonly Transport Transport;
 
-    public event Action<ClientReceivedDataArgs>? ClientReceivedPacket;
-    public event Action<ServerReceivedPacketArgs>? ServerReceivedPacket;
-    public event Action<ClientConnectionStateArgs>? ClientConnectionStateChanged;
-    public event Action<RemoteConnectionStateArgs>? RemoteConnectionStateChanged;
-    public event Action<ServerConnectionStateArgs>? ServerConnectionStateChanged;
+    public event Action<ClientReceivedPacketArgs>? LocalClientReceivedPacket;
+    public event Action<ServerReceivedPacketArgs>? LocalServerReceivedPacket;
+    public event Action<ClientConnectionStateArgs>? LocalClientConnectionStateChanged;
+    public event Action<RemoteConnectionStateArgs>? RemoteClientConnectionStateChanged;
+    public event Action<ServerConnectionStateArgs>? LocalServerConnectionStateChanged;
     public event Action<bool>? IterateOutgoingStart;
     public event Action<bool>? IterateOutgoingEnd;
     public event Action<bool>? IterateIncomingStart;
@@ -30,15 +30,15 @@ public class TransportManager
 
     private void SubscribeEvents()
     {
-        Transport.ClientReceivedPacket += ClientReceivedPacket;
-        Transport.ServerReceivedPacket += ServerReceivedPacket;
-        Transport.ClientConnectionStateChanged += ClientConnectionStateChanged;
-        Transport.RemoteConnectionStateChanged += RemoteConnectionStateChanged;
-        Transport.ServerConnectionStateChanged += ServerConnectionStateChanged;
+        Transport.LocalClientReceivedPacket += LocalClientReceivedPacket;
+        Transport.LocalServerReceivedPacket += LocalServerReceivedPacket;
+        Transport.LocalClientConnectionStateChanged += LocalClientConnectionStateChanged;
+        Transport.RemoteClientConnectionStateChanged += RemoteClientConnectionStateChanged;
+        Transport.LocalServerConnectionStateChanged += LocalServerConnectionStateChanged;
     }
     
     
-    public string GetConnectionAddress(int clientId) => Transport.GetConnectionAddress(clientId);
+    public string GetConnectionAddress(int clientId) => Transport.GetRemoteConnectionAddress(clientId);
     public string GetClientAddress() => Transport.GetClientAddress();
     public ushort GetPort() => Transport.GetPort();
 
@@ -69,19 +69,19 @@ public class TransportManager
 
     public void StartConnection(bool isServer)
     {
-        Transport.StartConnection(isServer);
+        Transport.StartLocalConnection(isServer);
     }
 
 
     public void StopConnection(bool isServer)
     {
-        Transport.StopConnection(isServer);
+        Transport.StopLocalConnection(isServer);
     }
 
 
     public void StopConnection(int clientId, bool immediate)
     {
-        Transport.StopConnection(clientId, immediate);
+        Transport.StopRemoteConnection(clientId, immediate);
     }
 
 

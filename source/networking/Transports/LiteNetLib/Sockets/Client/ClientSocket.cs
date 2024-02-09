@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿/*using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
@@ -236,7 +236,7 @@ public class ClientSocket : CommonSocket
         if (peer == null)
         {
             /* Only dequeue outgoing because other queues might have
-             * relevant information, such as the local connection queue. */
+             * relevant information, such as the local connection queue. #1#
             ClearPacketQueue(ref _outgoing);
         }
         else
@@ -281,7 +281,7 @@ public class ClientSocket : CommonSocket
     {
         /* Run local connection states first so we can begin
          * to read for data at the start of the frame, as that's
-         * where incoming is read. */
+         * where incoming is read. #1#
         while (_localConnectionStates.TryDequeue(out LocalConnectionState result))
             SetConnectionState(result, false);
 
@@ -299,13 +299,13 @@ public class ClientSocket : CommonSocket
             }
         }
 
-        /* Incoming. */
+        /* Incoming. #1#
         while (_incoming.TryDequeue(out Packet incoming))
         {
-            ClientReceivedDataArgs dataArgs = new(
+            ClientReceivedPacketArgs dataArgs = new(
                 incoming.GetArraySegment(),
                 (Channel)incoming.Channel);
-            Transport.HandleClientReceivedDataArgs(dataArgs);
+            Transport.HandleLocalClientReceivedPacket(dataArgs);
 
             //Dispose of packet.
             incoming.Dispose();
@@ -324,4 +324,4 @@ public class ClientSocket : CommonSocket
 
         Send(ref _outgoing, channelId, segment, -1, _mtu);
     }
-}
+}*/

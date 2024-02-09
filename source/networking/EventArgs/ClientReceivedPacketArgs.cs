@@ -6,7 +6,7 @@ namespace Korpi.Networking.EventArgs;
 /// <summary>
 /// Container about data received on the local client.
 /// </summary>
-public readonly struct ClientReceivedDataArgs
+public readonly struct ClientReceivedPacketArgs
 {
     /// <summary>
     /// Data received.
@@ -19,7 +19,7 @@ public readonly struct ClientReceivedDataArgs
     public readonly Channel Channel;
 
 
-    public ClientReceivedDataArgs(IPacket packet, Channel channel)
+    public ClientReceivedPacketArgs(IPacket packet, Channel channel)
     {
         Packet = packet;
         Channel = channel;

@@ -1,4 +1,5 @@
-﻿using Korpi.Networking.Connections;
+﻿using Common.Logging;
+using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
 using Korpi.Networking.Packets;
 
@@ -9,72 +10,80 @@ namespace Korpi.Networking.Transports;
 /// </summary>
 public abstract class Transport : IDisposable
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(Transport));
     private const string NOT_SUPPORTED_MESSAGE = "The current transport does not support the feature '{0}'.";
-    
+
     /// <summary>
     /// NetworkManager for this transport.
     /// </summary>
     public NetworkManager NetworkManager { get; private set; } = null!;
 
-    #region Connection States
 
-    /// <summary>
-    /// Gets the address of a remote connection Id.
-    /// </summary>
-    /// <param name="connectionId">Connection id to get the address for.</param>
-    /// <returns></returns>
-    public abstract string GetConnectionAddress(int connectionId);
+    public virtual void Initialize(NetworkManager networkManager)
+    {
+        NetworkManager = networkManager;
+    }
 
+
+    #region State
 
     /// <summary>
     /// Called when a connection state changes for the local client.
     /// </summary>
-    public abstract event Action<ClientConnectionStateArgs>? ClientConnectionStateChanged;
+    public abstract event Action<ClientConnectionStateArgs>? LocalClientConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for the local server.
     /// </summary>
-    public abstract event Action<ServerConnectionStateArgs>? ServerConnectionStateChanged;
+    public abstract event Action<ServerConnectionStateArgs>? LocalServerConnectionStateChanged;
 
     /// <summary>
     /// Called when a connection state changes for a remote client.
     /// </summary>
-    public abstract event Action<RemoteConnectionStateArgs>? RemoteConnectionStateChanged;
+    public abstract event Action<RemoteConnectionStateArgs>? RemoteClientConnectionStateChanged;
 
 
     /// <summary>
     /// Handles a ConnectionStateArgs for the local client.
     /// </summary>
     /// <param name="connectionStateArgs">Data being handled.</param>
-    public abstract void HandleClientConnectionState(ClientConnectionStateArgs connectionStateArgs);
+    public abstract void HandleLocalClientConnectionStateChange(ClientConnectionStateArgs connectionStateArgs);
 
 
     /// <summary>
     /// Handles a ConnectionStateArgs for the local server.
     /// </summary>
     /// <param name="connectionStateArgs">Data being handled.</param>
-    public abstract void HandleServerConnectionState(ServerConnectionStateArgs connectionStateArgs);
+    public abstract void HandleLocalServerConnectionStateChange(ServerConnectionStateArgs connectionStateArgs);
 
 
     /// <summary>
     /// Handles a ConnectionStateArgs for a remote client.
     /// </summary>
     /// <param name="connectionStateArgs">Data being handled.</param>
-    public abstract void HandleRemoteConnectionState(RemoteConnectionStateArgs connectionStateArgs);
+    public abstract void HandleRemoteClientConnectionStateChange(RemoteConnectionStateArgs connectionStateArgs);
 
 
     /// <summary>
     /// Gets the current local ConnectionState.
     /// </summary>
-    /// <param name="server">True if getting ConnectionState for the server.</param>
-    public abstract LocalConnectionState GetConnectionState(bool server);
+    /// <param name="asServer">True if getting ConnectionState for the server.</param>
+    public abstract LocalConnectionState GetLocalConnectionState(bool asServer);
 
 
     /// <summary>
     /// Gets the current ConnectionState of a client connected to the server. Can only be called on the server.
     /// </summary>
     /// <param name="connectionId">ConnectionId to get ConnectionState for.</param>
-    public abstract RemoteConnectionState GetConnectionState(int connectionId);
+    public abstract RemoteConnectionState GetRemoteConnectionState(int connectionId);
+    
+
+    /// <summary>
+    /// Gets the address of a remote connection Id.
+    /// </summary>
+    /// <param name="connectionId">Connection id to get the address for.</param>
+    /// <returns></returns>
+    public abstract string GetRemoteConnectionAddress(int connectionId);
 
     #endregion
 
@@ -103,48 +112,48 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Called when the client receives data.
     /// </summary>
-    public abstract event Action<ClientReceivedDataArgs>? ClientReceivedPacket;
-
-
-    /// <summary>
-    /// Handles a ClientReceivedDataArgs.
-    /// </summary>
-    /// <param name="receivedDataArgs">Data being handled.</param>
-    public abstract void HandleClientReceivedDataArgs(ClientReceivedDataArgs receivedDataArgs);
+    public abstract event Action<ClientReceivedPacketArgs>? LocalClientReceivedPacket;
 
 
     /// <summary>
     /// Called when the server receives data.
     /// </summary>
-    public abstract event Action<ServerReceivedPacketArgs>? ServerReceivedPacket;
+    public abstract event Action<ServerReceivedPacketArgs>? LocalServerReceivedPacket;
+
+
+    /// <summary>
+    /// Handles a ClientReceivedPacketArgs.
+    /// </summary>
+    /// <param name="receivedDataArgs">Data being handled.</param>
+    public abstract void HandleLocalClientReceivedPacket(ClientReceivedPacketArgs receivedDataArgs);
 
 
     /// <summary>
     /// Handles a ServerReceivedPacketArgs.
     /// </summary>
     /// <param name="receivedPacketArgs">Data being handled.</param>
-    public abstract void HandleServerReceivedDataArgs(ServerReceivedPacketArgs receivedPacketArgs);
+    public abstract void HandleLocalServerReceivedPacket(ServerReceivedPacketArgs receivedPacketArgs);
 
     #endregion
 
-    #region Iterating.
+    #region Iteration
 
     /// <summary>
     /// Processes data received by the socket.
     /// </summary>
-    /// <param name="server">True to process data received on the server.</param>
-    public abstract void IterateIncoming(bool server);
+    /// <param name="asServer">True to process data received on the server.</param>
+    public abstract void IterateIncoming(bool asServer);
 
 
     /// <summary>
     /// Processes data to be sent by the socket.
     /// </summary>
-    /// <param name="server">True to process data received on the server.</param>
-    public abstract void IterateOutgoing(bool server);
+    /// <param name="asServer">True to process data received on the server.</param>
+    public abstract void IterateOutgoing(bool asServer);
 
     #endregion
 
-    #region Configuration.
+    #region Configuration
 
     /// <summary>
     /// Gets how long in seconds until either the server or client socket must go without data before being timed out.
@@ -153,7 +162,7 @@ public abstract class Transport : IDisposable
     /// <returns></returns>
     public virtual float GetTimeout(bool asServer)
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetTimeout));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetTimeout));
         return -1f;
     }
 
@@ -165,7 +174,7 @@ public abstract class Transport : IDisposable
     /// <param name="asServer">True to set the timeout for the server socket, false for the client socket.</param>
     public virtual void SetTimeout(float value, bool asServer)
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetTimeout));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetTimeout));
     }
 
 
@@ -175,7 +184,7 @@ public abstract class Transport : IDisposable
     /// <returns>Maximum clients transport allows.</returns>
     public virtual int GetMaximumClients()
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetMaximumClients));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetMaximumClients));
         return -1;
     }
 
@@ -186,7 +195,7 @@ public abstract class Transport : IDisposable
     /// <param name="value">Maximum clients to allow.</param>
     public virtual void SetMaximumClients(int value)
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetMaximumClients));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetMaximumClients));
     }
 
 
@@ -196,7 +205,7 @@ public abstract class Transport : IDisposable
     /// <param name="address">Address client will connect to.</param>
     public virtual void SetClientAddress(string address)
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetClientAddress));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetClientAddress));
     }
 
 
@@ -205,7 +214,7 @@ public abstract class Transport : IDisposable
     /// </summary>
     public virtual string GetClientAddress()
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetClientAddress));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetClientAddress));
         return string.Empty;
     }
 
@@ -216,7 +225,7 @@ public abstract class Transport : IDisposable
     /// <param name="address">Address server will bind to.</param>
     public virtual void SetServerBindAddress(string address)
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetServerBindAddress));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetServerBindAddress));
     }
 
 
@@ -225,7 +234,7 @@ public abstract class Transport : IDisposable
     /// </summary>
     public virtual string GetServerBindAddress()
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetServerBindAddress));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetServerBindAddress));
         return string.Empty;
     }
 
@@ -236,7 +245,7 @@ public abstract class Transport : IDisposable
     /// <param name="port">Port to use.</param>
     public virtual void SetPort(ushort port)
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetPort));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetPort));
     }
 
 
@@ -245,26 +254,26 @@ public abstract class Transport : IDisposable
     /// </summary>
     public virtual ushort GetPort()
     {
-        NetworkManager.Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetPort));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetPort));
         return 0;
     }
 
     #endregion
 
-    #region Start and stop.
+    #region Starting and stopping
 
     /// <summary>
     /// Starts the local server or client using configured settings.
     /// </summary>
     /// <param name="server">True to start server.</param>
-    public abstract bool StartConnection(bool server);
+    public abstract bool StartLocalConnection(bool server);
 
 
     /// <summary>
     /// Stops the local server or client.
     /// </summary>
     /// <param name="server">True to stop server.</param>
-    public abstract bool StopConnection(bool server);
+    public abstract bool StopLocalConnection(bool server);
 
 
     /// <summary>
@@ -272,24 +281,13 @@ public abstract class Transport : IDisposable
     /// </summary>
     /// <param name="connectionId">ConnectionId of the client to disconnect.</param>
     /// <param name="immediate">True to disconnect immediately.</param>
-    public abstract bool StopConnection(int connectionId, bool immediate);
+    public abstract bool StopRemoteConnection(int connectionId, bool immediate);
 
 
     /// <summary>
     /// Stops both client and server.
     /// </summary>
     public abstract void Shutdown();
-
-    #endregion
-
-    #region Channels.
-
-    /// <summary>
-    /// Gets the MTU for a channel.
-    /// </summary>
-    /// <param name="channel">Channel to get MTU for.</param>
-    /// <returns>MTU of channel.</returns>
-    public abstract int GetMTU(byte channel);
 
     #endregion
 
@@ -307,11 +305,5 @@ public abstract class Transport : IDisposable
     {
         Dispose(true);
         GC.SuppressFinalize(this);
-    }
-
-
-    public virtual void Initialize(NetworkManager networkManager)
-    {
-        NetworkManager = networkManager;
     }
 }

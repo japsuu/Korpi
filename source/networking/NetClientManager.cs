@@ -64,8 +64,8 @@ public class NetClientManager
     {
         _netManager = netManager;
         _transportManager = transportManager;
-        _transportManager.ClientReceivedPacket += OnClientReceivePacket;
-        _transportManager.ClientConnectionStateChanged += OnClientConnectionStateChanged;
+        _transportManager.LocalClientReceivedPacket += OnLocalClientReceivePacket;
+        _transportManager.LocalClientConnectionStateChanged += OnLocalClientConnectionStateChanged;
         
         // Listen for other clients connections from server.
         RegisterPacketHandler<ClientConnectionChangePacket>(OnReceiveClientConnectionPacket);
@@ -162,7 +162,7 @@ public class NetClientManager
     /// Called when the client receives a packet from the server.
     /// </summary>
     /// <param name="args">The packet and channel received.</param>
-    private void OnClientReceivePacket(ClientReceivedDataArgs args)
+    private void OnLocalClientReceivePacket(ClientReceivedPacketArgs args)
     {
         IPacket packet = args.Packet;
         ushort key = packet.GetKey();
@@ -181,7 +181,7 @@ public class NetClientManager
     /// Called when the local client connection state changes.
     /// </summary>
     /// <param name="args">The new connection state.</param>
-    private void OnClientConnectionStateChanged(ClientConnectionStateArgs args)
+    private void OnLocalClientConnectionStateChanged(ClientConnectionStateArgs args)
     {
         LocalConnectionState state = args.ConnectionState;
         Started = state == LocalConnectionState.Started;
