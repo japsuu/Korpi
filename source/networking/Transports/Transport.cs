@@ -1,7 +1,6 @@
 ﻿using Common.Logging;
 using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
-using Korpi.Networking.Packets;
 
 namespace Korpi.Networking.Transports;
 
@@ -72,17 +71,17 @@ public abstract class Transport : IDisposable
     /// Sends to the server.
     /// </summary>
     /// <param name="channel"></param>
-    /// <param name="packet"></param>
-    public abstract void SendToServer(Channel channel, IPacket packet);
+    /// <param name="segment"></param>
+    public abstract void SendToServer(Channel channel, ArraySegment<byte> segment);
 
 
     /// <summary>
     /// Sends to a client.
     /// </summary>
     /// <param name="channel"></param>
-    /// <param name="packet"></param>
-    /// <param name="connectionId">ConnectionId to send to. When sending to clients can be used to specify which connection to send to.</param>
-    public abstract void SendToClient(Channel channel, IPacket packet, int connectionId);
+    /// <param name="segment"></param>
+    /// <param name="connectionId">ConnectionId to send to.</param>
+    public abstract void SendToClient(Channel channel, ArraySegment<byte> segment, int connectionId);
 
     #endregion
 
@@ -91,13 +90,13 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Called when the client receives data.
     /// </summary>
-    public abstract event Action<ClientReceivedPacketArgs>? LocalClientReceivedPacket;
+    public abstract event Action<ClientReceivedDataArgs>? LocalClientReceivedPacket;
 
 
     /// <summary>
     /// Called when the server receives data.
     /// </summary>
-    public abstract event Action<ServerReceivedPacketArgs>? LocalServerReceivedPacket;
+    public abstract event Action<ServerReceivedDataArgs>? LocalServerReceivedPacket;
 
     #endregion
 
@@ -231,14 +230,14 @@ public abstract class Transport : IDisposable
     /// Starts the local server or client using configured settings.
     /// </summary>
     /// <param name="server">True to start server.</param>
-    public abstract void StartLocalConnection(bool server);
+    public abstract bool StartLocalConnection(bool server);
 
 
     /// <summary>
     /// Stops the local server or client.
     /// </summary>
     /// <param name="server">True to stop server.</param>
-    public abstract void StopLocalConnection(bool server);
+    public abstract bool StopLocalConnection(bool server);
 
 
     /// <summary>
@@ -246,7 +245,7 @@ public abstract class Transport : IDisposable
     /// </summary>
     /// <param name="connectionId">ConnectionId of the client to disconnect.</param>
     /// <param name="immediate">True to disconnect immediately.</param>
-    public abstract void StopRemoteConnection(int connectionId, bool immediate);
+    public abstract bool StopRemoteConnection(int connectionId, bool immediate);
 
 
     /// <summary>

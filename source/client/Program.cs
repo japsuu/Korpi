@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Korpi.Networking;
-using Korpi.Networking.Transports.Singleplayer;
+using Korpi.Networking.Transports.LiteNetLib;
 using Korpi.Server;
 using log4net;
 using log4net.Config;
@@ -25,7 +25,7 @@ internal static class Program
         XmlConfigurator.Configure(logRepository, new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
         
         // Initialize the NetworkManager with the transport layer we want to use.
-        NetworkManager netManager = new(new SingleplayerTransport());
+        NetworkManager netManager = new(new LiteNetLibTransport());
 
         // Create and start a network game server.
         using GameServer server = new(netManager, GameServerConfiguration.Default().WithPasswordAuthentication("password"));

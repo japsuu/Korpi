@@ -1,41 +1,52 @@
-﻿/*using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
+using Common.Logging;
 using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
-using Korpi.Networking.Packets;
-using Korpi.Networking.Transports.LiteNetLib.Sockets.Client;
-using Korpi.Networking.Transports.LiteNetLib.Sockets.Server;
+using Korpi.Networking.Transports.LiteNetLib.Core;
 using LiteNetLib.Layers;
 
 namespace Korpi.Networking.Transports.LiteNetLib;
 
 public class LiteNetLibTransport : Transport
 {
+    internal static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(LiteNetLibTransport));
+
+
     ~LiteNetLibTransport()
     {
         Shutdown();
     }
 
 
-    public override void Initialize(NetworkManager networkManager)
-    {
-        networkManager.Update += OnUpdate;
-    }
+    #region Serialized.
 
-
+    /* Settings / Misc. */
     /// <summary>
     /// While true, forces sockets to send data directly to interface without routing.
     /// </summary>
     private bool _dontRoute;
 
+    /* Channels. */
     /// <summary>
     /// Maximum transmission unit for the unreliable channel.
     /// </summary>
     private int _unreliableMtu = 1023;
 
+    /* Server. */
     /// <summary>
     /// IPv4 address to bind server to.
     /// </summary>
     private string _ipv4BindAddress;
+
+    /// <summary>
+    /// Enable IPv6 only on demand to avoid problems in Linux environments where it may have been disabled on host
+    /// </summary>
+    private bool _enableIpv6 = true;
+
+    /// <summary>
+    /// IPv6 address to bind server to.
+    /// </summary>
+    private string _ipv6BindAddress;
 
     /// <summary>
     /// Port to use.
@@ -47,10 +58,15 @@ public class LiteNetLibTransport : Transport
     /// </summary>
     private int _maximumClients = 4095;
 
+    /* Client. */
     /// <summary>
     /// Address to connect.
     /// </summary>
     private string _clientAddress = "localhost";
+
+    #endregion
+
+    #region Private.
 
     /// <summary>
     /// PacketLayer to use with LiteNetLib.
@@ -67,6 +83,10 @@ public class LiteNetLibTransport : Transport
     /// </summary>
     private ClientSocket _client = new();
 
+    #endregion
+
+    #region Const.
+
     /// <summary>
     /// Maximum timeout value to use.
     /// </summary>
@@ -82,18 +102,17 @@ public class LiteNetLibTransport : Transport
     /// </summary>
     private const int MAXIMUM_UDP_MTU = 1023;
 
+    #endregion
 
-    protected override void Dispose(bool disposing)
+
+    public override void Initialize(NetworkManager networkManager)
     {
-        base.Dispose(disposing);
-
-        if (!disposing)
-            return;
-
-        Shutdown();
-        NetworkManager.Update -= OnUpdate;
+        base.Initialize(networkManager);
+        networkManager.Update += UpdateSockets;
     }
 
+
+    #region ConnectionStates.
 
     /// <summary>
     /// Gets the address of a remote connection Id.
@@ -122,8 +141,14 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Gets the current local ConnectionState.
     /// </summary>
-    /// <param name="asServer">True if getting ConnectionState for the server.</param>
-    public override LocalConnectionState GetLocalConnectionState(bool asServer) => asServer ? _server.GetConnectionState() : _client.GetConnectionState();
+    /// <param name="server">True if getting ConnectionState for the server.</param>
+    public override LocalConnectionState GetLocalConnectionState(bool server)
+    {
+        if (server)
+            return _server.GetConnectionState();
+        else
+            return _client.GetConnectionState();
+    }
 
 
     /// <summary>
@@ -137,7 +162,7 @@ public class LiteNetLibTransport : Transport
     /// Handles a ConnectionStateArgs for the local client.
     /// </summary>
     /// <param name="connectionStateArgs"></param>
-    public override void HandleLocalClientConnectionStateChange(ClientConnectionStateArgs connectionStateArgs)
+    public void HandleClientConnectionState(ClientConnectionStateArgs connectionStateArgs)
     {
         LocalClientConnectionStateChanged?.Invoke(connectionStateArgs);
     }
@@ -147,7 +172,7 @@ public class LiteNetLibTransport : Transport
     /// Handles a ConnectionStateArgs for the local server.
     /// </summary>
     /// <param name="connectionStateArgs"></param>
-    public override void HandleLocalServerConnectionStateChange(ServerConnectionStateArgs connectionStateArgs)
+    public void HandleServerConnectionState(ServerConnectionStateArgs connectionStateArgs)
     {
         LocalServerConnectionStateChanged?.Invoke(connectionStateArgs);
         UpdateTimeout();
@@ -158,29 +183,32 @@ public class LiteNetLibTransport : Transport
     /// Handles a ConnectionStateArgs for a remote client.
     /// </summary>
     /// <param name="connectionStateArgs"></param>
-    public override void HandleRemoteClientConnectionStateChange(RemoteConnectionStateArgs connectionStateArgs)
+    public void HandleRemoteConnectionState(RemoteConnectionStateArgs connectionStateArgs)
     {
         RemoteClientConnectionStateChanged?.Invoke(connectionStateArgs);
     }
 
+    #endregion
+
+    #region Iterating.
 
     /// <summary>
     /// Called every update to poll for data.
     /// </summary>
-    private void OnUpdate()
+    private void UpdateSockets()
     {
-        _server.PollSocket();
-        _client.PollSocket();
+        _server?.PollSocket();
+        _client?.PollSocket();
     }
 
 
     /// <summary>
     /// Processes data received by the socket.
     /// </summary>
-    /// <param name="asServer">True to process data received on the server.</param>
-    public override void IterateIncoming(bool asServer)
+    /// <param name="server">True to process data received on the server.</param>
+    public override void IterateIncoming(bool server)
     {
-        if (asServer)
+        if (server)
             _server.IterateIncoming();
         else
             _client.IterateIncoming();
@@ -190,27 +218,30 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Processes data to be sent by the socket.
     /// </summary>
-    /// <param name="asServer">True to process data received on the server.</param>
-    public override void IterateOutgoing(bool asServer)
+    /// <param name="server">True to process data received on the server.</param>
+    public override void IterateOutgoing(bool server)
     {
-        if (asServer)
+        if (server)
             _server.IterateOutgoing();
         else
             _client.IterateOutgoing();
     }
 
+    #endregion
+
+    #region ReceivedData.
 
     /// <summary>
     /// Called when client receives data.
     /// </summary>
-    public override event Action<ClientReceivedPacketArgs>? LocalClientReceivedPacket;
+    public override event Action<ClientReceivedDataArgs>? LocalClientReceivedPacket;
 
 
     /// <summary>
-    /// Handles a ClientReceivedPacketArgs.
+    /// Handles a ClientReceivedDataArgs.
     /// </summary>
     /// <param name="receivedDataArgs"></param>
-    public override void HandleLocalClientReceivedPacket(ClientReceivedPacketArgs receivedDataArgs)
+    public void HandleClientReceivedPacketArgs(ClientReceivedDataArgs receivedDataArgs)
     {
         LocalClientReceivedPacket?.Invoke(receivedDataArgs);
     }
@@ -219,43 +250,49 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Called when server receives data.
     /// </summary>
-    public override event Action<ServerReceivedPacketArgs>? LocalServerReceivedPacket;
+    public override event Action<ServerReceivedDataArgs>? LocalServerReceivedPacket;
 
 
     /// <summary>
-    /// Handles a ClientReceivedPacketArgs.
+    /// Handles a ClientReceivedDataArgs.
     /// </summary>
-    /// <param name="receivedPacketArgs"></param>
-    public override void HandleLocalServerReceivedPacket(ServerReceivedPacketArgs receivedPacketArgs)
+    /// <param name="receivedDataArgs"></param>
+    public void HandleServerReceivedPacketArgs(ServerReceivedDataArgs receivedDataArgs)
     {
-        LocalServerReceivedPacket?.Invoke(receivedPacketArgs);
+        LocalServerReceivedPacket?.Invoke(receivedDataArgs);
     }
 
+    #endregion
+
+    #region Sending.
 
     /// <summary>
     /// Sends to the server or all clients.
     /// </summary>
-    /// <param name="channel"></param>
-    /// <param name="packet"></param>
+    /// <param name="channelId">Channel to use.</param>
+    /// <param name="segment">Data to send.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override void SendToServer(Channel channel, IPacket packet)
+    public override void SendToServer(Channel channel, ArraySegment<byte> segment)
     {
-        _client.SendToServer(channel, packet);
+        _client.SendToServer(channel, segment);
     }
 
 
     /// <summary>
     /// Sends data to a client.
     /// </summary>
-    /// <param name="channel"></param>
-    /// <param name="packet"></param>
+    /// <param name="channelId"></param>
+    /// <param name="segment"></param>
     /// <param name="connectionId"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override void SendToClient(Channel channel, IPacket packet, int connectionId)
+    public override void SendToClient(Channel channel, ArraySegment<byte> segment, int connectionId)
     {
-        _server.SendToClient(channel, packet, connectionId);
+        _server.SendToClient(channel, segment, connectionId);
     }
 
+    #endregion
+
+    #region Configuration.
 
     /// <summary>
     /// Sets which PacketLayer to use with LiteNetLib.
@@ -265,29 +302,46 @@ public class LiteNetLibTransport : Transport
     {
         _packetLayer = packetLayer;
         if (GetLocalConnectionState(true) != LocalConnectionState.Stopped)
-            NetworkManager.Logger.Warn("PacketLayer is set but will not be applied until the server stops.");
+            Logger.Warn("PacketLayer is set but will not be applied until the server stops.");
         if (GetLocalConnectionState(false) != LocalConnectionState.Stopped)
-            NetworkManager.Logger.Warn("PacketLayer is set but will not be applied until the client stops.");
+            Logger.Warn("PacketLayer is set but will not be applied until the client stops.");
 
-        _server.Initialize(this, _unreliableMtu, _packetLayer, _dontRoute);
+        _server.Initialize(this, _unreliableMtu, _packetLayer, _enableIpv6, _dontRoute);
         _client.Initialize(this, _unreliableMtu, _packetLayer, _dontRoute);
     }
 
 
+    /// <summary>
+    /// How long in seconds until either the server or client socket must go without data before being timed out.
+    /// </summary>
+    /// <param name="asServer">True to get the timeout for the server socket, false for the client socket.</param>
+    /// <returns></returns>
     public override float GetTimeout(bool asServer) =>
 
         //Server and client uses the same timeout.
         MAX_TIMEOUT_SECONDS;
 
 
+    /// <summary>
+    /// Sets how long in seconds until either the server or client socket must go without data before being timed out.
+    /// </summary>
+    /// <param name="asServer">True to set the timeout for the server socket, false for the client socket.</param>
     public override void SetTimeout(float value, bool asServer)
     {
     }
 
 
+    /// <summary>
+    /// Returns the maximum number of clients allowed to connect to the server. If the transport does not support this method the value -1 is returned.
+    /// </summary>
+    /// <returns></returns>
     public override int GetMaximumClients() => _server.GetMaximumClients();
 
 
+    /// <summary>
+    /// Sets maximum number of clients allowed to connect to the server. If applied at runtime and clients exceed this value existing clients will stay connected but new clients may not connect.
+    /// </summary>
+    /// <param name="value"></param>
     public override void SetMaximumClients(int value)
     {
         _maximumClients = value;
@@ -314,7 +368,7 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Sets which address the server will bind to.
     /// </summary>
-    /// <param name="address">The address to bind to.</param>
+    /// <param name="address"></param>
     public override void SetServerBindAddress(string address)
     {
         _ipv4BindAddress = address;
@@ -324,6 +378,7 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Gets which address the server will bind to.
     /// </summary>
+    /// <param name="address"></param>
     public override string GetServerBindAddress() => _ipv4BindAddress;
 
 
@@ -340,41 +395,60 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Gets which port to use.
     /// </summary>
+    /// <param name="port"></param>
     public override ushort GetPort()
     {
         //Server.
-        ushort? result = _server.GetPort();
+        ushort? result = _server?.GetPort();
         if (result.HasValue)
             return result.Value;
 
         //Client.
-        result = _client.GetPort();
+        result = _client?.GetPort();
         if (result.HasValue)
             return result.Value;
 
         return _port;
     }
 
+    #endregion
+
+    #region Start and stop.
 
     /// <summary>
     /// Starts the local server or client using configured settings.
     /// </summary>
     /// <param name="server">True to start server.</param>
-    public override bool StartLocalConnection(bool server) => server ? StartServer() : StartClient(_clientAddress);
+    public override bool StartLocalConnection(bool server)
+    {
+        if (server)
+            return StartServer();
+        else
+            return StartClient(_clientAddress);
+    }
 
 
     /// <summary>
     /// Stops the local server or client.
     /// </summary>
     /// <param name="server">True to stop server.</param>
-    public override bool StopLocalConnection(bool server) => server ? StopServer() : StopClient();
+    public override bool StopLocalConnection(bool server)
+    {
+        if (server)
+            return StopServer();
+        else
+            return StopClient();
+    }
 
 
     /// <summary>
     /// Stops a remote client from the server, disconnecting the client.
     /// </summary>
     /// <param name="connectionId">ConnectionId of the client to disconnect.</param>
-    public override bool StopConnection(int connectionId) => _server.StopConnection(connectionId);
+    /// <param name="immediately">True to abrutly stop the client socket. The technique used to accomplish immediate disconnects may vary depending on the transport.
+    /// When not using immediate disconnects it's recommended to perform disconnects using the ServerManager rather than accessing the transport directly.
+    /// </param>
+    public override bool StopRemoteConnection(int connectionId, bool immediately) => _server.StopConnection(connectionId);
 
 
     /// <summary>
@@ -388,21 +462,29 @@ public class LiteNetLibTransport : Transport
     }
 
 
+    #region Privates.
+
     /// <summary>
     /// Starts server.
     /// </summary>
     private bool StartServer()
     {
-        _server.Initialize(this, _unreliableMtu, _packetLayer, _dontRoute);
+        _server.Initialize(this, _unreliableMtu, _packetLayer, _enableIpv6, _dontRoute);
         UpdateTimeout();
-        return _server.StartConnection(_port, _maximumClients, _ipv4BindAddress);
+        return _server.StartConnection(_port, _maximumClients, _ipv4BindAddress, _ipv6BindAddress);
     }
 
 
     /// <summary>
     /// Stops server.
     /// </summary>
-    private bool StopServer() => _server.StopConnection();
+    private bool StopServer()
+    {
+        if (_server == null)
+            return false;
+        else
+            return _server.StopConnection();
+    }
 
 
     /// <summary>
@@ -422,7 +504,7 @@ public class LiteNetLibTransport : Transport
     /// </summary>
     private void UpdateTimeout()
     {
-        const int timeout = MAX_TIMEOUT_SECONDS;
+        int timeout = MAX_TIMEOUT_SECONDS;
         _client.UpdateTimeout(timeout);
         _server.UpdateTimeout(timeout);
     }
@@ -431,14 +513,15 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Stops the client.
     /// </summary>
-    private bool StopClient() => _client.StopConnection();
+    private bool StopClient()
+    {
+        if (_client == null)
+            return false;
+        else
+            return _client.StopConnection();
+    }
 
+    #endregion
 
-    /// <summary>
-    /// Gets the MTU for a channel. This should take header size into consideration.
-    /// For example, if MTU is 1200 and a packet header for this channel is 10 in size, this method should return 1190.
-    /// </summary>
-    /// <param name="channel"></param>
-    /// <returns></returns>
-    public override int GetMTU(byte channel) => _unreliableMtu;
-}*/
+    #endregion
+}

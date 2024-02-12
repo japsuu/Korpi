@@ -1,8 +1,8 @@
 ﻿using Common.Logging;
 using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
-using Korpi.Networking.Packets;
-using Korpi.Networking.Packets.Handlers;
+using Korpi.Networking.HighLevel.Messages;
+using Korpi.Networking.HighLevel.Messages.Handlers;
 using Korpi.Networking.Transports;
 using Korpi.Networking.Utility;
 
@@ -15,7 +15,7 @@ namespace Korpi.Networking;
 public class NetClientManager
 {
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(NetClientManager));
-    private readonly Dictionary<ushort, PacketHandlerCollection> _packetHandlers = new();
+    private readonly Dictionary<ushort, MessageHandlerCollection> _packetHandlers = new();
     private readonly NetworkManager _netManager;
     private readonly TransportManager _transportManager;
     
@@ -68,31 +68,31 @@ public class NetClientManager
         _transportManager.Transport.LocalClientConnectionStateChanged += OnLocalClientConnectionStateChanged;
         
         // Listen for other clients connections from server.
-        RegisterPacketHandler<ClientConnectionChangePacket>(OnReceiveClientConnectionPacket);
-        RegisterPacketHandler<ConnectedClientsPacket>(OnReceiveConnectedClientsPacket);
-        RegisterPacketHandler<WelcomePacket>(OnReceiveWelcomePacket);
+        RegisterPacketHandler<ClientConnectionChangeNetMessage>(OnReceiveClientConnectionPacket);
+        RegisterPacketHandler<ConnectedClientsNetMessage>(OnReceiveConnectedClientsPacket);
+        RegisterPacketHandler<WelcomeNetMessage>(OnReceiveWelcomePacket);
     }
 
 
     /// <summary>
-    /// Called when the server sends a welcome packet to the client.
+    /// Called when the server sends a welcome message to the client.
     /// </summary>
-    /// <param name="packet">The packet containing the welcome information.</param>
-    /// <param name="channel">The channel the packet was received on.</param>
-    private void OnReceiveWelcomePacket(WelcomePacket packet, Channel channel)
+    /// <param name="netMessage>The message containing the welcome information.</param>
+    /// <param name="channel">The channel the message was received on.</param>
+    private void OnReceiveWelcomePacket(WelcomeNetMessage netMessage, Channel channel)
     {
-        // The ClientConnectionChangePacket and ConnectedClientsPacket should have already been received, so we can assume Clients contains this client too.
-        ushort clientId = packet.ClientId;
+        // The ClientConnectionChangeMessage and ConnectedClientsMessage should have already been received, so we can assume Clients contains this client too.
+        ushort clientId = netMessage.ClientId;
         if (!Clients.TryGetValue(clientId, out Connection))
         {
-            // This should never happen unless the connection is dropping and the ClientConnectionChangePacket is lost (or arrives late).
+            // This should never happen unless the connection is dropping and the ClientConnectionChangeMessage is lost (or arrives late).
             Logger.Warn(
-                "Local client connection could not be found while receiving the Welcome packet." +
-                "This can occur if the client is receiving a packet immediately before losing connection.");
+                "Local client connection could not be found while receiving the Welcome message." +
+                "This can occur if the client is receiving a message immediately before losing connection.");
             Connection = new NetworkConnection(_netManager, clientId, false);
         }
         
-        Logger.Info($"Received welcome packet from server. Assigned clientId is {clientId}.");
+        Logger.Info($"Received welcome message from server. Assigned clientId is {clientId}.");
         
         // Mark local connection as authenticated.
         Connection.SetAuthenticated();
@@ -103,13 +103,13 @@ public class NetClientManager
     /// <summary>
     /// Called when a new client connects or disconnects.
     /// </summary>
-    /// <param name="packet">The packet containing the connection change information.</param>
-    /// <param name="channel">The channel the packet was received on.</param>
-    private void OnReceiveClientConnectionPacket(ClientConnectionChangePacket packet, Channel channel)
+    /// <param name="netMessage>The message containing the connection change information.</param>
+    /// <param name="channel">The channel the message was received on.</param>
+    private void OnReceiveClientConnectionPacket(ClientConnectionChangeNetMessage netMessage, Channel channel)
     {
-        bool isNewConnection = packet.Connected;
-        int clientId = packet.ClientId;
-        RemoteConnectionStateArgs rcs = new RemoteConnectionStateArgs(isNewConnection ? RemoteConnectionState.Started : RemoteConnectionState.Stopped, clientId);
+        bool isNewConnection = netMessage.Connected;
+        int clientId = netMessage.ClientId;
+        RemoteConnectionStateArgs rcs = new(isNewConnection ? RemoteConnectionState.Started : RemoteConnectionState.Stopped, clientId);
 
         // If a new connection, invoke event after adding conn to clients, otherwise invoke event before conn is removed from clients.
         if (isNewConnection)
@@ -132,18 +132,18 @@ public class NetClientManager
     /// <summary>
     /// Called when the server sends a list of all connected clients to the client.
     /// </summary>
-    /// <param name="packet">The packet containing the list of connected clients.</param>
-    /// <param name="channel">The channel the packet was received on.</param>
-    private void OnReceiveConnectedClientsPacket(ConnectedClientsPacket packet, Channel channel)
+    /// <param name="netMessage>The message containing the list of connected clients.</param>
+    /// <param name="channel">The channel the message was received on.</param>
+    private void OnReceiveConnectedClientsPacket(ConnectedClientsNetMessage netMessage, Channel channel)
     {
         NetworkManager.ClearClientsCollection(Clients);
 
-        List<int>? collection = packet.ClientIds;
+        List<int>? collection = netMessage.ClientIds;
         if (collection == null)
         {
             // There were no connected clients, technically not possible since the list should contain at least the local client.
             collection = new List<int>();
-            Logger.Warn("Received a ConnectedClientsPacket with no connected clients.");
+            Logger.Warn("Received a ConnectedClientsMessage with no connected clients.");
         }
         else
         {
@@ -161,21 +161,21 @@ public class NetClientManager
 
 
     /// <summary>
-    /// Called when the client receives a packet from the server.
+    /// Called when the client receives a message from the server.
     /// </summary>
-    /// <param name="args">The packet and channel received.</param>
-    private void OnLocalClientReceivePacket(ClientReceivedPacketArgs args)
+    /// <param name="args">The message and channel received.</param>
+    private void OnLocalClientReceivePacket(ClientReceivedDataArgs args)
     {
-        IPacket packet = args.Packet;
-        ushort key = packet.GetKey();
+        NetMessage netMessage = args.Segment;
+        ushort key = netMessage.GetKey();
         
-        if (!_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (!_packetHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
         {
-            Logger.Warn($"Received a packet of type {packet.GetType().Name} but no handler is registered for it. Ignoring.");
+            Logger.Warn($"Received a message of type {netMessage.GetType().Name} but no handler is registered for it. Ignoring.");
             return;
         }
         
-        packetHandler.InvokeHandlers(packet, args.Channel);
+        packetHandler.InvokeHandlers(netMessage, args.Channel);
     }
 
 
@@ -227,17 +227,17 @@ public class NetClientManager
 
 
     /// <summary>
-    /// Registers a method to call when a packet of the specified type arrives.
+    /// Registers a method to call when a message of the specified type arrives.
     /// </summary>
     /// <param name="handler">Method to call.</param>
     /// <typeparam name="T"></typeparam>
-    public void RegisterPacketHandler<T>(Action<T, Channel> handler) where T : struct, IPacket
+    public void RegisterPacketHandler<T>(Action<T, Channel> handler) where T : struct, NetMessage
     {
         ushort key = PacketHelper.GetKey<T>();
 
-        if (!_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (!_packetHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
         {
-            packetHandler = new ServerPacketHandler<T>();
+            packetHandler = new ServerMessageHandler<T>();
             _packetHandlers.Add(key, packetHandler);
         }
 
@@ -246,29 +246,29 @@ public class NetClientManager
 
 
     /// <summary>
-    /// Unregisters a method from being called when a packet of the specified type arrives.
+    /// Unregisters a method from being called when a message of the specified type arrives.
     /// </summary>
     /// <param name="handler">The method to unregister.</param>
-    /// <typeparam name="T">Type of packet to unregister.</typeparam>
-    public void UnregisterPacketHandler<T>(Action<T, Channel> handler) where T : struct, IPacket
+    /// <typeparam name="T">Type of message to unregister.</typeparam>
+    public void UnregisterPacketHandler<T>(Action<T, Channel> handler) where T : struct, NetMessage
     {
         ushort key = PacketHelper.GetKey<T>();
-        if (_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (_packetHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
             packetHandler.UnregisterHandler(handler);
     }
 
 
     /// <summary>
-    /// Sends a packet to a connection.
+    /// Sends a message to a connection.
     /// </summary>
-    /// <typeparam name="T">Type of packet to send.</typeparam>
-    /// <param name="packet">The packet to send.</param>
+    /// <typeparam name="T">Type of message to send.</typeparam>
+    /// <param name="packet">The message to send.</param>
     /// <param name="channel">Channel to send on.</param>
-    public void SendPacketToServer<T>(T packet, Channel channel = Channel.Reliable) where T : struct, IPacket
+    public void SendPacketToServer<T>(T packet, Channel channel = Channel.Reliable) where T : struct, NetMessage
     {
         if (!Started)
         {
-            Logger.Error($"Local connection is not started, cannot send packet of type {packet.GetType().Name}.");
+            Logger.Error($"Local connection is not started, cannot send message of type {packet.GetType().Name}.");
             return; 
         }
 

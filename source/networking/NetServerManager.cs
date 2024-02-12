@@ -2,8 +2,8 @@
 using Korpi.Networking.Authenticating;
 using Korpi.Networking.Connections;
 using Korpi.Networking.EventArgs;
-using Korpi.Networking.Packets;
-using Korpi.Networking.Packets.Handlers;
+using Korpi.Networking.HighLevel.Messages;
+using Korpi.Networking.HighLevel.Messages.Handlers;
 using Korpi.Networking.Transports;
 using Korpi.Networking.Utility;
 
@@ -16,7 +16,7 @@ namespace Korpi.Networking;
 public class NetServerManager
 {
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(NetServerManager));
-    private readonly Dictionary<ushort, PacketHandlerCollection> _packetHandlers = new(); // Registered packet handlers by packet type.
+    private readonly Dictionary<ushort, MessageHandlerCollection> _messageHandlers = new(); // Registered message handlers by message type.
     private readonly NetworkManager _netManager;
     private readonly TransportManager _transportManager;
     private Authenticator? _authenticator;
@@ -108,7 +108,7 @@ public class NetServerManager
     /// <summary>
     /// Stops the server.
     /// </summary>
-    /// <param name="sendDisconnectionPackets">True to send a disconnect packet to all clients before stopping the server.</param>
+    /// <param name="sendDisconnectionPackets">True to send a disconnect message to all clients before stopping the server.</param>
     public void StopServer(bool sendDisconnectionPackets)
     {
         if (sendDisconnectionPackets)
@@ -119,19 +119,19 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Registers a method to call when a packet of the specified type arrives.
+    /// Registers a method to call when a message of the specified type arrives.
     /// </summary>
     /// <param name="handler">Method to call.</param>
-    /// <param name="requireAuthenticated">True if the client must be authenticated to send this packet.</param>
+    /// <param name="requireAuthenticated">True if the client must be authenticated to send this message.</param>
     /// <typeparam name="T"></typeparam>
-    public void RegisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler, bool requireAuthenticated = true) where T : struct, IPacket
+    public void RegisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler, bool requireAuthenticated = true) where T : struct, NetMessage
     {
         ushort key = PacketHelper.GetKey<T>();
 
-        if (!_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (!_messageHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
         {
-            packetHandler = new ClientPacketHandler<T>(requireAuthenticated);
-            _packetHandlers.Add(key, packetHandler);
+            packetHandler = new ClientMessageHandler<T>(requireAuthenticated);
+            _messageHandlers.Add(key, packetHandler);
         }
 
         packetHandler.RegisterHandler(handler);
@@ -139,44 +139,44 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Unregisters a method call from a packet type.
+    /// Unregisters a method call from a message type.
     /// </summary>
     /// <param name="handler">Method to unregister.</param>
-    /// <typeparam name="T">Type of packet being unregistered.</typeparam>
-    public void UnregisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler) where T : struct, IPacket
+    /// <typeparam name="T">Type of message being unregistered.</typeparam>
+    public void UnregisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler) where T : struct, NetMessage
     {
         ushort key = PacketHelper.GetKey<T>();
-        if (_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (_messageHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
             packetHandler.UnregisterHandler(handler);
     }
 
 
     /// <summary>
-    /// Sends a packet to a connection.
+    /// Sends a message to a connection.
     /// </summary>
     /// <param name="connection">Connection to send to.</param>
     /// <param name="message">Packet data being sent.</param>
-    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this packet.</param>
+    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this message.</param>
     /// <param name="channel">Channel to send on.</param>
-    /// <typeparam name="T">Type of packet to send.</typeparam>
+    /// <typeparam name="T">Type of message to send.</typeparam>
     public void SendPacketToClient<T>(NetworkConnection connection, T message, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
-        where T : struct, IPacket
+        where T : struct, NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to client because server is not active.");
+            Logger.Warn("Cannot send message to client because server is not active.");
             return;
         }
 
         if (!connection.IsActive)
         {
-            Logger.Warn("Connection is not active, cannot send packet.");
+            Logger.Warn("Connection is not active, cannot send message.");
             return;
         }
 
         if (requireAuthenticated && !connection.IsAuthenticated)
         {
-            Logger.Warn($"Cannot send packet of type {typeof(T).Name} to client {connection.ClientId} because they are not authenticated.");
+            Logger.Warn($"Cannot send message of type {typeof(T).Name} to client {connection.ClientId} because they are not authenticated.");
             return;
         }
 
@@ -185,17 +185,17 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Sends a packet to all clients.
+    /// Sends a message to all clients.
     /// </summary>
     /// <param name="message">Packet data being sent.</param>
-    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this packet.</param>
+    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this message.</param>
     /// <param name="channel">Channel to send on.</param>
-    /// <typeparam name="T">The type of packet to send.</typeparam>
-    public void SendPacketToAllClients<T>(T message, bool requireAuthenticated = true, Channel channel = Channel.Reliable) where T : struct, IPacket
+    /// <typeparam name="T">The type of message to send.</typeparam>
+    public void SendPacketToAllClients<T>(T message, bool requireAuthenticated = true, Channel channel = Channel.Reliable) where T : struct, NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to clients because server is not active.");
+            Logger.Warn("Cannot send message to clients because server is not active.");
             return;
         }
 
@@ -205,14 +205,14 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Sends a packet to all clients except the specified one.
+    /// Sends a message to all clients except the specified one.
     /// </summary>
     public void SendPacketToAllClientsExcept<T>(T message, NetworkConnection except, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
-        where T : struct, IPacket
+        where T : struct, NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to clients because server is not active.");
+            Logger.Warn("Cannot send message to clients because server is not active.");
             return;
         }
 
@@ -226,14 +226,14 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Sends a packet to all clients except the specified ones.
+    /// Sends a message to all clients except the specified ones.
     /// </summary>
     public void SendPacketToAllClientsExcept<T>(T message, List<NetworkConnection> except, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
-        where T : struct, IPacket
+        where T : struct, NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to clients because server is not active.");
+            Logger.Warn("Cannot send message to clients because server is not active.");
             return;
         }
 
@@ -276,19 +276,19 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Handles a received packet.
+    /// Handles a received message.
     /// </summary>
     /// <param name="args"></param>
-    private void OnLocalServerReceivePacket(ServerReceivedPacketArgs args)
+    private void OnLocalServerReceivePacket(ServerReceivedDataArgs args)
     {
         // Not from a valid connection.
         if (args.ConnectionId < 0)
         {
-            Logger.Warn($"Received a packet from an unknown connection with id {args.ConnectionId}. Ignoring.");
+            Logger.Warn($"Received a message from an unknown connection with id {args.ConnectionId}. Ignoring.");
             return;
         }
 
-        IPacket packet = args.Packet;
+        NetMessage netMessage = args.Segment;
         if (!Clients.TryGetValue(args.ConnectionId, out NetworkConnection? connection))
         {
             Logger.Warn($"ConnectionId {args.ConnectionId} not found within Clients. Connection will be kicked immediately.");
@@ -296,24 +296,24 @@ public class NetServerManager
             return;
         }
 
-        //TODO: Kick the client immediately if packet is over MTU.
+        //TODO: Kick the client immediately if message is over MTU.
 
-        ushort key = packet.GetKey();
+        ushort key = netMessage.GetKey();
 
-        if (!_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (!_messageHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
         {
-            Logger.Warn($"Received a packet of type {packet.GetType().Name} but no handler is registered for it. Ignoring.");
+            Logger.Warn($"Received a message of type {netMessage.GetType().Name} but no handler is registered for it. Ignoring.");
             return;
         }
 
         if (packetHandler.RequireAuthentication && !connection.IsAuthenticated)
         {
-            Logger.Warn($"Client {connection.ClientId} sent a packet of type {packet.GetType().Name} without being authenticated. Kicking.");
+            Logger.Warn($"Client {connection.ClientId} sent a message of type {netMessage.GetType().Name} without being authenticated. Kicking.");
             Kick(connection, KickReason.ExploitAttempt);
             return;
         }
 
-        packetHandler.InvokeHandlers(connection, packet, args.Channel);
+        packetHandler.InvokeHandlers(connection, netMessage, args.Channel);
     }
 
 
@@ -427,7 +427,7 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Sends a welcome packet to a client.
+    /// Sends a welcome message to a client.
     /// </summary>
     /// <param name="connection"></param>
     private void SendWelcomePacket(NetworkConnection connection)
@@ -435,12 +435,12 @@ public class NetServerManager
         // Sanity check.
         if (!connection.IsValid)
         {
-            Logger.Warn("Cannot send welcome packet to client because connection is not valid.");
+            Logger.Warn("Cannot send welcome message to client because connection is not valid.");
             return;
         }
 
-        WelcomePacket welcome = new((ushort)connection.ClientId);
-        _transportManager.SendToClient(Channel.Reliable, welcome, connection.ClientId);
+        WelcomeNetMessage welcomeNet = new((ushort)connection.ClientId);
+        _transportManager.SendToClient(Channel.Reliable, welcomeNet, connection.ClientId);
     }
 
 
@@ -449,11 +449,11 @@ public class NetServerManager
     /// </summary>
     private void SendDisconnectPackets(List<NetworkConnection> conns, bool iterate)
     {
-        DisconnectPacket packet = new();
+        DisconnectNetMessage netMessage = new();
 
-        // Send packet to each client, authenticated or not.
+        // Send message to each client, authenticated or not.
         foreach (NetworkConnection c in conns)
-            SendPacketToClient(c, packet, false);
+            SendPacketToClient(c, netMessage, false);
 
         if (iterate)
             _transportManager.IterateOutgoing(true);
@@ -465,12 +465,12 @@ public class NetServerManager
     /// </summary>
     private void SendClientConnectionChangePacket(bool connected, NetworkConnection conn)
     {
-        // Send a packet to all authenticated clients with the clientId that just connected.
+        // Send a message to all authenticated clients with the clientId that just connected.
         // It is important that the just connected client will also get this, so that they can later successfully get a reference to their own connection.
-        ClientConnectionChangePacket changeMsg = new(conn.ClientId, connected);
+        ClientConnectionChangeNetMessage changeNetMsg = new(conn.ClientId, connected);
 
         foreach (NetworkConnection c in Clients.Values.Where(c => c.IsAuthenticated))
-            SendPacketToClient(c, changeMsg);
+            SendPacketToClient(c, changeNetMsg);
 
         // If this was a new connection, the new client must also receive all currently connected client ids.
         if (!connected)
@@ -478,7 +478,7 @@ public class NetServerManager
 
         //Send already connected clients to the connection that just joined.
         List<int>? clientIds = Clients.Count > 0 ? Clients.Keys.ToList() : null;
-        ConnectedClientsPacket allIdsPacket = new(clientIds);
-        SendPacketToClient(conn, allIdsPacket);
+        ConnectedClientsNetMessage allIdsNetMessage = new(clientIds);
+        SendPacketToClient(conn, allIdsNetMessage);
     }
 }

@@ -1,5 +1,6 @@
-﻿using Korpi.Networking.EventArgs;
-using Korpi.Networking.Packets;
+﻿using Korpi.Networking.HighLevel.Messages;
+using Korpi.Networking.LowLevel.NetStack.Buffers;
+using Korpi.Networking.LowLevel.NetStack.Serialization;
 using Korpi.Networking.Transports;
 
 namespace Korpi.Networking;
@@ -7,6 +8,9 @@ namespace Korpi.Networking;
 public class TransportManager
 {
     private readonly NetworkManager _netManager;
+    private readonly ArrayPool<byte> _byteBufferPool = ArrayPool<byte>.Create(1024, 50);
+    private readonly BitBuffer _bitBuffer = new();
+    
     public readonly Transport Transport;
 
     public event Action<bool>? IterateOutgoingStart;
@@ -19,6 +23,7 @@ public class TransportManager
     {
         _netManager = netManager;
         Transport = transport;
+        MessageManager.RegisterAllMessages();
     }
     
     
@@ -69,15 +74,25 @@ public class TransportManager
     }
 
 
-    public void SendToClient<T>(Channel channel, T packet, int clientId) where T : struct, IPacket
+    public void SendToClient<T>(Channel channel, T packet, int clientId) where T : NetMessage
     {
-        Transport.SendToClient(channel, packet, clientId);
+        packet.Serialize(_bitBuffer);
+        byte[] byteBuffer = _byteBufferPool.Rent(_bitBuffer.Length);
+        int length = _bitBuffer.ToArray(byteBuffer);
+        ArraySegment<byte> segment = new(byteBuffer, 0, length);
+        Transport.SendToClient(channel, segment, clientId);
+        _byteBufferPool.Return(byteBuffer);
     }
 
 
-    public void SendToServer<T>(Channel channel, T packet) where T : struct, IPacket
+    public void SendToServer<T>(Channel channel, T packet) where T : NetMessage
     {
-        Transport.SendToServer(channel, packet);
+        packet.Serialize(_bitBuffer);
+        byte[] byteBuffer = _byteBufferPool.Rent(_bitBuffer.Length);
+        int length = _bitBuffer.ToArray(byteBuffer);
+        ArraySegment<byte> segment = new(byteBuffer, 0, length);
+        Transport.SendToServer(channel, segment);
+        _byteBufferPool.Return(byteBuffer);
     }
 
 
