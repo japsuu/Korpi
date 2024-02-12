@@ -1,18 +1,18 @@
 using Korpi.Networking.Connections;
 using Korpi.Networking.Transports;
 
-namespace Korpi.Networking.Packets.Handlers;
+namespace Korpi.Networking.HighLevel.Messages.Handlers;
 
 /// <summary>
 /// Handles packets received on server, from clients.
 /// </summary>
-internal class ClientPacketHandler<T> : PacketHandlerCollection
+internal class ClientMessageHandler<T> : MessageHandlerCollection
 {
     private readonly List<Action<NetworkConnection, T, Channel>> _handlers = new();
     public override bool RequireAuthentication { get; }
 
 
-    public ClientPacketHandler(bool requireAuthentication)
+    public ClientMessageHandler(bool requireAuthentication)
     {
         RequireAuthentication = requireAuthentication;
     }
@@ -32,9 +32,9 @@ internal class ClientPacketHandler<T> : PacketHandlerCollection
     }
 
 
-    public override void InvokeHandlers(NetworkConnection conn, IPacket packet, Channel channel)
+    public override void InvokeHandlers(NetworkConnection conn, NetMessage netMessage, Channel channel)
     {
-        if (packet is not T tPacket)
+        if (netMessage is not T tPacket)
             return;
 
         foreach (Action<NetworkConnection, T, Channel> handler in _handlers)
@@ -42,7 +42,7 @@ internal class ClientPacketHandler<T> : PacketHandlerCollection
     }
 
 
-    public override void InvokeHandlers(IPacket packet, Channel channel)
+    public override void InvokeHandlers(NetMessage netMessage, Channel channel)
     {
         // Server does not handle packets from the server.
         throw new NotImplementedException();

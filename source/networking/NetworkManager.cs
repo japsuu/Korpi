@@ -13,6 +13,9 @@ public class NetworkManager
     public readonly NetClientManager Client;
 
 
+    public event Action? Update;
+
+
     public NetworkManager(Transport transportLayer)
     {
         transportLayer.Initialize(this);
@@ -24,6 +27,7 @@ public class NetworkManager
     
     public void Tick()
     {
+        Update?.Invoke();
         IteratePackets(true);
         IteratePackets(false);
     }

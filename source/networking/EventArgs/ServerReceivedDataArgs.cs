@@ -1,17 +1,16 @@
-﻿using Korpi.Networking.Packets;
-using Korpi.Networking.Transports;
+﻿using Korpi.Networking.Transports;
 
 namespace Korpi.Networking.EventArgs;
 
 /// <summary>
 /// Container about data received on the server.
 /// </summary>
-public readonly struct ServerReceivedPacketArgs
+public readonly struct ServerReceivedDataArgs
 {
     /// <summary>
     /// Data received.
     /// </summary>
-    public readonly IPacket Packet;
+    public readonly ArraySegment<byte> Segment;
 
     /// <summary>
     /// Channel data was received on.
@@ -19,14 +18,14 @@ public readonly struct ServerReceivedPacketArgs
     public readonly Channel Channel;
 
     /// <summary>
-    /// Connection from which client sent data, if data was received on the server.
+    /// Connection of client which sent the data.
     /// </summary>
     public readonly int ConnectionId;
 
 
-    public ServerReceivedPacketArgs(IPacket packet, Channel channel, int connectionId)
+    public ServerReceivedDataArgs(ArraySegment<byte> segment, Channel channel, int connectionId)
     {
-        Packet = packet;
+        Segment = segment;
         Channel = channel;
         ConnectionId = connectionId;
     }

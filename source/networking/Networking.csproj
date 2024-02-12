@@ -8,6 +8,7 @@
         <RootNamespace>Korpi.Networking</RootNamespace>
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,6 +17,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\common\Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="LowLevel\" />
+      <Folder Include="Transports\LiteNetLib\" />
     </ItemGroup>
 
 </Project>
