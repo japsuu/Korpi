@@ -1,6 +1,6 @@
-﻿using Korpi.Networking.Connections;
+﻿using Korpi.Networking.HighLevel.Connections;
 
-namespace Korpi.Networking.EventArgs;
+namespace Korpi.Networking.LowLevel.Transports.EventArgs;
 
 public readonly struct ServerConnectionStateArgs
 {

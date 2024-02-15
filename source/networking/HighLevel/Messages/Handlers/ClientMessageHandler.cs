@@ -1,5 +1,4 @@
-using Korpi.Networking.Connections;
-using Korpi.Networking.Transports;
+using Korpi.Networking.HighLevel.Connections;
 
 namespace Korpi.Networking.HighLevel.Messages.Handlers;
 

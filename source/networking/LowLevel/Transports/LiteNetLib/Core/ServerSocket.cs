@@ -1,15 +1,29 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Runtime.CompilerServices;
-using Korpi.Networking.Connections;
-using Korpi.Networking.EventArgs;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.LowLevel.Transports.EventArgs;
 using LiteNetLib;
 using LiteNetLib.Layers;
 
-namespace Korpi.Networking.Transports.LiteNetLib.Core;
+namespace Korpi.Networking.LowLevel.Transports.LiteNetLib.Core;
 
-public class ServerSocket : CommonSocket
+internal class ServerSocket : CommonSocket
 {
+    private struct RemoteConnectionEvent
+    {
+        public readonly bool Connected;
+        public readonly int ConnectionId;
+
+
+        public RemoteConnectionEvent(bool connected, int connectionId)
+        {
+            Connected = connected;
+            ConnectionId = connectionId;
+        }
+    }
+    
     #region Public.
 
     /// <summary>

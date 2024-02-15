@@ -1,7 +1,7 @@
-﻿namespace Korpi.Networking.Transports;
+﻿namespace Korpi.Networking.HighLevel;
 
 /// <summary>
-/// Channel which data is sent or received.
+/// Channel over which data is sent or received.
 /// </summary>
 public enum Channel : byte
 {

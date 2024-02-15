@@ -1,9 +1,8 @@
 using Common.Logging;
-using Korpi.Networking.Connections;
+using Korpi.Networking.HighLevel.Connections;
 using Korpi.Networking.HighLevel.Messages;
-using Korpi.Networking.Transports;
 
-namespace Korpi.Networking.Authenticating;
+namespace Korpi.Networking.HighLevel.Authentication;
 
 public class PasswordAuthenticator : Authenticator
 {
@@ -28,8 +27,8 @@ public class PasswordAuthenticator : Authenticator
         NetworkManager.Server.RegisterPacketHandler<AuthPasswordNetMessage>(OnReceiveAuthPasswordPacket, false);
 
         // Client listen to packets from server.
-        NetworkManager.Client.RegisterPacketHandler<AuthResponseNetMessage>(OnReceiveAuthResponsePacket);
-        NetworkManager.Client.RegisterPacketHandler<AuthRequestNetMessage>(OnReceiveAuthRequestPacket);
+        NetworkManager.Client.RegisterMessageHandler<AuthResponseNetMessage>(OnReceiveAuthResponsePacket);
+        NetworkManager.Client.RegisterMessageHandler<AuthRequestNetMessage>(OnReceiveAuthRequestPacket);
     }
 
 
@@ -48,9 +47,19 @@ public class PasswordAuthenticator : Authenticator
             Logger.Error("Server requested an unsupported authentication method.");
             return;
         }
+        
+        string username = "tester";
+        string password = _password;
+        
+        // Ensure the username and password are within the 255 character limit.
+        if (username.Length > 255)
+            throw new InvalidOperationException("Username is too long.");
+        if (password.Length > 255)
+            throw new InvalidOperationException("Password is too long.");
+        
         // Respond to the server with the password.
-        AuthPasswordNetMessage pb = new("tester", _password);
-        NetworkManager.Client.SendPacketToServer(pb);
+        AuthPasswordNetMessage pb = new(username, password);
+        NetworkManager.Client.SendMessageToServer(pb);
     }
 
 
@@ -60,7 +69,7 @@ public class PasswordAuthenticator : Authenticator
         
         // Send the client a authentication request.
         AuthRequestNetMessage netMessage = new(0);
-        NetworkManager.Server.SendPacketToClient(connection, netMessage, false);
+        NetworkManager.Server.SendMessageToClient(connection, netMessage, false);
     }
 
 
@@ -86,7 +95,7 @@ public class PasswordAuthenticator : Authenticator
             error = "Invalid password.";
         
         AuthResponseNetMessage responseNet = new(isAuthSuccess, error);
-        NetworkManager.Server.SendPacketToClient(conn, responseNet, false);
+        NetworkManager.Server.SendMessageToClient(conn, responseNet, false);
         
         /* Invoke result. This is handled internally to complete the connection or kick client.
          * It's important to call this after sending the broadcast so that the broadcast

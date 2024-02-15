@@ -1,8 +1,6 @@
 ﻿using Common.Logging;
 using Korpi.Client.Configuration;
 using Korpi.Networking;
-using Korpi.Networking.Connections;
-using Korpi.Networking.EventArgs;
 using OpenTK.Windowing.Desktop;
 
 namespace Korpi.Client;
@@ -31,8 +29,13 @@ public class GameClient : IDisposable
     /// </summary>
     public void Run()
     {
+        while (!_netManager.Server.Started)
+        {
+            Thread.Sleep(100);
+        }
+        
         Logger.Info("Starting client...");
-        _netManager.Client.Connect("", 0);
+        _netManager.Client.Connect("127.0.0.1", 7531);
         
         // Block until _isConnected is true.
         while (!_netManager.Client.Started)

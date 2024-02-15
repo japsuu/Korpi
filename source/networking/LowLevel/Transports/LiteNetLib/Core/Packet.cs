@@ -1,8 +1,9 @@
-﻿using Korpi.Networking.Utility;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.Utility;
 
-namespace Korpi.Networking.Transports.LiteNetLib.Core;
+namespace Korpi.Networking.LowLevel.Transports.LiteNetLib.Core;
 
-internal struct Packet
+internal readonly struct Packet
 {
     public readonly int ConnectionId;
     public readonly byte[] Data;
@@ -21,32 +22,36 @@ internal struct Packet
     {
         //Prefer to max out returned array to mtu to reduce chance of resizing.
         int arraySize = Math.Max(segment.Count, mtu);
-        Data = ByteArrayPool.Retrieve(arraySize);
+        Data = ByteArrayPool.Rent(arraySize);
         Buffer.BlockCopy(segment.Array, segment.Offset, Data, 0, segment.Count);
         ConnectionId = sender;
         Length = segment.Count;
         Channel = channel;
     }
 
+    /// <summary>
+    /// Gets the data as an ArraySegment.
+    /// The offset is always 0.
+    /// </summary>
+    /// <returns></returns>
     public ArraySegment<byte> GetArraySegment()
     {
         return new ArraySegment<byte>(Data, 0, Length);
     }
+    
+    /// <summary>
+    /// Gets the data as a ReadOnlySpan.
+    /// The offset is always 0.
+    /// </summary>
+    /// <returns></returns>
+    public ReadOnlySpan<byte> GetReadOnlySpan()
+    {
+        return new ReadOnlySpan<byte>(Data, 0, Length);
+    }
 
     public void Dispose()
     {
-        ByteArrayPool.Store(Data);
+        ByteArrayPool.Return(Data);
     }
 
-}
-
-internal struct RemoteConnectionEvent
-{
-    public readonly bool Connected;
-    public readonly int ConnectionId;
-    public RemoteConnectionEvent(bool connected, int connectionId)
-    {
-        Connected = connected;
-        ConnectionId = connectionId;
-    }
 }

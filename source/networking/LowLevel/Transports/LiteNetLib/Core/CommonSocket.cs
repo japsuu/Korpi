@@ -1,12 +1,13 @@
 ﻿using System.Collections.Concurrent;
-using Korpi.Networking.Connections;
-using Korpi.Networking.EventArgs;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.LowLevel.Transports.EventArgs;
 using Korpi.Networking.Utility;
 using LiteNetLib;
 
-namespace Korpi.Networking.Transports.LiteNetLib.Core;
+namespace Korpi.Networking.LowLevel.Transports.LiteNetLib.Core;
 
-public abstract class CommonSocket
+internal abstract class CommonSocket
 {
     #region Public.
 
@@ -131,7 +132,7 @@ public abstract class CommonSocket
 
         //Prefer to max out returned array to mtu to reduce chance of resizing.
         int arraySize = Math.Max(dataLen, mtu);
-        byte[] data = ByteArrayPool.Retrieve(arraySize);
+        byte[] data = ByteArrayPool.Rent(arraySize);
         reader.GetBytes(data, dataLen);
 
         //Id.

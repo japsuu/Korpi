@@ -1,6 +1,6 @@
-﻿using Korpi.Networking.Transports;
+﻿using Korpi.Networking.HighLevel;
 
-namespace Korpi.Networking.EventArgs;
+namespace Korpi.Networking.LowLevel.Transports.EventArgs;
 
 /// <summary>
 /// Container about data received on the local client.

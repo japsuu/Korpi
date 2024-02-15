@@ -1,8 +1,9 @@
 ﻿using Common.Logging;
-using Korpi.Networking.Connections;
-using Korpi.Networking.EventArgs;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.LowLevel.Transports.EventArgs;
 
-namespace Korpi.Networking.Transports;
+namespace Korpi.Networking.LowLevel.Transports;
 
 /// <summary>
 /// Represents an object that can handle network messages.
@@ -96,7 +97,7 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Called when the server receives data.
     /// </summary>
-    public abstract event Action<ServerReceivedDataArgs>? LocalServerReceivedPacket;
+    public abstract event Action<ServerReceivedDataArgs>? ServerReceivedPacket;
 
     #endregion
 

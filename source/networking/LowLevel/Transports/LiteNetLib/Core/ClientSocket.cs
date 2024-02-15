@@ -1,13 +1,14 @@
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
-using Korpi.Networking.Connections;
-using Korpi.Networking.EventArgs;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.LowLevel.Transports.EventArgs;
 using LiteNetLib;
 using LiteNetLib.Layers;
 
-namespace Korpi.Networking.Transports.LiteNetLib.Core;
+namespace Korpi.Networking.LowLevel.Transports.LiteNetLib.Core;
 
-public class ClientSocket : CommonSocket
+internal class ClientSocket : CommonSocket
 {
     ~ClientSocket()
     {

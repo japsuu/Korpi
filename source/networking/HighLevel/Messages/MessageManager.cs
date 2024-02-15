@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Korpi.Networking.HighLevel.Messages;
 
@@ -19,20 +20,21 @@ internal static class MessageManager
     private static void RegisterMessage(Type messageType)
     {
         // Use reflection to call the generic GetId<T> method to generate the message ID.
-        MethodInfo? getIdMethod = typeof(MessageIdCache).GetMethod(nameof(MessageIdCache.GetId));
+        MethodInfo? getIdMethod = typeof(MessageIdCache).GetMethod(nameof(MessageIdCache.GetId), Type.EmptyTypes);
         if (getIdMethod == null)
             throw new InvalidOperationException("Could not find GetId method in MessageIdCache. Cannot register message types.");
         MethodInfo getIdMethodGeneric = getIdMethod.MakeGenericMethod(messageType);
         getIdMethodGeneric.Invoke(null, null);
 
         // Use reflection to call the generic Register<T> method.
-        MethodInfo? registerMethod = typeof(MessageTypeCache).GetMethod(nameof(MessageTypeCache.Register));
+        MethodInfo? registerMethod = typeof(MessageTypeCache).GetMethod(nameof(MessageTypeCache.Register), Type.EmptyTypes);
         if (registerMethod == null)
             throw new InvalidOperationException("Could not find Register method in MessageTypeCache. Cannot register message types.");
         MethodInfo registerMethodGeneric = registerMethod.MakeGenericMethod(messageType);
         registerMethodGeneric.Invoke(null, null);
     }
-    
+
+
     /// <summary>
     /// Provides methods for retrieving message IDs for message types.
     /// </summary>
@@ -67,10 +69,10 @@ internal static class MessageManager
         private static readonly Dictionary<ushort, Func<NetMessage>> IdToCreatorMap = new();
 
 
-        public static void Register<T>() where T : NetMessage, new()
+        public static void Register<T>() where T : NetMessage
         {
             ushort id = MessageIdCache.GetId<T>();
-            IdToCreatorMap[id] = () => new T();
+            IdToCreatorMap[id] = () => (T)FormatterServices.GetUninitializedObject(typeof(T));
         }
 
 

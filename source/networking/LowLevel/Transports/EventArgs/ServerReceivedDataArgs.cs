@@ -1,6 +1,6 @@
-﻿using Korpi.Networking.Transports;
+﻿using Korpi.Networking.HighLevel;
 
-namespace Korpi.Networking.EventArgs;
+namespace Korpi.Networking.LowLevel.Transports.EventArgs;
 
 /// <summary>
 /// Container about data received on the server.
@@ -9,8 +9,10 @@ public readonly struct ServerReceivedDataArgs
 {
     /// <summary>
     /// Data received.
+    /// Guaranteed to contain at least 1 byte of data (<see cref="InternalPacketType"/>).
+    /// The offset is always 0.
     /// </summary>
-    public readonly ArraySegment<byte> Segment;
+    public readonly ArraySegment<byte> Segment; //NOTE: A ReadOnlySpan<byte> could be used also, by setting the struct to ref.
 
     /// <summary>
     /// Channel data was received on.

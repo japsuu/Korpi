@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Korpi.Networking;
-using Korpi.Networking.Transports.LiteNetLib;
+using Korpi.Networking.LowLevel.Transports.LiteNetLib;
 using Korpi.Server;
 using log4net;
 using log4net.Config;
@@ -30,11 +30,6 @@ internal static class Program
         // Create and start a network game server.
         using GameServer server = new(netManager, GameServerConfiguration.Default().WithPasswordAuthentication("password"));
         server.Start();
-        
-        while (!netManager.Server.Started)
-        {
-            Thread.Sleep(100);
-        }
 
         // Create and run the game client.
         using GameClient client = new(netManager, args);

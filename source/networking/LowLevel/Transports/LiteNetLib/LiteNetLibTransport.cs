@@ -1,11 +1,12 @@
 using System.Runtime.CompilerServices;
 using Common.Logging;
-using Korpi.Networking.Connections;
-using Korpi.Networking.EventArgs;
-using Korpi.Networking.Transports.LiteNetLib.Core;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.LowLevel.Transports.EventArgs;
+using Korpi.Networking.LowLevel.Transports.LiteNetLib.Core;
 using LiteNetLib.Layers;
 
-namespace Korpi.Networking.Transports.LiteNetLib;
+namespace Korpi.Networking.LowLevel.Transports.LiteNetLib;
 
 public class LiteNetLibTransport : Transport
 {
@@ -250,7 +251,7 @@ public class LiteNetLibTransport : Transport
     /// <summary>
     /// Called when server receives data.
     /// </summary>
-    public override event Action<ServerReceivedDataArgs>? LocalServerReceivedPacket;
+    public override event Action<ServerReceivedDataArgs>? ServerReceivedPacket;
 
 
     /// <summary>
@@ -259,7 +260,7 @@ public class LiteNetLibTransport : Transport
     /// <param name="receivedDataArgs"></param>
     public void HandleServerReceivedPacketArgs(ServerReceivedDataArgs receivedDataArgs)
     {
-        LocalServerReceivedPacket?.Invoke(receivedDataArgs);
+        ServerReceivedPacket?.Invoke(receivedDataArgs);
     }
 
     #endregion

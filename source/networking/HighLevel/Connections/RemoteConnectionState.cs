@@ -1,4 +1,4 @@
-﻿namespace Korpi.Networking.Connections;
+﻿namespace Korpi.Networking.HighLevel.Connections;
 
 /// <summary>
 /// States a remote client can be in.

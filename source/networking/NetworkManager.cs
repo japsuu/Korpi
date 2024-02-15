@@ -1,6 +1,6 @@
 ﻿using Common.Logging;
-using Korpi.Networking.Connections;
-using Korpi.Networking.Transports;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.LowLevel.Transports;
 
 namespace Korpi.Networking;
 

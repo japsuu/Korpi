@@ -19,9 +19,4 @@
       <ProjectReference Include="..\common\Common.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="LowLevel\" />
-      <Folder Include="Transports\LiteNetLib\" />
-    </ItemGroup>
-
 </Project>

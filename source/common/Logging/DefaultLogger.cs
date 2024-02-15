@@ -6,7 +6,7 @@ namespace Common.Logging;
 public class DefaultLogger : IKorpiLogger
 {
     protected virtual Type ThisDeclaringType => typeof(DefaultLogger);
-    protected ILogger Logger => _log.Logger;
+    private ILogger Logger => _log.Logger;
 
     private readonly ILog _log;
 
@@ -47,16 +47,25 @@ public class DefaultLogger : IKorpiLogger
 
     public void Verbose(object message, Exception? exception = null)
     {
-        if (!Logger.IsEnabledFor(Level.Verbose)) return;
-        _log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType, Level.Verbose, message, exception);
+        Log(Level.Verbose, message, exception);
+    }
+    
+    
+    public void VerboseFormat(IFormatProvider provider, string format, params object[] args)
+    {
+        LogFormat(Level.Verbose, provider, format, args);
+    }
+    
+    
+    public void VerboseFormat(string format, params object[] args)
+    {
+        LogFormat(Level.Verbose, null, format, args);
     }
 
 
     public void Debug(object message, Exception? exception = null)
     {
-#if DEBUG
         Log(Level.Debug, message, exception);
-#endif
     }
 
 

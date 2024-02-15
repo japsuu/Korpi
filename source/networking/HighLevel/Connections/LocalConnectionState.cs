@@ -1,4 +1,4 @@
-﻿namespace Korpi.Networking.Connections;
+﻿namespace Korpi.Networking.HighLevel.Connections;
 
 /// <summary>
 /// States the local connection can be in.

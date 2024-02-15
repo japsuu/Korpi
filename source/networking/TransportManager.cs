@@ -1,22 +1,23 @@
-﻿using Korpi.Networking.HighLevel.Messages;
-using Korpi.Networking.LowLevel.NetStack.Buffers;
-using Korpi.Networking.LowLevel.NetStack.Serialization;
-using Korpi.Networking.Transports;
+﻿using Common.Logging;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Messages;
+using Korpi.Networking.LowLevel.Transports;
+using Korpi.Networking.Utility;
 
 namespace Korpi.Networking;
 
 public class TransportManager
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(TransportManager));
     private readonly NetworkManager _netManager;
-    private readonly ArrayPool<byte> _byteBufferPool = ArrayPool<byte>.Create(1024, 50);
-    private readonly BitBuffer _bitBuffer = new();
-    
-    public readonly Transport Transport;
 
+    public readonly Transport Transport;
     public event Action<bool>? IterateOutgoingStart;
     public event Action<bool>? IterateOutgoingEnd;
     public event Action<bool>? IterateIncomingStart;
     public event Action<bool>? IterateIncomingEnd;
+    
+    public string TransportTypeName => Transport.GetType().Name;
 
 
     public TransportManager(NetworkManager netManager, Transport transport)
@@ -25,8 +26,8 @@ public class TransportManager
         Transport = transport;
         MessageManager.RegisterAllMessages();
     }
-    
-    
+
+
     public string GetConnectionAddress(int clientId) => Transport.GetRemoteConnectionAddress(clientId);
     public string GetClientAddress() => Transport.GetClientAddress();
     public ushort GetPort() => Transport.GetPort();
@@ -74,25 +75,17 @@ public class TransportManager
     }
 
 
-    public void SendToClient<T>(Channel channel, T packet, int clientId) where T : NetMessage
+    public void SendToClient(Channel channel, ArraySegment<byte> segment, int clientId)
     {
-        packet.Serialize(_bitBuffer);
-        byte[] byteBuffer = _byteBufferPool.Rent(_bitBuffer.Length);
-        int length = _bitBuffer.ToArray(byteBuffer);
-        ArraySegment<byte> segment = new(byteBuffer, 0, length);
+        Logger.Verbose($"Sending segment '{segment.AsStringHex()}' to client {clientId}.");
         Transport.SendToClient(channel, segment, clientId);
-        _byteBufferPool.Return(byteBuffer);
     }
 
 
-    public void SendToServer<T>(Channel channel, T packet) where T : NetMessage
+    public void SendToServer(Channel channel, ArraySegment<byte> segment)
     {
-        packet.Serialize(_bitBuffer);
-        byte[] byteBuffer = _byteBufferPool.Rent(_bitBuffer.Length);
-        int length = _bitBuffer.ToArray(byteBuffer);
-        ArraySegment<byte> segment = new(byteBuffer, 0, length);
+        Logger.Verbose($"Sending segment '{segment.AsStringHex()}' to server.");
         Transport.SendToServer(channel, segment);
-        _byteBufferPool.Return(byteBuffer);
     }
 
 
@@ -112,7 +105,7 @@ public class TransportManager
     /// Processes data to be sent by the socket.
     /// </summary>
     /// <param name="asServer">True to process data to be sent on the server.</param>
-    public void IterateOutgoing(bool asServer)
+    internal void IterateOutgoing(bool asServer)
     {
         IterateOutgoingStart?.Invoke(asServer);
         Transport.IterateOutgoing(asServer);

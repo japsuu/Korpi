@@ -1,6 +1,6 @@
 ﻿using Common.Logging;
 
-namespace Korpi.Networking.Connections;
+namespace Korpi.Networking.HighLevel.Connections;
 
 /// <summary>
 /// A container for a connected client used to perform actions on and gather information for the declared client.
