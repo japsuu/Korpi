@@ -8,6 +8,10 @@ public interface IKorpiLogger
     public bool IsDebugEnabled { get; }
     public bool IsErrorEnabled { get; }
 
+    public void Verbose(object message, Exception? exception = null);
+    public void VerboseFormat(IFormatProvider provider, string format, params object[] args);
+    public void VerboseFormat(string format, params object[] args);
+
     public void Debug(object message, Exception? exception = null);
     public void DebugFormat(IFormatProvider provider, string format, params object[] args);
     public void DebugFormat(string format, params object[] args);

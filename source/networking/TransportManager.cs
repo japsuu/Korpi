@@ -1,41 +1,47 @@
-﻿using Korpi.Networking.EventArgs;
-using Korpi.Networking.Packets;
-using Korpi.Networking.Transports;
+﻿using Common.Logging;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Messages;
+using Korpi.Networking.LowLevel.Transports;
+using Korpi.Networking.Utility;
 
 namespace Korpi.Networking;
 
 public class TransportManager
 {
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(TransportManager));
     private readonly NetworkManager _netManager;
-    public readonly Transport Transport;
 
+    public readonly Transport Transport;
     public event Action<bool>? IterateOutgoingStart;
     public event Action<bool>? IterateOutgoingEnd;
     public event Action<bool>? IterateIncomingStart;
     public event Action<bool>? IterateIncomingEnd;
+    
+    public string TransportTypeName => Transport.GetType().Name;
 
 
     public TransportManager(NetworkManager netManager, Transport transport)
     {
         _netManager = netManager;
         Transport = transport;
+        MessageManager.RegisterAllMessages();
     }
-    
-    
+
+
     public string GetConnectionAddress(int clientId) => Transport.GetRemoteConnectionAddress(clientId);
-    public string GetClientAddress() => Transport.GetClientAddress();
+    public string GetClientAddress() => Transport.GetClientConnectAddress();
     public ushort GetPort() => Transport.GetPort();
 
 
     public void SetClientAddress(string address)
     {
-        Transport.SetClientAddress(address);
+        Transport.SetClientConnectAddress(address);
     }
 
 
     public void SetServerBindAddress(string address)
     {
-        Transport.SetServerBindAddress(address);
+        Transport.SetServerBindAddress(AddressType.IPV4, address);
     }
 
 
@@ -69,15 +75,26 @@ public class TransportManager
     }
 
 
-    public void SendToClient<T>(Channel channel, T packet, int clientId) where T : struct, IPacket
+    public void SendToClient(Channel channel, ArraySegment<byte> segment, int clientId)
     {
-        Transport.SendToClient(channel, packet, clientId);
+        Logger.Verbose($"Sending segment '{segment.AsStringHex()}' to client {clientId}.");
+        Transport.SendToClient(channel, segment, clientId);
     }
 
 
-    public void SendToServer<T>(Channel channel, T packet) where T : struct, IPacket
+    public void SendToServer(Channel channel, ArraySegment<byte> segment)
     {
-        Transport.SendToServer(channel, packet);
+        Logger.Verbose($"Sending segment '{segment.AsStringHex()}' to server.");
+        Transport.SendToServer(channel, segment);
+    }
+    
+    
+    /// <summary>
+    /// Polls the sockets for incoming data.
+    /// </summary>
+    internal void PollSockets()
+    {
+        Transport.PollSockets();
     }
 
 
@@ -88,7 +105,7 @@ public class TransportManager
     internal void IterateIncoming(bool asServer)
     {
         IterateIncomingStart?.Invoke(asServer);
-        Transport.IterateIncoming(asServer);
+        Transport.IterateIncomingData(asServer);
         IterateIncomingEnd?.Invoke(asServer);
     }
 
@@ -97,10 +114,10 @@ public class TransportManager
     /// Processes data to be sent by the socket.
     /// </summary>
     /// <param name="asServer">True to process data to be sent on the server.</param>
-    public void IterateOutgoing(bool asServer)
+    internal void IterateOutgoing(bool asServer)
     {
         IterateOutgoingStart?.Invoke(asServer);
-        Transport.IterateOutgoing(asServer);
+        Transport.IterateOutgoingData(asServer);
         IterateOutgoingEnd?.Invoke(asServer);
     }
 }

@@ -12,7 +12,7 @@ public class GameServer : IDisposable
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GameServer));
 
     private readonly NetworkManager _netManager;
-    protected readonly GameServerConfiguration Configuration;
+    private readonly GameServerConfiguration _configuration;
     private volatile bool _shouldStop;
     
     public event Action? ServerStarted;
@@ -24,9 +24,9 @@ public class GameServer : IDisposable
     public GameServer(NetworkManager netManager, GameServerConfiguration configuration)
     {
         _netManager = netManager;
-        Configuration = configuration;
-        _netManager.Server.SetMaxConnections(Configuration.MaxConnections);
-        _netManager.Server.SetAuthenticator(Configuration.Authenticator);
+        _configuration = configuration;
+        _netManager.Server.SetMaxConnections(_configuration.MaxConnections);
+        _netManager.Server.SetAuthenticator(_configuration.Authenticator);
     }
 
 
@@ -36,14 +36,14 @@ public class GameServer : IDisposable
     public void Start()
     {
         Logger.Info("Starting server...");
-        _netManager.Server.StartServer(Configuration.BindAddress, Configuration.BindPort);
+        _netManager.Server.StartServer(_configuration.BindAddress, _configuration.BindPort);
         OnStart();
         Task.Run(WorkLoop);
         ServerStarted?.Invoke();
     }
-    
-    
-    public void WorkLoop()
+
+
+    private void WorkLoop()
     {
         //TODO: Implement a proper game loop here.
         while (!_shouldStop)

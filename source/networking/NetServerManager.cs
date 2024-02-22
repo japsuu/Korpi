@@ -1,10 +1,12 @@
 ﻿using Common.Logging;
-using Korpi.Networking.Authenticating;
-using Korpi.Networking.Connections;
-using Korpi.Networking.EventArgs;
-using Korpi.Networking.Packets;
-using Korpi.Networking.Packets.Handlers;
-using Korpi.Networking.Transports;
+using Korpi.Networking.HighLevel;
+using Korpi.Networking.HighLevel.Authentication;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.HighLevel.Messages;
+using Korpi.Networking.HighLevel.Messages.Handlers;
+using Korpi.Networking.LowLevel;
+using Korpi.Networking.LowLevel.NetStack.Serialization;
+using Korpi.Networking.LowLevel.Transports.EventArgs;
 using Korpi.Networking.Utility;
 
 namespace Korpi.Networking;
@@ -16,9 +18,10 @@ namespace Korpi.Networking;
 public class NetServerManager
 {
     private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(NetServerManager));
-    private readonly Dictionary<ushort, PacketHandlerCollection> _packetHandlers = new(); // Registered packet handlers by packet type.
+    private readonly Dictionary<ushort, MessageHandlerCollection> _messageHandlers = new(); // Registered message handlers by message ID.
     private readonly NetworkManager _netManager;
     private readonly TransportManager _transportManager;
+
     private Authenticator? _authenticator;
 
     /// <summary>
@@ -34,20 +37,25 @@ public class NetServerManager
     /// <summary>
     /// Called after the local server connection state changes.
     /// </summary>
-    public event Action<ServerConnectionStateArgs>? ServerConnectionStateChanged;
+    public event Action<ServerConnectionStateArgs>? ConnectionStateChanged;
 
     /// <summary>
     /// Called when authenticator has concluded a result for a connection. Boolean is true if authentication passed, false if failed.
     /// </summary>
-    public event Action<NetworkConnection, bool>? AuthenticationResultReceived;
+    public event Action<NetworkConnection, bool>? ClientAuthResultReceived;
 
     /// <summary>
-    /// Called when a remote client state changes with the server.
+    /// Called when a remote client connects to the server.
     /// </summary>
-    public event Action<NetworkConnection, RemoteConnectionStateArgs>? RemoteConnectionStateChanged;
+    public event Action<NetworkConnection>? RemoteClientConnected;
 
     /// <summary>
-    /// Called when a client is removed from the server using Kick. This is invoked before the client is disconnected.
+    /// Called when a remote client disconnects from the server.
+    /// </summary>
+    public event Action<NetworkConnection>? RemoteClientDisconnected;
+
+    /// <summary>
+    /// Called when a client is removed from the server using <see cref="Kick(NetworkConnection,KickReason)"/>. This is invoked before the client is disconnected.
     /// NetworkConnection (when available), clientId, and KickReason are provided.
     /// </summary>
     public event Action<NetworkConnection?, int, KickReason>? ClientKicked;
@@ -86,7 +94,7 @@ public class NetServerManager
         _authenticator = authenticator;
         if (_authenticator == null)
             return;
-        
+
         _authenticator.Initialize(_netManager);
         _authenticator.ConcludedAuthenticationResult += OnAuthenticatorConcludeResult;
     }
@@ -108,7 +116,7 @@ public class NetServerManager
     /// <summary>
     /// Stops the server.
     /// </summary>
-    /// <param name="sendDisconnectionPackets">True to send a disconnect packet to all clients before stopping the server.</param>
+    /// <param name="sendDisconnectionPackets">True to send a disconnect message to all clients before stopping the server.</param>
     public void StopServer(bool sendDisconnectionPackets)
     {
         if (sendDisconnectionPackets)
@@ -119,19 +127,19 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Registers a method to call when a packet of the specified type arrives.
+    /// Registers a method to call when a message of the specified type arrives.
     /// </summary>
     /// <param name="handler">Method to call.</param>
-    /// <param name="requireAuthenticated">True if the client must be authenticated to send this packet.</param>
+    /// <param name="requireAuthenticated">True if the client must be authenticated to send this message.</param>
     /// <typeparam name="T"></typeparam>
-    public void RegisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler, bool requireAuthenticated = true) where T : struct, IPacket
+    public void RegisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler, bool requireAuthenticated = true) where T : NetMessage
     {
-        ushort key = PacketHelper.GetKey<T>();
+        ushort key = MessageManager.MessageIdCache.GetId<T>();
 
-        if (!_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (!_messageHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
         {
-            packetHandler = new ClientPacketHandler<T>(requireAuthenticated);
-            _packetHandlers.Add(key, packetHandler);
+            packetHandler = new ClientMessageHandler<T>(requireAuthenticated);
+            _messageHandlers.Add(key, packetHandler);
         }
 
         packetHandler.RegisterHandler(handler);
@@ -139,80 +147,94 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Unregisters a method call from a packet type.
+    /// Unregisters a method call from a message type.
     /// </summary>
     /// <param name="handler">Method to unregister.</param>
-    /// <typeparam name="T">Type of packet being unregistered.</typeparam>
-    public void UnregisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler) where T : struct, IPacket
+    /// <typeparam name="T">Type of message being unregistered.</typeparam>
+    public void UnregisterPacketHandler<T>(Action<NetworkConnection, T, Channel> handler) where T : NetMessage
     {
-        ushort key = PacketHelper.GetKey<T>();
-        if (_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        ushort key = MessageManager.MessageIdCache.GetId<T>();
+        if (_messageHandlers.TryGetValue(key, out MessageHandlerCollection? packetHandler))
             packetHandler.UnregisterHandler(handler);
     }
 
 
     /// <summary>
-    /// Sends a packet to a connection.
+    /// Sends a message to a connection.
     /// </summary>
     /// <param name="connection">Connection to send to.</param>
-    /// <param name="message">Packet data being sent.</param>
-    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this packet.</param>
+    /// <param name="message">Message being sent.</param>
+    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this message.</param>
     /// <param name="channel">Channel to send on.</param>
-    /// <typeparam name="T">Type of packet to send.</typeparam>
-    public void SendPacketToClient<T>(NetworkConnection connection, T message, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
-        where T : struct, IPacket
+    /// <typeparam name="T">Type of message to send.</typeparam>
+    public void SendMessageToClient<T>(NetworkConnection connection, T message, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
+        where T : NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to client because server is not active.");
+            Logger.Warn($"Cannot send message {message} to client because server is not active.");
             return;
         }
 
         if (!connection.IsActive)
         {
-            Logger.Warn("Connection is not active, cannot send packet.");
+            Logger.Warn("Connection is not active, cannot send message.");
             return;
         }
 
         if (requireAuthenticated && !connection.IsAuthenticated)
         {
-            Logger.Warn($"Cannot send packet of type {typeof(T).Name} to client {connection.ClientId} because they are not authenticated.");
+            Logger.Warn($"Cannot send message {message} to client {connection.ClientId} because they are not authenticated.");
             return;
         }
 
-        _transportManager.SendToClient(channel, message, connection.ClientId);
+        // Write the packet.
+        BitBuffer buffer = BufferPool.GetBitBuffer();
+        buffer.AddByte((byte)InternalPacketType.Message);
+        message.Serialize(buffer);
+
+        // Copy the buffer to a byte array.
+        byte[] byteBuffer = ByteArrayPool.Rent(buffer.Length);
+        int length = buffer.ToArray(byteBuffer);
+        ArraySegment<byte> segment = new(byteBuffer, 0, length);
+        
+        Logger.Debug($"Sending message {message} to client {connection.ClientId}.");
+
+        // Send the packet.
+        _transportManager.SendToClient(channel, segment, connection.ClientId);
+        ByteArrayPool.Return(byteBuffer);
     }
 
 
     /// <summary>
-    /// Sends a packet to all clients.
+    /// Sends a message to all clients.
     /// </summary>
     /// <param name="message">Packet data being sent.</param>
-    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this packet.</param>
+    /// <param name="requireAuthenticated">True if the client must be authenticated to receive this message.</param>
     /// <param name="channel">Channel to send on.</param>
-    /// <typeparam name="T">The type of packet to send.</typeparam>
-    public void SendPacketToAllClients<T>(T message, bool requireAuthenticated = true, Channel channel = Channel.Reliable) where T : struct, IPacket
+    /// <typeparam name="T">The type of message to send.</typeparam>
+    public void SendMessageToAllClients<T>(T message, bool requireAuthenticated = true, Channel channel = Channel.Reliable) where T : NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to clients because server is not active.");
+            Logger.Warn("Cannot send message to clients because server is not active.");
             return;
         }
 
         foreach (NetworkConnection c in Clients.Values)
-            SendPacketToClient(c, message, requireAuthenticated, channel);
+            SendMessageToClient(c, message, requireAuthenticated, channel);
     }
 
 
     /// <summary>
-    /// Sends a packet to all clients except the specified one.
+    /// Sends a message to all clients except the specified one.
     /// </summary>
-    public void SendPacketToAllClientsExcept<T>(T message, NetworkConnection except, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
-        where T : struct, IPacket
+    public void SendMessageToAllClientsExcept<T>(T message, NetworkConnection except, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
+        where T : NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to clients because server is not active.");
+            Logger.Warn("Cannot send message to clients because server is not active.");
             return;
         }
 
@@ -220,20 +242,20 @@ public class NetServerManager
         {
             if (c == except)
                 continue;
-            SendPacketToClient(c, message, requireAuthenticated, channel);
+            SendMessageToClient(c, message, requireAuthenticated, channel);
         }
     }
 
 
     /// <summary>
-    /// Sends a packet to all clients except the specified ones.
+    /// Sends a message to all clients except the specified ones.
     /// </summary>
-    public void SendPacketToAllClientsExcept<T>(T message, List<NetworkConnection> except, bool requireAuthenticated = true, Channel channel = Channel.Reliable)
-        where T : struct, IPacket
+    public void SendMessageToAllClientsExcept<T>(T message, List<NetworkConnection> except, bool requireAuthenticated = true,
+        Channel channel = Channel.Reliable) where T : NetMessage
     {
         if (!Started)
         {
-            Logger.Warn("Cannot send packet to clients because server is not active.");
+            Logger.Warn("Cannot send message to clients because server is not active.");
             return;
         }
 
@@ -241,7 +263,7 @@ public class NetServerManager
         {
             if (except.Contains(c))
                 continue;
-            SendPacketToClient(c, message, requireAuthenticated, channel);
+            SendMessageToClient(c, message, requireAuthenticated, channel);
         }
     }
 
@@ -276,19 +298,18 @@ public class NetServerManager
 
 
     /// <summary>
-    /// Handles a received packet.
+    /// Handles a received message.
     /// </summary>
-    /// <param name="args"></param>
-    private void OnLocalServerReceivePacket(ServerReceivedPacketArgs args)
+    private void OnLocalServerReceivePacket(ServerReceivedDataArgs args)
     {
+        Logger.Verbose($"Received segment {args.Segment.AsStringHex()} from client {args.ConnectionId}.");
         // Not from a valid connection.
         if (args.ConnectionId < 0)
         {
-            Logger.Warn($"Received a packet from an unknown connection with id {args.ConnectionId}. Ignoring.");
+            Logger.Warn($"Received a message from an unknown connection with id {args.ConnectionId}. Ignoring.");
             return;
         }
 
-        IPacket packet = args.Packet;
         if (!Clients.TryGetValue(args.ConnectionId, out NetworkConnection? connection))
         {
             Logger.Warn($"ConnectionId {args.ConnectionId} not found within Clients. Connection will be kicked immediately.");
@@ -296,24 +317,66 @@ public class NetServerManager
             return;
         }
 
-        //TODO: Kick the client immediately if packet is over MTU.
-
-        ushort key = packet.GetKey();
-
-        if (!_packetHandlers.TryGetValue(key, out PacketHandlerCollection? packetHandler))
+        if (args.Segment.Array == null)
         {
-            Logger.Warn($"Received a packet of type {packet.GetType().Name} but no handler is registered for it. Ignoring.");
+            Logger.Warn($"Received a message with null data. Kicking client {args.ConnectionId} immediately.");
+            Kick(connection, KickReason.MalformedData);
             return;
         }
 
-        if (packetHandler.RequireAuthentication && !connection.IsAuthenticated)
+        //TODO: Kick the client immediately if message is over MTU.
+
+        BitBuffer buffer = BufferPool.GetBitBuffer();
+        buffer.FromArray(args.Segment.Array, args.Segment.Count);
+        InternalPacketType packetType = (InternalPacketType)buffer.ReadByte();
+
+        switch (packetType)
         {
-            Logger.Warn($"Client {connection.ClientId} sent a packet of type {packet.GetType().Name} without being authenticated. Kicking.");
-            Kick(connection, KickReason.ExploitAttempt);
+            case InternalPacketType.Unset:
+                Logger.Warn("Received a packet with an unset type. Kicking client immediately.");
+                Kick(connection, KickReason.MalformedData);
+                break;
+            case InternalPacketType.Welcome:
+                Logger.Warn("Received a welcome packet from a client. They might be trying to exploit the server. Kicking immediately.");
+                Kick(connection, KickReason.ExploitAttempt);
+                break;
+            case InternalPacketType.Message:
+                ParseMessage(connection, buffer, args.Channel);
+                break;
+            case InternalPacketType.Disconnect:
+                Logger.Info($"Received a disconnect message from client {args.ConnectionId}. Kicking client immediately.");
+                Kick(connection, KickReason.Unset);
+                break;
+            default:
+                Logger.Warn($"Received a message with an unknown packet type {packetType}. Kicking client {args.ConnectionId} immediately.");
+                Kick(connection, KickReason.MalformedData);
+                break;
+        }
+    }
+
+
+    private void ParseMessage(NetworkConnection conn, BitBuffer buffer, Channel channel)
+    {
+        ushort id = buffer.ReadUShort();
+        NetMessage netMessage = MessageManager.MessageTypeCache.CreateInstance(id);
+        netMessage.Deserialize(buffer);
+
+        if (!_messageHandlers.TryGetValue(id, out MessageHandlerCollection? packetHandler))
+        {
+            Logger.Warn($"Received a {netMessage} but no handler is registered for it. Ignoring.");
             return;
         }
 
-        packetHandler.InvokeHandlers(connection, packet, args.Channel);
+        if (packetHandler.RequireAuthentication && !conn.IsAuthenticated)
+        {
+            Logger.Warn($"Client {conn.ClientId} sent a message of type {netMessage} without being authenticated. Kicking.");
+            Kick(conn, KickReason.ExploitAttempt);
+            return;
+        }
+        
+        Logger.Debug($"Received message {netMessage} from client {conn.ClientId}.");
+
+        packetHandler.InvokeHandlers(conn, netMessage, channel);
     }
 
 
@@ -327,17 +390,15 @@ public class NetServerManager
         Started = state == LocalConnectionState.Started;
 
         if (!Started)
-        {
             NetworkManager.ClearClientsCollection(Clients);
-        }
 
-        string tName = _transportManager.Transport.GetType().Name;
+        string tName = _transportManager.TransportTypeName;
         string socketInformation = string.Empty;
         if (state == LocalConnectionState.Starting)
             socketInformation = $" Listening on port {_transportManager.GetPort()}.";
         Logger.Info($"Local server is {state.ToString().ToLower()} for {tName}.{socketInformation}");
 
-        ServerConnectionStateChanged?.Invoke(args);
+        ConnectionStateChanged?.Invoke(args);
     }
 
 
@@ -361,9 +422,9 @@ public class NetServerManager
                 Logger.Info($"Remote connection started for clientId {id}.");
                 NetworkConnection conn = new(_netManager, id, true);
                 Clients.Add(args.ConnectionId, conn);
-                RemoteConnectionStateChanged?.Invoke(conn, args);
+                RemoteClientConnected?.Invoke(conn);
 
-                // Connection is no longer valid. This can occur if the user changes the state using the RemoteClientConnectionStateChanged event.
+                // Connection is no longer valid. This can occur if the user changes the state using the RemoteClientConnected event.
                 if (!conn.IsValid)
                     return;
 
@@ -380,7 +441,7 @@ public class NetServerManager
                 if (Clients.TryGetValue(id, out NetworkConnection? conn))
                 {
                     conn.SetDisconnecting(true);
-                    RemoteConnectionStateChanged?.Invoke(conn, args);
+                    RemoteClientDisconnected?.Invoke(conn);
                     Clients.Remove(id);
                     SendClientConnectionChangePacket(false, conn);
 
@@ -422,12 +483,12 @@ public class NetServerManager
         SendClientConnectionChangePacket(true, connection);
         SendWelcomePacket(connection);
 
-        AuthenticationResultReceived?.Invoke(connection, true);
+        ClientAuthResultReceived?.Invoke(connection, true);
     }
 
 
     /// <summary>
-    /// Sends a welcome packet to a client.
+    /// Sends a welcome message to a client.
     /// </summary>
     /// <param name="connection"></param>
     private void SendWelcomePacket(NetworkConnection connection)
@@ -435,12 +496,23 @@ public class NetServerManager
         // Sanity check.
         if (!connection.IsValid)
         {
-            Logger.Warn("Cannot send welcome packet to client because connection is not valid.");
+            Logger.Warn("Cannot send welcome message to client because connection is not valid.");
             return;
         }
 
-        WelcomePacket welcome = new((ushort)connection.ClientId);
-        _transportManager.SendToClient(Channel.Reliable, welcome, connection.ClientId);
+        // Write the packet.
+        BitBuffer buffer = BufferPool.GetBitBuffer();
+        buffer.AddByte((byte)InternalPacketType.Welcome);
+        buffer.AddUShort((ushort)connection.ClientId);
+
+        // Copy the buffer to a byte array.
+        byte[] byteBuffer = ByteArrayPool.Rent(buffer.Length);
+        int length = buffer.ToArray(byteBuffer);
+        ArraySegment<byte> segment = new(byteBuffer, 0, length);
+
+        // Send the packet.
+        _transportManager.SendToClient(Channel.Reliable, segment, connection.ClientId);
+        ByteArrayPool.Return(byteBuffer);
     }
 
 
@@ -449,11 +521,19 @@ public class NetServerManager
     /// </summary>
     private void SendDisconnectPackets(List<NetworkConnection> conns, bool iterate)
     {
-        DisconnectPacket packet = new();
-
-        // Send packet to each client, authenticated or not.
+        // Send message to each client, authenticated or not.
         foreach (NetworkConnection c in conns)
-            SendPacketToClient(c, packet, false);
+        {
+            // Write the packet.
+            byte[] byteBuffer =
+            {
+                (byte)InternalPacketType.Disconnect
+            };
+            ArraySegment<byte> segment = new(byteBuffer, 0, 1);
+
+            // Send the packet.
+            _transportManager.SendToClient(Channel.Reliable, segment, c.ClientId);
+        }
 
         if (iterate)
             _transportManager.IterateOutgoing(true);
@@ -465,20 +545,29 @@ public class NetServerManager
     /// </summary>
     private void SendClientConnectionChangePacket(bool connected, NetworkConnection conn)
     {
-        // Send a packet to all authenticated clients with the clientId that just connected.
+        // Send a message to all authenticated clients with the clientId that just connected.
         // It is important that the just connected client will also get this, so that they can later successfully get a reference to their own connection.
-        ClientConnectionChangePacket changeMsg = new(conn.ClientId, connected);
+        ClientConnectionChangeNetMessage changeNetMsg = new(conn.ClientId, connected);
 
         foreach (NetworkConnection c in Clients.Values.Where(c => c.IsAuthenticated))
-            SendPacketToClient(c, changeMsg);
+            SendMessageToClient(c, changeNetMsg);
 
         // If this was a new connection, the new client must also receive all currently connected client ids.
         if (!connected)
             return;
 
-        //Send already connected clients to the connection that just joined.
-        List<int>? clientIds = Clients.Count > 0 ? Clients.Keys.ToList() : null;
-        ConnectedClientsPacket allIdsPacket = new(clientIds);
-        SendPacketToClient(conn, allIdsPacket);
+        // Send already connected clients to the connection that just joined.
+        List<ushort> clientIds = new();
+        foreach (int id in Clients.Keys)
+        {
+            if (id is < 0 or > ushort.MaxValue)
+            {
+                Logger.Warn($"Client id {id} is out of range for ushort. Ignoring.");
+                continue;
+            }
+            clientIds.Add((ushort)id);
+        }
+        ConnectedClientsNetMessage allIdsNetMessage = new(clientIds);
+        SendMessageToClient(conn, allIdsNetMessage);
     }
 }

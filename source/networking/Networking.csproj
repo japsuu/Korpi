@@ -8,6 +8,7 @@
         <RootNamespace>Korpi.Networking</RootNamespace>
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>

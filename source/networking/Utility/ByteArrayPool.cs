@@ -3,7 +3,7 @@
 /// <summary>
 /// Retrieves and stores byte arrays using a pooling system.
 /// </summary>
-public static class ByteArrayPool
+internal static class ByteArrayPool
 {
     /// <summary>
     /// Stored byte arrays.
@@ -13,7 +13,7 @@ public static class ByteArrayPool
     /// <summary>
     /// Returns a byte array which will be of at least minimum length. The returned array must manually be stored.
     /// </summary>
-    public static byte[] Retrieve(int minimumLength)
+    public static byte[] Rent(int minimumLength)
     {
         byte[]? result = null;
 
@@ -32,7 +32,7 @@ public static class ByteArrayPool
     /// <summary>
     /// Stores a byte array for re-use.
     /// </summary>
-    public static void Store(byte[] buffer)
+    public static void Return(byte[] buffer)
     {
         if (ByteArrays.Count > 300)
             return;

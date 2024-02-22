@@ -1,6 +1,6 @@
 ﻿using Common.Logging;
-using Korpi.Networking.Connections;
-using Korpi.Networking.Transports;
+using Korpi.Networking.HighLevel.Connections;
+using Korpi.Networking.LowLevel.Transports;
 
 namespace Korpi.Networking;
 
@@ -24,6 +24,7 @@ public class NetworkManager
     
     public void Tick()
     {
+        PollSockets();
         IteratePackets(true);
         IteratePackets(false);
     }
@@ -41,7 +42,7 @@ public class NetworkManager
 
 
     /// <summary>
-    /// Iterates incoming or outgoing packets.
+    /// Tells transport layer to iterate incoming or outgoing packets.
     /// </summary>
     /// <param name="incoming">True to iterate incoming.</param>
     private void IteratePackets(bool incoming)
@@ -56,5 +57,14 @@ public class NetworkManager
             TransportManager.IterateOutgoing(true);
             TransportManager.IterateOutgoing(false);
         }
+    }
+
+
+    /// <summary>
+    /// Tells transport layer to poll for new data.
+    /// </summary>
+    private void PollSockets()
+    {
+        TransportManager.PollSockets();
     }
 }
