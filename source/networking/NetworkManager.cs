@@ -13,9 +13,6 @@ public class NetworkManager
     public readonly NetClientManager Client;
 
 
-    public event Action? Update;
-
-
     public NetworkManager(Transport transportLayer)
     {
         transportLayer.Initialize(this);
@@ -27,7 +24,7 @@ public class NetworkManager
     
     public void Tick()
     {
-        Update?.Invoke();
+        PollSockets();
         IteratePackets(true);
         IteratePackets(false);
     }
@@ -45,7 +42,7 @@ public class NetworkManager
 
 
     /// <summary>
-    /// Iterates incoming or outgoing packets.
+    /// Tells transport layer to iterate incoming or outgoing packets.
     /// </summary>
     /// <param name="incoming">True to iterate incoming.</param>
     private void IteratePackets(bool incoming)
@@ -60,5 +57,14 @@ public class NetworkManager
             TransportManager.IterateOutgoing(true);
             TransportManager.IterateOutgoing(false);
         }
+    }
+
+
+    /// <summary>
+    /// Tells transport layer to poll for new data.
+    /// </summary>
+    private void PollSockets()
+    {
+        TransportManager.PollSockets();
     }
 }

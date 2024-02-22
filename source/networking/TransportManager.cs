@@ -29,19 +29,19 @@ public class TransportManager
 
 
     public string GetConnectionAddress(int clientId) => Transport.GetRemoteConnectionAddress(clientId);
-    public string GetClientAddress() => Transport.GetClientAddress();
+    public string GetClientAddress() => Transport.GetClientConnectAddress();
     public ushort GetPort() => Transport.GetPort();
 
 
     public void SetClientAddress(string address)
     {
-        Transport.SetClientAddress(address);
+        Transport.SetClientConnectAddress(address);
     }
 
 
     public void SetServerBindAddress(string address)
     {
-        Transport.SetServerBindAddress(address);
+        Transport.SetServerBindAddress(AddressType.IPV4, address);
     }
 
 
@@ -87,6 +87,15 @@ public class TransportManager
         Logger.Verbose($"Sending segment '{segment.AsStringHex()}' to server.");
         Transport.SendToServer(channel, segment);
     }
+    
+    
+    /// <summary>
+    /// Polls the sockets for incoming data.
+    /// </summary>
+    internal void PollSockets()
+    {
+        Transport.PollSockets();
+    }
 
 
     /// <summary>
@@ -96,7 +105,7 @@ public class TransportManager
     internal void IterateIncoming(bool asServer)
     {
         IterateIncomingStart?.Invoke(asServer);
-        Transport.IterateIncoming(asServer);
+        Transport.IterateIncomingData(asServer);
         IterateIncomingEnd?.Invoke(asServer);
     }
 
@@ -108,7 +117,7 @@ public class TransportManager
     internal void IterateOutgoing(bool asServer)
     {
         IterateOutgoingStart?.Invoke(asServer);
-        Transport.IterateOutgoing(asServer);
+        Transport.IterateOutgoingData(asServer);
         IterateOutgoingEnd?.Invoke(asServer);
     }
 }

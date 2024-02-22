@@ -70,7 +70,7 @@ public class NetServerManager
     {
         _netManager = netManager;
         _transportManager = transportManager;
-        _transportManager.Transport.ServerReceivedPacket += OnServerReceivePacket;
+        _transportManager.Transport.LocalServerReceivedPacket += OnLocalServerReceivePacket;
         _transportManager.Transport.LocalServerConnectionStateChanged += OnLocalServerConnectionStateChanged;
         _transportManager.Transport.RemoteClientConnectionStateChanged += OnRemoteClientConnectionStateChanged;
     }
@@ -300,7 +300,7 @@ public class NetServerManager
     /// <summary>
     /// Handles a received message.
     /// </summary>
-    private void OnServerReceivePacket(ServerReceivedDataArgs args)
+    private void OnLocalServerReceivePacket(ServerReceivedDataArgs args)
     {
         Logger.Verbose($"Received segment {args.Segment.AsStringHex()} from client {args.ConnectionId}.");
         // Not from a valid connection.

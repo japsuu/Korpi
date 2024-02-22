@@ -25,7 +25,7 @@ public abstract class Transport : IDisposable
     }
 
 
-    #region State
+    #region State Management
 
     /// <summary>
     /// Called when a connection state changes for the local client.
@@ -86,7 +86,7 @@ public abstract class Transport : IDisposable
 
     #endregion
 
-    #region Receiving
+    #region Receiving Data
 
     /// <summary>
     /// Called when the client receives data.
@@ -97,54 +97,51 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Called when the server receives data.
     /// </summary>
-    public abstract event Action<ServerReceivedDataArgs>? ServerReceivedPacket;
+    public abstract event Action<ServerReceivedDataArgs>? LocalServerReceivedPacket;
 
     #endregion
 
-    #region Iteration
+    #region Iteration and Updating
+    
+    /// <summary>
+    /// Polls the sockets for incoming data.
+    /// </summary>
+    public abstract void PollSockets();
 
+    
     /// <summary>
     /// Processes data received by the socket.
     /// </summary>
     /// <param name="asServer">True to process data received on the server.</param>
-    public abstract void IterateIncoming(bool asServer);
+    public abstract void IterateIncomingData(bool asServer);
 
 
     /// <summary>
     /// Processes data to be sent by the socket.
     /// </summary>
     /// <param name="asServer">True to process data received on the server.</param>
-    public abstract void IterateOutgoing(bool asServer);
+    public abstract void IterateOutgoingData(bool asServer);
 
     #endregion
 
     #region Configuration
 
     /// <summary>
-    /// Gets how long in seconds until either the server or client socket must go without data before being timed out.
+    /// Gets how long in milliseconds until either the server or client socket must go without data before being timed out.
+    /// If the transport does not support this method the value -1 is returned.
     /// </summary>
     /// <param name="asServer">True to get the timeout for the server socket, false for the client socket.</param>
     /// <returns></returns>
-    public virtual float GetTimeout(bool asServer)
+    public virtual int GetTimeout(bool asServer)
     {
         Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetTimeout));
-        return -1f;
+        return -1;
     }
 
 
     /// <summary>
-    /// Sets how long in seconds until either the server or client socket must go without data before being timed out.
-    /// </summary>
-    /// <param name="value">The new timeout.</param>
-    /// <param name="asServer">True to set the timeout for the server socket, false for the client socket.</param>
-    public virtual void SetTimeout(float value, bool asServer)
-    {
-        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetTimeout));
-    }
-
-
-    /// <summary>
-    /// Returns the maximum number of clients allowed to connect to the server. If the transport does not support this method the value -1 is returned.
+    /// Returns the maximum number of clients allowed to connect to the server.
+    /// If the transport does not support this method the value -1 is returned.
     /// </summary>
     /// <returns>Maximum clients transport allows.</returns>
     public virtual int GetMaximumClients()
@@ -155,7 +152,8 @@ public abstract class Transport : IDisposable
 
 
     /// <summary>
-    /// Sets the maximum number of clients allowed to connect to the server. If applied at runtime and clients exceed this value existing clients will stay connected but new clients may not connect.
+    /// Sets the maximum number of clients allowed to connect to the server.
+    /// If applied at runtime and clients exceed this value existing clients will stay connected but new clients may not connect.
     /// </summary>
     /// <param name="value">Maximum clients to allow.</param>
     public virtual void SetMaximumClients(int value)
@@ -168,18 +166,18 @@ public abstract class Transport : IDisposable
     /// Sets which address the client will connect to.
     /// </summary>
     /// <param name="address">Address client will connect to.</param>
-    public virtual void SetClientAddress(string address)
+    public virtual void SetClientConnectAddress(string address)
     {
-        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetClientAddress));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetClientConnectAddress));
     }
 
 
     /// <summary>
     /// Returns which address the client will connect to.
     /// </summary>
-    public virtual string GetClientAddress()
+    public virtual string GetClientConnectAddress()
     {
-        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetClientAddress));
+        Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetClientConnectAddress));
         return string.Empty;
     }
 
@@ -187,8 +185,9 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Sets which address the server will bind to.
     /// </summary>
+    /// <param name="type">The type of address to bind to.</param>
     /// <param name="address">Address server will bind to.</param>
-    public virtual void SetServerBindAddress(string address)
+    public virtual void SetServerBindAddress(AddressType type, string address)
     {
         Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(SetServerBindAddress));
     }
@@ -197,7 +196,7 @@ public abstract class Transport : IDisposable
     /// <summary>
     /// Gets which address the server will bind to.
     /// </summary>
-    public virtual string GetServerBindAddress()
+    public virtual string GetServerBindAddress(AddressType type)
     {
         Logger.WarnFormat(NOT_SUPPORTED_MESSAGE, nameof(GetServerBindAddress));
         return string.Empty;
@@ -255,6 +254,14 @@ public abstract class Transport : IDisposable
     public abstract void Shutdown();
 
     #endregion
+
+
+    /// <summary>
+    /// Gets the MTU for the unreliable channel, in bytes.
+    /// This should take header size into consideration.
+    /// For example, if MTU is 1200 bytes and a packet header for the unreliable channel is 10 bytes, this method should return 1190.
+    /// </summary>
+    public abstract int GetUnreliableMTU();
 
 
     protected virtual void Dispose(bool disposing)

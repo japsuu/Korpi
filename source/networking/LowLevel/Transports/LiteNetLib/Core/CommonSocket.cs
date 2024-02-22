@@ -9,157 +9,100 @@ namespace Korpi.Networking.LowLevel.Transports.LiteNetLib.Core;
 
 internal abstract class CommonSocket
 {
-    #region Public.
+    /// <summary>
+    /// NetManager for this socket.
+    /// Only available if the socket is active (started).
+    /// </summary>
+    protected abstract NetManager? NetManager { get; }
 
     /// <summary>
-    /// Current ConnectionState.
+    /// Transport controlling this socket.
     /// </summary>
+    protected readonly LiteNetLibTransport Transport;
+
     private LocalConnectionState _connectionState = LocalConnectionState.Stopped;
 
 
-    /// <summary>
-    /// Returns the current ConnectionState.
-    /// </summary>
-    /// <returns></returns>
-    internal LocalConnectionState GetConnectionState() => _connectionState;
+    protected CommonSocket(LiteNetLibTransport transport)
+    {
+        Transport = transport;
+    }
 
 
     /// <summary>
     /// Sets a new connection state.
     /// </summary>
-    /// <param name="connectionState"></param>
     protected void SetConnectionState(LocalConnectionState connectionState, bool asServer)
     {
-        //If state hasn't changed.
         if (connectionState == _connectionState)
             return;
 
         _connectionState = connectionState;
+
         if (asServer)
             Transport.HandleServerConnectionState(new ServerConnectionStateArgs(connectionState));
         else
             Transport.HandleClientConnectionState(new ClientConnectionStateArgs(connectionState));
     }
 
-    #endregion
-
-    #region Protected.
 
     /// <summary>
-    /// Transport controlling this socket.
+    /// Called when data is received.
     /// </summary>
-    protected LiteNetLibTransport Transport;
+    protected void OnNetworkReceiveEvent(ConcurrentQueue<Packet> queue, NetPeer fromPeer, NetPacketReader reader, DeliveryMethod deliveryMethod)
+    {
+        // Get the length of the data.
+        int bytesLength = reader.AvailableBytes;
+
+        // Prefer to max out returned array to mtu to reduce the chance of resizing.
+        int arraySize = Math.Max(bytesLength, Transport.UnreliableMTU);
+        byte[] data = ByteArrayPool.Rent(arraySize);
+        reader.GetBytes(data, bytesLength);
+
+        // Determine the id of the peer.
+        int id = fromPeer.Id;
+
+        // Determine the received channel.
+        Channel channel = deliveryMethod == DeliveryMethod.Unreliable ? Channel.Unreliable : Channel.Reliable;
+
+        // Construct a packet.
+        Packet packet = new(id, data, bytesLength, channel);
+        queue.Enqueue(packet);
+
+        // Recycle the reader.
+        reader.Recycle();
+    }
+
 
     /// <summary>
-    /// NetManager for this socket.
+    /// Returns the current ConnectionState.
     /// </summary>
-    protected NetManager NetManager;
+    internal LocalConnectionState GetConnectionState() => _connectionState;
 
-    #endregion
 
     /// <summary>
     /// Sends data to connectionId.
     /// </summary>
-    internal void Send(ref Queue<Packet> queue, Channel channel, ArraySegment<byte> segment, int connectionId, int mtu)
+    internal void Send(ref Queue<Packet> queue, Channel channel, ArraySegment<byte> segment, int connectionId)
     {
         if (GetConnectionState() != LocalConnectionState.Started)
             return;
 
         //ConnectionId isn't used from client to server.
-        Packet outgoing = new(connectionId, segment, channel, mtu);
+        Packet outgoing = new(connectionId, segment, channel, Transport.UnreliableMTU);
         queue.Enqueue(outgoing);
     }
 
 
-    /// <summary>
-    /// Updates the timeout for NetManager.
-    /// </summary>
-    protected void UpdateTimeout(NetManager netManager, int timeout)
+    internal void PollSocket()
     {
-        if (netManager == null)
-            return;
-
-        timeout = timeout == 0 ? int.MaxValue : Math.Min(int.MaxValue, timeout * 1000);
-        netManager.DisconnectTimeout = timeout;
-    }
-
-
-    /// <summary>
-    /// Clears a ConcurrentQueue of any type.
-    /// </summary>
-    internal void ClearGenericQueue<T>(ref ConcurrentQueue<T> queue)
-    {
-        while (queue.TryDequeue(out _))
-        {
-        }
-    }
-
-
-    /// <summary>
-    /// Clears a queue using Packet type.
-    /// </summary>
-    /// <param name="queue"></param>
-    internal void ClearPacketQueue(ref ConcurrentQueue<Packet> queue)
-    {
-        while (queue.TryDequeue(out Packet p))
-            p.Dispose();
-    }
-
-
-    /// <summary>
-    /// Clears a queue using Packet type.
-    /// </summary>
-    /// <param name="queue"></param>
-    internal void ClearPacketQueue(ref Queue<Packet> queue)
-    {
-        int count = queue.Count;
-        for (int i = 0; i < count; i++)
-        {
-            Packet p = queue.Dequeue();
-            p.Dispose();
-        }
-    }
-
-
-    /// <summary>
-    /// Called when data is received.
-    /// </summary>
-    internal virtual void Listener_NetworkReceiveEvent(ConcurrentQueue<Packet> queue, NetPeer fromPeer, NetPacketReader reader, DeliveryMethod deliveryMethod,
-        int mtu)
-    {
-        //Set buffer.
-        int dataLen = reader.AvailableBytes;
-
-        //Prefer to max out returned array to mtu to reduce chance of resizing.
-        int arraySize = Math.Max(dataLen, mtu);
-        byte[] data = ByteArrayPool.Rent(arraySize);
-        reader.GetBytes(data, dataLen);
-
-        //Id.
-        int id = fromPeer.Id;
-
-        //Channel.
-        Channel channel = deliveryMethod == DeliveryMethod.Unreliable ? Channel.Unreliable : Channel.Reliable;
-
-        //Add to packets.
-        Packet packet = new(id, data, dataLen, channel);
-        queue.Enqueue(packet);
-
-        //Recycle reader.
-        reader.Recycle();
-    }
-
-
-    internal void PollSocket(NetManager nm)
-    {
-        nm?.PollEvents();
+        NetManager?.PollEvents();
     }
 
 
     /// <summary>
     /// Returns the port from the socket if active, otherwise returns null.
     /// </summary>
-    /// <returns></returns>
     internal ushort? GetPort()
     {
         if (NetManager == null || !NetManager.IsRunning)
