@@ -11,7 +11,7 @@ public static class ImGuiWindowManager
     
     
     public static void CreateDefaultWindows()
-    {
+    {   //BUG: Remove this, as windows are scene-specific
         MemoryProfilerWindow unused = new();
 #if DEBUG
         RenderingWindow unused1 = new();
@@ -41,7 +41,7 @@ public static class ImGuiWindowManager
     }
 
 
-    public static void UpdateAllWindows()
+    public static void DrawAllWindows()
     {
         ImGui.Begin("Windows", ImGuiWindowFlags.AlwaysAutoResize);
         ImGui.Checkbox("Draw Windows", ref shouldRenderWindows);

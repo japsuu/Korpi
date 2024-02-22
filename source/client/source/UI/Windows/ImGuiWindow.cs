@@ -14,9 +14,10 @@ public abstract class ImGuiWindow
     public bool IsVisible { get; private set; } = true;
 
 
-    protected ImGuiWindow()
+    protected ImGuiWindow(bool autoRegister = true)
     {
-        ImGuiWindowManager.RegisterWindow(this);
+        if (autoRegister)
+            ImGuiWindowManager.RegisterWindow(this);
     }
 
 
