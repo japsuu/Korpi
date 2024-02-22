@@ -7,4 +7,15 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\server\Server.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="log4net.config" />
+        <Content Include="log4net.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>
