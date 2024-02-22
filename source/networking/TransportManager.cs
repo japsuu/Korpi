@@ -30,6 +30,8 @@ public class TransportManager
 
     public string GetConnectionAddress(int clientId) => Transport.GetRemoteConnectionAddress(clientId);
     public string GetClientAddress() => Transport.GetClientConnectAddress();
+
+    public string GetServerBindAddress(AddressType addressType) => Transport.GetServerBindAddress(addressType);
     public ushort GetPort() => Transport.GetPort();
 
 

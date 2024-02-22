@@ -6,6 +6,7 @@ using Korpi.Networking.HighLevel.Messages;
 using Korpi.Networking.HighLevel.Messages.Handlers;
 using Korpi.Networking.LowLevel;
 using Korpi.Networking.LowLevel.NetStack.Serialization;
+using Korpi.Networking.LowLevel.Transports;
 using Korpi.Networking.LowLevel.Transports.EventArgs;
 using Korpi.Networking.Utility;
 
@@ -395,7 +396,7 @@ public class NetServerManager
         string tName = _transportManager.TransportTypeName;
         string socketInformation = string.Empty;
         if (state == LocalConnectionState.Starting)
-            socketInformation = $" Listening on port {_transportManager.GetPort()}.";
+            socketInformation = $" Bound to IP {_transportManager.GetServerBindAddress(AddressType.IPV4)}. Listening on port {_transportManager.GetPort()}.";
         Logger.Info($"Local server is {state.ToString().ToLower()} for {tName}.{socketInformation}");
 
         ConnectionStateChanged?.Invoke(args);

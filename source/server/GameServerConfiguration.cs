@@ -4,10 +4,10 @@ namespace Korpi.Server;
 
 public struct GameServerConfiguration
 {
-    public string BindAddress { get; private set; }
-    public ushort BindPort { get; private set; }
-    public int MaxConnections { get; private set; }
-    public Authenticator? Authenticator { get; private set; }
+    public string BindAddress;
+    public ushort BindPort;
+    public int MaxConnections;
+    public Authenticator? Authenticator;
 
 
     public GameServerConfiguration(string bindAddress, ushort bindPort, int maxConnections, Authenticator? authenticator)

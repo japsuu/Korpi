@@ -59,12 +59,12 @@ internal class ServerSocket : CommonSocket
     /// <summary>
     /// IPv4 address to bind server to.
     /// </summary>
-    internal string Ipv4BindAddress = "127.0.0.1";
+    internal string Ipv4BindAddress = "";
 
     /// <summary>
     /// IPv6 address to bind server to.
     /// </summary>
-    internal string Ipv6BindAddress = "::1";
+    internal string Ipv6BindAddress = "";
 
     /// <summary>
     /// IPv6 is enabled only on demand, by default LiteNetLib always listens on IPv4 AND IPv6 which causes problems if IPv6 is disabled on host.
@@ -406,12 +406,15 @@ internal class ServerSocket : CommonSocket
             MtuOverride = Transport.UnreliableMTUFragmented
         };
         
-        IPAddress ipv4 = IPAddress.Any;
-        IPAddress ipv6 = IPAddress.IPv6Any;
+        IPAddress? ipv4;
+        IPAddress? ipv6;
 
         if (!string.IsNullOrEmpty(Ipv4BindAddress))
         {
             if (!IPAddress.TryParse(Ipv4BindAddress, out ipv4!))
+                ipv4 = null;
+
+            if (ipv4 == null)
             {
                 IPHostEntry hostEntry = Dns.GetHostEntry(Ipv4BindAddress);
                 if (hostEntry.AddressList.Length > 0)
@@ -421,22 +424,31 @@ internal class ServerSocket : CommonSocket
                 }
             }
         }
+        else
+        {
+            ipv4 = IPAddress.Any;
+        }
 
         if (EnableIPv6 && !string.IsNullOrEmpty(Ipv6BindAddress))
         {
             if (!IPAddress.TryParse(Ipv6BindAddress, out ipv6!))
             {
                 LiteNetLibTransport.Logger.Warn("IPv6 could not parse correctly, so IPv6 will be disabled.");
+                ipv6 = null;
                 EnableIPv6 = false;
             }
         }
+        else
+        {
+            ipv6 = IPAddress.IPv6Any;
+        }
 
-        bool ipv4Failed = Equals(ipv4, IPAddress.Any);
-        bool ipv6Failed = EnableIPv6 && Equals(ipv6, IPAddress.Any);
+        bool ipv4Failed = ipv4 == null;
+        bool ipv6Failed = EnableIPv6 && ipv6 == null;
 
         if (ipv4Failed || ipv6Failed)
         {
-            LiteNetLibTransport.Logger.Info(
+            LiteNetLibTransport.Logger.Error(
                 ipv4Failed
                     ? $"IPv4 address {Ipv4BindAddress} failed to parse. Clear the bind address field to use any bind address."
                     : $"IPv6 address {Ipv6BindAddress} failed to parse. Clear the bind address field to use any bind address.");
