@@ -59,12 +59,12 @@ internal class ServerSocket : CommonSocket
     /// <summary>
     /// IPv4 address to bind server to.
     /// </summary>
-    internal string Ipv4BindAddress = "127.0.0.1";
+    internal string Ipv4BindAddress = "";
 
     /// <summary>
     /// IPv6 address to bind server to.
     /// </summary>
-    internal string Ipv6BindAddress = "::1";
+    internal string Ipv6BindAddress = "";
 
     /// <summary>
     /// IPv6 is enabled only on demand, by default LiteNetLib always listens on IPv4 AND IPv6 which causes problems if IPv6 is disabled on host.
