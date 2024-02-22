@@ -23,7 +23,7 @@ public struct GameServerConfiguration
     /// Default configuration for a localhost game server. Bind address is "127.0.0.1" and port is 7531. Max connections is 64.
     /// </summary>
     /// <returns></returns>
-    public static GameServerConfiguration Default()
+    public static GameServerConfiguration Localhost()
     {
         return new GameServerConfiguration("127.0.0.1", 7531, 64, null);
     }
