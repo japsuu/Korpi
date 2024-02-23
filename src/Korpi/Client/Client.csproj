@@ -51,7 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\common\Common.csproj" />
     <ProjectReference Include="..\server\Server.csproj" />
   </ItemGroup>
 </Project>

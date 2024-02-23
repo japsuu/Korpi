@@ -10,8 +10,4 @@
 		<Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\networking\Networking.csproj" />
-    </ItemGroup>
-
 </Project>
