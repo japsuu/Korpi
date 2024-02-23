@@ -1,6 +1,6 @@
 ﻿using Korpi.Client.World.Chunks.BlockStorage;
 
-namespace ClientTests.BlockStorageTests;
+namespace Client.Tests.BlockStorageTests;
 
 public class LayeredBlockStorageTests : BlockStorageTest<LayeredBlockStorage>
 {

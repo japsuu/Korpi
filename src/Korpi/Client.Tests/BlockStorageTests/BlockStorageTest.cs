@@ -3,7 +3,7 @@ using Korpi.Client.Registries;
 using Korpi.Client.World.Chunks;
 using Korpi.Client.World.Chunks.BlockStorage;
 
-namespace ClientTests.BlockStorageTests;
+namespace Client.Tests.BlockStorageTests;
 
 [TestFixture]
 public abstract class BlockStorageTest<T> where T : IBlockStorage, new()

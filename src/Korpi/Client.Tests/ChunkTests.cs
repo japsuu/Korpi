@@ -2,7 +2,7 @@
 using Korpi.Client.World.Chunks;
 using OpenTK.Mathematics;
 
-namespace ClientTests;
+namespace Client.Tests;
 
 public class ChunkTests
 {

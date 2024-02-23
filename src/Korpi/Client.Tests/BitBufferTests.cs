@@ -1,6 +1,6 @@
 ﻿using Korpi.Client.Bitpacking;
 
-namespace ClientTests;
+namespace Client.Tests;
 
 [TestFixture]
 public class BitBufferTests

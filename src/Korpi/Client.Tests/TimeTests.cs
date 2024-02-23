@@ -1,6 +1,6 @@
 ﻿using Korpi.Client;
 
-namespace ClientTests;
+namespace Client.Tests;
 
 [TestFixture]
 public class TimeTests

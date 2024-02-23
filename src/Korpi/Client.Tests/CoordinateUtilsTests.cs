@@ -1,7 +1,7 @@
 using Korpi.Client.Mathematics;
 using OpenTK.Mathematics;
 
-namespace ClientTests;
+namespace Client.Tests;
 
 [TestFixture]
 public class CoordinateUtilsTests

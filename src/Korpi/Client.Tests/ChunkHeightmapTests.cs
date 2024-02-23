@@ -1,6 +1,6 @@
 ﻿using Korpi.Client.World.Chunks;
 
-namespace ClientTests;
+namespace Client.Tests;
 
 [TestFixture]
 public class ChunkHeightmapTests
