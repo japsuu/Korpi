@@ -11,7 +11,7 @@ public static class SystemInfo
     public static int ProcessorCount { get; private set; }
 
     /// <summary>
-    /// Id of the thread updating the <see cref="ClientWindow"/>.
+    /// Id of the thread updating the <see cref="KorpiWindow"/>.
     /// </summary>
     public static int MainThreadId { get; private set; }
     

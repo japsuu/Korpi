@@ -19,7 +19,7 @@ internal static class Program
         (GameWindowSettings gws, NativeWindowSettings nws) = ClientConfig.Initialize(args);
         
         // Create and run the client window.
-        using ClientWindow window = new(gws, nws);
+        using KorpiWindow window = new(gws, nws);
         window.Run();
     }
 

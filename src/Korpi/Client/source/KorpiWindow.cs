@@ -26,14 +26,12 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 namespace Korpi.Client;
 
 /// <summary>
-/// The main client window.
+/// OpenGL window that manages timings etc.
 /// </summary>
-public class ClientWindow : GameWindow
+public class KorpiWindow : GameWindow
 {
-    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ClientWindow));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(KorpiWindow));
     
-    public static event Action? Disposing;
-
     private GameClient _client = null!;
     private ImGuiController _imGuiController = null!;
     private GameWorld _gameWorld = null!;
@@ -47,7 +45,7 @@ public class ClientWindow : GameWindow
 #endif
 
 
-    public ClientWindow(GameWindowSettings gws, NativeWindowSettings nws) : base(gws, nws) { }
+    public KorpiWindow(GameWindowSettings gws, NativeWindowSettings nws) : base(gws, nws) { }
 
 
     protected override void OnLoad()
@@ -129,6 +127,7 @@ public class ClientWindow : GameWindow
         TextureRegistry.BlockArrayTexture.Dispose();
         ImGuiWindowManager.Dispose();
         GlobalJobPool.Shutdown();
+        ShaderManager.Dispose();
 
         if (ClientConfig.Profiling.EnableSelfProfile)
         {
@@ -136,8 +135,6 @@ public class ClientWindow : GameWindow
             DotTrace.Detach();   // Detach the profiler from the current process.
             Logger.Warn($"DotTrace profile output saved to {ClientConfig.Profiling.SelfProfileTargetPath}.");
         }
-        
-        Disposing?.Invoke();
     }
 
 

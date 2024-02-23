@@ -38,7 +38,6 @@ public static class ShaderManager
     public static void Initialize()
     {
         CompileAllShaderPrograms();
-        ClientWindow.Disposing += Dispose;
     }
 
 
@@ -108,7 +107,7 @@ public static class ShaderManager
     }
     
     
-    private static void Dispose()
+    public static void Dispose()
     {
         PositionColorShader.Dispose();
         BlockOpaqueCutoutShader.Dispose();
