@@ -14,7 +14,7 @@ public abstract class ImGuiWindow
     public bool IsVisible { get; private set; } = true;
 
 
-    protected ImGuiWindow(bool autoRegister = true)
+    protected ImGuiWindow(bool autoRegister)
     {
         if (autoRegister)
             ImGuiWindowManager.RegisterWindow(this);
@@ -37,7 +37,7 @@ public abstract class ImGuiWindow
 
         ImGui.Begin(Title, Flags);
 
-        UpdateContent();
+        DrawContent();
         
         ImGui.End();
     }
@@ -49,5 +49,5 @@ public abstract class ImGuiWindow
     public virtual void Dispose() { }
 
     
-    protected abstract void UpdateContent();
+    protected abstract void DrawContent();
 }

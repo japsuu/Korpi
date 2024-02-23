@@ -14,7 +14,7 @@ public class GenerationWindow : ImGuiWindow
     private static readonly List<IEditorVariable> VariableList = new();
 
 
-    public GenerationWindow()
+    public GenerationWindow(bool autoRegister = true) : base(autoRegister)
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
     }
@@ -32,7 +32,7 @@ public class GenerationWindow : ImGuiWindow
     }
 
 
-    protected override void UpdateContent()
+    protected override void DrawContent()
     {
         ImGui.Text("Noise Instances");
         ImGui.Separator();

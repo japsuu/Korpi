@@ -37,7 +37,7 @@ public class NetServerManager
 
     /// <summary>
     /// Called after the local server connection state changes.
-    /// </summary>
+    /// </summary>  //BUG: Do not use the low-level args, create a high-level args class instead.
     public event Action<ServerConnectionStateArgs>? ConnectionStateChanged;
 
     /// <summary>

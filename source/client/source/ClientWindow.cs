@@ -11,6 +11,8 @@ using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
 using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.Rendering.Shaders;
+using Korpi.Client.SceneManagement;
+using Korpi.Client.SceneManagement.Scenes;
 using Korpi.Client.Threading.Pooling;
 using Korpi.Client.UI;
 using Korpi.Client.UI.HUD;
@@ -26,12 +28,13 @@ namespace Korpi.Client;
 /// <summary>
 /// The main client window.
 /// </summary>
-public class GameClientWindow : GameWindow
+public class ClientWindow : GameWindow
 {
-    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(GameClientWindow));
+    private static readonly IKorpiLogger Logger = LogFactory.GetLogger(typeof(ClientWindow));
     
     public static event Action? Disposing;
 
+    private GameClient _client = null!;
     private ImGuiController _imGuiController = null!;
     private GameWorld _gameWorld = null!;
     private GameWorldRenderer _gameWorldRenderer = null!;
@@ -44,13 +47,19 @@ public class GameClientWindow : GameWindow
 #endif
 
 
-    public GameClientWindow(GameWindowSettings gws, NativeWindowSettings nws) : base(gws, nws) { }
+    public ClientWindow(GameWindowSettings gws, NativeWindowSettings nws) : base(gws, nws) { }
 
 
     protected override void OnLoad()
     {
         base.OnLoad();
         Logger.Info($"Starting v{Constants.CLIENT_VERSION}...");
+
+        // Create the game client.
+        _client = new GameClient();
+        
+        // Load the main menu scene.
+        SceneManager.LoadScene(new MainMenuScene(_client));
 
         if (ClientConfig.Profiling.EnableSelfProfile)
         {
@@ -147,6 +156,7 @@ public class GameClientWindow : GameWindow
         {
             while (_fixedFrameAccumulator >= Constants.FIXED_DELTA_TIME)
             {
+                GameTime.FixedUpdate();
                 FixedUpdate();
                 _fixedFrameAccumulator -= Constants.FIXED_DELTA_TIME;
             }
@@ -195,6 +205,9 @@ public class GameClientWindow : GameWindow
         ShaderManager.UpdateViewMatrix(Camera.RenderingCamera.ViewMatrix);
         ShaderManager.UpdateProjectionMatrix(Camera.RenderingCamera.ProjectionMatrix);
         
+        using (new ProfileScope("DrawScene"))
+            SceneManager.Draw();
+        
         using (new ProfileScope("DrawWorld"))
             DrawWorld();
 
@@ -232,7 +245,7 @@ public class GameClientWindow : GameWindow
     /// </summary>
     private void FixedUpdate()
     {
-        GameTime.FixedUpdate();
+        SceneManager.FixedUpdate();
         GlobalJobPool.FixedUpdate();
         _gameWorld.FixedUpdate();
         DebugStats.CalculateStats();
@@ -245,6 +258,7 @@ public class GameClientWindow : GameWindow
     /// </summary>
     private void Update()
     {
+        SceneManager.Update();
         UpdateGui();
         
         using (new ProfileScope("GlobalJobPool.Update"))
@@ -267,7 +281,7 @@ public class GameClientWindow : GameWindow
 
         _imGuiController.Update(GameTime.DeltaTimeFloat, mousePos);
 
-        ImGuiWindowManager.UpdateAllWindows();
+        ImGuiWindowManager.DrawAllWindows();
 
         if (Input.KeyboardState.IsKeyPressed(Keys.Escape))
             Client.Cursor.ChangeGrabState();

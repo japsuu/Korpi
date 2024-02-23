@@ -11,13 +11,13 @@ public class RenderingWindow : ImGuiWindow
     public override string Title => "Rendering Settings";
 
 
-    public RenderingWindow()
+    public RenderingWindow(bool autoRegister = true) : base(autoRegister)
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
     }
 
 
-    protected override void UpdateContent()
+    protected override void DrawContent()
     {
         if (ImGui.Checkbox("Draw chunk borders", ref ClientConfig.Rendering.RenderChunkBorders))
         {

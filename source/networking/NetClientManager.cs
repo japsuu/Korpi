@@ -44,17 +44,17 @@ public class NetClientManager
 
     /// <summary>
     /// Called after the local client connection state changes.
-    /// </summary>
+    /// </summary>  //BUG: Do not use the low-level args, create a high-level args class instead.
     public event Action<ClientConnectionStateArgs>? ClientConnectionStateChanged;
 
     /// <summary>
     /// Called when a client other than self connects.
-    /// </summary>
+    /// </summary>  //BUG: Do not use the low-level args, create a high-level args class instead.
     public event Action<RemoteConnectionStateArgs>? RemoteConnectionStateChanged;
 
     /// <summary>
     /// Called when we receive a list of all connected clients from the server (usually right after connecting).
-    /// </summary>
+    /// </summary>  //BUG: Do not use the low-level args, create a high-level args class instead.
     public event Action<ClientListArgs>? ReceivedConnectedClientsList;
 
 

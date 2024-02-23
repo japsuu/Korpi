@@ -14,7 +14,7 @@ public class MemoryProfilerWindow : ImGuiWindow
     private int _framesSinceUpdate;
 
 
-    public MemoryProfilerWindow()
+    public MemoryProfilerWindow(bool autoRegister = true) : base(autoRegister)
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
         _proc = Process.GetCurrentProcess();
@@ -22,7 +22,7 @@ public class MemoryProfilerWindow : ImGuiWindow
     }
 
 
-    protected override void UpdateContent()
+    protected override void DrawContent()
     {
         if (_framesSinceUpdate++ >= UPDATE_INTERVAL_FRAMES)
         {

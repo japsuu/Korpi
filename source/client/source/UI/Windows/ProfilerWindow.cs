@@ -33,13 +33,13 @@ public class ProfilerWindow : ImGuiWindow
     public override string Title => "Profiler";
 
 
-    public ProfilerWindow()
+    public ProfilerWindow(bool autoRegister = true) : base(autoRegister)
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
     }
 
 
-    protected override void UpdateContent()
+    protected override void DrawContent()
     {
         ImGui.Checkbox("Enabled", ref KorpiProfiler.IsProfilingEnabled);
         

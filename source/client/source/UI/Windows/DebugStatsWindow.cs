@@ -16,7 +16,7 @@ public class DebugStatsWindow : ImGuiWindow
     private float _maxFps = float.MinValue;
 
 
-    public DebugStatsWindow()
+    public DebugStatsWindow(bool autoRegister = true) : base(autoRegister)
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
         _largeNumberFormat = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
@@ -24,7 +24,7 @@ public class DebugStatsWindow : ImGuiWindow
     }
 
 
-    protected override void UpdateContent()
+    protected override void DrawContent()
     {
         uint loadedChunksApprox = (uint)DebugStats.LoadedChunkCount * Constants.CHUNK_COLUMN_HEIGHT_CHUNKS;
         const uint chunkSizeCubed = Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH * Constants.CHUNK_SIDE_LENGTH;

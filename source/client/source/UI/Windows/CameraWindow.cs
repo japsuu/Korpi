@@ -13,13 +13,13 @@ public class CameraWindow : ImGuiWindow
     public override string Title => "Main Camera";
 
 
-    public CameraWindow()
+    public CameraWindow(bool autoRegister = true) : base(autoRegister)
     {
         Flags |= ImGuiWindowFlags.AlwaysAutoResize;
     }
 
 
-    protected override void UpdateContent()
+    protected override void DrawContent()
     {
         Vector3 camPos = Camera.RenderingCamera.Position;
         ImGui.Text($"Pos: {camPos:F1}");

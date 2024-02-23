@@ -11,7 +11,7 @@ public static class SystemInfo
     public static int ProcessorCount { get; private set; }
 
     /// <summary>
-    /// Id of the thread updating the <see cref="GameClientWindow"/>.
+    /// Id of the thread updating the <see cref="ClientWindow"/>.
     /// </summary>
     public static int MainThreadId { get; private set; }
     
