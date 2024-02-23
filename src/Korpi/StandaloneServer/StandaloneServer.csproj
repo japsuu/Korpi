@@ -19,16 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Core">
-        <HintPath>..\..\KorpiEngine\Core\bin\Release\net6.0\KorpiEngine.Core.dll</HintPath>
-      </Reference>
-      <Reference Include="Networking">
-        <HintPath>..\..\KorpiEngine\Networking\bin\Release\net6.0\KorpiEngine.Networking.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="log4net" Version="2.0.15" />
+      <PackageReference Include="KorpiEngine" Version="1.0.0" />
     </ItemGroup>
 
 </Project>
