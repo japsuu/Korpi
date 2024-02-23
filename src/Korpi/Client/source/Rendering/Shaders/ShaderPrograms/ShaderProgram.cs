@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using Common.Logging;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Rendering.Shaders.Variables;
+using KorpiEngine.Core.Logging;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;

@@ -1,5 +1,5 @@
-﻿using Common.Logging;
-using ImGuiNET;
+﻿using ImGuiNET;
+using KorpiEngine.Core.Logging;
 
 namespace Korpi.Client.UI.Windows;
 

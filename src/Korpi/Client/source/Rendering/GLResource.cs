@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Common.Logging;
+using KorpiEngine.Core.Logging;
 
 namespace Korpi.Client.Rendering;
 

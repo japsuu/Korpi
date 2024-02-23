@@ -1,8 +1,8 @@
 using System.Text;
-using Common.Logging;
 using Korpi.Client.Configuration;
 using Korpi.Client.Exceptions;
 using Korpi.Client.Rendering.Shaders.Sources;
+using KorpiEngine.Core.Logging;
 
 namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 

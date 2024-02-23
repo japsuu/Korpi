@@ -1,9 +1,9 @@
-﻿using Common.Logging;
-using Korpi.Client.Debugging;
+﻿using Korpi.Client.Debugging;
 using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
+using KorpiEngine.Core.Logging;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 

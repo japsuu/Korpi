@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Common.Logging;
 using Korpi.Client.Blocks;
 using Korpi.Client.Blocks.Textures;
 using Korpi.Client.Configuration;
@@ -7,6 +6,7 @@ using Korpi.Client.Exceptions;
 using Korpi.Client.Modding;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Utils;
+using KorpiEngine.Core.Logging;
 
 namespace Korpi.Client.Registries;
 

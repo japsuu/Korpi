@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Common.Logging;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
 using Korpi.Client.ECS.Entities;
@@ -8,6 +7,7 @@ using Korpi.Client.Meshing;
 using Korpi.Client.Physics;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
+using KorpiEngine.Core.Logging;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;

@@ -1,5 +1,5 @@
-﻿using Common.Logging;
-using Korpi.Client.Rendering.Shaders.ShaderPrograms;
+﻿using Korpi.Client.Rendering.Shaders.ShaderPrograms;
+using KorpiEngine.Core.Logging;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Shaders;

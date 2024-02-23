@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Korpi.Client.Rendering.Shaders.Variables;
 
 namespace Korpi.Client.Exceptions
 {

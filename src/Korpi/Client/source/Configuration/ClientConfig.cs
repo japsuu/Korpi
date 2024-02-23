@@ -1,6 +1,6 @@
-﻿using Common.Logging;
-using Config.Net;
+﻿using Config.Net;
 using Korpi.Client.Utils;
+using KorpiEngine.Core.Logging;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;

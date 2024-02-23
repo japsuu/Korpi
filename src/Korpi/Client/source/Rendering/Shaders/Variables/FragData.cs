@@ -1,4 +1,4 @@
-using Common.Logging;
+using KorpiEngine.Core.Logging;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Rendering.Shaders.Variables;

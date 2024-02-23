@@ -1,5 +1,5 @@
-using Common.Logging;
 using Korpi.Client.Rendering.Buffers;
+using KorpiEngine.Core.Logging;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Rendering.Shaders.Variables;

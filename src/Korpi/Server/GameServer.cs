@@ -1,5 +1,5 @@
-﻿using Common.Logging;
-using Korpi.Networking;
+﻿using KorpiEngine.Core.Logging;
+using KorpiEngine.Networking;
 
 namespace Korpi.Server;
 

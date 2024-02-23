@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks.Dataflow;
-using Common.Logging;
 using Korpi.Client.Threading.Jobs;
+using KorpiEngine.Core.Logging;
 
 namespace Korpi.Client.Threading.Pooling;
 

@@ -1,5 +1,5 @@
-﻿using Common.Logging;
-using Korpi.Client.Exceptions;
+﻿using Korpi.Client.Exceptions;
+using KorpiEngine.Core.Logging;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Debugging;

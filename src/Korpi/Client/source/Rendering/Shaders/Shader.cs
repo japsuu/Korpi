@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Common.Logging;
 using Korpi.Client.Exceptions;
+using KorpiEngine.Core.Logging;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Rendering.Shaders;

@@ -53,4 +53,13 @@
   <ItemGroup>
     <ProjectReference Include="..\server\Server.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Core">
+      <HintPath>..\..\KorpiEngine\Core\bin\Release\net6.0\KorpiEngine.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Networking">
+      <HintPath>..\..\KorpiEngine\Networking\bin\Release\net6.0\KorpiEngine.Networking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

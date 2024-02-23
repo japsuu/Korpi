@@ -1,5 +1,5 @@
-﻿using Common.Logging;
-using Korpi.Client.SceneManagement.Scenes;
+﻿using Korpi.Client.SceneManagement.Scenes;
+using KorpiEngine.Core.Logging;
 
 namespace Korpi.Client.SceneManagement;
 

@@ -1,4 +1,4 @@
-﻿using Korpi.Networking.HighLevel.Authentication;
+﻿using KorpiEngine.Networking.HighLevel.Authentication;
 
 namespace Korpi.Server;
 

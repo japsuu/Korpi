@@ -1,12 +1,8 @@
-﻿using System.Reflection;
-using Common.Logging;
-using Korpi.Networking;
-using Korpi.Networking.HighLevel.Authentication;
-using Korpi.Networking.LowLevel.Transports.LiteNetLib;
-using Korpi.Server;
-using log4net;
-using log4net.Config;
-using log4net.Repository;
+﻿using Korpi.Server;
+using KorpiEngine.Core.Logging;
+using KorpiEngine.Networking;
+using KorpiEngine.Networking.HighLevel.Authentication;
+using KorpiEngine.Networking.LowLevel.Transports.LiteNetLib;
 
 namespace StandaloneServer;
 
@@ -20,8 +16,7 @@ internal static class Program
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         
         // Initialize the log4net logger configuration.
-        ILoggerRepository? logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-        XmlConfigurator.Configure(logRepository, new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
+        LogFactory.Initialize("log4net.config");
 
         // Try to parse the user-provided arguments.
         if (!TryParseArguments(args, out GameServerConfiguration config))

@@ -1,5 +1,4 @@
-﻿using Common.Logging;
-using JetBrains.Profiler.SelfApi;
+﻿using JetBrains.Profiler.SelfApi;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
@@ -17,6 +16,7 @@ using Korpi.Client.Threading.Pooling;
 using Korpi.Client.UI;
 using Korpi.Client.UI.HUD;
 using Korpi.Client.World;
+using KorpiEngine.Core.Logging;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;

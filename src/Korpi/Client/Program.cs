@@ -1,11 +1,5 @@
-﻿using System.Reflection;
-using Korpi.Client.Configuration;
-using Korpi.Networking;
-using Korpi.Networking.LowLevel.Transports.LiteNetLib;
-using Korpi.Server;
-using log4net;
-using log4net.Config;
-using log4net.Repository;
+﻿using Korpi.Client.Configuration;
+using KorpiEngine.Core.Logging;
 using OpenTK.Windowing.Desktop;
 
 namespace Korpi.Client;
@@ -36,7 +30,6 @@ internal static class Program
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         
         // Initialize the Log4Net configuration.
-        ILoggerRepository? logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-        XmlConfigurator.Configure(logRepository, new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
+        LogFactory.Initialize("log4net.config");
     }
 }
