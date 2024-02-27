@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
-using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.Jobs;
+using Korpi.Client.Player;
 using Korpi.Client.Rendering;
-using Korpi.Client.Rendering.Cameras;
-using Korpi.Client.Threading.Pooling;
 using KorpiEngine.Core.Logging;
+using KorpiEngine.Core.Rendering.Cameras;
+using KorpiEngine.Core.Threading.Pooling;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;

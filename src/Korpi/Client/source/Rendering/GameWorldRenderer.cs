@@ -4,6 +4,7 @@ using Korpi.Client.Rendering.Skyboxes;
 using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
 using KorpiEngine.Core.Logging;
+using KorpiEngine.Core.Platform;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -133,7 +134,7 @@ public class GameWorldRenderer : IDisposable
         DebugStats.RenderedTris = 0;
         
         // HUE-shift the world color based on the time of day.
-        Vector3 dayColor = new Vector3(240 / 255f, 240 / 255f, 204 / 255f);     // Yellowish color for the day.
+        Vector3 dayColor = new Vector3(240 / 255f, 240 / 255f, 204 / 255f);     // Yellow-ish color for the day.
         Vector3 nightColor = new Vector3(57 / 255f, 41 / 255f, 61 / 255f);      // Purple-ish color for the night.
         Vector3 worldColor = Vector3.Lerp(nightColor, dayColor, GameTime.SkyboxLerpProgress);
 
@@ -150,7 +151,6 @@ public class GameWorldRenderer : IDisposable
 #if DEBUG
         ChunkManager.DrawDebugBorders();
 #endif
-        _world.EntityManager.Draw();
     }
 
 
@@ -235,7 +235,7 @@ public class GameWorldRenderer : IDisposable
         
         // Use screen shader
         ShaderManager.UiPositionTexShader.Use();
-        //ShaderManager.UiPositionTexShader.ColorModulator.Set(Vector4.One);
+        //MatrixManager.UiPositionTexShader.ColorModulator.Set(Vector4.One);
         
         // Draw final screen quad
         GL.ActiveTexture(TextureUnit.Texture0);

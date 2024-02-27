@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging;
-using Korpi.Client.Threading.Jobs;
-using Korpi.Client.Threading.Pooling;
 using Korpi.Client.World;
 using Korpi.Client.World.Chunks;
 using KorpiEngine.Core.Logging;
+using KorpiEngine.Core.Threading.Jobs;
+using KorpiEngine.Core.Threading.Pooling;
 
 namespace Korpi.Client.Generation.Jobs;
 

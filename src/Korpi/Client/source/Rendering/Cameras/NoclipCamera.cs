@@ -1,4 +1,7 @@
-﻿using OpenTK.Mathematics;
+﻿using KorpiEngine.Core;
+using KorpiEngine.Core.InputManagement;
+using KorpiEngine.Core.Rendering.Cameras;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Korpi.Client.Rendering.Cameras;
@@ -35,32 +38,32 @@ public class NoclipCamera : Camera
     {
         if (Input.KeyboardState.IsKeyDown(Keys.W))
         {
-            SetPosition(Position + Forward * _cameraFlySpeed * (float)GameTime.DeltaTime); // Forward
+            SetPosition(Position + Forward * _cameraFlySpeed * Time.DeltaTimeFloat); // Forward
         }
 
         if (Input.KeyboardState.IsKeyDown(Keys.S))
         {
-            SetPosition(Position - Forward * _cameraFlySpeed * (float)GameTime.DeltaTime); // Backward
+            SetPosition(Position - Forward * _cameraFlySpeed * Time.DeltaTimeFloat); // Backward
         }
 
         if (Input.KeyboardState.IsKeyDown(Keys.A))
         {
-            SetPosition(Position - Right * _cameraFlySpeed * (float)GameTime.DeltaTime); // Left
+            SetPosition(Position - Right * _cameraFlySpeed * Time.DeltaTimeFloat); // Left
         }
 
         if (Input.KeyboardState.IsKeyDown(Keys.D))
         {
-            SetPosition(Position + Right * _cameraFlySpeed * (float)GameTime.DeltaTime); // Right
+            SetPosition(Position + Right * _cameraFlySpeed * Time.DeltaTimeFloat); // Right
         }
 
         if (Input.KeyboardState.IsKeyDown(Keys.Space))
         {
-            SetPosition(Position + Up * _cameraFlySpeed * (float)GameTime.DeltaTime); // Up
+            SetPosition(Position + Up * _cameraFlySpeed * Time.DeltaTimeFloat); // Up
         }
 
         if (Input.KeyboardState.IsKeyDown(Keys.LeftShift))
         {
-            SetPosition(Position - Up * _cameraFlySpeed * (float)GameTime.DeltaTime); // Down
+            SetPosition(Position - Up * _cameraFlySpeed * Time.DeltaTimeFloat); // Down
         }
     }
 

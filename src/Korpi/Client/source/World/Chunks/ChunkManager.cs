@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using Korpi.Client.Blocks;
 using Korpi.Client.Configuration;
-using Korpi.Client.ECS.Entities;
 using Korpi.Client.Mathematics;
 using Korpi.Client.Meshing;
 using Korpi.Client.Physics;
+using Korpi.Client.Player;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
 using KorpiEngine.Core.Logging;
+using KorpiEngine.Core.Rendering.Cameras;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;
@@ -74,14 +75,14 @@ public class ChunkManager
         if (ClientConfig.Rendering.RenderChunkBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector3i chunkPos = CoordinateUtils.WorldToChunk(Rendering.Cameras.Camera.RenderingCamera.Position);
+            Vector3i chunkPos = CoordinateUtils.WorldToChunk(Camera.RenderingCamera.Position);
             Debugging.Drawing.DebugChunkDrawer.DrawChunkBorders(chunkPos);
         }
 
         if (ClientConfig.Rendering.RenderColumnBorders)
         {
             // Get the chunk the playerEntity is currently in
-            Vector2i columnPos = CoordinateUtils.WorldToColumn(Rendering.Cameras.Camera.RenderingCamera.Position);
+            Vector2i columnPos = CoordinateUtils.WorldToColumn(Camera.RenderingCamera.Position);
             Debugging.Drawing.DebugChunkDrawer.DrawChunkColumnBorders(columnPos);
         }
     }

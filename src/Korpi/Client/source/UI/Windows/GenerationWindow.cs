@@ -3,6 +3,7 @@ using ImGuiNET;
 using Korpi.Client.Mathematics.Noise;
 using Korpi.Client.UI.Windows.Variables;
 using Korpi.Client.World;
+using KorpiEngine.Core.UI.ImGui;
 
 namespace Korpi.Client.UI.Windows;
 

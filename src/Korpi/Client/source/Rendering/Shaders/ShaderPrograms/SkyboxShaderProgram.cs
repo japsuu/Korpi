@@ -1,6 +1,7 @@
-﻿using Korpi.Client.Rendering.Shaders.Sources;
-using Korpi.Client.Rendering.Shaders.Variables;
-using Korpi.Client.Rendering.Textures;
+﻿using KorpiEngine.Core.Rendering.Shaders.ShaderPrograms;
+using KorpiEngine.Core.Rendering.Shaders.Sources;
+using KorpiEngine.Core.Rendering.Shaders.Variables;
+using KorpiEngine.Core.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -8,7 +9,7 @@ namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 
 [VertexShaderSource("core/skybox.vert")]
 [FragmentShaderSource("core/skybox.frag")]
-public class SkyboxShaderProgram : MvpShaderProgram
+public class SkyboxShaderProgram : MVPShaderProgram
 {
     [VertexAttrib(3, VertexAttribPointerType.Float)]
     public VertexAttrib InPosition { get; protected set; } = null!;

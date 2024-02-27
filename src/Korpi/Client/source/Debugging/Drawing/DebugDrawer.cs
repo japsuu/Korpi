@@ -1,5 +1,6 @@
 ﻿using Korpi.Client.Debugging.Drawing.Drawables;
 using Korpi.Client.Rendering.Shaders;
+using KorpiEngine.Core;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -74,7 +75,7 @@ public static class DebugDrawer
             else
                 drawable.DrawObject();
 
-            drawable.LifetimeSeconds -= (float)GameTime.DeltaTime;
+            drawable.LifetimeSeconds -= (float)Time.DeltaTime;
         }
 
         foreach (DebugDrawable drawable in drawablesToRemove)

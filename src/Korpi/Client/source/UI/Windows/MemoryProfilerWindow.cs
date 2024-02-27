@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using ImGuiNET;
+using KorpiEngine.Core.UI.ImGui;
 
 namespace Korpi.Client.UI.Windows;
 

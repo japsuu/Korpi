@@ -1,9 +1,12 @@
 ﻿using ImGuiNET;
 using Korpi.Client.Debugging;
-using Korpi.Client.ECS.Entities;
 using Korpi.Client.Mathematics;
+using Korpi.Client.Player;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
+using KorpiEngine.Core;
+using KorpiEngine.Core.Rendering.Cameras;
+using KorpiEngine.Core.UI.ImGui;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.UI.Windows;
@@ -39,7 +42,7 @@ public class CameraWindow : ImGuiWindow
         ImGui.Text("Time & Date");
         ImGui.Text($"Time: {GameTime.GetFormattedTime()}");
         ImGui.Text($"Date: {GameTime.GetFormattedDate()}");
-        ImGui.Text($"TTime (s): {GameTime.TotalTime:F1}");
+        ImGui.Text($"TTime (s): {Time.TotalTime:F1}");
 
 #if DEBUG
         ImGui.Separator();

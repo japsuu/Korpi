@@ -1,6 +1,7 @@
-﻿using Korpi.Client.Rendering.Shaders.Sources;
-using Korpi.Client.Rendering.Shaders.Variables;
-using Korpi.Client.Rendering.Textures;
+﻿using KorpiEngine.Core.Rendering.Shaders.ShaderPrograms;
+using KorpiEngine.Core.Rendering.Shaders.Sources;
+using KorpiEngine.Core.Rendering.Shaders.Variables;
+using KorpiEngine.Core.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -13,7 +14,7 @@ namespace Korpi.Client.Rendering.Shaders.ShaderPrograms;
 /// </summary>
 [VertexShaderSource("core/cubemap_tex.vert")]
 [FragmentShaderSource("core/cubemap_tex.frag")]
-public class CubemapShaderProgram : MvpShaderProgram
+public class CubemapShaderProgram : MVPShaderProgram
 {
     [VertexAttrib(3, VertexAttribPointerType.Float)]
     public VertexAttrib InPosition { get; protected set; } = null!;

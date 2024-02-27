@@ -1,9 +1,7 @@
 ﻿using Config.Net;
-using Korpi.Client.Utils;
 using KorpiEngine.Core.Logging;
+using KorpiEngine.Core.Windowing;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Desktop;
 
 namespace Korpi.Client.Configuration;
 
@@ -34,7 +32,7 @@ public static class ClientConfig
     /// Initializes all configuration objects.
     /// </summary>
     /// <param name="args">CLI arguments</param>
-    public static (GameWindowSettings gws, NativeWindowSettings nws) Initialize(string[] args)
+    public static WindowingSettings Initialize(string[] args)
     {
         Logger.Info("Initializing configuration...");
         
@@ -59,30 +57,12 @@ public static class ClientConfig
     }
 
 
-    private static (GameWindowSettings gws, NativeWindowSettings nws) GetWindowSettings()
+    private static WindowingSettings GetWindowSettings()
     {
-        GameWindowSettings gws = new()
-        {
-            UpdateFrequency = Constants.UPDATE_FRAME_FREQUENCY
-        };
+        Vector2i windowSize = new Vector2i(Window.WindowWidth, Window.WindowHeight);
+        string windowTitle = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}";
         
-        NativeWindowSettings nws = new()
-        {
-            ClientSize = new Vector2i(Window.WindowWidth, Window.WindowHeight),
-            StartVisible = false,
-            Title = $"{Constants.CLIENT_NAME} v{Constants.CLIENT_VERSION}",
-            Icon = IoUtils.GetIcon(),
-            NumberOfSamples = 0,
-            API = ContextAPI.OpenGL,
-            Profile = ContextProfile.Core,
-            APIVersion = new Version(4, 2),
-            AspectRatio = (16, 9),
-#if DEBUG
-            Flags = ContextFlags.Debug
-#endif
-        };
-        
-        return (gws, nws);
+        return new WindowingSettings(windowSize, windowTitle);
     }
 
 

@@ -3,6 +3,7 @@ using ImGuiNET;
 using Korpi.Client.Configuration;
 using Korpi.Client.Debugging.Drawing;
 using Korpi.Client.World;
+using KorpiEngine.Core.UI.ImGui;
 
 namespace Korpi.Client.UI.Windows;
 

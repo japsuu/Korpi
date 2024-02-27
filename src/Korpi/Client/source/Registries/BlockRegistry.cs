@@ -7,6 +7,7 @@ using Korpi.Client.Modding;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Utils;
 using KorpiEngine.Core.Logging;
+using KorpiEngine.Core.Rendering.Exceptions;
 
 namespace Korpi.Client.Registries;
 
@@ -102,7 +103,7 @@ public static class BlockRegistry
         
         BlockFaceTextureCollection? textures = data.RenderType == BlockRenderType.None ?
             null :
-            TextureRegistry.RegisterBlockTextures(folderPath, data.TextureData);
+            BlockTextureRegistry.RegisterBlockTextures(folderPath, data.TextureData);
         
         Block block = new(nextId, data.Name!.ToLower(), data.RenderType, textures);
         

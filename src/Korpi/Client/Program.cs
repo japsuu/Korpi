@@ -1,6 +1,6 @@
 ﻿using Korpi.Client.Configuration;
 using KorpiEngine.Core.Logging;
-using OpenTK.Windowing.Desktop;
+using KorpiEngine.Core.Windowing;
 
 namespace Korpi.Client;
 
@@ -16,11 +16,11 @@ internal static class Program
         InitializeLog4Net();
         
         // Initialize the client configuration.
-        (GameWindowSettings gws, NativeWindowSettings nws) = ClientConfig.Initialize(args);
+        WindowingSettings settings = ClientConfig.Initialize(args);
         
         // Create and run the client window.
-        using KorpiWindow window = new(gws, nws);
-        window.Run();
+        using KorpiGame game = new(settings);
+        game.Run();
     }
 
 

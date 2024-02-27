@@ -1,4 +1,5 @@
 ﻿using Korpi.Client;
+using KorpiEngine.Core;
 
 namespace Client.Tests;
 
@@ -8,19 +9,19 @@ public class TimeTests
     [SetUp]
     public void SetUp()
     {
-        GameTime.Reset();
+        Time.Reset();
     }
 
     [Test]
     public void Update_WithPositiveDeltaTime_IncreasesTotalTime()
     {
-        double initialTotalTime = GameTime.TotalTime;
+        double initialTotalTime = Time.TotalTime;
         double deltaTime = 1.0;
         float fixedAlpha = 0.5f;
 
-        GameTime.Update(deltaTime, fixedAlpha);
+        Time.Update(deltaTime, fixedAlpha);
 
-        Assert.That(GameTime.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
+        Assert.That(Time.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
     }
 
     [Test]
@@ -29,37 +30,37 @@ public class TimeTests
         double deltaTime = 1.0;
         float fixedAlpha = 0.5f;
 
-        GameTime.Update(deltaTime, fixedAlpha);
+        Time.Update(deltaTime, fixedAlpha);
 
-        Assert.That(GameTime.DeltaTime, Is.EqualTo(deltaTime));
+        Assert.That(Time.DeltaTime, Is.EqualTo(deltaTime));
     }
 
     [Test]
     public void Update_WithZeroDeltaTime_KeepsTotalTimeSame()
     {
-        double initialTotalTime = GameTime.TotalTime;
+        double initialTotalTime = Time.TotalTime;
 
-        GameTime.Update(0, 0);
+        Time.Update(0, 0);
 
-        Assert.That(GameTime.TotalTime, Is.EqualTo(initialTotalTime));
+        Assert.That(Time.TotalTime, Is.EqualTo(initialTotalTime));
     }
 
     [Test]
     public void Update_WithZeroDeltaTime_SetsDeltaTimeToZero()
     {
-        GameTime.Update(0, 0);
+        Time.Update(0, 0);
 
-        Assert.That(GameTime.DeltaTime, Is.EqualTo(0));
+        Assert.That(Time.DeltaTime, Is.EqualTo(0));
     }
 
     [Test]
     public void Update_WithNegativeDeltaTime_DecreasesTotalTime()
     {
-        double initialTotalTime = GameTime.TotalTime;
+        double initialTotalTime = Time.TotalTime;
         const double deltaTime = -1.0;
 
-        GameTime.Update(deltaTime, 0.5f);
+        Time.Update(deltaTime, 0.5f);
 
-        Assert.That(GameTime.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
+        Assert.That(Time.TotalTime, Is.EqualTo(initialTotalTime + deltaTime));
     }
 }

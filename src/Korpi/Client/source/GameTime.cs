@@ -1,4 +1,5 @@
 ﻿using Korpi.Client.Configuration;
+using KorpiEngine.Core;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client;
@@ -13,47 +14,6 @@ public static class GameTime
     private static float sunriseEndProgress;
     private static float sunsetStartProgress;
     private static float sunsetEndProgress;
-    
-    /// <summary>
-    /// Time in seconds that has passed since the last frame.
-    /// </summary>
-    public static double DeltaTime { get; private set; }
-    
-    /// <summary>
-    /// Time in seconds that has passed since the last frame, as a float.
-    /// </summary>
-    public static float DeltaTimeFloat { get; private set; }
-    
-    /// <summary>
-    /// Time in seconds that has passed since the last fixed frame.
-    /// </summary>
-    public static double FixedDeltaTime => Constants.FIXED_DELTA_TIME;
-
-    /// <summary>
-    /// Time in seconds that has passed since the last fixed frame, as a float.
-    /// </summary>
-    public static float FixedDeltaTimeFloat => Constants.FIXED_DELTA_TIME;
-    
-    /// <summary>
-    /// Total time in seconds that has passed since the start of the game.
-    /// </summary>
-    public static double TotalTime { get; private set; }
-    
-    /// <summary>
-    /// Total number of frames that have passed since the start of the game.
-    /// </summary>
-    public static uint TotalFrameCount { get; private set; }
-    
-    /// <summary>
-    /// Total number of fixed frames that have passed since the start of the game.
-    /// </summary>
-    public static uint TotalFixedFrameCount { get; private set; }
-
-    /// <summary>
-    /// This value stores how far we are in the current update frame, relative to the fixed update loop.
-    /// For example, when the value of <see cref="FixedAlpha"/> is 0.5, it means we are halfway between the last frame and the next upcoming frame.
-    /// </summary>
-    public static double FixedAlpha { get; private set; }
     
     public static int CurrentYear { get; private set; }
     public static int CurrentMonth { get; private set; }
@@ -97,17 +57,9 @@ public static class GameTime
     }
 
 
-    public static void Update(double deltaTime, double fixedAlpha)
+    public static void Update()
     {
-        DeltaTime = deltaTime;
-        DeltaTimeFloat = (float) deltaTime;
-        
-        FixedAlpha = fixedAlpha;
-        
-        TotalTime += deltaTime;
-        TotalFrameCount++;
-        
-        float dayProgression = DeltaTimeFloat / Constants.REAL_SECONDS_PER_GAME_DAY;
+        float dayProgression = Time.DeltaTimeFloat / Constants.REAL_SECONDS_PER_GAME_DAY;
         DayProgress += dayProgression;
 
         // Check if a day has passed.
@@ -150,21 +102,6 @@ public static class GameTime
         // Update the sun direction.
         float sunAngle = MathHelper.DegreesToRadians(DayProgress * 360.0f - 90);
         SunDirection = new Vector3((float)Math.Cos(sunAngle), (float)Math.Sin(sunAngle), 0.0f);
-    }
-
-
-    public static void FixedUpdate()
-    {
-        TotalFixedFrameCount++;
-    }
-
-
-    public static void Reset()
-    {
-        DeltaTime = 0;
-        DeltaTimeFloat = 0;
-        TotalTime = 0;
-        TotalFrameCount = 0;
     }
     
     

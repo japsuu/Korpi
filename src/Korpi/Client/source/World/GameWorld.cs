@@ -1,15 +1,17 @@
 ﻿using Korpi.Client.Blocks;
 using Korpi.Client.Debugging;
 using Korpi.Client.Debugging.Drawing;
-using Korpi.Client.ECS.Entities;
 using Korpi.Client.Generation.TerrainGenerators;
 using Korpi.Client.Physics;
+using Korpi.Client.Player;
 using Korpi.Client.Registries;
-using Korpi.Client.Rendering.Cameras;
 using Korpi.Client.World.Chunks;
+using KorpiEngine.Core.InputManagement;
 using KorpiEngine.Core.Logging;
+using KorpiEngine.Core.Rendering.Cameras;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using Cursor = KorpiEngine.Core.InputManagement.Cursor;
 
 namespace Korpi.Client.World;
 
@@ -23,7 +25,6 @@ public class GameWorld
     
     public readonly ChunkManager ChunkManager;      // TODO: Make private, or wrap around a function
     public readonly ITerrainGenerator TerrainGenerator;
-    public readonly EntityManager EntityManager;
 
     private readonly string _name;
 
@@ -33,7 +34,6 @@ public class GameWorld
         _name = name;
         ChunkManager = new ChunkManager();
         TerrainGenerator = Simplex3DTerrainGenerator.Default();
-        EntityManager = new EntityManager();
         
         if (CurrentGameWorld != null)
             throw new Exception("For now, only one world can be loaded at a time");
@@ -45,7 +45,6 @@ public class GameWorld
     
     public void Update()
     {
-        EntityManager.Update();
         DebugStats.LastRaycastResult = RaycastWorld(Camera.RenderingCamera.Position, Camera.RenderingCamera.Forward, 10);
     }
     
@@ -53,7 +52,6 @@ public class GameWorld
     public void FixedUpdate()
     {
         ChunkManager.Tick();
-        EntityManager.FixedUpdate();
         DebugStats.LoadedChunkCount = ChunkManager.LoadedColumnsCount;
     }
 

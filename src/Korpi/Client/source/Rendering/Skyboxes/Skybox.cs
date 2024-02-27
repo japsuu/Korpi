@@ -1,9 +1,11 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Client.Rendering.Shaders;
-using Korpi.Client.Rendering.Textures;
 using Korpi.Client.Utils;
+using KorpiEngine.Core;
+using KorpiEngine.Core.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using Constants = Korpi.Client.Configuration.Constants;
 
 namespace Korpi.Client.Rendering.Skyboxes;
 
@@ -117,8 +119,8 @@ public class Skybox : IDisposable
         Matrix4 modelMatrix = Matrix4.Identity;
         if (_enableStarsRotation)
         {
-            modelMatrix *= Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * GameTime.TotalTime)) *
-                           Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * GameTime.TotalTime));
+            modelMatrix *= Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_X * Time.TotalTime)) *
+                           Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(Constants.SKYBOX_ROTATION_SPEED_Y * Time.TotalTime));
         }
         ShaderManager.SkyboxShader.Use();
         ShaderManager.SkyboxShader.ModelMat.Set(modelMatrix);

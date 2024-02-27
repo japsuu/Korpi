@@ -1,5 +1,7 @@
 ﻿using ImGuiNET;
-using Korpi.Client.Debugging.Profiling;
+using KorpiEngine.Core;
+using KorpiEngine.Core.Debugging.Profiling;
+using KorpiEngine.Core.UI.ImGui;
 
 namespace Korpi.Client.UI.Windows;
 
@@ -88,7 +90,7 @@ public class ProfilerWindow : ImGuiWindow
         // Calculate the maximum frame time.
         _maxFrameTime = _frameTimes.Max(t => t.FrameDurationMillis);
         
-        if (GameTime.TotalTime < 5)
+        if (Time.TotalTime < 5)
             return;
         
         // Auto-pause if the frame time exceeds the threshold.
