@@ -26,7 +26,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install dependencies
-      run: dotnet restore ./source/client/Client.csproj
+      run: dotnet restore ./src/Korpi/Client/Client.csproj
       
     - name: Build
-      run: dotnet build --configuration Release --no-restore ./source/client/Client.csproj
+      run: dotnet build --configuration Release --no-restore ./src/Korpi/Client/Client.csproj
