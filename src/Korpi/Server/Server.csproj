@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Korpi.Server</RootNamespace>
+		<DefineConstants>$(DefineConstants);TRACE;SERVER</DefineConstants>
+		<Configurations>Debug;Release</Configurations>
+		<Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="KorpiEngine" Version="2024.2.27.1011" />
+    </ItemGroup>
+
+</Project>
