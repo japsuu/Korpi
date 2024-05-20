@@ -49,7 +49,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KorpiEngine\KorpiEngine.csproj" />
-    <ProjectReference Include="..\server\Server.csproj" />
+    <ProjectReference Include="..\Server\Server.csproj" />
   </ItemGroup>
 
 </Project>
