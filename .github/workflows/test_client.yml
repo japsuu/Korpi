@@ -26,7 +26,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Install dependencies
-      run: dotnet restore ./tests/client/ClientTests.csproj
+      run: dotnet restore .src/Korpi/Client.Tests/ClientTests.csproj
       
     - name: Test
-      run: dotnet test --no-restore --verbosity normal ./tests/client/ClientTests.csproj
+      run: dotnet test --no-restore --verbosity normal .src/Korpi/Client.Tests/ClientTests.csproj

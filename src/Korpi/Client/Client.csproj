@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>Korpi.Client</RootNamespace>
+    <Company>Japsu</Company>
+    <Product>Korpi Client</Product>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+		<DefineConstants>$(DefineConstants);TRACE;CLIENT</DefineConstants>
+		<Configurations>Debug;Release</Configurations>
+		<Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>TRACE;CLIENT</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>TRACE;CLIENT</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BigGustave" Version="1.0.6" />
+    <PackageReference Include="ConcurrentHashSet" Version="1.3.0" />
+    <PackageReference Include="Config.Net" Version="5.1.5" />
+    <PackageReference Include="JetBrains.Profiler.Api" Version="1.4.0" />
+    <PackageReference Include="JetBrains.Profiler.SelfApi" Version="2.5.0" />
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\**">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
+    <None Remove="log4net.config" />
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\shaders\include\" />
+    <Folder Include="Assets\textures\icon\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KorpiEngine\KorpiEngine.csproj" />
+    <ProjectReference Include="..\Server\Server.csproj" />
+  </ItemGroup>
+
+</Project>
