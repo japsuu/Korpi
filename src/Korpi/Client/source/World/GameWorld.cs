@@ -8,7 +8,7 @@ using Korpi.Client.Registries;
 using Korpi.Client.World.Chunks;
 using KorpiEngine.Core.InputManagement;
 using KorpiEngine.Core.Logging;
-using KorpiEngine.Core.Rendering.Cameras;
+using KorpiEngine.Rendering.Cameras;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using Cursor = KorpiEngine.Core.InputManagement.Cursor;

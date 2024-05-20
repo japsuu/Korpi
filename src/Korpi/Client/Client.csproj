@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KorpiEngine\KorpiEngine.csproj" />
     <ProjectReference Include="..\server\Server.csproj" />
   </ItemGroup>
 

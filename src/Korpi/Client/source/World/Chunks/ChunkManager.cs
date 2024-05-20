@@ -8,7 +8,7 @@ using Korpi.Client.Player;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering;
 using KorpiEngine.Core.Logging;
-using KorpiEngine.Core.Rendering.Cameras;
+using KorpiEngine.Rendering.Cameras;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;

@@ -5,8 +5,8 @@ using Korpi.Client.Generation.Jobs;
 using Korpi.Client.Player;
 using Korpi.Client.Rendering;
 using KorpiEngine.Core.Logging;
-using KorpiEngine.Core.Rendering.Cameras;
 using KorpiEngine.Core.Threading.Pooling;
+using KorpiEngine.Rendering.Cameras;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;

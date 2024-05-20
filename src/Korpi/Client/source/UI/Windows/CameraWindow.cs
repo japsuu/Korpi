@@ -5,8 +5,8 @@ using Korpi.Client.Player;
 using Korpi.Client.Registries;
 using Korpi.Client.Rendering.Cameras;
 using KorpiEngine.Core;
-using KorpiEngine.Core.Rendering.Cameras;
 using KorpiEngine.Core.UI.ImGui;
+using KorpiEngine.Rendering.Cameras;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.UI.Windows;

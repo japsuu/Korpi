@@ -9,8 +9,8 @@ using Korpi.Client.Rendering.Chunks;
 using Korpi.Client.World.Chunks.BlockStorage;
 using KorpiEngine.Core.Logging;
 using KorpiEngine.Core.Platform;
-using KorpiEngine.Core.Rendering.Cameras;
 using KorpiEngine.Core.Threading.Pooling;
+using KorpiEngine.Rendering.Cameras;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.World.Chunks;
