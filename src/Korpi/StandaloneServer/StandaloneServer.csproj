@@ -18,8 +18,4 @@
         </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="KorpiEngine" Version="2024.2.27.1011" />
-    </ItemGroup>
-
 </Project>
