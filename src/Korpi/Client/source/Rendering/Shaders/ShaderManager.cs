@@ -1,7 +1,7 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Client.Rendering.Shaders.ShaderPrograms;
 using KorpiEngine.Core.Logging;
-using KorpiEngine.Core.Rendering.Shaders.ShaderPrograms;
+using KorpiEngine.Rendering.Shaders.ShaderPrograms;
 
 namespace Korpi.Client.Rendering.Shaders;
 

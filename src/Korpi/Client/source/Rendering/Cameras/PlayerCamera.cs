@@ -1,5 +1,5 @@
 ﻿using KorpiEngine.Core.InputManagement;
-using KorpiEngine.Core.Rendering.Cameras;
+using KorpiEngine.Rendering.Cameras;
 using OpenTK.Mathematics;
 
 namespace Korpi.Client.Rendering.Cameras;

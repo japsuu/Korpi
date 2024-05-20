@@ -1,6 +1,6 @@
 ﻿using KorpiEngine.Core;
 using KorpiEngine.Core.InputManagement;
-using KorpiEngine.Core.Rendering.Cameras;
+using KorpiEngine.Rendering.Cameras;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
