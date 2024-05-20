@@ -7,7 +7,7 @@ using Korpi.Client.Modding;
 using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Utils;
 using KorpiEngine.Core.Logging;
-using KorpiEngine.Core.Rendering.Exceptions;
+using KorpiEngine.Rendering.Exceptions;
 
 namespace Korpi.Client.Registries;
 

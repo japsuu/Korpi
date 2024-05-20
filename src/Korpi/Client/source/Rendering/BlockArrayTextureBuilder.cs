@@ -1,8 +1,8 @@
 ﻿using Korpi.Client.Configuration;
 using Korpi.Client.Modding.Blocks;
 using KorpiEngine.Core;
-using KorpiEngine.Core.Rendering.Exceptions;
-using KorpiEngine.Core.Rendering.Textures;
+using KorpiEngine.Rendering.Exceptions;
+using KorpiEngine.Rendering.Textures;
 
 namespace Korpi.Client.Rendering;
 

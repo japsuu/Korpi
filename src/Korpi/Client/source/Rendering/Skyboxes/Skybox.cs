@@ -2,7 +2,7 @@
 using Korpi.Client.Rendering.Shaders;
 using Korpi.Client.Utils;
 using KorpiEngine.Core;
-using KorpiEngine.Core.Rendering.Textures;
+using KorpiEngine.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using Constants = Korpi.Client.Configuration.Constants;

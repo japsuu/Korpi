@@ -4,7 +4,7 @@ using Korpi.Client.Modding.Blocks;
 using Korpi.Client.Rendering;
 using Korpi.Client.Utils;
 using KorpiEngine.Core.Logging;
-using KorpiEngine.Core.Rendering.Textures;
+using KorpiEngine.Rendering.Textures;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Korpi.Client.Registries;

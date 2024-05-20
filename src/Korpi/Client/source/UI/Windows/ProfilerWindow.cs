@@ -1,7 +1,7 @@
 ﻿using ImGuiNET;
 using KorpiEngine.Core;
-using KorpiEngine.Core.Debugging.Profiling;
 using KorpiEngine.Core.UI.ImGui;
+using KorpiEngine.Debugging.Profiling;
 
 namespace Korpi.Client.UI.Windows;
 

@@ -10,4 +10,8 @@
 		<Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\KorpiEngine\KorpiEngine.csproj" />
+    </ItemGroup>
+
 </Project>
