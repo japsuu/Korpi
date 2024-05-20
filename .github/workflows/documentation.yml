@@ -35,7 +35,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - run: dotnet tool update -g docfx
-    - run: docfx documentation/docfx.json
+    - run: docfx docs/docfx.json
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
